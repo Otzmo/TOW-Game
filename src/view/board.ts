@@ -49,9 +49,9 @@ export class Board {
     app.stage.on('pointerupoutside', () => this.endDrag());
     app.canvas.addEventListener('wheel', (e) => this.onWheel(e), { passive: false });
 
-    store.subscribe((state, changedId) => {
-      if (changedId) {
-        const u = state.units[changedId];
+    store.subscribe((state, { unitId }) => {
+      if (unitId) {
+        const u = state.units[unitId];
         if (u) this.syncUnit(u);
       } else {
         for (const [id, view] of this.views) {

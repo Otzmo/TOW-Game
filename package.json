@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "firebase": "^13.1.0",
     "pixi.js": "^8.22.0"
   },
   "devDependencies": {

@@ -24,8 +24,8 @@ export class UnitPanel {
     document.querySelectorAll<HTMLButtonElement>('[data-act]').forEach((btn) => {
       btn.onclick = () => this.onFormation(btn.dataset.act!);
     });
-    store.subscribe((_, changedId) => {
-      if (!changedId || changedId === this.unitId) this.render();
+    store.subscribe((_, { unitId }) => {
+      if (!unitId || unitId === this.unitId) this.render();
     });
   }
 

@@ -12,6 +12,26 @@
     <button data-import="p1"><span class="dot p1"></span>Armee laden · Spieler 1</button>
     <button data-import="p2"><span class="dot p2"></span>Armee laden · Spieler 2</button>
     <input type="file" id="import-file" accept=".json,application/json" hidden>
+    <div id="room-status" hidden>
+      <span id="room-code"></span>
+      <span id="room-me"></span>
+      <span id="room-opponent"></span>
+      <button id="room-copy">Link kopieren</button>
+    </div>
+  </div>
+
+  <div id="lobby">
+    <div class="card">
+      <h1>TOW Tabletop</h1>
+      <p class="meta">Warhammer: The Old World · 2D-Spieltisch</p>
+      <button id="lobby-create" class="primary wide">Neues Online-Spiel</button>
+      <div class="join">
+        <input id="lobby-code" placeholder="Raumcode" maxlength="8" autocomplete="off" spellcheck="false">
+        <button id="lobby-join">Beitreten</button>
+      </div>
+      <button id="lobby-offline" class="wide">Offline üben</button>
+      <p id="lobby-msg" class="meta"></p>
+    </div>
   </div>
 
   <dialog id="import-dialog">

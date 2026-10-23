@@ -3,6 +3,7 @@ import './style.css';
 import { Store } from './model/store';
 import type { GameState } from './model/types';
 import { ImportDialog } from './ui/importDialog';
+import { Lobby } from './ui/lobby';
 import { UnitPanel } from './ui/panel';
 import { Board } from './view/board';
 import { PPI } from './view/theme';
@@ -34,6 +35,13 @@ async function start(): Promise<void> {
   };
   new ImportDialog(store, showTable);
   showTable();
+
+  // Online: jeder Spieler lädt nur seine eigene Armee
+  new Lobby(store, (me) => {
+    document.querySelectorAll<HTMLElement>('[data-import]').forEach((btn) => {
+      btn.hidden = btn.dataset.import !== me;
+    });
+  });
 }
 
 start();
