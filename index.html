@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TOW Tabletop</title>
+</head>
+<body>
+  <div id="app"></div>
+
+  <div id="help">
+    <b>Einheit ziehen</b> = bewegen · <b>Griff ziehen</b> = drehen (Shift = 15°-Schritte) ·
+    <b>Klick</b> = Details · <b>Mausrad</b> = Zoom · <b>Tisch ziehen</b> = schwenken
+  </div>
+
+  <aside id="panel" hidden>
+    <header>
+      <span class="swatch" id="p-swatch"></span>
+      <h2 id="p-name"></h2>
+      <button id="p-close" aria-label="Schließen">×</button>
+    </header>
+    <p class="meta" id="p-meta"></p>
+
+    <table class="profile">
+      <thead><tr><th></th><th>M</th><th>WS</th><th>BS</th><th>S</th><th>T</th><th>W</th><th>I</th><th>A</th><th>Ld</th></tr></thead>
+      <tbody id="p-profile"></tbody>
+    </table>
+
+    <h3>Ausrüstung &amp; Saves</h3>
+    <section><p id="p-equip"></p></section>
+
+    <h3>Sonderregeln</h3>
+    <section id="p-rules"></section>
+
+    <h3>Formation</h3>
+    <div class="row"><span class="label">Breite (Modelle in Front)</span>
+      <button data-act="w-">−</button><output id="p-width"></output><button data-act="w+">+</button></div>
+    <div class="row"><span class="label">Modelle</span>
+      <button data-act="m-">−</button><output id="p-models"></output><button data-act="m+">+</button></div>
+    <p class="meta" id="p-move"></p>
+  </aside>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
