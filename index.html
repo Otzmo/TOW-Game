@@ -44,8 +44,9 @@
   </dialog>
 
   <div id="help">
-    <b>Einheit ziehen</b> = bewegen · <b>Griff ziehen</b> = drehen (Shift = 15°-Schritte) ·
-    <b>Klick</b> = Details · <b>Mausrad</b> = Zoom · <b>Tisch ziehen</b> = schwenken
+    <b>Einheit ziehen</b> = bewegen · <b>Ecke ziehen</b> = schwenken · <b>Kreis ziehen</b> = um die Mitte drehen
+    (Shift = 15°-Schritte) · <b>Plänkler:</b> Modell ziehen = einzeln, Shift + ziehen = ganze Einheit ·
+    <b>Klick</b> = Details · <b>Mausrad</b> = Zoom · <b>Tisch ziehen</b> = Ansicht verschieben
   </div>
 
   <aside id="panel" hidden>
@@ -55,6 +56,7 @@
       <button id="p-close" aria-label="Schließen">×</button>
     </header>
     <p class="meta" id="p-meta"></p>
+    <div id="p-join"></div>
 
     <table class="profile">
       <thead><tr><th></th><th>M</th><th>WS</th><th>BS</th><th>S</th><th>T</th><th>W</th><th>I</th><th>A</th><th>Ld</th></tr></thead>
@@ -74,11 +76,17 @@
     <section id="p-rules"></section>
     <p class="meta" id="p-source"></p>
 
-    <h3>Formation</h3>
-    <div class="row"><span class="label">Breite (Modelle in Front)</span>
-      <button data-act="w-">−</button><output id="p-width"></output><button data-act="w+">+</button></div>
-    <div class="row"><span class="label">Modelle</span>
-      <button data-act="m-">−</button><output id="p-models"></output><button data-act="m+">+</button></div>
+    <div id="p-formation">
+      <h3>Formation</h3>
+      <div class="row" id="p-form-row"><span class="label">Aufstellung</span>
+        <div class="seg">
+          <button data-form="close">Geschlossen</button><button data-form="skirmish">Plänkler</button>
+        </div></div>
+      <div class="row" id="p-width-row"><span class="label">Breite (Modelle in Front)</span>
+        <button data-act="w-">−</button><output id="p-width"></output><button data-act="w+">+</button></div>
+      <div class="row"><span class="label">Modelle</span>
+        <button data-act="m-">−</button><output id="p-models"></output><button data-act="m+">+</button></div>
+    </div>
     <p class="meta" id="p-move"></p>
   </aside>
 

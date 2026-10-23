@@ -31,6 +31,8 @@ export interface UnitInfo {
   items: RuleRef[];
   /** Kürzel der Kommandomodelle im ersten Glied, z. B. ['M', 'S', 'C'] */
   command: string[];
+  /** Charakter, der sich Einheiten anschließen kann */
+  isCharacter?: boolean;
   url?: string;
 }
 
@@ -45,6 +47,20 @@ export interface UnitState {
   x: number;
   y: number;
   rotation: number;
+  /** Bei Charakteren: Einheit, der sie sich angeschlossen haben (null = keine) */
+  joinedTo?: string | null;
+  /** Fehlt = geschlossene Formation */
+  formation?: 'close' | 'skirmish';
+  /**
+   * Plänkler: Mittelpunkt jedes Modells relativ zur Einheitsmitte, in Einheitsrichtung (Front = −y).
+   * Schlüssel "m0", "m1", … für Truppen, bei angeschlossenen Charakteren deren id.
+   */
+  positions?: Record<string, Point> | null;
+}
+
+export interface Point {
+  x: number;
+  y: number;
 }
 
 export interface GameState {

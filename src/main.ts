@@ -23,7 +23,11 @@ async function start(): Promise<void> {
   const state: GameState = { table: { width: 72, height: 48 }, units: {} };
   const store = new Store(state);
 
-  const panel = new UnitPanel(store, () => board.select(null));
+  const panel = new UnitPanel(store, {
+    close: () => board.select(null),
+    select: (id) => board.select(id),
+    detach: (id) => board.detachCharacter(id),
+  });
   const board: Board = new Board(app, store, {
     onSelect: (id) => panel.show(id),
     onAction: (id, text) => panel.setLastAction(id, text),

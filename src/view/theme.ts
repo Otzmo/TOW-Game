@@ -10,3 +10,6 @@ export const PLAYER_COLORS: Record<PlayerId, { fill: number; edge: number; dark:
 
 export const TABLE_COLOR = 0x3f5a33;
 export const GUIDE_COLOR = 0xe0b44c;
+/** Plänkler außerhalb von 1″ bzw. ungültige Position */
+export const STRAY_COLOR = 0xf0603e;
+export const OK_COLOR = 0x8fca7a;

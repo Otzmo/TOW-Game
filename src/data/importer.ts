@@ -40,6 +40,11 @@ export interface ImportResult {
   warnings: string[];
 }
 
+/** Optionen, deren Regel auf tow.whfb.app anders heißt */
+const OPTION_RULES: Record<string, string> = {
+  skirmishers: 'skirmish-formation',
+};
+
 const lastSegment = (id: string) => id.split('/').pop() ?? id;
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
 const humanize = (slug: string) => slug.replace(/-/g, ' ').replace(/^./, (c) => c.toUpperCase());
@@ -117,7 +122,10 @@ export async function importBbList(
     if (mountOpt && !mount) warnings.push(`${src?.name ?? slug}: Reittier "${mountOpt.optionId}" nicht gefunden.`);
 
     const ruleKeys = new Set<string>([...(src?.specialRules ?? []), ...(mount?.specialRules ?? [])]);
-    for (const o of entry.selectedOptions) if (data.rules[o.optionId]) ruleKeys.add(o.optionId);
+    for (const o of entry.selectedOptions) {
+      const key = OPTION_RULES[o.optionId] ?? o.optionId;
+      if (data.rules[key]) ruleKeys.add(key);
+    }
     const rules = [...ruleKeys].map(rule).filter((r): r is RuleRef => r !== null);
 
     const items: RuleRef[] = entry.traitIds.map((id) => {
@@ -147,6 +155,7 @@ export async function importBbList(
       rules,
       items,
       command,
+      isCharacter: src ? src.category.includes('Character') : entry.quantity === 1,
       url: src?.url,
     };
 

@@ -51,6 +51,22 @@ details p { margin: 6px 0 2px; color: #cfcbc6; font-size: 13px; }
 .row output { min-width: 28px; text-align: center; font-variant-numeric: tabular-nums; font-weight: 600; }
 
 .pre, details p { white-space: pre-line; }
+
+.join-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+  padding: 8px 10px; margin-bottom: 4px; border: 1px solid var(--accent); border-radius: 8px; font-size: 13px;
+}
+.join-row button { padding: 4px 10px; font-size: 13px; }
+.join-row button.link, .join-row button.link:hover {
+  padding: 0; border: 0; background: none; color: var(--accent); font-weight: 600; text-decoration: underline;
+}
+.hint { margin: 0 0 4px; color: var(--muted); font-size: 13px; font-style: italic; }
+.warn-line { color: #f0a35e; }
+
+.seg { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { width: auto; height: auto; border: 0; border-radius: 0; padding: 5px 10px; font-size: 13px; background: #2a2e32; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button.on { background: var(--accent); color: #1a1a1a; font-weight: 600; }
 details .note { color: var(--muted); font-size: 12px; font-weight: 400; margin-left: 6px; }
 a { color: var(--accent); }
 
