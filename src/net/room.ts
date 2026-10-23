@@ -1,5 +1,5 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app';
-import { getAuth, signInAnonymously } from 'firebase/auth';
+import { browserSessionPersistence, getAuth, initializeAuth, signInAnonymously } from 'firebase/auth';
 import {
   get, getDatabase, onChildAdded, onChildChanged, onChildRemoved, onValue, ref, set, update,
   type Database,
@@ -20,7 +20,11 @@ export const isOnlineAvailable = () => firebaseConfig !== null;
 
 async function connect(): Promise<{ db: Database; uid: string }> {
   if (!firebaseConfig) throw new Error('Firebase ist noch nicht eingerichtet.');
-  app ??= initializeApp(firebaseConfig);
+  // Anmeldung pro Browser-Tab: Neu laden behält den Platz, ein zweiter Tab ist ein eigener Spieler
+  if (!app) {
+    app = initializeApp(firebaseConfig);
+    initializeAuth(app, { persistence: browserSessionPersistence });
+  }
   const auth = getAuth(app);
   const cred = auth.currentUser ? { user: auth.currentUser } : await signInAnonymously(auth);
   return { db: getDatabase(app), uid: cred.user.uid };
@@ -70,11 +74,12 @@ export class OnlineRoom {
         await set(ref(db, `rooms/${code}/players/p1`), uid);
         await set(ref(db, `rooms/${code}/meta`), { createdAt: Date.now() });
         return new OnlineRoom(db, code, 'p1', store).start();
-      } catch {
-        // Code schon vergeben, nächsten probieren
+      } catch (e) {
+        // PERMISSION_DENIED heißt: Code schon vergeben, nächsten probieren
+        if (!String((e as Error).message).toLowerCase().includes('permission')) throw e;
       }
     }
-    throw new Error('Konnte keinen Raum anlegen. Bitte erneut versuchen.');
+    throw new Error('Konnte keinen Raum anlegen: Zugriff verweigert. Sind die Datenbankregeln veröffentlicht?');
   }
 
   static async join(rawCode: string, store: Store): Promise<OnlineRoom> {
