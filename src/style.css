@@ -50,6 +50,35 @@ details p { margin: 6px 0 2px; color: #cfcbc6; font-size: 13px; }
 .row button:hover { border-color: var(--accent); }
 .row output { min-width: 28px; text-align: center; font-variant-numeric: tabular-nums; font-weight: 600; }
 
+.pre, details p { white-space: pre-line; }
+details .note { color: var(--muted); font-size: 12px; font-weight: 400; margin-left: 6px; }
+a { color: var(--accent); }
+
+#toolbar { position: fixed; top: 12px; left: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+button {
+  font: inherit; color: var(--text); background: #2a2e32; border: 1px solid var(--line);
+  border-radius: 8px; padding: 7px 12px; cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); color: #1a1a1a; border-color: var(--accent); font-weight: 600; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; vertical-align: -1px; }
+.dot.p1 { background: #7a1414; box-shadow: 0 0 0 1px #e0b44c; }
+.dot.p2 { background: #1c3f7a; box-shadow: 0 0 0 1px #cfd8e6; }
+
+dialog {
+  background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 12px;
+  padding: 20px; width: min(720px, calc(100vw - 32px)); max-height: calc(100vh - 64px);
+}
+dialog::backdrop { background: rgba(0, 0, 0, .55); }
+dialog h2 { margin: 0 0 4px; font-size: 18px; }
+dialog .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+table.preview { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.preview th, table.preview td { padding: 5px 6px; border-bottom: 1px solid var(--line); text-align: left; }
+table.preview th { color: var(--muted); font-weight: 500; }
+table.preview tr.missing td { color: #f0a35e; }
+.warn { color: #f0a35e; font-size: 13px; }
+.ok { color: #8fca7a; font-size: 13px; }
+
 @media (max-width: 700px) {
   #panel { top: auto; left: 8px; right: 8px; width: auto; height: 45%; }
   #help { display: none; }

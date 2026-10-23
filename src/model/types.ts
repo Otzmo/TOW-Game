@@ -13,19 +13,25 @@ export interface RuleRef {
   text: string;
   /** Link zum Volltext, z. B. auf tow.whfb.app */
   url?: string;
+  /** Zusatzinfo, z. B. Gegenstandstyp und Punkte */
+  note?: string;
 }
 
 /** Feste Angaben zu einer Einheit, ändern sich im Spiel nicht. */
 export interface UnitInfo {
   name: string;
+  troopType: string;
   /** Base-Größe in mm: Breite × Tiefe */
   baseWidth: number;
   baseDepth: number;
   profile: ProfileRow[];
   equipment: string;
+  options: string[];
   rules: RuleRef[];
+  items: RuleRef[];
   /** Kürzel der Kommandomodelle im ersten Glied, z. B. ['M', 'S', 'C'] */
   command: string[];
+  url?: string;
 }
 
 /** Veränderlicher Zustand einer Einheit auf dem Tisch. */

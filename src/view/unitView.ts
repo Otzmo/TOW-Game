@@ -69,7 +69,12 @@ export class UnitView extends Container {
       resolution: 8,
     });
     name.anchor.set(0.5);
-    name.position.set(0, ranks > 1 ? bd * 0.5 : 0);
+    if (W >= name.width) {
+      name.position.set(0, ranks > 1 ? bd * 0.5 : 0);
+    } else {
+      // Zu schmal für den Namen (z. B. Charaktere): Beschriftung hinter die Einheit
+      name.position.set(0, H / 2 + name.height / 2 + 1);
+    }
     // Name nie auf dem Kopf anzeigen
     const facing = ((u.rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
     name.rotation = facing > Math.PI / 2 && facing < (3 * Math.PI) / 2 ? Math.PI : 0;

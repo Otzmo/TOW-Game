@@ -1,11 +1,18 @@
 import type { Store } from '../model/store';
 import { unitFootprint } from '../model/store';
+import type { RuleRef } from '../model/types';
 import { PLAYER_COLORS } from '../view/theme';
 
 const $ = (id: string) => document.getElementById(id)!;
 
 const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+
+function ruleHtml(r: RuleRef): string {
+  const note = r.note ? `<span class="note">${escapeHtml(r.note)}</span>` : '';
+  const link = r.url ? `\n<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">Volltext ↗</a>` : '';
+  return `<details><summary>${escapeHtml(r.name)}${note}</summary><p>${escapeHtml(r.text || 'Kein Text gefunden.')}${link}</p></details>`;
+}
 
 /** Seitenpanel mit allen Angaben zur ausgewählten Einheit. */
 export class UnitPanel {
@@ -57,13 +64,14 @@ export class UnitPanel {
     $('p-profile').innerHTML = info.profile
       .map((r) => `<tr><td>${escapeHtml(r.name)}</td>${r.values.map((v) => `<td>${escapeHtml(v)}</td>`).join('')}</tr>`)
       .join('');
-    $('p-equip').textContent = info.equipment;
-    $('p-rules').innerHTML = info.rules
-      .map((r) => {
-        const link = r.url ? ` <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">Volltext ↗</a>` : '';
-        return `<details><summary>${escapeHtml(r.name)}</summary><p>${escapeHtml(r.text)}${link}</p></details>`;
-      })
-      .join('');
+    $('p-equip').textContent = info.equipment || '–';
+    $('p-options').textContent = info.options.join(' · ') || '–';
+    $('p-items-head').hidden = info.items.length === 0;
+    $('p-items').innerHTML = info.items.map(ruleHtml).join('');
+    $('p-rules').innerHTML = info.rules.map(ruleHtml).join('') || '<p>–</p>';
+    $('p-source').innerHTML = info.url
+      ? `Quelle: <a href="${escapeHtml(info.url)}" target="_blank" rel="noopener">tow.whfb.app ↗</a>`
+      : '';
     $('p-width').textContent = String(cols);
     $('p-models').textContent = String(u.models);
     const last = this.lastAction.get(u.id);

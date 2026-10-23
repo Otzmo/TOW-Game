@@ -1,0 +1,318 @@
+{
+  "id": "a756a70f-623b-4737-bb45-9bb8f6ef4daa",
+  "name": "Turnier Wuppertal",
+  "builderEditedAt": "2026-10-13T06:24:10.811Z",
+  "factionId": "tow/warriors-of-chaos",
+  "forceTemplateId": "tow/warriors-of-chaos/grand-army",
+  "ruleset": {
+    "gameSystemId": "the-old-world",
+    "gameVersionId": "tow-1.5.3"
+  },
+  "compositionRuleIds": [
+    "tow/combined-arms",
+    "tow/grand-melee"
+  ],
+  "pointsLimit": 2000,
+  "units": [
+    {
+      "id": "3238995d-bf6a-43d3-ae96-120e5bc69dc0",
+      "unitEntryId": "tow/warriors-of-chaos/chaos-marauders",
+      "quantity": 25,
+      "selectedOptions": [
+        {
+          "groupId": "chaos-marauders-default-armour",
+          "optionId": "light-armour"
+        },
+        {
+          "groupId": "chaos-marauders-weapons",
+          "optionId": "hand-weapons"
+        },
+        {
+          "groupId": "chaos-marauders-command",
+          "optionId": "musician"
+        },
+        {
+          "groupId": "chaos-marauders-command",
+          "optionId": "standard-bearer"
+        },
+        {
+          "groupId": "chaos-marauders-command",
+          "optionId": "marauder-chieftain"
+        },
+        {
+          "groupId": "chaos-marauders-magic-standard",
+          "optionId": "magic-standard-0-1-per-1000"
+        },
+        {
+          "groupId": "chaos-marauders-armour",
+          "optionId": "shields"
+        }
+      ],
+      "traitIds": [
+        "tow/warriors-of-chaos-chaotic-traits-units/unnatural-fortitude",
+        "tow/common/war-banner"
+      ]
+    },
+    {
+      "id": "597bd994-fb8d-4f41-813f-dda6b62f4d87",
+      "unitEntryId": "tow/warriors-of-chaos/chosen-chaos-warriors",
+      "quantity": 17,
+      "selectedOptions": [
+        {
+          "groupId": "chosen-chaos-warriors-default-option",
+          "optionId": "mark-of-chaos"
+        },
+        {
+          "groupId": "chosen-chaos-warriors-weapons",
+          "optionId": "great-weapons"
+        },
+        {
+          "groupId": "chosen-chaos-warriors-command",
+          "optionId": "standard-bearer"
+        },
+        {
+          "groupId": "chosen-chaos-warriors-command",
+          "optionId": "champion"
+        },
+        {
+          "groupId": "chosen-chaos-warriors-mark-of-chaos",
+          "optionId": "mark-of-khorne"
+        },
+        {
+          "groupId": "chosen-chaos-warriors-shields",
+          "optionId": "shields"
+        },
+        {
+          "groupId": "chosen-chaos-warriors-default-armour",
+          "optionId": "full-plate-armour"
+        },
+        {
+          "groupId": "chosen-chaos-warriors-command",
+          "optionId": "musician"
+        }
+      ],
+      "traitIds": [
+        "tow/warriors-of-chaos-chaotic-traits-units/battle-hunger",
+        "tow/warriors-of-chaos-magic-items/icon-of-darkness",
+        "tow/warriors-of-chaos-magic-items/taskmaster-s-scourge"
+      ]
+    },
+    {
+      "id": "099220b2-d354-4bfc-8137-b4478fdfeef3",
+      "unitEntryId": "tow/warriors-of-chaos/marauder-horsemen",
+      "quantity": 6,
+      "selectedOptions": [
+        {
+          "groupId": "marauder-horsemen-default-armour",
+          "optionId": "light-armour-shields"
+        },
+        {
+          "groupId": "marauder-horsemen-command",
+          "optionId": "musician"
+        },
+        {
+          "groupId": "marauder-horsemen-command",
+          "optionId": "standard-bearer"
+        },
+        {
+          "groupId": "marauder-horsemen-command",
+          "optionId": "marauder-horsemaster"
+        },
+        {
+          "groupId": "marauder-horsemen-unit-options",
+          "optionId": "skirmishers"
+        },
+        {
+          "groupId": "marauder-horsemen-magic-standard",
+          "optionId": "magic-standard-0-1-per-1000"
+        },
+        {
+          "groupId": "marauder-horsemen-weapons",
+          "optionId": "throwing-spears"
+        }
+      ],
+      "traitIds": [
+        "tow/warriors-of-chaos-chaotic-traits-units/unnatural-fortitude",
+        "tow/warriors-of-chaos-magic-items/banner-of-swirling-wind",
+        "tow/common/ring-of-doom"
+      ]
+    },
+    {
+      "id": "aaad986a-794e-451e-b05a-ed1db77552ce",
+      "unitEntryId": "tow/warriors-of-chaos/chaos-lord",
+      "quantity": 1,
+      "selectedOptions": [
+        {
+          "groupId": "chaos-lord-default-option",
+          "optionId": "mark-of-chaos"
+        },
+        {
+          "groupId": "chaos-lord-default-armour",
+          "optionId": "full-plate-armour"
+        },
+        {
+          "groupId": "chaos-lord-general",
+          "optionId": "general"
+        },
+        {
+          "groupId": "chaos-lord-mount",
+          "optionId": "daemonic-mount"
+        },
+        {
+          "groupId": "chaos-lord-shield",
+          "optionId": "shield"
+        },
+        {
+          "groupId": "chaos-lord-mark-of-chaos",
+          "optionId": "mark-of-nurgle"
+        },
+        {
+          "groupId": "chaos-lord-weapon",
+          "optionId": "great-weapon"
+        }
+      ],
+      "traitIds": [
+        "tow/warriors-of-chaos-magic-items/favour-of-the-gods",
+        "tow/warriors-of-chaos/gifts-of-chaos/extra-arm",
+        "tow/warriors-of-chaos-magic-items/daemonic-platemail",
+        "tow/warriors-of-chaos-magic-items/talisman-of-the-carrion-crow"
+      ]
+    },
+    {
+      "id": "c519e05c-5a48-4f0f-a060-4c972db0fd8e",
+      "unitEntryId": "tow/warriors-of-chaos/aspiring-champion",
+      "quantity": 1,
+      "selectedOptions": [
+        {
+          "groupId": "aspiring-champion-default-option",
+          "optionId": "mark-of-chaos"
+        },
+        {
+          "groupId": "aspiring-champion-default-armour",
+          "optionId": "heavy-armour"
+        },
+        {
+          "groupId": "aspiring-champion-mount",
+          "optionId": "on-foot"
+        },
+        {
+          "groupId": "aspiring-champion-bsb",
+          "optionId": "battle-standard-bearer"
+        },
+        {
+          "groupId": "aspiring-champion-weapon",
+          "optionId": "great-weapon"
+        },
+        {
+          "groupId": "aspiring-champion-shield",
+          "optionId": "shield"
+        },
+        {
+          "groupId": "aspiring-champion-mark-of-chaos",
+          "optionId": "mark-of-khorne"
+        }
+      ],
+      "traitIds": [
+        "tow/warriors-of-chaos/chaotic-traits/battle-hunger",
+        "tow/warriors-of-chaos/gifts-of-chaos/enchanting-aura",
+        "tow/warriors-of-chaos-magic-items/favour-of-the-gods",
+        "tow/warriors-of-chaos-magic-items/brazen-collar",
+        "tow/warriors-of-chaos-magic-items/totem-of-wrath"
+      ]
+    },
+    {
+      "id": "317fba86-6ed0-4912-8932-71ab10b44858",
+      "unitEntryId": "tow/warriors-of-chaos/sorcerer-lord",
+      "quantity": 1,
+      "selectedOptions": [
+        {
+          "groupId": "sorcerer-lord-default-option",
+          "optionId": "mark-of-chaos"
+        },
+        {
+          "groupId": "sorcerer-lord-default-option",
+          "optionId": "wizard"
+        },
+        {
+          "groupId": "sorcerer-lord-default-armour",
+          "optionId": "heavy-armour"
+        },
+        {
+          "groupId": "sorcerer-lord-default-equipment",
+          "optionId": "hand-weapon"
+        },
+        {
+          "groupId": "sorcerer-lord-lore",
+          "optionId": "lore-of-battle-magic"
+        },
+        {
+          "groupId": "sorcerer-lord-mark-of-chaos",
+          "optionId": "mark-of-tzeentch"
+        },
+        {
+          "groupId": "sorcerer-lord-mount",
+          "optionId": "chaos-steed"
+        },
+        {
+          "groupId": "sorcerer-lord-wizard",
+          "optionId": "level-4-wizard"
+        }
+      ],
+      "traitIds": [
+        "tow/warriors-of-chaos-magic-items/rod-of-the-damned",
+        "tow/warriors-of-chaos-magic-items/spell-familiar",
+        "tow/common/tome-of-spellcraft"
+      ]
+    },
+    {
+      "id": "9fd40674-3ba6-4e86-a7d2-b1163b0ce223",
+      "unitEntryId": "tow/warriors-of-chaos/marauder-horsemen",
+      "quantity": 5,
+      "selectedOptions": [
+        {
+          "groupId": "marauder-horsemen-default-armour",
+          "optionId": "light-armour-shields"
+        },
+        {
+          "groupId": "marauder-horsemen-weapons",
+          "optionId": "flails"
+        },
+        {
+          "groupId": "marauder-horsemen-unit-options",
+          "optionId": "skirmishers"
+        },
+        {
+          "groupId": "marauder-horsemen-unit-options",
+          "optionId": "ambushers"
+        },
+        {
+          "groupId": "marauder-horsemen-command",
+          "optionId": "marauder-horsemaster"
+        },
+        {
+          "groupId": "marauder-horsemen-command",
+          "optionId": "standard-bearer"
+        }
+      ],
+      "traitIds": [
+        "tow/warriors-of-chaos-chaotic-traits-units/unnatural-fortitude"
+      ]
+    },
+    {
+      "id": "756ed339-1b3c-42da-85f0-26bb6362e0a8",
+      "unitEntryId": "tow/warriors-of-chaos/chaos-warhounds",
+      "quantity": 5,
+      "selectedOptions": [
+        {
+          "groupId": "chaos-warhounds-default-equipment",
+          "optionId": "claws-and-fangs-hand-weapons"
+        },
+        {
+          "groupId": "chaos-warhounds-upgrades",
+          "optionId": "vanguard"
+        }
+      ],
+      "traitIds": []
+    }
+  ]
+}

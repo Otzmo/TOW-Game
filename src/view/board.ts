@@ -54,6 +54,12 @@ export class Board {
         const u = state.units[changedId];
         if (u) this.syncUnit(u);
       } else {
+        for (const [id, view] of this.views) {
+          if (state.units[id]) continue;
+          view.destroy({ children: true });
+          this.views.delete(id);
+          if (this.selectedId === id) this.select(null);
+        }
         for (const u of Object.values(state.units)) this.syncUnit(u);
       }
     });

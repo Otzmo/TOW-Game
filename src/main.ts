@@ -1,10 +1,11 @@
 import { Application } from 'pixi.js';
 import './style.css';
-import { demoUnits } from './demoUnits';
 import { Store } from './model/store';
 import type { GameState } from './model/types';
+import { ImportDialog } from './ui/importDialog';
 import { UnitPanel } from './ui/panel';
 import { Board } from './view/board';
+import { PPI } from './view/theme';
 
 async function start(): Promise<void> {
   const app = new Application();
@@ -17,10 +18,7 @@ async function start(): Promise<void> {
   });
   document.getElementById('app')!.appendChild(app.canvas);
 
-  const state: GameState = {
-    table: { width: 72, height: 48 },
-    units: Object.fromEntries(demoUnits.map((u) => [u.id, structuredClone(u)])),
-  };
+  const state: GameState = { table: { width: 72, height: 48 }, units: {} };
   const store = new Store(state);
 
   const panel = new UnitPanel(store, () => board.select(null));
@@ -28,8 +26,14 @@ async function start(): Promise<void> {
     onSelect: (id) => panel.show(id),
     onAction: (id, text) => panel.setLastAction(id, text),
   });
-
-  board.focus(34, 26, 2.2, 0.4);
+  // Ganzen Tisch zeigen, auch nach jedem Armeeimport
+  const { width, height } = state.table;
+  const showTable = () => {
+    const fit = Math.min(app.screen.width / (width * PPI + 80), app.screen.height / (height * PPI + 120));
+    board.focus(width / 2, height / 2, fit);
+  };
+  new ImportDialog(store, showTable);
+  showTable();
 }
 
 start();

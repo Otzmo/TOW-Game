@@ -8,6 +8,21 @@
 <body>
   <div id="app"></div>
 
+  <div id="toolbar">
+    <button data-import="p1"><span class="dot p1"></span>Armee laden · Spieler 1</button>
+    <button data-import="p2"><span class="dot p2"></span>Armee laden · Spieler 2</button>
+    <input type="file" id="import-file" accept=".json,application/json" hidden>
+  </div>
+
+  <dialog id="import-dialog">
+    <h2 id="import-title"></h2>
+    <div id="import-body"></div>
+    <div class="actions">
+      <button id="import-cancel">Abbrechen</button>
+      <button id="import-confirm" class="primary" hidden>Aufstellen</button>
+    </div>
+  </dialog>
+
   <div id="help">
     <b>Einheit ziehen</b> = bewegen · <b>Griff ziehen</b> = drehen (Shift = 15°-Schritte) ·
     <b>Klick</b> = Details · <b>Mausrad</b> = Zoom · <b>Tisch ziehen</b> = schwenken
@@ -26,11 +41,18 @@
       <tbody id="p-profile"></tbody>
     </table>
 
-    <h3>Ausrüstung &amp; Saves</h3>
-    <section><p id="p-equip"></p></section>
+    <h3>Ausrüstung</h3>
+    <section><p id="p-equip" class="pre"></p></section>
+
+    <h3>Optionen</h3>
+    <section><p id="p-options"></p></section>
+
+    <h3 id="p-items-head">Magische Gegenstände &amp; Fähigkeiten</h3>
+    <section id="p-items"></section>
 
     <h3>Sonderregeln</h3>
     <section id="p-rules"></section>
+    <p class="meta" id="p-source"></p>
 
     <h3>Formation</h3>
     <div class="row"><span class="label">Breite (Modelle in Front)</span>
