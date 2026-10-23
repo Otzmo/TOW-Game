@@ -1,5 +1,6 @@
 import { Application } from 'pixi.js';
 import './style.css';
+import { importBbList } from './data/importer';
 import { Store } from './model/store';
 import type { GameState } from './model/types';
 import { ImportDialog } from './ui/importDialog';
@@ -35,6 +36,18 @@ async function start(): Promise<void> {
   };
   new ImportDialog(store, showTable);
   showTable();
+
+  if (import.meta.env.VITE_DEMO) {
+    // Demo-Build (z. B. als Artefakt): ohne Lobby, mit Beispielliste auf beiden Seiten
+    document.getElementById('lobby')!.hidden = true;
+    const { default: list } = await import('../fixtures/turnier-wuppertal.bb.json');
+    for (const owner of ['p1', 'p2'] as const) {
+      const result = await importBbList(list, owner, state.table);
+      store.replacePlayerUnits(owner, result.units);
+    }
+    showTable();
+    return;
+  }
 
   // Online: jeder Spieler lädt nur seine eigene Armee
   new Lobby(store, (me) => {
