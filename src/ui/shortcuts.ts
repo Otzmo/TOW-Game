@@ -76,15 +76,16 @@ export class Shortcuts {
 
       // Werkzeuge
       { group: 'Tools', keys: [['V']], desc: 'Select and drag', match: letter('v'), run: () => tools.setTool('select') },
-      { group: 'Tools', keys: [['M']], desc: 'Measuring tape', match: letter('m'), run: () => tools.setTool('measure') },
-      { group: 'Tools', keys: [['L']], desc: 'Line of sight', match: letter('l'), run: () => tools.setTool('sight') },
+      { group: 'Tools', keys: [['M']], desc: 'Measuring tape (after setup)', match: letter('m'), run: () => { if (inBattle()) tools.setTool('measure'); } },
+      { group: 'Tools', keys: [['L']], desc: 'Line of sight (after setup)', match: letter('l'), run: () => { if (inBattle()) tools.setTool('sight'); } },
       { group: 'Tools', keys: [['G']], desc: 'Place terrain (setup only)', match: letter('g'), run: () => { if (!inBattle()) toggleSheet('terrain'); } },
-      { group: 'Tools', keys: [['K']], desc: 'Place markers', match: letter('k'), run: () => toggleSheet('markers') },
-      { group: 'Tools', keys: [['B']], desc: 'Templates', match: letter('b'), run: () => toggleSheet('templates') },
+      { group: 'Tools', keys: [['K']], desc: 'Place markers (after setup)', match: letter('k'), run: () => { if (inBattle()) toggleSheet('markers'); } },
+      { group: 'Tools', keys: [['B']], desc: 'Templates (after setup)', match: letter('b'), run: () => { if (inBattle()) toggleSheet('templates'); } },
       { group: 'Tools', keys: [['A']], desc: 'Battlefield & setup (setup only)', match: letter('a'), run: () => { if (!inBattle()) toggleSheet('battlefield'); } },
 
       // Fenster und Spiel
-      { group: 'Game', keys: [['W']], desc: 'Dice (left): enter number', match: letter('w'), run: () => {
+      { group: 'Game', keys: [['W']], desc: 'Dice (left, after setup): enter number', match: letter('w'), run: () => {
+        if (!inBattle()) return;
         const input = $('d-count') as HTMLInputElement;
         input.focus();
         input.select();

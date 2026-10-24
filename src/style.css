@@ -529,6 +529,10 @@ table.profile th, table.profile td { padding: 3px 2px; }
 /* Nach der Aufstellung: Armee laden, Gelände und Battlefield ausblenden */
 body.battle [data-import], body.battle [data-setup="nomansland"], body.battle #toolbox [data-sheet="battlefield"],
 body.battle #toolbox [data-sheet="terrain"] { display: none; }
+/* In der Aufstellung nur, was dafür gebraucht wird: Maßband, Sichtlinie, Marker, Schablonen, Siegpunkte und Würfel erst danach */
+body:not(.battle) #toolbox [data-tool="measure"], body:not(.battle) #toolbox [data-tool="sight"],
+body:not(.battle) #toolbox [data-sheet="markers"], body:not(.battle) #toolbox [data-sheet="templates"],
+body:not(.battle) #score-panel, body:not(.battle) #dicebar { display: none; }
 #lobby { z-index: 20; }
 
 /* Spalten ein- und ausblenden: kleine Knöpfe oben über dem Tisch */
