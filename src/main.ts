@@ -1,8 +1,10 @@
 import { Application } from 'pixi.js';
 import './style.css';
 import { importBbList } from './data/importer';
+import { History } from './model/history';
 import { Store } from './model/store';
 import type { GameState } from './model/types';
+import { GameBar } from './ui/gameBar';
 import { ImportDialog } from './ui/importDialog';
 import { Lobby } from './ui/lobby';
 import { UnitPanel } from './ui/panel';
@@ -20,25 +22,36 @@ async function start(): Promise<void> {
   });
   document.getElementById('app')!.appendChild(app.canvas);
 
-  const state: GameState = { table: { width: 72, height: 48 }, units: {} };
+  const state: GameState = {
+    table: { width: 72, height: 48 },
+    units: {},
+    meta: { round: 1, active: 'p1', breakBonus: {} },
+  };
   const store = new Store(state);
+  const history = new History(store);
 
-  const panel = new UnitPanel(store, {
+  const panel = new UnitPanel(store, history, {
     close: () => board.select(null),
     select: (id) => board.select(id),
     detach: (id) => board.detachCharacter(id),
   });
-  const board: Board = new Board(app, store, {
+  const board: Board = new Board(app, store, history, {
     onSelect: (id) => panel.show(id),
     onAction: (id, text) => panel.setLastAction(id, text),
   });
+  const gameBar = new GameBar(store, () => history.undo(), () => history.canUndo());
+
   // Ganzen Tisch zeigen, auch nach jedem Armeeimport
   const { width, height } = state.table;
   const showTable = () => {
-    const fit = Math.min(app.screen.width / (width * PPI + 80), app.screen.height / (height * PPI + 120));
-    board.focus(width / 2, height / 2, fit);
+    // Platz für die Zoll-Leisten am Rand und die Leisten oben
+    const fit = Math.min(app.screen.width / (width * PPI + 120), app.screen.height / (height * PPI + 220));
+    board.focus(width / 2, height / 2 - 2, fit);
   };
-  new ImportDialog(store, showTable);
+  new ImportDialog(store, () => {
+    history.clear();
+    showTable();
+  });
   showTable();
 
   if (import.meta.env.VITE_DEMO) {
@@ -49,6 +62,7 @@ async function start(): Promise<void> {
       const result = await importBbList(list, owner, state.table);
       store.replacePlayerUnits(owner, result.units);
     }
+    history.clear();
     showTable();
     return;
   }
@@ -58,6 +72,7 @@ async function start(): Promise<void> {
     document.querySelectorAll<HTMLElement>('[data-import]').forEach((btn) => {
       btn.hidden = btn.dataset.import !== me;
     });
+    gameBar.setOnlinePlayer(me);
   });
 }
 

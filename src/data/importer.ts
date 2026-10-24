@@ -28,9 +28,25 @@ interface FactionData {
     profile: { name: string; values: string[] }[];
     equipment: string;
     specialRules: string[];
+    /** Grundkosten pro Modell */
+    cost?: number | null;
+    options?: OptionCost[];
   }>;
   rules: Record<string, { key: string; name: string; text: string; url: string }>;
-  items: Record<string, { slug: string; name: string; type: string; cost: number | null; text: string; url: string }>;
+  items: Record<string, {
+    slug: string; name: string; type: string; cost: number | null; text: string; url: string;
+    /** Abweichende Kosten für Charaktere bzw. Einheiten */
+    costOverride?: { character?: Cost; unit?: Cost } | null;
+  }>;
+}
+
+interface Cost {
+  cost: number;
+  per: 'model' | 'unit';
+}
+
+interface OptionCost extends Cost {
+  label: string;
 }
 
 export interface ImportResult {
@@ -48,6 +64,38 @@ const OPTION_RULES: Record<string, string> = {
 const lastSegment = (id: string) => id.split('/').pop() ?? id;
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
 const humanize = (slug: string) => slug.replace(/-/g, ' ').replace(/^./, (c) => c.toUpperCase());
+
+/** Optionen, deren Kosten nicht auf der Einheitenseite stehen */
+const FIXED_OPTION_COSTS: Record<string, number> = {
+  'battle-standard-bearer': 25,
+};
+
+/** Kern einer Optionszeile, z. B. "Upgrade one model to a champion" → "champion". */
+function optionCore(label: string): string {
+  return norm(label
+    .replace(/^[•\s]+/, '')
+    .replace(/\([^)]*\)/g, '')
+    .replace(/special rule\s*$/i, '')
+    .replace(/^(upgrade one model to an?|the entire unit may take|may take an?|may take|be an?|have the|replace .* with( the)?|the)\s+/i, ''));
+}
+
+/** Kosten einer gewählten Option laut tow.whfb.app (null = nicht gefunden). */
+function optionCost(options: OptionCost[], optionId: string, groupId: string, models: number): number | null {
+  const id = norm(optionId);
+  let match = options.find((o) => optionCore(o.label) === id);
+  // Champion heißt je Einheit anders (Headman, Horsemaster, Chieftain …)
+  if (!match && groupId.endsWith('-command') && !['musician', 'standard-bearer'].includes(optionId)) {
+    match = options.find((o) => /champion/i.test(o.label));
+  }
+  if (match) return match.per === 'model' ? match.cost * models : match.cost;
+  return FIXED_OPTION_COSTS[optionId] ?? null;
+}
+
+function itemCost(item: FactionData['items'][string], isCharacter: boolean, models: number): number {
+  const o = item.costOverride?.[isCharacter ? 'character' : 'unit'];
+  if (o) return o.per === 'model' ? o.cost * models : o.cost;
+  return item.cost ?? 0;
+}
 
 const factionCache = new Map<string, FactionData>();
 
@@ -128,13 +176,23 @@ export async function importBbList(
     }
     const rules = [...ruleKeys].map(rule).filter((r): r is RuleRef => r !== null);
 
+    const q = Math.max(1, entry.quantity);
+    const isCharacter = src ? src.category.includes('Character') : entry.quantity === 1;
+
+    // Punkte: Grundkosten × Modelle + Optionen + Gegenstände
+    let points = (src?.cost ?? 0) * q;
+    for (const o of entry.selectedOptions) points += optionCost(src?.options ?? [], o.optionId, o.groupId, q) ?? 0;
+    if (src && src.cost == null) warnings.push(`${src.name}: keine Punktkosten gefunden – bitte im Panel eintragen.`);
+
     const items: RuleRef[] = entry.traitIds.map((id) => {
       const it = data.items[norm(lastSegment(id))];
       if (!it) {
         warnings.push(`${src?.name ?? slug}: Gegenstand "${lastSegment(id)}" nicht gefunden.`);
         return { name: humanize(lastSegment(id)), text: '' };
       }
-      const note = [it.type, it.cost != null ? `${it.cost} Pkt.` : ''].filter(Boolean).join(' · ');
+      const cost = itemCost(it, isCharacter, q);
+      points += cost;
+      const note = [it.type, `${cost} Pkt.`].filter(Boolean).join(' · ');
       return { name: it.name, text: it.text, url: it.url, note };
     });
 
@@ -155,11 +213,15 @@ export async function importBbList(
       rules,
       items,
       command,
-      isCharacter: src ? src.category.includes('Character') : entry.quantity === 1,
+      isCharacter,
+      points,
+      isGeneral: entry.selectedOptions.some((o) => o.optionId === 'general'),
+      isBsb: entry.selectedOptions.some((o) => o.optionId === 'battle-standard-bearer'),
+      startModels: q,
+      woundsPerModel: Number.parseInt(src?.profile[0]?.values[5] ?? '1', 10) || 1,
       url: src?.url,
     };
 
-    const q = Math.max(1, entry.quantity);
     return {
       id: `${owner}-${entry.id}`,
       owner,

@@ -2,7 +2,9 @@ import type { Store } from '../model/store';
 import {
   canSkirmish, isJoined, isSkirmish, joinedCharacters, SKIRMISH_GAP, spreadPositions, unitLayout,
 } from '../model/store';
-import type { RuleRef } from '../model/types';
+import type { History } from '../model/history';
+import { hasStandard, unitVictoryPoints, wounds } from '../model/score';
+import type { RuleRef, UnitState, UnitStatus } from '../model/types';
 import { PLAYER_COLORS } from '../view/theme';
 
 const $ = (id: string) => document.getElementById(id)!;
@@ -27,8 +29,29 @@ export class UnitPanel {
   private unitId: string | null = null;
   private lastAction = new Map<string, string>();
 
-  constructor(private store: Store, actions: PanelActions) {
+  constructor(private store: Store, private history: History, actions: PanelActions) {
     $('p-close').onclick = () => actions.close();
+    $('p-rank').onclick = () => this.arrangeInRanks();
+    $('p-status').onclick = (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+      if (btn) this.change({ status: (btn.dataset.status || null) as UnitStatus | null });
+    };
+    $('p-wounds-row').onclick = (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+      const u = this.unit();
+      if (!btn || !u) return;
+      const lost = u.woundsLost ?? 0;
+      const total = wounds(u).total;
+      this.change({ woundsLost: btn.dataset.wound === 'lose' ? Math.min(total, lost + 1) : Math.max(0, lost - 1) });
+    };
+    ($('p-captured') as HTMLInputElement).onchange = (e) => {
+      this.change({ standardCaptured: (e.target as HTMLInputElement).checked });
+    };
+    ($('p-points') as HTMLInputElement).onchange = (e) => {
+      const u = this.unit();
+      const points = Math.max(0, Math.round(Number((e.target as HTMLInputElement).value) || 0));
+      if (u) this.change({ info: { ...u.info, points } });
+    };
     document.querySelectorAll<HTMLButtonElement>('[data-act]').forEach((btn) => {
       btn.onclick = () => this.onFormation(btn.dataset.act!);
     });
@@ -41,7 +64,8 @@ export class UnitPanel {
       if (btn.dataset.select) actions.select(btn.dataset.select);
       if (btn.dataset.detach) actions.detach(btn.dataset.detach);
     };
-    store.subscribe((_, { unitId, patch }) => {
+    store.subscribe((_, { unitId, patch, meta }) => {
+      if (meta) return;
       if (!unitId || unitId === this.unitId || (patch && 'joinedTo' in patch)) this.render();
     });
   }
@@ -56,21 +80,44 @@ export class UnitPanel {
     if (unitId === this.unitId) this.render();
   }
 
+  private unit(): UnitState | undefined {
+    return this.unitId ? this.store.state.units[this.unitId] : undefined;
+  }
+
+  /** Änderung an der ausgewählten Einheit, rückgängig machbar. */
+  private change(patch: Partial<UnitState>): void {
+    const u = this.unit();
+    if (!u) return;
+    this.history.record();
+    this.store.updateUnit(u.id, patch);
+  }
+
   private onFormation(act: string): void {
     const units = this.store.state.units;
-    const u = this.unitId ? units[this.unitId] : undefined;
+    const u = this.unit();
     if (!u) return;
-    const { cols, slots } = unitLayout(u, units);
-    if (act === 'w-') this.store.updateUnit(u.id, { width: Math.max(1, cols - 1) });
-    if (act === 'w+') this.store.updateUnit(u.id, { width: Math.min(slots.length, cols + 1) });
-    if (act === 'm-') this.store.updateUnit(u.id, { models: Math.max(1, u.models - 1) });
-    if (act === 'm+') this.store.updateUnit(u.id, { models: u.models + 1 });
+    // Plänkler haben keine Glieder; die Breite gilt dort für "In Reihen ordnen"
+    const cols = isSkirmish(u) ? Math.min(u.width, u.models) : unitLayout(u, units).cols;
+    const max = isSkirmish(u) ? u.models : unitLayout(u, units).slots.length;
+    if (act === 'w-') this.change({ width: Math.max(1, cols - 1) });
+    if (act === 'w+') this.change({ width: Math.min(max, cols + 1) });
+    if (act === 'm-') this.change({ models: Math.max(1, u.models - 1) });
+    if (act === 'm+') this.change({ models: u.models + 1 });
+  }
+
+  /** Plänkler in Reihen mit 0,5″ Abstand aufstellen (Breite wie eingestellt). */
+  private arrangeInRanks(): void {
+    const u = this.unit();
+    if (!u) return;
+    this.change({ positions: spreadPositions(u, this.store.state.units) });
+    this.setLastAction(u.id, 'in Reihen mit 0,5″ Abstand geordnet');
   }
 
   private setFormation(form: 'close' | 'skirmish'): void {
     const units = this.store.state.units;
-    const u = this.unitId ? units[this.unitId] : undefined;
+    const u = this.unit();
     if (!u || (u.formation ?? 'close') === form) return;
+    this.history.record();
     if (form === 'skirmish') {
       // Geschlossene Aufstellung locker auseinanderziehen
       this.store.updateUnit(u.id, { formation: 'skirmish', positions: spreadPositions(u, units) });
@@ -114,11 +161,29 @@ export class UnitPanel {
     // Ein angeschlossener Charakter hat keine eigene Formation
     $('p-formation').hidden = joined;
     $('p-form-row').hidden = !canSkirmish(u) && !skirmish;
-    $('p-width-row').hidden = skirmish;
+    $('p-rank').hidden = !skirmish;
+    $('p-width-row').querySelector('.label')!.textContent = skirmish ? 'Breite beim Ordnen' : 'Breite (Modelle in Front)';
+
+    // Siegpunkte
+    document.querySelectorAll<HTMLButtonElement>('[data-status]').forEach((btn) => {
+      btn.classList.toggle('on', (btn.dataset.status || null) === (u.status ?? null));
+    });
+    const single = (info.startModels ?? u.models) === 1;
+    $('p-wounds-row').hidden = !single;
+    const wd = wounds(u);
+    $('p-wounds').textContent = `${wd.left}/${wd.total}`;
+    $('p-captured-row').hidden = !hasStandard(u);
+    ($('p-captured') as HTMLInputElement).checked = !!u.standardCaptured;
+    const pointsInput = $('p-points') as HTMLInputElement;
+    if (document.activeElement !== pointsInput) pointsInput.value = String(info.points ?? 0);
+    const vp = unitVictoryPoints(u);
+    const total = vp.reduce((s, l) => s + l.vp, 0);
+    const tags = [info.isGeneral ? 'General' : '', info.isBsb ? 'Armeestandarte' : ''].filter(Boolean).join(' · ');
+    $('p-vp-value').textContent = `Bringt dem Gegner jetzt ${total} SP` + (tags ? ` · ${tags}` : '');
     document.querySelectorAll<HTMLButtonElement>('[data-form]').forEach((btn) => {
       btn.classList.toggle('on', btn.dataset.form === (u.formation ?? 'close'));
     });
-    $('p-width').textContent = String(cols);
+    $('p-width').textContent = String(skirmish ? Math.min(u.width, u.models) : cols);
     $('p-models').textContent = String(u.models);
     const last = this.lastAction.get(u.id);
     $('p-move').textContent = last ? `Letzte Aktion: ${last}` : '';

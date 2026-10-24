@@ -1,4 +1,4 @@
-import type { GameState, PlayerId, Point, UnitState } from './types';
+import type { GameMeta, GameState, PlayerId, Point, UnitState } from './types';
 
 /** Woher eine Änderung kommt: vom eigenen Bildschirm oder vom Mitspieler über das Netz. */
 export type Origin = 'local' | 'remote';
@@ -11,6 +11,8 @@ export interface Change {
   patch?: Partial<UnitState>;
   /** Bei lokalem Armeeimport: der Spieler, dessen Einheiten ersetzt wurden */
   replacedOwner?: PlayerId;
+  /** Runde, Spieler am Zug oder Siegpunkt-Boni haben sich geändert */
+  meta?: boolean;
 }
 
 type Listener = (state: GameState, change: Change) => void;
@@ -45,6 +47,11 @@ export class Store {
     if (!this.state.units[id]) return;
     delete this.state.units[id];
     this.emit({ origin });
+  }
+
+  setMeta(patch: Partial<GameMeta>, origin: Origin = 'local'): void {
+    Object.assign(this.state.meta, patch);
+    this.emit({ origin, meta: true });
   }
 
   /** Ersetzt alle Einheiten eines Spielers, z. B. beim erneuten Armeeimport. */

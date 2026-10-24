@@ -5,7 +5,7 @@ import {
   type Database,
 } from 'firebase/database';
 import type { Change, Store } from '../model/store';
-import type { PlayerId, UnitState } from '../model/types';
+import type { GameMeta, GameState, PlayerId, UnitState } from '../model/types';
 import { firebaseConfig } from './firebaseConfig';
 
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // ohne leicht verwechselbare Zeichen
@@ -72,7 +72,7 @@ export class OnlineRoom {
       try {
         // Die Regeln erlauben das nur, wenn der Platz noch frei ist – also der Raum neu ist
         await set(ref(db, `rooms/${code}/players/p1`), uid);
-        await set(ref(db, `rooms/${code}/meta`), { createdAt: Date.now() });
+        await set(ref(db, `rooms/${code}/meta`), { createdAt: Date.now(), game: toDb(store.state.meta) });
         return new OnlineRoom(db, code, 'p1', store).start();
       } catch (e) {
         // PERMISSION_DENIED heißt: Code schon vergeben, nächsten probieren
@@ -119,13 +119,23 @@ export class OnlineRoom {
         this.owners.delete(s.key);
         this.store.removeUnit(s.key, 'remote');
       }),
-      this.store.subscribe((state, change) => this.onLocalChange(state.units, change)),
+      // Runde, Spieler am Zug und Siegpunkt-Boni
+      onValue(ref(this.db, `rooms/${this.code}/meta/game`), (s) => {
+        const val = s.val() as GameMeta | null;
+        if (val) this.store.setMeta({ round: val.round, active: val.active, breakBonus: val.breakBonus ?? {} }, 'remote');
+      }),
+      this.store.subscribe((state, change) => this.onLocalChange(state, change)),
     );
     return this;
   }
 
-  private onLocalChange(units: Record<string, UnitState>, change: Change): void {
+  private onLocalChange({ units, meta }: GameState, change: Change): void {
     if (change.origin !== 'local') return;
+
+    if (change.meta) {
+      set(ref(this.db, `rooms/${this.code}/meta/game`), toDb(meta));
+      return;
+    }
 
     if (change.replacedOwner) {
       // Armeeimport: alte Einheiten dieses Spielers löschen, neue komplett schreiben

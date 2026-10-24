@@ -80,6 +80,36 @@ function parseBase(text) {
 
 const PROFILE_KEYS = ['M', 'WS', 'BS', 'S', 'T', 'W', 'I', 'A', 'Ld'];
 
+/** "(+2 points per model)", "(+7 points per unit)", "(+35 points)" oder "(Free)" → Kosten */
+function parseCost(text) {
+  if (/^free$/i.test(text.trim())) return { cost: 0, per: 'unit' };
+  const m = /^\+?(\d+)\s*points?(?:\s*per\s*(model|unit))?/i.exec(text.trim());
+  return m ? { cost: Number(m[1]), per: m[2]?.toLowerCase() === 'model' ? 'model' : 'unit' } : null;
+}
+
+/** Optionszeilen mit Kosten, z. B. "Great weapons (+2 points per model)". */
+function parseOptionCosts(text) {
+  const out = [];
+  for (const line of text.split('\n')) {
+    const m = /^(.*)\(([^()]*)\)\s*$/.exec(line.trim());
+    if (!m) continue;
+    const cost = parseCost(m[2]);
+    if (cost) out.push({ label: m[1].trim(), ...cost });
+  }
+  return out;
+}
+
+/** "Characters (+10 points per model), Units (+20 points per unit)" */
+function parseCostOverride(text) {
+  if (typeof text !== 'string') return null;
+  const result = {};
+  for (const m of text.matchAll(/(Characters?|Units?)\s*\(([^)]*)\)/gi)) {
+    const cost = parseCost(m[2]);
+    if (cost) result[m[1].toLowerCase().startsWith('char') ? 'character' : 'unit'] = cost;
+  }
+  return Object.keys(result).length ? result : null;
+}
+
 function ruleFromTarget(target, label) {
   const f = target.fields;
   if (!f?.slug) return null;
@@ -141,6 +171,8 @@ async function main() {
       profile: (f.unitProfile ?? []).map((row) => ({ name: row.Name, values: PROFILE_KEYS.map((k) => String(row[k] ?? '-')) })),
       equipment: clean(richText(f.equipment)),
       specialRules: ruleKeys,
+      cost: typeof f.cost === 'number' ? f.cost : null,
+      options: parseOptionCosts(richText(f.options)),
     };
   }
 
@@ -162,6 +194,7 @@ async function main() {
     name: f.name,
     type: f.magicItemType?.[0]?.fields?.name ?? (typeof f.type === 'string' ? f.type : ''),
     cost: f.cost ?? null,
+    costOverride: parseCostOverride(f.costOverride),
     text: clean(richText(f.body) || richText(f.description)),
     url: `${BASE}/magic-item/${f.slug}`,
   });

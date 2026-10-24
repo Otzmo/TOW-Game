@@ -1,4 +1,5 @@
 import { Circle, Container, Graphics, Rectangle, Text } from 'pixi.js';
+import { isDestroyed } from '../model/score';
 import { isSkirmish, type UnitLayout } from '../model/store';
 import type { UnitState } from '../model/types';
 import { PLAYER_COLORS, PPI, STRAY_COLOR } from './theme';
@@ -107,8 +108,12 @@ export class UnitView extends Container {
       t.position.set((s.x + s.w / 2) * PPI, s.y * PPI + size / 2);
       this.labels.addChild(t);
     }
+    // Vernichtete oder geflohene Einheiten blass, fliehende markiert
+    this.alpha = isDestroyed(u) || u.status === 'fledOff' ? 0.3 : 1;
+    const status = isDestroyed(u) ? ' · vernichtet' : u.status === 'fledOff' ? ' · geflohen'
+      : u.status === 'fleeing' ? ' · FLIEHT' : '';
     const name = new Text({
-      text: `${u.info.name} (${u.models})`,
+      text: `${u.info.name} (${u.models})${status}`,
       style: { fontFamily: 'system-ui', fontSize: 7, fontWeight: '600', fill: 0xffffff, stroke: { color: 0x000000, width: 2.5 } },
       resolution: 8,
     });

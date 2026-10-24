@@ -2,6 +2,7 @@ import { Application, Container, FederatedPointerEvent, Graphics, Text } from 'p
 import {
   isJoined, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
 } from '../model/store';
+import type { History } from '../model/history';
 import type { Point, UnitState } from '../model/types';
 import { createTable } from './table';
 import { GUIDE_COLOR, OK_COLOR, PPI, STRAY_COLOR } from './theme';
@@ -60,7 +61,7 @@ export class Board {
   private drag: Drag | null = null;
   selectedId: string | null = null;
 
-  constructor(private app: Application, private store: Store, private events: BoardEvents) {
+  constructor(private app: Application, private store: Store, private history: History, private events: BoardEvents) {
     const { table } = store.state;
     app.stage.addChild(this.world);
     app.stage.eventMode = 'static';
@@ -77,7 +78,8 @@ export class Board {
     app.stage.on('pointerupoutside', () => this.endDrag());
     app.canvas.addEventListener('wheel', (e) => this.onWheel(e), { passive: false });
 
-    store.subscribe((state, { unitId, patch }) => {
+    store.subscribe((state, { unitId, patch, meta }) => {
+      if (meta) return;
       const u = unitId ? state.units[unitId] : undefined;
       // Anschließen/Verlassen ändert zwei Einheiten, Löschen/Import beliebig viele
       if (!u || (patch && 'joinedTo' in patch) || !patch) {
@@ -104,6 +106,7 @@ export class Board {
     const { h } = unitFootprint(host, units);
     const depth = c.info.baseDepth / 25.4;
     const p = this.unitPoint(host, 0, -h / 2 - depth / 2 - 0.5);
+    this.history.record();
     this.store.updateUnit(charId, { joinedTo: null, x: p.x, y: p.y, rotation: host.rotation });
     if (host.positions?.[charId]) {
       const { [charId]: _, ...rest } = host.positions;
@@ -183,6 +186,7 @@ export class Board {
       swing = { px: pivot.x, py: pivot.y, cx: corner.x, cy: corner.y,
         startAngle: Math.atan2(p.y - pivot.y, p.x - pivot.x), front: w };
     }
+    this.history.record();
     this.drag = { type, unitId, ox: u.x - p.x, oy: u.y - p.y, sx: u.x, sy: u.y, srot: u.rotation,
       gx: e.global.x, gy: e.global.y, moved: type !== 'move', swing };
     const view = this.views.get(unitId);
@@ -198,6 +202,7 @@ export class Board {
     // Alle aktuellen Positionen festhalten, auch gerade erst erzeugte
     const startPositions: Record<string, Point> = {};
     for (const s of layout.slots) startPositions[s.key] = { x: s.x + s.w / 2, y: s.y + s.d / 2 };
+    this.history.record();
     this.drag = { type: 'model', unitId, key, start: startPositions[key], startPointer: this.toUnitLocal(u, this.toInches(e)),
       startPositions, startStray: layout.stray.size, gx: e.global.x, gy: e.global.y, moved: false };
     const select = charId ?? unitId;
@@ -278,7 +283,10 @@ export class Board {
     this.guide.clear();
     this.moveLabel.text = '';
     this.moveLabel.style.fill = 0xffffff;
-    if (!d.moved) return;
+    if (!d.moved) {
+      this.history.dropIfUnchanged();
+      return;
+    }
     if (d.type === 'model') {
       this.endModelDrag(d);
       return;
@@ -300,22 +308,21 @@ export class Board {
     if (text) this.events.onAction(d.unitId, text);
   }
 
-  /** Plänkler loslassen: nur erlaubt, wenn dadurch kein Modell mehr als 1″ vom Rest entfernt ist. */
+  /**
+   * Plänkler loslassen. Während des Zuges darf ein Modell auch mehr als 1″ entfernt stehen –
+   * es wird rot markiert, geprüft wird beim Zugende.
+   */
   private endModelDrag(d: ModelDrag): void {
     const units = this.store.state.units;
     const u = units[d.unitId];
     const layout = unitLayout(u, units);
     // Bei einem angeschlossenen Charakter steht die Meldung in dessen Panel
     const actor = units[d.key] ? d.key : d.unitId;
-    if (layout.stray.size > d.startStray) {
-      this.store.updateUnit(d.unitId, { positions: d.startPositions });
-      this.events.onAction(actor, `zurückgesetzt: mehr als ${SKIRMISH_GAP}″ vom Rest der Einheit`);
-      return;
-    }
     const end = u.positions?.[d.key] ?? d.start;
     const dist = Math.hypot(end.x - d.start.x, end.y - d.start.y);
     this.store.updateUnit(d.unitId, recenter(u, units, u.positions ?? d.startPositions));
-    this.events.onAction(actor, `Modell ${dist.toFixed(1)}″ bewegt`);
+    const warn = layout.stray.size ? ` – ${layout.stray.size} Modell(e) mehr als ${SKIRMISH_GAP}″ entfernt, bis Zugende korrigieren` : '';
+    this.events.onAction(actor, `Modell ${dist.toFixed(1)}″ bewegt${warn}`);
   }
 
   /** Linie vom Start zum Modell, Strecke und Abstand zum nächsten Modell (rot über 1″). */
@@ -332,7 +339,7 @@ export class Board {
     this.guide.circle(a.x * PPI, a.y * PPI, 2.5).fill(0xffffff);
     this.guide.moveTo(a.x * PPI, a.y * PPI).lineTo(b.x * PPI, b.y * PPI).stroke({ width: 1.5, color: GUIDE_COLOR, alpha: 0.9 });
     this.moveLabel.text = `${Math.hypot(end.x - d.start.x, end.y - d.start.y).toFixed(1)}″ · ` +
-      `${near.toFixed(1)}″ zum nächsten Modell${tooFar ? ' – zu weit!' : ''}`;
+      `${near.toFixed(1)}″ zum nächsten Modell${tooFar ? ' – mehr als 1″!' : ''}`;
     this.moveLabel.style.fill = tooFar ? STRAY_COLOR : near <= SKIRMISH_GAP ? OK_COLOR : 0xffffff;
     this.moveLabel.scale.set(1 / this.world.scale.x);
     this.moveLabel.position.set(b.x * PPI, b.y * PPI - 1.5 * PPI);

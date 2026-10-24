@@ -7,6 +7,7 @@
   --accent: #e0b44c;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body {
   margin: 0; height: 100%; overflow: hidden; background: var(--bg); color: var(--text);
   font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -62,6 +63,45 @@ details p { margin: 6px 0 2px; color: #cfcbc6; font-size: 13px; }
 }
 .hint { margin: 0 0 4px; color: var(--muted); font-size: 13px; font-style: italic; }
 .warn-line { color: #f0a35e; }
+
+.stack { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.stack .label { color: var(--muted); }
+.stack .seg button { flex: 1; padding: 6px 4px; }
+label.check { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+#p-vp { margin: 8px 0 4px; padding: 10px 10px 2px; border: 1px solid var(--line); border-radius: 8px; }
+#p-vp .meta { margin: 0 0 8px; }
+#p-points {
+  width: 80px; font: inherit; text-align: right; color: var(--text); background: #15171a;
+  border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px;
+}
+button.wide { width: 100%; margin-top: 4px; }
+
+#gamebar {
+  /* zweite Zeile unter der Werkzeugleiste */
+  position: fixed; top: 58px; left: 12px; display: flex; align-items: center;
+  gap: 8px; flex-wrap: wrap; max-width: min(620px, calc(100vw - 380px));
+  padding: 4px 4px 4px 12px; border-radius: 10px; background: rgba(20, 22, 24, .9); border: 1px solid var(--line);
+  font-size: 13px;
+}
+#gamebar button { padding: 5px 10px; font-size: 13px; }
+#gamebar button:disabled { opacity: .45; cursor: not-allowed; }
+#g-confirm { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; flex-basis: 100%; padding: 6px 4px 2px; color: #f0a35e; }
+#g-confirm[hidden] { display: none; }
+
+#scoreboard {
+  position: fixed; top: 108px; left: 12px; width: 300px; max-height: calc(100vh - 190px); overflow-y: auto;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px;
+}
+#scoreboard[hidden] { display: none; }
+#scoreboard section + section { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+#scoreboard h3 { display: flex; align-items: center; margin: 0; font-size: 14px; text-transform: none; letter-spacing: 0; color: var(--text); }
+#scoreboard .vp { margin-left: auto; color: var(--accent); font-variant-numeric: tabular-nums; }
+#scoreboard ul { list-style: none; margin: 6px 0 8px; padding: 0; font-size: 13px; }
+#scoreboard li { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; border-bottom: 1px dashed var(--line); }
+#scoreboard li b { font-variant-numeric: tabular-nums; }
+#scoreboard li.empty { color: var(--muted); border: 0; }
+#scoreboard label { display: flex; gap: 8px; align-items: center; font-size: 13px; }
+#scoreboard .note { margin: 12px 0 0; }
 
 .seg { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .seg button { width: auto; height: auto; border: 0; border-radius: 0; padding: 5px 10px; font-size: 13px; background: #2a2e32; }

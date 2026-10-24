@@ -33,8 +33,19 @@ export interface UnitInfo {
   command: string[];
   /** Charakter, der sich Einheiten anschließen kann */
   isCharacter?: boolean;
+  /** Punktkosten laut Armeeliste (für Siegpunkte) */
+  points?: number;
+  isGeneral?: boolean;
+  isBsb?: boolean;
+  /** Modellzahl zu Spielbeginn (für die 25-%-Regel) */
+  startModels?: number;
+  /** Lebenspunkte je Modell laut Profil */
+  woundsPerModel?: number;
   url?: string;
 }
+
+/** Zustand für Siegpunkte: vernichtet, vom Tisch geflohen oder gerade fliehend */
+export type UnitStatus = 'destroyed' | 'fledOff' | 'fleeing';
 
 /** Veränderlicher Zustand einer Einheit auf dem Tisch. */
 export interface UnitState {
@@ -56,6 +67,12 @@ export interface UnitState {
    * Schlüssel "m0", "m1", … für Truppen, bei angeschlossenen Charakteren deren id.
    */
   positions?: Record<string, Point> | null;
+  /** Fehlt/null = normal im Spiel */
+  status?: UnitStatus | null;
+  /** Standarte vom Gegner erbeutet */
+  standardCaptured?: boolean;
+  /** Bei Einzelmodellen: verlorene Lebenspunkte */
+  woundsLost?: number;
 }
 
 export interface Point {
@@ -63,7 +80,17 @@ export interface Point {
   y: number;
 }
 
+/** Spielweite Angaben, die beide Spieler teilen. */
+export interface GameMeta {
+  round: number;
+  /** Spieler am Zug */
+  active: PlayerId;
+  /** Hat dieser Spieler die gegnerische Armee gebrochen? (+500 SP) */
+  breakBonus: Partial<Record<PlayerId, boolean>>;
+}
+
 export interface GameState {
   table: { width: number; height: number };
   units: Record<string, UnitState>;
+  meta: GameMeta;
 }

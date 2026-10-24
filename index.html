@@ -8,6 +8,19 @@
 <body>
   <div id="app"></div>
 
+  <div id="gamebar">
+    <span id="g-round"></span>
+    <button id="g-end">Zug beenden</button>
+    <button id="g-undo" title="Rückgängig (Strg+Z)" disabled>↶ Rückgängig</button>
+    <button id="g-score-toggle">Siegpunkte</button>
+    <div id="g-confirm" hidden>
+      <span id="g-confirm-text"></span>
+      <button id="g-confirm-yes" class="primary">Trotzdem beenden</button>
+      <button id="g-confirm-no">Abbrechen</button>
+    </div>
+  </div>
+  <aside id="scoreboard" hidden></aside>
+
   <div id="toolbar">
     <button data-import="p1"><span class="dot p1"></span>Armee laden · Spieler 1</button>
     <button data-import="p2"><span class="dot p2"></span>Armee laden · Spieler 2</button>
@@ -58,6 +71,22 @@
     <p class="meta" id="p-meta"></p>
     <div id="p-join"></div>
 
+    <div id="p-vp">
+      <div class="stack">
+        <span class="label">Status</span>
+        <div class="seg" id="p-status">
+          <button data-status="">Im Spiel</button><button data-status="fleeing">Flieht</button><button
+            data-status="fledOff">Geflohen</button><button data-status="destroyed">Vernichtet</button>
+        </div>
+      </div>
+      <div class="row" id="p-wounds-row"><span class="label">Lebenspunkte</span>
+        <button data-wound="lose">−</button><output id="p-wounds"></output><button data-wound="heal">+</button></div>
+      <label class="check" id="p-captured-row"><input type="checkbox" id="p-captured"> Standarte vom Gegner erbeutet</label>
+      <div class="row"><span class="label">Punktkosten</span>
+        <input id="p-points" type="number" min="0" step="1" inputmode="numeric"></div>
+      <p class="meta" id="p-vp-value"></p>
+    </div>
+
     <table class="profile">
       <thead><tr><th></th><th>M</th><th>WS</th><th>BS</th><th>S</th><th>T</th><th>W</th><th>I</th><th>A</th><th>Ld</th></tr></thead>
       <tbody id="p-profile"></tbody>
@@ -86,6 +115,7 @@
         <button data-act="w-">−</button><output id="p-width"></output><button data-act="w+">+</button></div>
       <div class="row"><span class="label">Modelle</span>
         <button data-act="m-">−</button><output id="p-models"></output><button data-act="m+">+</button></div>
+      <button id="p-rank" class="wide">In Reihen ordnen (0,5″ Abstand)</button>
     </div>
     <p class="meta" id="p-move"></p>
   </aside>
