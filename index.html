@@ -57,45 +57,16 @@
       <button data-sheet="keys" title="All keyboard shortcuts (?)">Shortcuts</button>
     </nav>
   </aside>
-  <!-- Rechte Seite oben: Siegpunkte als Grundanzeige; Einheit, Objekt, Fenster und Aufforderungen liegen darüber -->
+  <!-- Rechte Spalte: oben Siegpunkte als Grundanzeige, darüber Einheit, Objekt, Fenster und Aufforderungen; unten Würfel und Magie -->
+  <aside id="rightbar">
+    <div id="right-top">
   <aside id="score-panel" class="info-panel"></aside>
-  <!-- Rechte Seite unten: Würfel, Magie und Würfelprotokoll -->
-  <aside id="dicebar">
-    <h3>Dice</h3>
-    <div class="dice-form">
-      <label>Number of D6 <input id="d-count" type="number" min="1" max="100" value="10"></label>
-      <label>To Hit <select id="d-hit"></select></label>
-      <label>To Wound <select id="d-wound"></select></label>
-      <label>Armour Save <select id="d-save"></select></label>
-      <label>Ward save <select id="d-ward"></select></label>
-      <label class="full">Note <input id="d-note" type="text" maxlength="60" placeholder="e.g. Chosen vs. Knights"></label>
-      <label class="full">Target (opponent rolls saves) <select id="d-target"></select></label>
-    </div>
-    <button id="d-roll" class="primary wide">Roll</button>
-    <div class="dice-quick">
-      <button data-quick="1d6">D6</button><button data-quick="2d6">2D6</button><button
-        data-quick="1d3">D3</button><button data-quick="3d6">3D6</button>
-    </div>
-    <div id="d-result"></div>
-    <h3>Magic</h3>
-    <div class="dice-form">
-      <label>Wizard <select id="m-wizard"></select></label>
-      <label>Casting value <select id="m-value"></select></label>
-      <label class="full">Spell <input id="m-spell" type="text" maxlength="60" placeholder="e.g. Blue Fire"></label>
-    </div>
-    <button id="m-cast" class="primary wide">Casting roll</button>
-    <p class="meta" id="m-result"></p>
-    <h3>Dice log</h3>
-    <ol id="dice-log"></ol>
-  </aside>
-  <p id="tool-hint" hidden></p>
   <!-- Aufforderung an mich (Reaktion, Rüstungswurf, Bannen …) bzw. Ergebnis -->
   <section id="prompt-card" hidden>
     <header id="prompt-head"></header>
     <p id="prompt-text"></p>
     <div id="prompt-body"></div>
   </section>
-  <p id="prompt-wait" hidden></p>
   <!-- Firebase lehnt Daten ab (meist fehlende Datenbankregeln) -->
   <div id="sync-error" role="alert" hidden>
     <span id="sync-text"></span>
@@ -136,39 +107,6 @@
     <form id="chat-form"><input id="chat-input" type="text" maxlength="300" placeholder="Message …" autocomplete="off"><button>Send</button></form>
   </aside>
   <aside class="sheet wide-sheet" id="sheet-keys" hidden><h3>Keyboard shortcuts</h3><div id="keys-list"></div></aside>
-
-  <div id="lobby">
-    <div class="card">
-      <h1>TOW Tabletop</h1>
-      <p class="meta">Warhammer: The Old World · 2D tabletop</p>
-      <button id="lobby-create" class="primary wide">New online game</button>
-      <div class="join">
-        <input id="lobby-code" placeholder="Room code" maxlength="8" autocomplete="off" spellcheck="false">
-        <button id="lobby-join">Join</button>
-      </div>
-      <button id="lobby-offline" class="wide">Play offline</button>
-      <p id="lobby-msg" class="meta"></p>
-    </div>
-  </div>
-
-  <dialog id="import-dialog">
-    <h2 id="import-title"></h2>
-    <div id="import-body"></div>
-    <div class="actions">
-      <button id="import-cancel">Cancel</button>
-      <button id="import-confirm" class="primary" hidden>Deploy</button>
-    </div>
-  </dialog>
-
-  <dialog id="load-dialog">
-    <h2>Load saved game</h2>
-    <p id="load-text" class="meta"></p>
-    <div class="actions">
-      <button id="load-cancel">Cancel</button>
-      <button id="load-confirm" class="primary">Load and replace</button>
-    </div>
-  </dialog>
-
   <!-- Untere lange Tischkante: ausgewähltes Objekt (Gelände, Marker, Schablone) -->
   <aside id="obj-panel" class="bottom-panel" hidden>
     <header>
@@ -186,7 +124,6 @@
       <div class="field"><button id="o-delete" class="danger">Remove</button></div>
     </div>
   </aside>
-
   <!-- Untere lange Tischkante: alle Informationen zur ausgewählten Einheit, in Spalten -->
   <aside id="panel" class="bottom-panel" hidden>
     <header>
@@ -261,6 +198,78 @@
       </section>
     </div>
   </aside>
+    </div>
+  <!-- Rechte Seite unten: Würfel, Magie und Würfelprotokoll -->
+  <aside id="dicebar">
+    <h3>Dice</h3>
+    <div class="dice-form">
+      <label>Number of D6 <input id="d-count" type="number" min="1" max="100" value="10"></label>
+      <label>To Hit <select id="d-hit"></select></label>
+      <label>To Wound <select id="d-wound"></select></label>
+      <label>Armour Save <select id="d-save"></select></label>
+      <label>Ward save <select id="d-ward"></select></label>
+      <label class="full">Note <input id="d-note" type="text" maxlength="60" placeholder="e.g. Chosen vs. Knights"></label>
+      <label class="full">Target (opponent rolls saves) <select id="d-target"></select></label>
+    </div>
+    <button id="d-roll" class="primary wide">Roll</button>
+    <div class="dice-quick">
+      <button data-quick="1d6">D6</button><button data-quick="2d6">2D6</button><button
+        data-quick="1d3">D3</button><button data-quick="3d6">3D6</button>
+    </div>
+    <div id="d-result"></div>
+    <h3>Magic</h3>
+    <div class="dice-form">
+      <label>Wizard <select id="m-wizard"></select></label>
+      <label>Casting value <select id="m-value"></select></label>
+      <label class="full">Spell <input id="m-spell" type="text" maxlength="60" placeholder="e.g. Blue Fire"></label>
+    </div>
+    <button id="m-cast" class="primary wide">Casting roll</button>
+    <p class="meta" id="m-result"></p>
+    <h3>Dice log</h3>
+    <ol id="dice-log"></ol>
+  </aside>
+  </aside>
+  <!-- Ein- und Ausblenden der Spalten -->
+  <div id="view-toggles">
+    <button id="toggle-left" title="Show/hide left column ([)">⟨</button>
+    <button id="toggle-all" title="Hide/show all panels (H)">⛶</button>
+    <button id="toggle-right" title="Show/hide right column (])">⟩</button>
+  </div>
+  <p id="tool-hint" hidden></p>
+  <p id="prompt-wait" hidden></p>
+
+  <div id="lobby">
+    <div class="card">
+      <h1>TOW Tabletop</h1>
+      <p class="meta">Warhammer: The Old World · 2D tabletop</p>
+      <button id="lobby-create" class="primary wide">New online game</button>
+      <div class="join">
+        <input id="lobby-code" placeholder="Room code" maxlength="8" autocomplete="off" spellcheck="false">
+        <button id="lobby-join">Join</button>
+      </div>
+      <button id="lobby-offline" class="wide">Play offline</button>
+      <p id="lobby-msg" class="meta"></p>
+    </div>
+  </div>
+
+  <dialog id="import-dialog">
+    <h2 id="import-title"></h2>
+    <div id="import-body"></div>
+    <div class="actions">
+      <button id="import-cancel">Cancel</button>
+      <button id="import-confirm" class="primary" hidden>Deploy</button>
+    </div>
+  </dialog>
+
+  <dialog id="load-dialog">
+    <h2>Load saved game</h2>
+    <p id="load-text" class="meta"></p>
+    <div class="actions">
+      <button id="load-cancel">Cancel</button>
+      <button id="load-confirm" class="primary">Load and replace</button>
+    </div>
+  </dialog>
+
 
 
   <script type="module" src="/src/main.ts"></script>

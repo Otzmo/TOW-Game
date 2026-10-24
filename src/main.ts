@@ -20,6 +20,7 @@ import { UnitPanel } from './ui/panel';
 import { Shortcuts } from './ui/shortcuts';
 import { SyncWarning } from './ui/syncWarning';
 import { Toolbox } from './ui/toolbox';
+import { ViewToggles } from './ui/viewToggles';
 import { Board } from './view/board';
 
 async function start(): Promise<void> {
@@ -98,23 +99,32 @@ async function start(): Promise<void> {
     prompts.requestSaves(seat && seat !== 'spectator' ? seat : store.state.meta.active, targetId, wounds, save, ward, note));
   new DiceLog(store);
   new SyncWarning();
-  new Shortcuts({ board, panel, gameBar, toolbox, history, actions });
+  // Spalten links/rechts ein- und ausblenden; danach den Tisch neu einpassen
+  const views = new ViewToggles(() => showTable());
+  new Shortcuts({ board, panel, gameBar, toolbox, history, actions, views });
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
   // Ganzen Tisch zeigen, auch nach jedem Armeeimport
-  // Freier Bereich zwischen der Spalte links und der Spalte rechts; unten liegt nichts
+  // Freier Bereich zwischen der Spalte links und der Spalte rechts (ausgeblendete Spalten zählen nicht)
   board.viewArea = () => {
     const margin = 34; // Platz für die Zoll-Leisten
+    const left = document.getElementById('sidebar')!;
+    const right = document.getElementById('rightbar')!;
     return {
-      left: document.getElementById('sidebar')!.getBoundingClientRect().right + margin,
+      left: (views.hidden('left') ? 0 : left.getBoundingClientRect().right) + margin,
       top: margin,
-      right: document.getElementById('dicebar')!.getBoundingClientRect().left - margin,
+      right: (views.hidden('right') ? app.screen.width : right.getBoundingClientRect().left) - margin,
       bottom: app.screen.height - margin,
     };
   };
   const showTable = () => board.fitView();
+  // Schriftfaktor für die Oberfläche: 1280 px ≈ 0,93, 1920 px ≈ 1,13
+  const scaleUi = () => document.documentElement.style.setProperty('--ui',
+    String(Math.min(1.2, Math.max(0.85, 0.55 + window.innerWidth * 0.0003)).toFixed(3)));
+  scaleUi();
   let resizeTimer = 0;
   window.addEventListener('resize', () => {
+    scaleUi();
     clearTimeout(resizeTimer);
     resizeTimer = window.setTimeout(showTable, 100);
   });

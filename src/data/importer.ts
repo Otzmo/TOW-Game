@@ -123,19 +123,19 @@ function commandCode(optionId: string): string {
  * aufgestellt ist: Spieler 1 in Reihen ab der Mitte nach unten, Spieler 2 ab der Mitte nach oben.
  */
 function deploy(units: UnitState[], owner: PlayerId, table: { width: number; height: number }): void {
-  const gap = 1.5;
+  const gap = 1;
   let x = 4;
   let row = 0;
   for (const u of units) {
-    // Platz für den Block oder seine Beschriftung, je nachdem was breiter ist
+    // Platz für den Block; schmale Einheiten brauchen 3″ für ihre umbrochene Beschriftung (unitView)
     const block = (Math.min(u.width, u.models) * u.info.baseWidth) / 25.4;
-    const label = (u.info.name.length + 5) * 0.2;
-    const w = Math.max(block, label);
+    const w = Math.max(block, 3);
     if (x + w > table.width - 4) {
       x = 4;
       row++;
     }
-    const y = 3 + row * 6.5;
+    // Beschriftungen stehen hinter den Einheiten, also zur eigenen Tischkante hin
+    const y = 4 + row * 8;
     u.x = x + w / 2;
     u.y = owner === 'p1' ? table.height / 2 + y : table.height / 2 - y;
     u.rotation = owner === 'p1' ? 0 : Math.PI;

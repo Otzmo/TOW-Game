@@ -121,7 +121,13 @@ export class UnitView extends Container {
     if (!skirmish && W >= name.width) {
       name.position.set(0, ranks > 1 ? (u.info.baseDepth / 25.4) * PPI * 0.5 : 0);
     } else {
-      // Zu schmal für den Namen (z. B. Charaktere) oder Plänkler: Beschriftung hinter die Einheit
+      // Zu schmal für den Namen (z. B. Charaktere) oder Plänkler: Beschriftung hinter die Einheit,
+      // höchstens so breit wie die Einheit (mindestens 3″), damit sie nicht in Nachbarn hineinragt
+      if (name.width > W) {
+        name.style.wordWrap = true;
+        name.style.wordWrapWidth = Math.max(W, 3 * PPI);
+        name.style.align = 'center';
+      }
       name.position.set((x0 + x1) / 2, y1 + name.height / 2 + 1);
     }
     // Name nie auf dem Kopf anzeigen

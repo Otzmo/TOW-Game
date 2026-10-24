@@ -6,6 +6,7 @@ import type { GameBar } from './gameBar';
 import type { UnitPanel } from './panel';
 import { openedSheet, openSheet, toggleSheet } from './sheets';
 import type { Toolbox } from './toolbox';
+import type { ViewToggles } from './viewToggles';
 
 const $ = (id: string) => document.getElementById(id)!;
 
@@ -16,6 +17,7 @@ export interface ShortcutTargets {
   toolbox: Toolbox;
   history: History;
   actions: ActionControls;
+  views: ViewToggles;
 }
 
 interface Shortcut {
@@ -47,7 +49,7 @@ export class Shortcuts {
   private readonly list: Shortcut[];
 
   constructor(private t: ShortcutTargets) {
-    const { board, panel, gameBar, toolbox, history, actions } = t;
+    const { board, panel, gameBar, toolbox, history, actions, views } = t;
     const tools = board.tools;
     const nudge = (f: number, r: number) => (e: KeyboardEvent) => {
       const step = e.shiftKey ? 0.1 : 1;
@@ -64,6 +66,9 @@ export class Shortcuts {
       { group: 'General', keys: [['Ctrl', 'O']], desc: 'Load game', match: withCtrl('o'), run: () => toolbox.openLoad() },
       { group: 'General', keys: [['Esc']], desc: 'Stop tool, close sheet, then clear selection',
         match: (e) => e.key === 'Escape', whileTyping: true, run: (e) => this.escape(e) },
+      { group: 'View', keys: [['H']], desc: 'Hide / show all panels', match: letter('h'), run: () => views.toggleAll() },
+      { group: 'View', keys: [['[']], desc: 'Hide / show the left column', match: char('['), run: () => views.toggle('left') },
+      { group: 'View', keys: [[']']], desc: 'Hide / show the right column', match: char(']'), run: () => views.toggle('right') },
       { group: 'General', keys: [['?'], ['F1']], desc: 'Show these shortcuts',
         match: (e) => char('?')(e) || e.key === 'F1', run: () => toggleSheet('keys') },
 
