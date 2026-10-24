@@ -196,6 +196,7 @@ export class GameBar {
     if (panel.contains(document.activeElement) && (document.activeElement as HTMLElement).tagName === 'INPUT') return;
     const { breakBonus, missionVp, setup } = state.meta;
     const score = { p1: victoryPoints(state, 'p1'), p2: victoryPoints(state, 'p2') };
+    $('score-btn').innerHTML = `Victory Points <b>${score.p1.total}</b> : <b>${score.p2.total}</b>`;
     const missions = [missionByKey(setup?.missionTurn), missionByKey(setup?.missionGame)].filter(Boolean).map((m) => m!.name);
     panel.innerHTML = `<h3>Victory Points</h3>` + (['p1', 'p2'] as const).map((p) => {
       const kills = score[p].lines.filter((l) => l.label !== 'Mission points');
@@ -211,6 +212,6 @@ export class GameBar {
         <label>Mission points${missions.length ? ` (${escapeHtml(missions.join(' + '))})` : ''}
           <input type="number" min="0" step="25" data-mission="${p}" value="${missionVp?.[p] ?? 0}"></label>
       </section>`;
-    }).join('') + '<p class="meta note">Score as if the game ended now. Select a unit to see its details.</p>';
+    }).join('') + '<p class="meta note">Score as if the game ended now.</p>';
   }
 }

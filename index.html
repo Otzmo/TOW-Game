@@ -50,6 +50,8 @@
       <button data-sheet="markers">Markers ▸</button>
       <button data-sheet="templates">Templates ▸</button>
       <hr>
+      <button data-sheet="score" id="score-btn" title="Victory Points (S)">Victory Points</button>
+      <button data-sheet="dice" title="Dice and dice log (W)">Dice</button>
       <button data-sheet="log">Log <span id="log-badge" hidden></span></button>
       <hr>
       <button id="save-game">Save</button>
@@ -57,10 +59,13 @@
       <input type="file" id="load-file" accept=".json,application/json" hidden>
       <button data-sheet="keys" title="All keyboard shortcuts (?)">Shortcuts</button>
     </nav>
-    <!-- Siegpunkte: Killpoints und Missionspunkte -->
-    <section id="score-panel"></section>
-    <!-- Würfel und Würfelprotokoll -->
-    <section id="dicebar">
+  </aside>
+  <!-- Rechte Spalte: nur Popups (Einheit, Objekt, Fenster, Aufforderungen, Hinweise); leer = ausgeblendet -->
+  <aside id="rightbar">
+    <div id="right-top">
+  <!-- Siegpunkte (Killpoints und Missionspunkte) und Würfel als Fenster -->
+    <aside class="sheet" id="sheet-score" hidden><div id="score-panel"></div></aside>
+    <aside class="sheet" id="sheet-dice" hidden><div id="dicebar">
       <h3>Dice</h3>
       <div class="dice-form">
         <label>Number of D6 <input id="d-count" type="number" min="1" max="100" value="10"></label>
@@ -79,11 +84,7 @@
       <div id="d-result"></div>
       <h3>Dice log</h3>
       <ol id="dice-log"></ol>
-    </section>
-  </aside>
-  <!-- Rechte Spalte: nur Popups (Einheit, Objekt, Fenster, Aufforderungen, Hinweise); leer = ausgeblendet -->
-  <aside id="rightbar">
-    <div id="right-top">
+    </div></aside>
   <!-- Aufforderung an mich (Reaktion, Rüstungswurf, Bannen …) bzw. Ergebnis -->
   <section id="prompt-card" hidden>
     <header id="prompt-head"></header>

@@ -451,14 +451,12 @@ body.hide-left #sidebar, body.hide-right #rightbar { display: none; }
 /* Siegpunkte und Würfel in der linken Spalte */
 #score-panel, #dicebar {
   position: static; top: auto; right: auto; bottom: auto; width: auto; height: auto; flex: none; min-height: 0;
-  overflow: visible; padding: 10px 0 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; z-index: auto;
+  overflow: visible; padding: 0; border: 0; border-radius: 0; background: transparent; z-index: auto;
 }
-#sidebar #score-panel h3:first-child, #sidebar #dicebar > h3:first-child { margin-top: 0; }
+#score-panel h3:first-child, #dicebar > h3:first-child { margin-top: 0; padding-right: 28px; }
 #dice-log { min-height: 0; max-height: 40vh; flex: none; overflow-y: auto; }
-#sidebar .dice-form { margin-bottom: 8px; }
-#sidebar .dice-form label { font-size: calc(12px * var(--ui)); }
-#sidebar button.wide { text-align: center; }
-#sidebar .dice-quick button { text-align: center; padding: 6px 0; }
+#dicebar .dice-form { margin-bottom: 8px; }
+#dicebar .dice-quick button { text-align: center; padding: 6px 0; }
 
 /* Einheiten- und Objektleiste: eine Spalte untereinander */
 .bottom-panel header { display: flex; flex-wrap: wrap; align-items: center; padding-right: 24px; }
@@ -532,7 +530,7 @@ body.battle #toolbox [data-sheet="terrain"] { display: none; }
 /* In der Aufstellung nur, was dafür gebraucht wird: Maßband, Sichtlinie, Marker, Schablonen, Siegpunkte und Würfel erst danach */
 body:not(.battle) #toolbox [data-tool="measure"], body:not(.battle) #toolbox [data-tool="sight"],
 body:not(.battle) #toolbox [data-sheet="markers"], body:not(.battle) #toolbox [data-sheet="templates"],
-body:not(.battle) #score-panel, body:not(.battle) #dicebar { display: none; }
+body:not(.battle) #toolbox [data-sheet="score"], body:not(.battle) #toolbox [data-sheet="dice"] { display: none; }
 #lobby { z-index: 20; }
 
 /* Spalten ein- und ausblenden: kleine Knöpfe oben über dem Tisch */

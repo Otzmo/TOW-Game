@@ -84,13 +84,14 @@ export class Shortcuts {
       { group: 'Tools', keys: [['A']], desc: 'Battlefield & setup (setup only)', match: letter('a'), run: () => { if (!inBattle()) toggleSheet('battlefield'); } },
 
       // Fenster und Spiel
-      { group: 'Game', keys: [['W']], desc: 'Dice (left, after setup): enter number', match: letter('w'), run: () => {
+      { group: 'Game', keys: [['W']], desc: 'Dice (after setup): open and enter number', match: letter('w'), run: () => {
         if (!inBattle()) return;
+        openSheet('dice');
         const input = $('d-count') as HTMLInputElement;
         input.focus();
         input.select();
       } },
-      { group: 'Game', keys: [['Enter']], desc: 'In the dice area: roll',
+      { group: 'Game', keys: [['Enter']], desc: 'In the dice popup: roll',
         match: (e) => e.key === 'Enter' && plain(e) && !!targetEl(e)?.closest('#dicebar'),
         whileTyping: true, run: () => ($('d-roll') as HTMLButtonElement).click() },
       { group: 'Game', keys: [['J']], desc: 'Declare charge (then click the target)', match: letter('j'), run: () => actions.declareCharge() },
@@ -99,9 +100,8 @@ export class Shortcuts {
         openSheet('log');
         ($('chat-input') as HTMLInputElement).focus();
       } },
-      { group: 'Game', keys: [['S']], desc: 'Close sheet and selection', match: letter('s'), run: () => {
-        openSheet(null);
-        board.select(null);
+      { group: 'Game', keys: [['S']], desc: 'Victory Points (after setup)', match: letter('s'), run: () => {
+        if (inBattle()) toggleSheet('score');
       } },
       { group: 'Game', keys: [['N']], desc: 'Next sub-phase', match: letter('n'), run: () => gameBar.requestNext() },
       { group: 'Game', keys: [['Shift', 'N']], desc: 'End phase (after the Combat phase: end turn)', match: letter('n', true), run: () => gameBar.requestEndPhase() },
