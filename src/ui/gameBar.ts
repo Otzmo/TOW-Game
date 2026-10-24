@@ -1,4 +1,5 @@
 import type { History } from '../model/history';
+import { currentPhase, nextPhase, PHASES, phaseLabel } from '../model/phases';
 import { armyPoints, victoryPoints } from '../model/score';
 import { isSkirmish, unitLayout, type Store } from '../model/store';
 import type { LogKind, PlayerId } from '../model/types';
@@ -18,8 +19,8 @@ export class GameBar {
   private me: PlayerId | 'spectator' | null = null;
 
   constructor(private store: Store, history: History, private log: (kind: LogKind, text: string) => void) {
-    $('g-end').onclick = () => this.requestEndTurn();
-    $('g-confirm-yes').onclick = () => this.endTurn();
+    $('g-end').onclick = () => this.requestEndPhase();
+    $('g-confirm-yes').onclick = () => this.endPhase();
     $('g-confirm-no').onclick = () => { $('g-confirm').hidden = true; };
     $('g-undo').onclick = () => history.undo();
     $('g-redo').onclick = () => history.redo();
@@ -47,14 +48,20 @@ export class GameBar {
     this.render();
   }
 
-  /** Vor dem Zugende prüfen, ob Plänkler des aktiven Spielers mehr als 1″ auseinanderstehen. */
-  requestEndTurn(): void {
+  /**
+   * Phase beenden. Am Ende der Bewegungsphase (und der Aufstellung) wird geprüft, ob Plänkler
+   * mehr als 1″ vom Rest ihrer Einheit entfernt stehen.
+   */
+  requestEndPhase(): void {
     const { units, meta } = this.store.state;
-    const broken = Object.values(units)
-      .filter((u) => u.owner === meta.active && isSkirmish(u) && unitLayout(u, units).stray.size > 0)
-      .map((u) => u.info.name);
+    const phase = currentPhase(meta);
+    const broken = phase === 'movement' || phase === 'setup'
+      ? Object.values(units)
+        .filter((u) => (phase === 'setup' || u.owner === meta.active) && isSkirmish(u) && unitLayout(u, units).stray.size > 0)
+        .map((u) => u.info.name)
+      : [];
     if (!broken.length) {
-      this.endTurn();
+      this.endPhase();
       return;
     }
     $('g-confirm-text').textContent =
@@ -62,21 +69,34 @@ export class GameBar {
     $('g-confirm').hidden = false;
   }
 
-  private endTurn(): void {
+  private endPhase(): void {
     $('g-confirm').hidden = true;
-    const { round, active } = this.store.state.meta;
-    // Nach Spieler 2 beginnt die nächste Runde
-    const next = { active: other(active), round: active === 'p2' ? round + 1 : round };
+    const { meta } = this.store.state;
+    // Werte vor dem Wechsel merken – setMeta ändert dasselbe Objekt
+    const before = currentPhase(meta);
+    const prev = meta.active;
+    const next = nextPhase(meta);
     this.store.setMeta(next);
-    this.log('turn', `${playerName(active)} beendet den Zug · Runde ${next.round}, ${playerName(next.active)} am Zug`);
+    const turnChange = before === 'combat' || before === 'setup';
+    this.log('turn', turnChange
+      ? `${before === 'setup' ? 'Aufstellung beendet' : `${playerName(prev)} beendet den Zug`} · Runde ${next.round}, ${playerName(next.active)}: ${phaseLabel(next.phase!)}`
+      : `${playerName(prev)}: ${phaseLabel(next.phase!)}`);
   }
 
   private render(): void {
     const { state } = this.store;
     const { round, active, breakBonus } = state.meta;
-    $('g-round').innerHTML = `Runde <b>${round}</b> · <span class="dot ${active}"></span>${playerName(active)} am Zug`;
-    // Online darf nur der Spieler am Zug seinen Zug beenden
-    ($('g-end') as HTMLButtonElement).disabled = this.me !== null && this.me !== active;
+    const phase = currentPhase(state.meta);
+    $('g-round').innerHTML = phase === 'setup'
+      ? '<b>Aufstellung</b> · vor Runde 1'
+      : `Runde <b>${round}</b> · <span class="dot ${active}"></span>${playerName(active)} am Zug`;
+    // Phasenleiste: aktuelle Phase hervorgehoben
+    $('g-phases').innerHTML = PHASES.filter((p) => (phase === 'setup') === (p.key === 'setup'))
+      .map((p) => `<li class="${p.key === phase ? 'on' : ''}" title="${p.hint}">${p.name}</li>`).join('');
+    const isLast = phase === 'combat';
+    $('g-end').textContent = phase === 'setup' ? 'Aufstellung beenden' : isLast ? 'Phase beenden · Zug abgeben' : 'Phase beenden';
+    // Online darf nur der Spieler am Zug die Phase beenden (Aufstellung: beide)
+    ($('g-end') as HTMLButtonElement).disabled = this.me === 'spectator' || (phase !== 'setup' && this.me !== null && this.me !== active);
 
     const score = { p1: victoryPoints(state, 'p1'), p2: victoryPoints(state, 'p2') };
     $('g-score-toggle').innerHTML = `Siegpunkte <b>${score.p1.total}</b> : <b>${score.p2.total}</b>`;

@@ -11,6 +11,7 @@ import { GameBar } from './ui/gameBar';
 import { ImportDialog } from './ui/importDialog';
 import { Lobby } from './ui/lobby';
 import { LogPanel } from './ui/logPanel';
+import { MoveGate } from './ui/moveGate';
 import { ObjectPanel } from './ui/objectPanel';
 import { UnitPanel } from './ui/panel';
 import { Shortcuts } from './ui/shortcuts';
@@ -61,9 +62,14 @@ async function start(): Promise<void> {
     onAction: (id, text) => {
       panel.setLastAction(id, text);
       const name = store.state.units[id]?.info.name ?? '';
-      addLog({ kind: 'action', text: `${name} ${text}` });
+      const note = gate.note(id);
+      addLog({ kind: 'action', text: `${name} ${text}${note ? ` (${note})` : ''}` });
     },
   });
+  // Phasenregeln: Bewegen nur in der passenden Phase
+  const gate = new MoveGate(store, (text) => addLog({ kind: 'action', text }));
+  board.canMove = (id) => gate.allow(id);
+  panel.canMove = (id) => gate.allow(id);
   const gameBar = new GameBar(store, history, (kind, text) => addLog({ kind, text }));
   const toolbox = new Toolbox(store, history, board.tools, (text) => addLog({ kind: 'action', text }));
   new DicePanel((entry) => addLog(entry));
@@ -114,6 +120,7 @@ async function start(): Promise<void> {
   // Online: jeder Spieler lädt nur seine eigene Armee; Zuschauer ändern nichts
   new Lobby(store, (me) => {
     seat = me;
+    gate.seat = me;
     document.querySelectorAll<HTMLElement>('[data-import]').forEach((btn) => {
       btn.hidden = btn.dataset.import !== me;
     });

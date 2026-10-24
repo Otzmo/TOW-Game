@@ -86,7 +86,7 @@ export class Shortcuts {
         ($('chat-input') as HTMLInputElement).focus();
       } },
       { group: 'Spiel', keys: [['S']], desc: 'Siegpunkte', match: letter('s'), run: () => toggleSheet('score') },
-      { group: 'Spiel', keys: [['N']], desc: 'Zug beenden', match: letter('n'), run: () => gameBar.requestEndTurn() },
+      { group: 'Spiel', keys: [['N']], desc: 'Phase beenden (nach dem Nahkampf: Zug abgeben)', match: letter('n'), run: () => gameBar.requestEndPhase() },
       { group: 'Spiel', keys: [['Tab'], ['Umschalt', 'Tab']], desc: 'Nächste / vorige Einheit auswählen',
         match: (e) => e.key === 'Tab' && plain(e), run: (e) => board.selectNext(e.shiftKey ? -1 : 1) },
 

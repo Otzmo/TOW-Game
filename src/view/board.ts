@@ -70,6 +70,8 @@ export class Board {
   /** Bewegungs- und Angriffsreichweiten der ausgewählten Einheit anzeigen */
   showRanges = false;
   private viewOnly = false;
+  /** Phasenregeln: darf diese Einheit jetzt bewegt werden? (zeigt sonst selbst einen Hinweis) */
+  canMove: (unitId: string) => boolean = () => true;
   private readonly guide = new Graphics();
   private readonly moveLabel = new Text({
     text: '',
@@ -150,7 +152,7 @@ export class Board {
     const units = this.store.state.units;
     const c = units[charId];
     const host = c?.joinedTo ? units[c.joinedTo] : undefined;
-    if (!c || !host) return;
+    if (!c || !host || !this.canMove(charId)) return;
     const { h } = unitFootprint(host, units);
     const depth = c.info.baseDepth / 25.4;
     const p = this.unitPoint(host, 0, -h / 2 - depth / 2 - 0.5);
@@ -289,7 +291,7 @@ export class Board {
       return;
     }
     const u = this.movableUnit();
-    if (!u) return;
+    if (!u || !this.canMove(u.id)) return;
     this.history.record();
     const p = this.unitPoint(u, right, -forward);
     this.store.updateUnit(u.id, { x: p.x, y: p.y });
@@ -308,7 +310,7 @@ export class Board {
       return;
     }
     const u = this.movableUnit();
-    if (!u) return;
+    if (!u || !this.canMove(u.id)) return;
     this.history.record();
     this.store.updateUnit(u.id, { rotation: u.rotation + rad });
     this.events.onAction(u.id, `${Math.abs(deg)}° ${deg > 0 ? 'rechts' : 'links'} gedreht`);
@@ -406,7 +408,8 @@ export class Board {
   private startUnitDrag(unitId: string, type: UnitDragType, e: FederatedPointerEvent, pivotSide = 1,
     selectId = unitId): void {
     e.stopPropagation();
-    if (this.viewOnly) {
+    // Drehen und Schwenken sofort prüfen; Ziehen erst, wenn sich die Maus wirklich bewegt (Klick = nur ansehen)
+    if (this.viewOnly || (type !== 'move' && !this.canMove(unitId))) {
       if (this.selectedId !== selectId) this.select(selectId);
       return;
     }
@@ -471,7 +474,13 @@ export class Board {
     const d = this.drag;
     if (!d) return;
     if (!d.moved && Math.hypot(e.global.x - d.gx, e.global.y - d.gy) < DRAG_THRESHOLD) return;
+    const starting = !d.moved;
     d.moved = true;
+    if (starting && (d.type === 'move' || d.type === 'model') && !this.canMove(d.unitId)) {
+      this.drag = null;
+      this.history.dropIfUnchanged();
+      return;
+    }
 
     if (d.type === 'pan') {
       this.world.position.set(d.wx + e.global.x - d.gx, d.wy + e.global.y - d.gy);

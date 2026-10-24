@@ -12,7 +12,8 @@
   <aside id="sidebar">
     <div id="gamebar">
       <span id="g-round"></span>
-      <button id="g-end">Zug beenden</button>
+      <ol id="g-phases"></ol>
+      <button id="g-end" class="primary">Phase beenden</button>
       <button id="g-undo" title="Rückgängig (Strg+Z)" disabled>↶ Rückgängig</button>
       <button id="g-redo" title="Wiederholen (Strg+Y)" disabled>↷ Wiederholen</button>
       <button id="g-score-toggle">Siegpunkte</button>
@@ -56,6 +57,11 @@
     </nav>
   </aside>
   <p id="tool-hint" hidden></p>
+  <div id="phase-notice" hidden>
+    <span id="notice-text"></span>
+    <button id="notice-allow">Ausnahme erlauben (Sonderregel)</button>
+    <button id="notice-close" class="close" aria-label="Schließen">×</button>
+  </div>
 
   <!-- Seitenfenster neben den Werkzeugen; immer nur eins offen -->
   <aside class="sheet" id="sheet-score" hidden></aside>

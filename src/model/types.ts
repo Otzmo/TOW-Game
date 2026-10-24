@@ -89,6 +89,8 @@ export interface GameMeta {
   breakBonus: Partial<Record<PlayerId, boolean>>;
   /** Aufstellungszonen, siehe SCENARIOS */
   scenario?: string;
+  /** Aktuelle Phase, siehe phases.ts; fehlt = Aufstellung */
+  phase?: 'setup' | 'strategy' | 'movement' | 'shooting' | 'combat';
 }
 
 /** Gelände, Marker und Schablonen auf dem Tisch. */

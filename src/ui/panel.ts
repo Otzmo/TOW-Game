@@ -28,6 +28,8 @@ export interface PanelActions {
 /** Seitenpanel mit allen Angaben zur ausgewählten Einheit. */
 export class UnitPanel {
   private unitId: string | null = null;
+  /** Phasenregeln: Umformieren zählt als Bewegung */
+  canMove: (unitId: string) => boolean = () => true;
   private lastAction = new Map<string, string>();
 
   constructor(private store: Store, private history: History, actions: PanelActions) {
@@ -103,6 +105,7 @@ export class UnitPanel {
     // Plänkler haben keine Glieder; die Breite gilt dort für "In Reihen ordnen"
     const cols = isSkirmish(u) ? Math.min(u.width, u.models) : unitLayout(u, units).cols;
     const max = isSkirmish(u) ? u.models : unitLayout(u, units).slots.length;
+    if ((act === 'w-' || act === 'w+') && !this.canMove(u.id)) return;
     if (act === 'w-') this.change({ width: Math.max(1, cols - 1) });
     if (act === 'w+') this.change({ width: Math.min(max, cols + 1) });
     if (act === 'm-') this.change({ models: Math.max(1, u.models - 1) });
@@ -112,7 +115,7 @@ export class UnitPanel {
   /** Plänkler in Reihen mit 0,5″ Abstand aufstellen (Breite wie eingestellt). */
   arrangeInRanks(): void {
     const u = this.unit();
-    if (!u || !isSkirmish(u)) return;
+    if (!u || !isSkirmish(u) || !this.canMove(u.id)) return;
     this.change({ positions: spreadPositions(u, this.store.state.units) });
     this.setLastAction(u.id, 'in Reihen mit 0,5″ Abstand geordnet');
   }
@@ -133,7 +136,7 @@ export class UnitPanel {
   setFormation(form: 'close' | 'skirmish'): void {
     const units = this.store.state.units;
     const u = this.unit();
-    if (!u || (u.formation ?? 'close') === form) return;
+    if (!u || (u.formation ?? 'close') === form || !this.canMove(u.id)) return;
     this.history.record();
     if (form === 'skirmish') {
       // Geschlossene Aufstellung locker auseinanderziehen
