@@ -171,10 +171,9 @@ export class GameBar {
 
     // Nach der Aufstellung: Armee laden, Gelände und Battlefield ausblenden (siehe CSS)
     document.body.classList.toggle('battle', phase !== 'setup');
-    // Namen nach Rolle (Attacker/Defender), sobald der Roll-off entschieden ist
+    // Knöpfe „Load army“: nur der Farbpunkt unterscheidet sie, der Spielername steht im Tooltip
     document.querySelectorAll<HTMLButtonElement>('[data-import]').forEach((btn) => {
-      const p = btn.dataset.import as PlayerId;
-      btn.innerHTML = `<span class="dot ${p}"></span>Load army · ${playerName(p)}`;
+      btn.title = `Load army for ${playerName(btn.dataset.import as PlayerId)}`;
     });
     if (this.me) $('room-me').textContent = this.me === 'spectator' ? 'You are spectating' : `You: ${playerName(this.me)}`;
     this.renderScore();
