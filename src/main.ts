@@ -15,7 +15,6 @@ import { ObjectPanel } from './ui/objectPanel';
 import { UnitPanel } from './ui/panel';
 import { Toolbox } from './ui/toolbox';
 import { Board } from './view/board';
-import { PPI } from './view/theme';
 
 async function start(): Promise<void> {
   const app = new Application();
@@ -71,24 +70,22 @@ async function start(): Promise<void> {
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
   // Ganzen Tisch zeigen, auch nach jedem Armeeimport
-  const { width, height } = state.table;
-  const showTable = () => {
-    // Tisch zwischen Hilfsmittel-Spalte links und Einheitenleiste unten (Maße aus dem CSS)
+  // Freier Bereich zwischen Hilfsmittel-Spalte links und Einheitenleiste unten (Maße aus dem CSS)
+  board.viewArea = () => {
     const css = getComputedStyle(document.documentElement);
     const px = (name: string) => {
       const v = css.getPropertyValue(name).trim();
       return v.endsWith('vh') ? (parseFloat(v) * window.innerHeight) / 100 : parseFloat(v) || 0;
     };
-    const left = px('--side');
-    const bottom = px('--bottom') + 12;
     const margin = 30; // Platz für die Zoll-Leisten
-    const areaW = app.screen.width - left;
-    const areaH = app.screen.height - bottom;
-    const fit = Math.min((areaW - 2 * margin) / (width * PPI), (areaH - 2 * margin) / (height * PPI));
-    // Tisch liegt unten links an Hilfsmittel-Spalte und Einheitenleiste an
-    board.world.scale.set(fit);
-    board.world.position.set(left + margin, areaH - margin - height * PPI * fit);
+    return {
+      left: px('--side') + margin,
+      top: margin,
+      right: app.screen.width - margin,
+      bottom: app.screen.height - px('--bottom') - 12 - margin,
+    };
   };
+  const showTable = () => board.fitView();
   let resizeTimer = 0;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);

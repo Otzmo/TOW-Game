@@ -253,13 +253,40 @@ export class Board {
     return `greift ${best.target.info.name} in ${best.side} an`;
   }
 
-  /** Kamera auf einen Punkt (in Zoll) zentrieren. */
-  focus(x: number, y: number, scale: number, screenFraction = 0.5): void {
-    this.world.scale.set(scale);
-    this.world.position.set(
-      this.app.screen.width * screenFraction - x * PPI * scale,
-      this.app.screen.height / 2 - y * PPI * scale,
-    );
+  /**
+   * Freier Bereich für den Tisch in Bildschirmpixeln (zwischen Hilfsmittel-Spalte links und
+   * Einheitenleiste unten, abzüglich Platz für die Zoll-Leisten). Kommt aus main.ts.
+   */
+  viewArea: () => { left: number; top: number; right: number; bottom: number } = () =>
+    ({ left: 0, top: 0, right: this.app.screen.width, bottom: this.app.screen.height });
+
+  /** Kleinster Zoom: der ganze Tisch passt in den freien Bereich. */
+  private minScale(): number {
+    const a = this.viewArea();
+    const { width, height } = this.store.state.table;
+    return Math.min((a.right - a.left) / (width * PPI), (a.bottom - a.top) / (height * PPI));
+  }
+
+  /** Ganzen Tisch zeigen, unten links an Spalte und Leiste angelegt. */
+  fitView(): void {
+    this.world.scale.set(this.minScale());
+    this.clampView();
+  }
+
+  /**
+   * Tisch bleibt an Spalte und Leiste: Passt er in eine Richtung ganz hinein, liegt er links bzw. unten an;
+   * ist er größer (hineingezoomt), lässt er sich nur so weit verschieben, dass keine Lücke zu den Leisten entsteht.
+   */
+  private clampView(): void {
+    const a = this.viewArea();
+    const s = Math.max(this.world.scale.x, this.minScale());
+    this.world.scale.set(s);
+    const { width, height } = this.store.state.table;
+    const w = width * PPI * s;
+    const h = height * PPI * s;
+    const x = w <= a.right - a.left ? a.left : Math.min(a.left, Math.max(a.right - w, this.world.x));
+    const y = h <= a.bottom - a.top ? a.bottom - h : Math.min(a.top, Math.max(a.bottom - h, this.world.y));
+    this.world.position.set(x, y);
   }
 
   private syncUnit(u: UnitState): void {
@@ -369,6 +396,7 @@ export class Board {
 
     if (d.type === 'pan') {
       this.world.position.set(d.wx + e.global.x - d.gx, d.wy + e.global.y - d.gy);
+      this.clampView();
       return;
     }
     const u = this.store.state.units[d.unitId];
@@ -552,7 +580,7 @@ export class Board {
   private onWheel(e: WheelEvent): void {
     e.preventDefault();
     const f = e.deltaY < 0 ? 1.12 : 1 / 1.12;
-    const ns = Math.min(8, Math.max(0.3, this.world.scale.x * f));
+    const ns = Math.min(8, Math.max(this.minScale(), this.world.scale.x * f));
     const r = this.app.canvas.getBoundingClientRect();
     const mx = e.clientX - r.left;
     const my = e.clientY - r.top;
@@ -560,6 +588,7 @@ export class Board {
     const wy = (my - this.world.y) / this.world.scale.y;
     this.world.scale.set(ns);
     this.world.position.set(mx - wx * ns, my - wy * ns);
+    this.clampView();
   }
 
   /** Tischpunkt (Zoll) in Einheitskoordinaten umrechnen (Front = −y). */
