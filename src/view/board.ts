@@ -80,7 +80,7 @@ export class Board {
   private readonly guide = new Graphics();
   private readonly moveLabel = new Text({
     text: '',
-    style: { fontFamily: 'system-ui', fontSize: 14, fontWeight: '600', fill: 0xffffff, stroke: { color: 0x000000, width: 4 } },
+    style: { fontFamily: 'system-ui', fontSize: 18, fontWeight: '700', fill: 0xffffff, stroke: { color: 0x000000, width: 4 } },
     resolution: 2,
   });
   private readonly views = new Map<string, UnitView>();
@@ -241,7 +241,7 @@ export class Board {
       const result = c.status === 'rolled' ? ` · ${c.range}″ ${c.success ? 'succeeds' : 'fails'}` : '';
       const label = new Text({
         text: `⚔ Charge · ${status}${result}`,
-        style: { fontFamily: 'system-ui', fontSize: 9, fontWeight: '700', fill: color, stroke: { color: 0x000000, width: 3 } },
+        style: { fontFamily: 'system-ui', fontSize: 13, fontWeight: '700', fill: color, stroke: { color: 0x000000, width: 3.5 } },
         resolution: 6,
       });
       label.anchor.set(0.5);
@@ -276,7 +276,7 @@ export class Board {
       const D = d * PPI;
       g.roundRect((-w / 2) * PPI - D, (-h / 2) * PPI - D, w * PPI + 2 * D, h * PPI + 2 * D, D)
         .stroke({ width: 1.5, color, alpha: 0.7 });
-      const t = new Text({ text, style: { fontFamily: 'system-ui', fontSize: 8, fill: color, stroke: { color: 0x000000, width: 2 } }, resolution: 6 });
+      const t = new Text({ text, style: { fontFamily: 'system-ui', fontSize: 12, fontWeight: '600', fill: color, stroke: { color: 0x000000, width: 3 } }, resolution: 6 });
       t.anchor.set(0.5, 1);
       t.position.set(0, (-h / 2) * PPI - D - 1);
       c.addChild(t);

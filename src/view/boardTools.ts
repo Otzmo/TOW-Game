@@ -39,7 +39,7 @@ export class BoardTools {
   private readonly toolGraphics = new Graphics();
   private readonly toolLabel = new Text({
     text: '',
-    style: { fontFamily: 'system-ui', fontSize: 14, fontWeight: '600', fill: 0xffffff, stroke: { color: 0x000000, width: 4 } },
+    style: { fontFamily: 'system-ui', fontSize: 18, fontWeight: '700', fill: 0xffffff, stroke: { color: 0x000000, width: 4 } },
     resolution: 2,
   });
   private readonly views = new Map<string, ObjectView>();
@@ -259,7 +259,7 @@ export class BoardTools {
     const g = new Graphics();
     this.zoneLayer.addChild(g);
     const label = (text: string, p: Point, color: number) => {
-      const t = new Text({ text, style: { fontFamily: 'system-ui', fontSize: 14, fontWeight: '700', fill: color, stroke: { color: 0x000000, width: 3 } }, resolution: 4 });
+      const t = new Text({ text, style: { fontFamily: 'system-ui', fontSize: 20, fontWeight: '700', fill: color, stroke: { color: 0x000000, width: 4 } }, resolution: 4 });
       t.anchor.set(0.5);
       t.alpha = 0.85;
       t.position.set(p.x * PPI, p.y * PPI);

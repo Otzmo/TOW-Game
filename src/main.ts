@@ -104,7 +104,7 @@ async function start(): Promise<void> {
   // Ganzen Tisch zeigen, auch nach jedem Armeeimport
   // Freier Bereich zwischen der Spalte links und der Spalte rechts; unten liegt nichts
   board.viewArea = () => {
-    const margin = 26; // Platz für die Zoll-Leisten
+    const margin = 34; // Platz für die Zoll-Leisten
     return {
       left: document.getElementById('sidebar')!.getBoundingClientRect().right + margin,
       top: margin,

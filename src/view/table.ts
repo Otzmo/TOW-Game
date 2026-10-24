@@ -43,18 +43,18 @@ function createRulers(widthIn: number, heightIn: number): Container {
   layer.addChild(ticks);
 
   const label = (text: string, x: number, y: number, ax: number, ay: number) => {
-    const t = new Text({ text, style: { fontFamily: 'system-ui', fontSize: 8, fill: RULER_COLOR }, resolution: 6 });
+    const t = new Text({ text, style: { fontFamily: 'system-ui', fontSize: 13, fontWeight: '600', fill: RULER_COLOR }, resolution: 6 });
     t.anchor.set(ax, ay);
     t.position.set(x, y);
     layer.addChild(t);
   };
   for (let i = 0; i <= widthIn; i += 6) {
-    label(`${i}″`, i * PPI, -11, 0.5, 1);
-    label(`${i}″`, i * PPI, H + 11, 0.5, 0);
+    label(`${i}″`, i * PPI, -12, 0.5, 1);
+    label(`${i}″`, i * PPI, H + 12, 0.5, 0);
   }
   for (let i = 0; i <= heightIn; i += 6) {
-    label(`${i}″`, -11, i * PPI, 1, 0.5);
-    label(`${i}″`, W + 11, i * PPI, 0, 0.5);
+    label(`${i}″`, -12, i * PPI, 1, 0.5);
+    label(`${i}″`, W + 12, i * PPI, 0, 0.5);
   }
   return layer;
 }

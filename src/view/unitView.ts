@@ -114,7 +114,7 @@ export class UnitView extends Container {
       : u.status === 'fleeing' ? ' · FLEEING' : '';
     const name = new Text({
       text: `${u.info.name} (${u.models})${status}`,
-      style: { fontFamily: 'system-ui', fontSize: 7, fontWeight: '600', fill: 0xffffff, stroke: { color: 0x000000, width: 2.5 } },
+      style: { fontFamily: 'system-ui', fontSize: 11, fontWeight: '700', fill: 0xffffff, stroke: { color: 0x000000, width: 3.5 } },
       resolution: 8,
     });
     name.anchor.set(0.5);

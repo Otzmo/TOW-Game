@@ -10,7 +10,7 @@ export class ObjectView extends Container {
   readonly body = new Graphics();
   readonly caption = new Text({
     text: '',
-    style: { fontFamily: 'system-ui', fontSize: 8, fontWeight: '600', fill: 0xffffff, stroke: { color: 0x000000, width: 2 } },
+    style: { fontFamily: 'system-ui', fontSize: 12, fontWeight: '700', fill: 0xffffff, stroke: { color: 0x000000, width: 3 } },
     resolution: 8,
   });
   /** Drehgriff */
@@ -60,9 +60,9 @@ export class ObjectView extends Container {
       this.caption.position.set(0, 0);
     } else {
       this.caption.text = t.kind === 'marker' ? `${t.icon ?? ''} ${o.label}` : o.label || (t.kind === 'terrain' ? t.name : '');
-      style.fontSize = 8;
+      style.fontSize = 12;
       style.fill = 0xffffff;
-      style.stroke = { color: 0x000000, width: 2 };
+      style.stroke = { color: 0x000000, width: 3 };
       this.caption.position.set(t.kind === 'marker' ? W / 2 + this.caption.width / 2 + 3 : 0, 0);
     }
     this.caption.rotation = -o.rotation;
