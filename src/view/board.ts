@@ -4,6 +4,7 @@ import { frontCenter, REACTION_NAMES } from '../model/flow';
 import {
   isJoined, isNonUnitChange, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
 } from '../model/store';
+import { keepApart, type Pose } from '../model/collision';
 import type { History } from '../model/history';
 import { currentPhase, currentSub, SUB_CHARGE_MOVES } from '../model/phases';
 import type { Point, UnitState } from '../model/types';
@@ -328,6 +329,17 @@ export class Board {
     return `charges ${best.target.info.name} in the ${best.side}`;
   }
 
+  /** Einheiten stehen nie übereinander: an Gegner anlegen oder zurück an den Start (siehe collision.ts). */
+  private separate(unitId: string, start: Pose): string | null {
+    const units = this.store.state.units;
+    const u = units[unitId];
+    if (!u) return null;
+    const fix = keepApart(u, units, start);
+    if (!fix) return null;
+    this.store.updateUnit(unitId, fix.pose);
+    return fix.note;
+  }
+
   /**
    * Freier Bereich für den Tisch in Bildschirmpixeln (zwischen der Spalte links und der Spalte rechts,
    * abzüglich Platz für die Zoll-Leisten). Kommt aus main.ts.
@@ -368,8 +380,9 @@ export class Board {
     this.history.record();
     const p = this.unitPoint(u, right, -forward);
     this.store.updateUnit(u.id, { x: p.x, y: p.y });
+    const apart = this.separate(u.id, { x: u.x, y: u.y, rotation: u.rotation });
     const dist = Math.hypot(forward, right);
-    this.events.onAction(u.id, `${dist.toFixed(1)}″ ${forward > 0 ? 'forward' : forward < 0 ? 'backward' : right > 0 ? 'right' : 'left'}`);
+    this.events.onAction(u.id, `${dist.toFixed(1)}″ ${forward > 0 ? 'forward' : forward < 0 ? 'backward' : right > 0 ? 'right' : 'left'}${apart ? ` · ${apart}` : ''}`);
   }
 
   /** Auswahl um ihre Mitte drehen (Grad, im Uhrzeigersinn positiv). */
@@ -385,8 +398,10 @@ export class Board {
     const u = this.movableUnit();
     if (!u || !this.canMove(u.id)) return;
     this.history.record();
+    const start = { x: u.x, y: u.y, rotation: u.rotation };
     this.store.updateUnit(u.id, { rotation: u.rotation + rad });
-    this.events.onAction(u.id, `${Math.abs(deg)}° ${deg > 0 ? 'rechts' : 'links'} gedreht`);
+    const apart = this.separate(u.id, start);
+    this.events.onAction(u.id, `turned ${Math.abs(deg)}° ${deg > 0 ? 'right' : 'left'}${apart ? ` · ${apart}` : ''}`);
   }
 
   /** Nächste bzw. vorige Einheit auswählen (bevorzugt die des Spielers am Zug). */
@@ -640,7 +655,8 @@ export class Board {
     }
     const text = this.describe(d);
     const charge = d.type === 'move' ? this.chargeSnap(d.unitId) : null;
-    const all = [text, charge].filter(Boolean).join(' · ');
+    const apart = this.separate(d.unitId, { x: d.sx, y: d.sy, rotation: d.srot });
+    const all = [text, charge, apart].filter(Boolean).join(' · ');
     if (all) this.events.onAction(d.unitId, all);
   }
 
