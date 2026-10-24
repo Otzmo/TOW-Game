@@ -2,6 +2,7 @@ import { Application } from 'pixi.js';
 import './style.css';
 import { importBbList } from './data/importer';
 import { History } from './model/history';
+import { moveToNoMansLand } from './model/noMansLand';
 import { defaultTerrain } from './model/objects';
 import { Store } from './model/store';
 import type { GameState, LogEntry } from './model/types';
@@ -140,6 +141,7 @@ async function start(): Promise<void> {
     for (const owner of ['p1', 'p2'] as const) {
       const result = await importBbList(list, owner, state.table);
       store.replacePlayerUnits(owner, result.units);
+      moveToNoMansLand(store, [owner]);
       store.setMeta({ armies: { ...store.state.meta.armies, [owner]: { faction: result.factionName, list: result.listName } } });
     }
     history.clear();

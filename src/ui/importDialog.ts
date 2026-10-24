@@ -1,4 +1,5 @@
 import { importBbList, type ImportResult } from '../data/importer';
+import { moveToNoMansLand } from '../model/noMansLand';
 import type { Store } from '../model/store';
 import type { PlayerId } from '../model/types';
 
@@ -76,6 +77,8 @@ export class ImportDialog {
   private confirm(): void {
     if (!this.pending) return;
     this.store.replacePlayerUnits(this.owner, this.pending.units);
+    // Neue Armee ins Niemandsland, außerhalb beider Zonen; die andere Armee bleibt stehen
+    moveToNoMansLand(this.store, [this.owner]);
     // Armee für die Anzeige links merken (Fraktion und Listenname)
     const armies = { ...this.store.state.meta.armies, [this.owner]: { faction: this.pending.factionName, list: this.pending.listName } };
     this.store.setMeta({ armies });

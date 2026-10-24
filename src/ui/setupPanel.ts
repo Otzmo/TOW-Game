@@ -1,8 +1,8 @@
 import {
   DEPLOYMENTS, deploymentZones, generateBattlefield, MISSIONS, missionByKey, SCORING_RULES, TERRAIN_RULES,
 } from '../model/battlefield';
-import { deploy } from '../data/importer';
 import { roll } from '../model/flow';
+import { moveToNoMansLand } from '../model/noMansLand';
 import type { History } from '../model/history';
 import { OBJECT_TYPES, pointInPolygon } from '../model/objects';
 import { currentPhase, currentSub } from '../model/phases';
@@ -106,22 +106,18 @@ export class SetupPanel {
     for (const o of result.objects) this.store.setObject(o);
     // Neues Schlachtfeld: Zonenwahl und Aufstellung beginnen von vorn
     this.setSetup({ ...result.setup, swapZones: false, zoneChosen: false });
+    // Noch nicht aufgestellte Armeen passen sich an die neuen Zonen und das neue Gelände an
+    if (this.seat() !== 'spectator') moveToNoMansLand(this.store);
     const s = result.setup;
     this.log({ kind: 'turn', text: `Battlefield: ${DEPLOYMENTS[s.deployment!]} · ${[missionByKey(s.missionTurn), missionByKey(s.missionGame)].filter(Boolean).map((m) => m!.name).join(' + ') || 'no mission'} · ${result.objects.filter((o) => o.kind === 'terrain').length} terrain features` });
   }
 
-  /** Alle Einheiten zurück ins Niemandsland (wie nach dem Laden der Armee) */
+  /** Alle Einheiten zurück ins Niemandsland: außerhalb beider Aufstellungszonen und außerhalb von Gelände */
   private toNoMansLand(): void {
-    const { units, table } = this.store.state;
     // Gilt für beide Armeen, auch online; nur Zuschauer dürfen es nicht
     if (this.seat() === 'spectator') return;
     this.history.record();
-    for (const owner of ['p1', 'p2'] as const) {
-      // Angeschlossene Charaktere ziehen mit ihrer Einheit mit
-      const list = Object.values(units).filter((u) => u.owner === owner && !isJoined(u, units)).map((u) => ({ ...u }));
-      deploy(list, owner, table);
-      for (const u of list) this.store.updateUnit(u.id, { x: u.x, y: u.y, rotation: u.rotation });
-    }
+    moveToNoMansLand(this.store);
     this.log({ kind: 'action', text: 'All units moved back to no man\'s land' });
   }
 
