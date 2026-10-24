@@ -8,49 +8,51 @@
 <body>
   <div id="app"></div>
 
-  <div id="toolbar">
-    <button data-import="p1"><span class="dot p1"></span>Armee laden · Spieler 1</button>
-    <button data-import="p2"><span class="dot p2"></span>Armee laden · Spieler 2</button>
-    <input type="file" id="import-file" accept=".json,application/json" hidden>
-    <div id="room-status" hidden>
-      <span id="room-code"></span>
-      <span id="room-me"></span>
-      <span id="room-opponent"></span>
-      <button id="room-copy">Link kopieren</button>
+  <!-- Linke kurze Tischkante: alle Hilfsmittel -->
+  <aside id="sidebar">
+    <div id="gamebar">
+      <span id="g-round"></span>
+      <button id="g-end">Zug beenden</button>
+      <button id="g-undo" title="Rückgängig (Strg+Z)" disabled>↶ Rückgängig</button>
+      <button id="g-score-toggle">Siegpunkte</button>
+      <div id="g-confirm" hidden>
+        <span id="g-confirm-text"></span>
+        <button id="g-confirm-yes" class="primary">Trotzdem beenden</button>
+        <button id="g-confirm-no">Abbrechen</button>
+      </div>
     </div>
-  </div>
 
-  <div id="gamebar">
-    <span id="g-round"></span>
-    <button id="g-end">Zug beenden</button>
-    <button id="g-undo" title="Rückgängig (Strg+Z)" disabled>↶ Rückgängig</button>
-    <button id="g-score-toggle">Siegpunkte</button>
-    <div id="g-confirm" hidden>
-      <span id="g-confirm-text"></span>
-      <button id="g-confirm-yes" class="primary">Trotzdem beenden</button>
-      <button id="g-confirm-no">Abbrechen</button>
+    <div id="toolbar">
+      <button data-import="p1"><span class="dot p1"></span>Armee laden · Spieler 1</button>
+      <button data-import="p2"><span class="dot p2"></span>Armee laden · Spieler 2</button>
+      <input type="file" id="import-file" accept=".json,application/json" hidden>
+      <div id="room-status" hidden>
+        <span id="room-code"></span>
+        <span id="room-me"></span>
+        <span id="room-opponent"></span>
+        <button id="room-copy">Link kopieren</button>
+      </div>
     </div>
-  </div>
 
-  <!-- Werkzeuge links -->
-  <nav id="toolbox" aria-label="Werkzeuge">
-    <button data-tool="select" title="Auswählen und ziehen (V)">Auswählen</button>
-    <button data-tool="measure" title="Maßband: auf dem Tisch ziehen (M)">Maßband</button>
-    <button data-tool="sight" title="Sichtlinie: auf dem Tisch ziehen (L)">Sichtlinie</button>
-    <hr>
-    <button data-sheet="terrain">Gelände ▸</button>
-    <button data-sheet="markers">Marker ▸</button>
-    <button data-sheet="templates">Schablonen ▸</button>
-    <button data-sheet="zones">Aufstellung ▸</button>
-    <hr>
-    <button data-sheet="dice" title="Würfel (W)">Würfel</button>
-    <button data-sheet="log">Protokoll <span id="log-badge" hidden></span></button>
-    <hr>
-    <button id="save-game">Speichern</button>
-    <button id="load-game">Laden</button>
-    <input type="file" id="load-file" accept=".json,application/json" hidden>
-    <button data-sheet="help">Hilfe</button>
-  </nav>
+    <nav id="toolbox" aria-label="Werkzeuge">
+      <button data-tool="select" title="Auswählen und ziehen (V)">Auswählen</button>
+      <button data-tool="measure" title="Maßband: auf dem Tisch ziehen (M)">Maßband</button>
+      <button data-tool="sight" title="Sichtlinie: auf dem Tisch ziehen (L)">Sichtlinie</button>
+      <hr>
+      <button data-sheet="terrain">Gelände ▸</button>
+      <button data-sheet="markers">Marker ▸</button>
+      <button data-sheet="templates">Schablonen ▸</button>
+      <button data-sheet="zones">Aufstellung ▸</button>
+      <hr>
+      <button data-sheet="dice" title="Würfel (W)">Würfel</button>
+      <button data-sheet="log">Protokoll <span id="log-badge" hidden></span></button>
+      <hr>
+      <button id="save-game">Speichern</button>
+      <button id="load-game">Laden</button>
+      <input type="file" id="load-file" accept=".json,application/json" hidden>
+      <button data-sheet="help">Hilfe</button>
+    </nav>
+  </aside>
   <p id="tool-hint" hidden></p>
 
   <!-- Seitenfenster neben den Werkzeugen; immer nur eins offen -->
@@ -128,80 +130,93 @@
     </div>
   </dialog>
 
-  <!-- Ausgewähltes Objekt (Gelände, Marker, Schablone) -->
-  <aside id="obj-panel" hidden>
+  <!-- Untere lange Tischkante: ausgewähltes Objekt (Gelände, Marker, Schablone) -->
+  <aside id="obj-panel" class="bottom-panel" hidden>
     <header>
       <h2 id="o-name"></h2>
-      <button id="o-close" aria-label="Schließen">×</button>
+      <p class="meta" id="o-meta"></p>
+      <button id="o-close" class="close" aria-label="Schließen">×</button>
     </header>
-    <label class="field">Beschriftung <input id="o-label" type="text" maxlength="40"></label>
-    <div class="size-row" id="o-size-row">
-      <label class="field">Breite ″ <input id="o-w" type="number" min="0.5" step="0.5"></label>
-      <label class="field">Tiefe ″ <input id="o-h" type="number" min="0.5" step="0.5"></label>
+    <div class="cols">
+      <label class="field">Beschriftung <input id="o-label" type="text" maxlength="40"></label>
+      <div class="size-row" id="o-size-row">
+        <label class="field">Breite ″ <input id="o-w" type="number" min="0.5" step="0.5"></label>
+        <label class="field">Tiefe ″ <input id="o-h" type="number" min="0.5" step="0.5"></label>
+      </div>
+      <label class="field" id="o-rot-row">Drehung ° <input id="o-rot" type="number" step="15"></label>
+      <div class="field"><button id="o-delete" class="danger">Entfernen</button></div>
     </div>
-    <label class="field" id="o-rot-row">Drehung ° <input id="o-rot" type="number" step="15"></label>
-    <p class="meta" id="o-meta"></p>
-    <button id="o-delete" class="wide danger">Entfernen</button>
   </aside>
 
-  <aside id="panel" hidden>
+  <!-- Untere lange Tischkante: alle Informationen zur ausgewählten Einheit, in Spalten -->
+  <aside id="panel" class="bottom-panel" hidden>
     <header>
       <span class="swatch" id="p-swatch"></span>
       <h2 id="p-name"></h2>
-      <button id="p-close" aria-label="Schließen">×</button>
+      <p class="meta" id="p-meta"></p>
+      <button id="p-close" class="close" aria-label="Schließen">×</button>
     </header>
-    <p class="meta" id="p-meta"></p>
-    <label class="check"><input type="checkbox" id="p-ranges"> Bewegungs- und Angriffsreichweite zeigen</label>
-    <div id="p-join"></div>
-
-    <div id="p-vp">
-      <div class="stack">
-        <span class="label">Status</span>
-        <div class="seg" id="p-status">
-          <button data-status="">Im Spiel</button><button data-status="fleeing">Flieht</button><button
-            data-status="fledOff">Geflohen</button><button data-status="destroyed">Vernichtet</button>
+    <div class="cols">
+      <section class="col">
+        <h3>Spiel</h3>
+        <label class="check"><input type="checkbox" id="p-ranges"> Reichweiten zeigen</label>
+        <div id="p-join"></div>
+        <div id="p-vp">
+          <div class="stack">
+            <span class="label">Status</span>
+            <div class="seg" id="p-status">
+              <button data-status="">Im Spiel</button><button data-status="fleeing">Flieht</button><button
+                data-status="fledOff">Geflohen</button><button data-status="destroyed">Vernichtet</button>
+            </div>
+          </div>
+          <div class="row" id="p-wounds-row"><span class="label">Lebenspunkte</span>
+            <button data-wound="lose">−</button><output id="p-wounds"></output><button data-wound="heal">+</button></div>
+          <label class="check" id="p-captured-row"><input type="checkbox" id="p-captured"> Standarte vom Gegner erbeutet</label>
+          <div class="row"><span class="label">Punktkosten</span>
+            <input id="p-points" type="number" min="0" step="1" inputmode="numeric"></div>
+          <p class="meta" id="p-vp-value"></p>
         </div>
-      </div>
-      <div class="row" id="p-wounds-row"><span class="label">Lebenspunkte</span>
-        <button data-wound="lose">−</button><output id="p-wounds"></output><button data-wound="heal">+</button></div>
-      <label class="check" id="p-captured-row"><input type="checkbox" id="p-captured"> Standarte vom Gegner erbeutet</label>
-      <div class="row"><span class="label">Punktkosten</span>
-        <input id="p-points" type="number" min="0" step="1" inputmode="numeric"></div>
-      <p class="meta" id="p-vp-value"></p>
+        <p class="meta" id="p-move"></p>
+      </section>
+
+      <section class="col wide-col">
+        <h3>Profil</h3>
+        <table class="profile">
+          <thead><tr><th></th><th>M</th><th>WS</th><th>BS</th><th>S</th><th>T</th><th>W</th><th>I</th><th>A</th><th>Ld</th></tr></thead>
+          <tbody id="p-profile"></tbody>
+        </table>
+        <h3>Ausrüstung</h3>
+        <p id="p-equip" class="pre"></p>
+        <h3>Optionen</h3>
+        <p id="p-options"></p>
+      </section>
+
+      <section class="col">
+        <h3 id="p-items-head">Magische Gegenstände &amp; Fähigkeiten</h3>
+        <div id="p-items"></div>
+      </section>
+
+      <section class="col">
+        <h3>Sonderregeln</h3>
+        <div id="p-rules"></div>
+        <p class="meta" id="p-source"></p>
+      </section>
+
+      <section class="col" id="p-formation">
+        <h3>Formation</h3>
+        <div class="row" id="p-form-row"><span class="label">Aufstellung</span>
+          <div class="seg">
+            <button data-form="close">Geschlossen</button><button data-form="skirmish">Plänkler</button>
+          </div></div>
+        <div class="row" id="p-width-row"><span class="label">Breite (Modelle in Front)</span>
+          <button data-act="w-">−</button><output id="p-width"></output><button data-act="w+">+</button></div>
+        <div class="row"><span class="label">Modelle</span>
+          <button data-act="m-">−</button><output id="p-models"></output><button data-act="m+">+</button></div>
+        <button id="p-rank" class="wide">In Reihen ordnen (0,5″ Abstand)</button>
+      </section>
     </div>
-
-    <table class="profile">
-      <thead><tr><th></th><th>M</th><th>WS</th><th>BS</th><th>S</th><th>T</th><th>W</th><th>I</th><th>A</th><th>Ld</th></tr></thead>
-      <tbody id="p-profile"></tbody>
-    </table>
-
-    <h3>Ausrüstung</h3>
-    <section><p id="p-equip" class="pre"></p></section>
-
-    <h3>Optionen</h3>
-    <section><p id="p-options"></p></section>
-
-    <h3 id="p-items-head">Magische Gegenstände &amp; Fähigkeiten</h3>
-    <section id="p-items"></section>
-
-    <h3>Sonderregeln</h3>
-    <section id="p-rules"></section>
-    <p class="meta" id="p-source"></p>
-
-    <div id="p-formation">
-      <h3>Formation</h3>
-      <div class="row" id="p-form-row"><span class="label">Aufstellung</span>
-        <div class="seg">
-          <button data-form="close">Geschlossen</button><button data-form="skirmish">Plänkler</button>
-        </div></div>
-      <div class="row" id="p-width-row"><span class="label">Breite (Modelle in Front)</span>
-        <button data-act="w-">−</button><output id="p-width"></output><button data-act="w+">+</button></div>
-      <div class="row"><span class="label">Modelle</span>
-        <button data-act="m-">−</button><output id="p-models"></output><button data-act="m+">+</button></div>
-      <button id="p-rank" class="wide">In Reihen ordnen (0,5″ Abstand)</button>
-    </div>
-    <p class="meta" id="p-move"></p>
   </aside>
+
 
   <script type="module" src="/src/main.ts"></script>
 </body>

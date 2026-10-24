@@ -155,7 +155,7 @@ export class UnitPanel {
       .join('');
     $('p-equip').textContent = info.equipment || '–';
     $('p-options').textContent = info.options.join(' · ') || '–';
-    $('p-items-head').hidden = info.items.length === 0;
+    $('p-items-head').parentElement!.hidden = info.items.length === 0;
     $('p-items').innerHTML = info.items.map(ruleHtml).join('');
     $('p-rules').innerHTML = info.rules.map(ruleHtml).join('') || '<p>–</p>';
     $('p-source').innerHTML = info.url

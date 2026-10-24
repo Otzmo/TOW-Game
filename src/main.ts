@@ -73,10 +73,20 @@ async function start(): Promise<void> {
   // Ganzen Tisch zeigen, auch nach jedem Armeeimport
   const { width, height } = state.table;
   const showTable = () => {
-    // Platz für Zoll-Leisten, Werkzeugleiste links und die Leisten oben
-    const fit = Math.min((app.screen.width - 170) / (width * PPI + 60), (app.screen.height - 120) / (height * PPI + 60));
+    // Tisch zwischen Hilfsmittel-Spalte links und Einheitenleiste unten (Maße aus dem CSS)
+    const css = getComputedStyle(document.documentElement);
+    const px = (name: string) => {
+      const v = css.getPropertyValue(name).trim();
+      return v.endsWith('vh') ? (parseFloat(v) * window.innerHeight) / 100 : parseFloat(v) || 0;
+    };
+    const left = px('--side');
+    const bottom = px('--bottom') + 12;
+    const margin = 36; // Platz für die Zoll-Leisten
+    const areaW = app.screen.width - left;
+    const areaH = app.screen.height - bottom;
+    const fit = Math.min((areaW - 2 * margin) / (width * PPI), (areaH - 2 * margin) / (height * PPI));
     board.world.scale.set(fit);
-    board.world.position.set(150 + (app.screen.width - 150 - width * PPI * fit) / 2, 100 + (app.screen.height - 100 - height * PPI * fit) / 2);
+    board.world.position.set(left + (areaW - width * PPI * fit) / 2, (areaH - height * PPI * fit) / 2);
   };
   new ImportDialog(store, () => {
     history.clear();
