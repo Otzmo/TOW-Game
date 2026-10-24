@@ -154,10 +154,10 @@ export class Shortcuts {
 
   private renderLegend(): void {
     const groups = [...new Set(this.list.map((s) => s.group))];
-    $('keys-list').innerHTML = groups.map((g) => `<h4>${g}</h4><table class="keys">${
+    $('keys-list').innerHTML = groups.map((g) => `<div class="key-group"><h4>${g}</h4><table class="keys">${
       this.list.filter((s) => s.group === g).map((s) => `<tr><td>${
         s.keys.map((combo) => combo.map((k) => `<kbd>${k}</kbd>`).join('+')).join(' ')
-      }</td><td>${s.desc}</td></tr>`).join('')}</table>`).join('');
+      }</td><td>${s.desc}</td></tr>`).join('')}</table></div>`).join('');
   }
 }
 
