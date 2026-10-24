@@ -490,3 +490,4 @@ body.sheet-open .bottom-panel { display: none; }
 
 /* Nach der Aufstellung: Armee laden, Gelände und Battlefield ausblenden */
 body.battle [data-import], body.battle #toolbox [data-sheet="battlefield"], body.battle #toolbox [data-sheet="terrain"] { display: none; }
+#lobby { z-index: 20; }

@@ -118,7 +118,10 @@ function commandCode(optionId: string): string {
   return 'C';
 }
 
-/** Aufstellungsreihe am eigenen Tischrand: Spieler 1 unten, Spieler 2 oben. */
+/**
+ * Geladene Armee im Niemandsland (Tischmitte) ablegen, damit man sieht, dass sie noch nicht
+ * aufgestellt ist: Spieler 1 in Reihen ab der Mitte nach unten, Spieler 2 ab der Mitte nach oben.
+ */
 function deploy(units: UnitState[], owner: PlayerId, table: { width: number; height: number }): void {
   const gap = 1.5;
   let x = 4;
@@ -132,9 +135,9 @@ function deploy(units: UnitState[], owner: PlayerId, table: { width: number; hei
       x = 4;
       row++;
     }
-    const y = 6 + row * 8;
+    const y = 3 + row * 6.5;
     u.x = x + w / 2;
-    u.y = owner === 'p1' ? table.height - y : y;
+    u.y = owner === 'p1' ? table.height / 2 + y : table.height / 2 - y;
     u.rotation = owner === 'p1' ? 0 : Math.PI;
     x += w + gap;
   }

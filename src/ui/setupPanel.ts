@@ -7,7 +7,7 @@ import { OBJECT_TYPES, pointInPolygon } from '../model/objects';
 import { currentPhase, currentSub } from '../model/phases';
 import { isJoined, type Store } from '../model/store';
 import type { LogEntry, PlayerId, SetupState, UnitState } from '../model/types';
-import { openSheet } from './sheets';
+import { openedSheet, openSheet } from './sheets';
 
 const $ = (id: string) => document.getElementById(id)!;
 const esc = (s: string) =>
@@ -44,6 +44,8 @@ export class SetupPanel {
       // In der Aufbauphase das Fenster bei jedem neuen Schritt öffnen
       const key = `${currentPhase(state.meta)}-${currentSub(state.meta)}`;
       if (key !== lastKey && currentPhase(state.meta) === 'setup' && (c.meta || c.loaded)) openSheet('battlefield');
+      // Schlacht beginnt: das Fenster schließt sich, sein Knopf ist dann ausgeblendet
+      if (key !== lastKey && currentPhase(state.meta) !== 'setup' && openedSheet() === 'battlefield') openSheet(null);
       lastKey = key;
       this.render();
     });

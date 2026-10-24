@@ -326,8 +326,8 @@ export class Board {
   }
 
   /**
-   * Freier Bereich für den Tisch in Bildschirmpixeln (zwischen Hilfsmittel-Spalte links und
-   * Einheitenleiste unten, abzüglich Platz für die Zoll-Leisten). Kommt aus main.ts.
+   * Freier Bereich für den Tisch in Bildschirmpixeln (zwischen der Spalte links und der Spalte rechts,
+   * abzüglich Platz für die Zoll-Leisten). Kommt aus main.ts.
    */
   viewArea: () => { left: number; top: number; right: number; bottom: number } = () =>
     ({ left: 0, top: 0, right: this.app.screen.width, bottom: this.app.screen.height });
@@ -418,15 +418,15 @@ export class Board {
     this.clampView();
   }
 
-  /** Ganzen Tisch zeigen, unten links an Spalte und Leiste angelegt. */
+  /** Ganzen Tisch zeigen, mittig zwischen den Spalten links und rechts. */
   fitView(): void {
     this.world.scale.set(this.minScale());
     this.clampView();
   }
 
   /**
-   * Tisch bleibt an Spalte und Leiste: Passt er in eine Richtung ganz hinein, liegt er links bzw. unten an;
-   * ist er größer (hineingezoomt), lässt er sich nur so weit verschieben, dass keine Lücke zu den Leisten entsteht.
+   * Tisch bleibt zwischen den Spalten: Passt er in eine Richtung ganz hinein, liegt er dort mittig;
+   * ist er größer (hineingezoomt), lässt er sich nur so weit verschieben, dass keine Lücke zu den Spalten entsteht.
    */
   private clampView(): void {
     const a = this.viewArea();
@@ -435,8 +435,8 @@ export class Board {
     const { width, height } = this.store.state.table;
     const w = width * PPI * s;
     const h = height * PPI * s;
-    const x = w <= a.right - a.left ? a.left : Math.min(a.left, Math.max(a.right - w, this.world.x));
-    const y = h <= a.bottom - a.top ? a.bottom - h : Math.min(a.top, Math.max(a.bottom - h, this.world.y));
+    const x = w <= a.right - a.left ? (a.left + a.right - w) / 2 : Math.min(a.left, Math.max(a.right - w, this.world.x));
+    const y = h <= a.bottom - a.top ? (a.top + a.bottom - h) / 2 : Math.min(a.top, Math.max(a.bottom - h, this.world.y));
     this.world.position.set(x, y);
   }
 
