@@ -78,9 +78,13 @@ export class Shortcuts {
       { group: 'Werkzeuge', keys: [['A']], desc: 'Aufstellungszonen', match: letter('a'), run: () => toggleSheet('zones') },
 
       // Fenster und Spiel
-      { group: 'Spiel', keys: [['W']], desc: 'Würfel', match: letter('w'), run: () => toggleSheet('dice') },
-      { group: 'Spiel', keys: [['Enter']], desc: 'Im Würfelfenster: würfeln',
-        match: (e) => e.key === 'Enter' && plain(e) && !!targetEl(e)?.closest('#sheet-dice'),
+      { group: 'Spiel', keys: [['W']], desc: 'Würfel (rechts): Anzahl eingeben', match: letter('w'), run: () => {
+        const input = $('d-count') as HTMLInputElement;
+        input.focus();
+        input.select();
+      } },
+      { group: 'Spiel', keys: [['Enter']], desc: 'In den Würfeln rechts: würfeln',
+        match: (e) => e.key === 'Enter' && plain(e) && !!targetEl(e)?.closest('#dicebar'),
         whileTyping: true, run: () => ($('d-roll') as HTMLButtonElement).click() },
       { group: 'Spiel', keys: [['Z']], desc: 'Magie: Zauber wirken', match: letter('z'), run: () => toggleSheet('magic') },
       { group: 'Spiel', keys: [['J']], desc: 'Angriff ansagen (dann Ziel anklicken)', match: letter('j'), run: () => actions.declareCharge() },
@@ -90,7 +94,9 @@ export class Shortcuts {
         ($('chat-input') as HTMLInputElement).focus();
       } },
       { group: 'Spiel', keys: [['S']], desc: 'Siegpunkte', match: letter('s'), run: () => toggleSheet('score') },
-      { group: 'Spiel', keys: [['N']], desc: 'Phase beenden (nach dem Nahkampf: Zug abgeben)', match: letter('n'), run: () => gameBar.requestEndPhase() },
+      { group: 'Spiel', keys: [['N']], desc: 'Weiter zur nächsten Unterphase', match: letter('n'), run: () => gameBar.requestNext() },
+      { group: 'Spiel', keys: [['Umschalt', 'N']], desc: 'Phase beenden (nach dem Nahkampf: Zug abgeben)', match: letter('n', true), run: () => gameBar.requestEndPhase() },
+      { group: 'Spiel', keys: [['U']], desc: 'Fernkampf/Nahkampf: nächste Einheit bzw. nächster Kampf', match: letter('u'), run: () => gameBar.repeat() },
       { group: 'Spiel', keys: [['Tab'], ['Umschalt', 'Tab']], desc: 'Nächste / vorige Einheit auswählen',
         match: (e) => e.key === 'Tab' && plain(e), run: (e) => board.selectNext(e.shiftKey ? -1 : 1) },
 

@@ -22,7 +22,7 @@ export class MoveGate {
     store.subscribe(({ meta }, c) => {
       if (!c.meta && !c.loaded) return;
       // Neue Phase: Ausnahmen verfallen
-      const key = `${meta.round}-${meta.active}-${currentPhase(meta)}`;
+      const key = `${meta.round}-${meta.active}-${currentPhase(meta)}-${meta.sub ?? 0}`;
       if (key === this.phaseKey) return;
       this.phaseKey = key;
       this.exceptions.clear();
@@ -36,7 +36,7 @@ export class MoveGate {
     let u = units[unitId];
     if (!u) return false;
     if (u.joinedTo && units[u.joinedTo]) u = units[u.joinedTo];
-    const check = checkMove(this.store.state.meta, u, this.seat, this.exceptions.has(u.id));
+    const check = checkMove(this.store.state.meta, u, this.seat, this.exceptions.has(u.id), this.store.state.charges);
     if (check.ok) return true;
     this.show(u.id, `${u.info.name}: ${check.reason}`, check.overridable);
     return false;
@@ -54,7 +54,7 @@ export class MoveGate {
     if (!u) return '';
     const host = u.joinedTo && units[u.joinedTo] ? units[u.joinedTo] : u;
     if (this.exceptions.has(host.id)) return 'Ausnahme/Sonderregel';
-    const check = checkMove(this.store.state.meta, host, this.seat, false);
+    const check = checkMove(this.store.state.meta, host, this.seat, false, this.store.state.charges);
     return check.ok ? check.note ?? '' : '';
   }
 

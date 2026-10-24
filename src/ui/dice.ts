@@ -1,3 +1,4 @@
+import type { Store } from '../model/store';
 import type { LogEntry } from '../model/types';
 
 const $ = (id: string) => document.getElementById(id)!;
@@ -99,4 +100,26 @@ export function diceHtml(dice: number[], success = 7): string {
 
 function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+}
+
+const WHO: Record<LogEntry['by'], string> = { p1: 'Spieler 1', p2: 'Spieler 2', spectator: 'Zuschauer' };
+
+/** Würfelprotokoll in der rechten Spalte: alle Würfe beider Spieler, neueste oben. */
+export class DiceLog {
+  constructor(private store: Store) {
+    store.subscribe((_, c) => {
+      if ((c.log && c.log.kind === 'roll') || c.loaded) this.render();
+    });
+    this.render();
+  }
+
+  private render(): void {
+    const rolls = this.store.state.log.filter((e) => e.kind === 'roll').slice(-100).reverse();
+    $('dice-log').innerHTML = rolls.map((e) => {
+      const time = new Date(e.ts).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+      const dice = e.dice?.length ? `<div class="log-dice">${e.dice.map((d) => diceHtml(d)).join('<span class="sep">→</span>')}</div>` : '';
+      return `<li><span class="log-meta"><span class="dot ${e.by}"></span>${WHO[e.by]} · ${time}</span>` +
+        `<span class="log-text">${escapeHtml(e.text)}</span>${dice}</li>`;
+    }).join('') || '<li class="empty">Noch nicht gewürfelt.</li>';
+  }
 }

@@ -1,5 +1,5 @@
 import { roll, wizardLevel } from '../model/flow';
-import { currentPhase } from '../model/phases';
+import { currentPhase, currentSub, SUB_DECLARE } from '../model/phases';
 import type { Store } from '../model/store';
 import type { LogEntry, PlayerId, UnitState } from '../model/types';
 import type { Board } from '../view/board';
@@ -51,6 +51,12 @@ export class ActionControls {
 
   /** Angriff ansagen: nur eigene Einheit in der eigenen Bewegungsphase. */
   declareCharge(): void {
+    // Noch nicht verschickter Angriff dieser Einheit: zurücknehmen
+    const own = this.ownUnsentCharge();
+    if (own) {
+      this.prompts.withdrawCharge(own);
+      return;
+    }
     const reason = this.chargeBlocked();
     if (reason) {
       $('p-charge').title = reason;
@@ -68,10 +74,21 @@ export class ActionControls {
     if (!u) return 'Erst eine eigene Einheit auswählen.';
     const host = u.joinedTo && units[u.joinedTo] ? units[u.joinedTo] : u;
     if (host.owner !== meta.active || (this.seat() && this.seat() !== host.owner)) return 'Nur der Spieler am Zug sagt Angriffe an.';
-    if (currentPhase(meta) !== 'movement') return 'Angriffe werden in der Bewegungsphase angesagt.';
+    if (currentPhase(meta) !== 'movement' || currentSub(meta) !== SUB_DECLARE) {
+      return 'Angriffe werden in der Bewegungsphase, Unterphase „Angriffe & Reaktionen ansagen“, angesagt.';
+    }
     if (host.status === 'fleeing') return 'Fliehende Einheiten können nicht angreifen.';
     if (Object.values(charges).some((c) => c.charger === host.id)) return 'Diese Einheit hat schon einen Angriff angesagt.';
     return null;
+  }
+
+  /** Angriff der ausgewählten Einheit, der noch nicht an den Gegner geschickt wurde */
+  private ownUnsentCharge(): string | null {
+    const units = this.store.state.units;
+    const u = this.board.selectedId ? units[this.board.selectedId] : undefined;
+    if (!u) return null;
+    const host = u.joinedTo && units[u.joinedTo] ? units[u.joinedTo] : u;
+    return this.prompts.unsentCharges().find((c) => c.charger === host.id)?.id ?? null;
   }
 
   private cast(): void {
@@ -95,8 +112,10 @@ export class ActionControls {
     const me = this.me();
     const blocked = this.chargeBlocked();
     const btn = $('p-charge') as HTMLButtonElement;
-    btn.disabled = !!blocked;
-    btn.title = blocked ?? 'Danach die angegriffene gegnerische Einheit anklicken (J)';
+    const withdraw = !!this.ownUnsentCharge();
+    btn.textContent = withdraw ? '↶ Angriff zurücknehmen' : '⚔ Angriff ansagen';
+    btn.disabled = !withdraw && !!blocked;
+    btn.title = withdraw ? 'Angriff zurücknehmen, solange die Ansage läuft' : blocked ?? 'Danach die angegriffene gegnerische Einheit anklicken (J)';
 
     const own = (u: UnitState) => u.owner === me;
     const fill = (id: string, list: UnitState[], empty: string) => {

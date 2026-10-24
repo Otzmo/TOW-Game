@@ -13,7 +13,10 @@
     <div id="gamebar">
       <span id="g-round"></span>
       <ol id="g-phases"></ol>
-      <button id="g-end" class="primary">Phase beenden</button>
+      <ol id="g-subs"></ol>
+      <button id="g-end" class="primary">Weiter ›</button>
+      <button id="g-repeat" hidden>↺</button>
+      <button id="g-phase-end">Phase beenden »</button>
       <button id="g-undo" title="Rückgängig (Strg+Z)" disabled>↶ Rückgängig</button>
       <button id="g-redo" title="Wiederholen (Strg+Y)" disabled>↷ Wiederholen</button>
       <button id="g-score-toggle">Siegpunkte</button>
@@ -46,7 +49,6 @@
       <button data-sheet="templates">Schablonen ▸</button>
       <button data-sheet="zones">Aufstellung ▸</button>
       <hr>
-      <button data-sheet="dice" title="Würfel (W)">Würfel</button>
       <button data-sheet="magic" title="Zaubern (Z)">Magie</button>
       <button data-sheet="log">Protokoll <span id="log-badge" hidden></span></button>
       <hr>
@@ -56,6 +58,27 @@
       <button data-sheet="help">Hilfe</button>
       <button data-sheet="keys" title="Alle Tastenkürzel (?)">Tastenkürzel</button>
     </nav>
+  </aside>
+  <!-- Rechte kurze Tischkante: Würfel und Würfelprotokoll -->
+  <aside id="dicebar">
+    <h3>Würfel</h3>
+    <div class="dice-form">
+      <label>Anzahl W6 <input id="d-count" type="number" min="1" max="100" value="10"></label>
+      <label>Trifft auf <select id="d-hit"></select></label>
+      <label>Verwundet auf <select id="d-wound"></select></label>
+      <label>Rüstungswurf <select id="d-save"></select></label>
+      <label>Rettungswurf <select id="d-ward"></select></label>
+      <label class="full">Wofür? <input id="d-note" type="text" maxlength="60" placeholder="z. B. Chosen gegen Ritter"></label>
+      <label class="full">Ziel (Gegner würfelt Rüstung/Rettung) <select id="d-target"></select></label>
+    </div>
+    <button id="d-roll" class="primary wide">Würfeln</button>
+    <div class="dice-quick">
+      <button data-quick="1d6">W6</button><button data-quick="2d6">2W6</button><button
+        data-quick="1d3">W3</button><button data-quick="3d6">3W6</button>
+    </div>
+    <div id="d-result"></div>
+    <h3>Würfelprotokoll</h3>
+    <ol id="dice-log"></ol>
   </aside>
   <p id="tool-hint" hidden></p>
   <!-- Aufforderung an mich (Reaktion, Rüstungswurf, Bannen …) bzw. Ergebnis -->
@@ -80,24 +103,6 @@
   <aside class="sheet" id="sheet-templates" hidden><h3>Schablonen</h3><div class="pick" data-kind="template"></div>
     <p class="meta">Wählen, dann auf den Tisch klicken. Die Flammenschablone am Kreis drehen; die Spitze zeigt nach vorn.</p></aside>
   <aside class="sheet" id="sheet-zones" hidden><h3>Aufstellungszonen</h3><div id="zone-list"></div></aside>
-  <aside class="sheet" id="sheet-dice" hidden>
-    <h3>Würfel</h3>
-    <div class="dice-form">
-      <label>Anzahl W6 <input id="d-count" type="number" min="1" max="100" value="10"></label>
-      <label>Trifft auf <select id="d-hit"></select></label>
-      <label>Verwundet auf <select id="d-wound"></select></label>
-      <label>Rüstungswurf <select id="d-save"></select></label>
-      <label>Rettungswurf <select id="d-ward"></select></label>
-      <label class="full">Wofür? <input id="d-note" type="text" maxlength="60" placeholder="z. B. Chosen gegen Ritter"></label>
-      <label class="full">Ziel (Gegner würfelt Rüstung/Rettung) <select id="d-target"></select></label>
-    </div>
-    <button id="d-roll" class="primary wide">Würfeln</button>
-    <div class="dice-quick">
-      <button data-quick="1d6">W6</button><button data-quick="2d6">2W6</button><button
-        data-quick="1d3">W3</button><button data-quick="3d6">3W6</button>
-    </div>
-    <div id="d-result"></div>
-  </aside>
   <aside class="sheet" id="sheet-magic" hidden>
     <h3>Zauber wirken</h3>
     <div class="dice-form">

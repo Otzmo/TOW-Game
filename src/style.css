@@ -360,3 +360,35 @@ body.sheet-open .bottom-panel { display: none; }
 .test-row select { flex: 1; min-width: 0; font: inherit; font-size: 12px; color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 4px; }
 .test-row button { white-space: nowrap; padding: 5px 8px; font-size: 12px; }
 #m-result { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+/* ---- Rechte kurze Tischkante: Würfel und Würfelprotokoll ---- */
+:root { --right: 280px; }
+#dicebar {
+  position: fixed; top: 0; right: 0; bottom: 0; width: var(--right); display: flex; flex-direction: column;
+  padding: 12px; overflow-y: auto; background: rgba(20, 22, 24, .94); border-left: 1px solid var(--line);
+}
+#dicebar > h3:first-child { margin-top: 0; }
+#dicebar .dice-form { grid-template-columns: 1fr 1fr; }
+#dicebar .dice-quick { grid-template-columns: repeat(4, 1fr); margin: 8px 0 4px; }
+#dicebar #d-result { margin-top: 8px; }
+#dice-log { list-style: none; margin: 0; padding: 0; font-size: 12px; flex: 1; min-height: 120px; overflow-y: auto; }
+#dice-log li { padding: 6px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 3px; }
+#dice-log li.empty { color: var(--muted); border: 0; }
+
+/* Alles in der Mitte reicht nur bis zur Würfelspalte */
+.bottom-panel, .sheet { right: calc(var(--right) + 12px); }
+#prompt-card, #phase-notice { right: calc(var(--right) + 24px); }
+#tool-hint, #prompt-wait { left: calc(var(--side) + (100% - var(--side) - var(--right)) / 2); }
+
+/* Unterphasen */
+#g-subs { list-style: none; margin: 0 0 4px; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+#g-subs li { display: flex; align-items: center; gap: 6px; padding: 3px 6px; border-radius: 6px; font-size: 12px; color: var(--muted); }
+#g-subs li span {
+  display: inline-grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; flex: none;
+  border: 1px solid var(--line); font-size: 10px;
+}
+#g-subs li.done { color: #6f747a; text-decoration: line-through; }
+#g-subs li.on { color: var(--text); background: #2a2e32; font-weight: 600; }
+#g-subs li.on span { background: var(--accent); border-color: var(--accent); color: #1a1a1a; }
+
+@media (max-width: 900px) { :root { --right: 220px; } }

@@ -7,7 +7,7 @@ import { Store } from './model/store';
 import type { GameState, LogEntry } from './model/types';
 import type { Seat } from './net/room';
 import { ActionControls } from './ui/actionControls';
-import { DicePanel } from './ui/dice';
+import { DiceLog, DicePanel } from './ui/dice';
 import { PromptCenter } from './ui/prompts';
 import { GameBar } from './ui/gameBar';
 import { ImportDialog } from './ui/importDialog';
@@ -82,9 +82,15 @@ async function start(): Promise<void> {
     log: (entry) => addLog(entry),
     allowMove: (id) => gate.grant(id),
   });
+  gameBar.chargeFlow = {
+    unsent: () => prompts.unsentCharges().length,
+    waiting: () => prompts.waitingCharges().length,
+    send: () => prompts.sendReactionPrompts(),
+  };
   const actions = new ActionControls(store, board, prompts, () => seat, (entry) => addLog(entry));
   new DicePanel((entry) => addLog(entry), (targetId, wounds, save, ward, note) =>
     prompts.requestSaves(seat && seat !== 'spectator' ? seat : store.state.meta.active, targetId, wounds, save, ward, note));
+  new DiceLog(store);
   new Shortcuts({ board, panel, gameBar, toolbox, history, actions });
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
@@ -100,7 +106,7 @@ async function start(): Promise<void> {
     return {
       left: px('--side') + margin,
       top: margin,
-      right: app.screen.width - margin,
+      right: app.screen.width - px('--right') - margin,
       bottom: app.screen.height - px('--bottom') - 12 - margin,
     };
   };

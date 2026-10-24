@@ -91,6 +91,8 @@ export interface GameMeta {
   scenario?: string;
   /** Aktuelle Phase, siehe phases.ts; fehlt = Aufstellung */
   phase?: 'setup' | 'strategy' | 'movement' | 'shooting' | 'combat';
+  /** Unterphase (0–3), siehe PHASES in phases.ts */
+  sub?: number;
 }
 
 /** Gelände, Marker und Schablonen auf dem Tisch. */

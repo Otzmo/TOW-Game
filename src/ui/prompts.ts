@@ -3,7 +3,7 @@ import {
   leadershipOf, movementOf, REACTION_NAMES, reactionOptions, roll, wizardLevel,
 } from '../model/flow';
 import type { History } from '../model/history';
-import { currentPhase } from '../model/phases';
+import { currentPhase, currentSub, SUB_CHARGE_MOVES, SUB_DECLARE, subLabel } from '../model/phases';
 import type { Store } from '../model/store';
 import type { Charge, ChargeReaction, LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
 import { diceHtml } from './dice';
@@ -41,7 +41,7 @@ export class PromptCenter {
 
   constructor(private store: Store, private history: History, private host: PromptHost) {
     store.subscribe((state, c) => {
-      if (c.chargeId || c.promptId || c.loaded) this.advanceCharges();
+      if (c.chargeId || c.promptId || c.loaded || c.meta) this.advanceCharges();
       if (c.meta) this.clearOldCharges();
       if (c.chargeId || c.promptId || c.loaded || c.meta) this.render();
       void state;
@@ -63,9 +63,41 @@ export class PromptCenter {
     this.store.setCharge(charge.id, charge);
     const far = dist > max ? ` – außerhalb der größten Angriffsreichweite (${max}″)!` : '';
     this.host.log({ kind: 'action', text: `${charger.info.name} sagt einen Angriff auf ${target.info.name} an (Abstand ${dist.toFixed(1)}″${far})` });
-    this.create('chargeReaction', target.owner, charger.owner, 'Angriff!',
-      `${charger.info.name} greift ${target.info.name} an (Abstand ${dist.toFixed(1)}″). Reaktion wählen:`,
-      { chargeId: charge.id }, `react-${charge.id}`);
+  }
+
+  /** Angesagte Angriffe des Spielers am Zug, deren Reaktions-Popup noch nicht verschickt ist. */
+  unsentCharges(): Charge[] {
+    const { charges, prompts, meta } = this.store.state;
+    return Object.values(charges).filter((c) => this.chargerOwner(c) === meta.active && c.status === 'declared' && !prompts[`react-${c.id}`]);
+  }
+
+  /** Angriffe, deren Reaktion noch aussteht (Popup verschickt, aber nicht beantwortet). */
+  waitingCharges(): Charge[] {
+    const { charges, prompts, meta } = this.store.state;
+    return Object.values(charges).filter((c) => this.chargerOwner(c) === meta.active && c.status === 'declared' && !!prompts[`react-${c.id}`]);
+  }
+
+  /** Ansage abgeschlossen: Jetzt bekommt der Gegner für jeden Angriff das Reaktions-Popup. */
+  sendReactionPrompts(): void {
+    const list = this.unsentCharges();
+    const { units } = this.store.state;
+    for (const c of list) {
+      const charger = units[c.charger];
+      const target = units[c.target];
+      if (!charger || !target) continue;
+      const dist = chargeDistance(charger, target, units);
+      this.create('chargeReaction', target.owner, charger.owner, 'Angriff!',
+        `${charger.info.name} greift ${target.info.name} an (Abstand ${dist.toFixed(1)}″). Reaktion wählen:`,
+        { chargeId: c.id }, `react-${c.id}`);
+    }
+    if (list.length) this.host.log({ kind: 'turn', text: `Angriffe angesagt: ${list.length} – der Gegner wählt die Reaktionen` });
+  }
+
+  /** Angriff zurücknehmen, solange der Gegner noch nicht gefragt wurde. */
+  withdrawCharge(id: string): void {
+    const c = this.store.state.charges[id];
+    if (!c || this.store.state.prompts[`react-${id}`]) return;
+    this.store.setCharge(id, null);
   }
 
   /** Nach Treffern und Verwundungen: Der Verteidiger legt Rüstungs- und Rettungswürfe ab. */
@@ -115,6 +147,13 @@ export class PromptCenter {
     if (seat && seat !== meta.active) return;
     const current = Object.values(charges).filter((c) => this.chargerOwner(c) === meta.active);
     if (!current.length || current.some((c) => c.status === 'declared')) return;
+    if (currentPhase(meta) !== 'movement') return;
+    // Alle Reaktionen da: weiter zu den Angriffsbewegungen
+    if (currentSub(meta) === SUB_DECLARE) {
+      this.store.setMeta({ sub: SUB_CHARGE_MOVES });
+      this.host.log({ kind: 'turn', text: `Alle Reaktionen gewählt – ${subLabel(this.store.state.meta)}` });
+    }
+    if (currentSub(this.store.state.meta) !== SUB_CHARGE_MOVES) return;
     for (const c of current) {
       if (c.status !== 'reacted') continue;
       const charger = this.store.state.units[c.charger];
