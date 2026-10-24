@@ -87,10 +87,45 @@ export interface GameMeta {
   active: PlayerId;
   /** Hat dieser Spieler die gegnerische Armee gebrochen? (+500 SP) */
   breakBonus: Partial<Record<PlayerId, boolean>>;
+  /** Aufstellungszonen, siehe SCENARIOS */
+  scenario?: string;
+}
+
+/** Gelände, Marker und Schablonen auf dem Tisch. */
+export type ObjectKind = 'terrain' | 'marker' | 'template';
+
+export interface BoardObject {
+  id: string;
+  kind: ObjectKind;
+  /** Schlüssel im Katalog (objects.ts), z. B. "forest", "objective", "flame" */
+  type: string;
+  x: number;
+  y: number;
+  /** Größe in Zoll */
+  w: number;
+  h: number;
+  rotation: number;
+  /** Eigener Text, z. B. Name eines Zaubers */
+  label?: string | null;
+}
+
+export type LogKind = 'chat' | 'roll' | 'action' | 'turn';
+
+export interface LogEntry {
+  id: string;
+  ts: number;
+  /** Wer: Spieler 1/2 oder Zuschauer */
+  by: PlayerId | 'spectator';
+  kind: LogKind;
+  text: string;
+  /** Würfelergebnisse, falls geworfen */
+  dice?: number[][];
 }
 
 export interface GameState {
   table: { width: number; height: number };
   units: Record<string, UnitState>;
   meta: GameMeta;
+  objects: Record<string, BoardObject>;
+  log: LogEntry[];
 }

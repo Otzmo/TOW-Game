@@ -1,4 +1,4 @@
-import type { GameMeta, GameState, PlayerId, Point, UnitState } from './types';
+import type { BoardObject, GameMeta, GameState, LogEntry, PlayerId, Point, UnitState } from './types';
 
 /** Woher eine Änderung kommt: vom eigenen Bildschirm oder vom Mitspieler über das Netz. */
 export type Origin = 'local' | 'remote';
@@ -13,7 +13,18 @@ export interface Change {
   replacedOwner?: PlayerId;
   /** Runde, Spieler am Zug oder Siegpunkt-Boni haben sich geändert */
   meta?: boolean;
+  /** Geändertes Objekt (Gelände, Marker, Schablone) */
+  objectId?: string;
+  objectPatch?: Partial<BoardObject>;
+  objectRemoved?: boolean;
+  /** Neuer Protokolleintrag */
+  log?: LogEntry;
+  /** Kompletter Spielstand geladen */
+  loaded?: boolean;
 }
+
+/** Änderungen, die nur Objekte, Protokoll oder Spielinfos betreffen – nicht die Einheiten. */
+export const isNonUnitChange = (c: Change) => !!(c.meta || c.objectId || c.log);
 
 type Listener = (state: GameState, change: Change) => void;
 
@@ -52,6 +63,40 @@ export class Store {
   setMeta(patch: Partial<GameMeta>, origin: Origin = 'local'): void {
     Object.assign(this.state.meta, patch);
     this.emit({ origin, meta: true });
+  }
+
+  setObject(obj: BoardObject, origin: Origin = 'local'): void {
+    this.state.objects[obj.id] = obj;
+    this.emit({ origin, objectId: obj.id });
+  }
+
+  updateObject(id: string, patch: Partial<BoardObject>, origin: Origin = 'local'): void {
+    const obj = this.state.objects[id];
+    if (!obj) return;
+    Object.assign(obj, patch);
+    this.emit({ origin, objectId: id, objectPatch: patch });
+  }
+
+  removeObject(id: string, origin: Origin = 'local'): void {
+    if (!this.state.objects[id]) return;
+    delete this.state.objects[id];
+    this.emit({ origin, objectId: id, objectRemoved: true });
+  }
+
+  addLog(entry: LogEntry, origin: Origin = 'local'): void {
+    if (this.state.log.some((e) => e.id === entry.id)) return;
+    this.state.log.push(entry);
+    this.state.log.sort((a, b) => a.ts - b.ts);
+    this.emit({ origin, log: entry });
+  }
+
+  /** Kompletten Spielstand übernehmen (Laden einer Datei). */
+  loadState(s: Pick<GameState, 'units' | 'meta' | 'objects' | 'log'>, origin: Origin = 'local'): void {
+    this.state.units = s.units;
+    this.state.meta = s.meta;
+    this.state.objects = s.objects;
+    this.state.log = s.log;
+    this.emit({ origin, loaded: true });
   }
 
   /** Ersetzt alle Einheiten eines Spielers, z. B. beim erneuten Armeeimport. */

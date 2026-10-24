@@ -10,11 +10,19 @@
           }
         },
         "meta": {
-          ".read": "auth != null && (root.child('rooms').child($room).child('players/p1').val() === auth.uid || root.child('rooms').child($room).child('players/p2').val() === auth.uid)",
+          ".read": "auth != null",
           ".write": "auth != null && (root.child('rooms').child($room).child('players/p1').val() === auth.uid || root.child('rooms').child($room).child('players/p2').val() === auth.uid)"
         },
         "units": {
-          ".read": "auth != null && (root.child('rooms').child($room).child('players/p1').val() === auth.uid || root.child('rooms').child($room).child('players/p2').val() === auth.uid)",
+          ".read": "auth != null",
+          ".write": "auth != null && (root.child('rooms').child($room).child('players/p1').val() === auth.uid || root.child('rooms').child($room).child('players/p2').val() === auth.uid)"
+        },
+        "objects": {
+          ".read": "auth != null",
+          ".write": "auth != null && (root.child('rooms').child($room).child('players/p1').val() === auth.uid || root.child('rooms').child($room).child('players/p2').val() === auth.uid)"
+        },
+        "log": {
+          ".read": "auth != null",
           ".write": "auth != null && (root.child('rooms').child($room).child('players/p1').val() === auth.uid || root.child('rooms').child($room).child('players/p2').val() === auth.uid)"
         }
       }

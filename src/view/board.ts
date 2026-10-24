@@ -1,6 +1,7 @@
 import { Application, Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
+import { BoardTools } from './boardTools';
 import {
-  isJoined, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
+  isJoined, isNonUnitChange, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
 } from '../model/store';
 import type { History } from '../model/history';
 import type { Point, UnitState } from '../model/types';
@@ -39,18 +40,36 @@ type Drag =
   | UnitDrag
   | ModelDrag;
 
+/** Bewegungswert der Einheit: erster Zahlenwert in der M-Spalte (bei Reitern der des Reittiers). */
+function movement(u: UnitState): number | null {
+  for (const row of u.info.profile) {
+    const m = Number.parseInt(row.values[0], 10);
+    if (Number.isFinite(m)) return m;
+  }
+  return null;
+}
+
 /** Winkel auf (−π, π] bringen. */
 const normAngle = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
 
 export interface BoardEvents {
   onSelect(unitId: string | null): void;
+  onSelectObject(objectId: string | null): void;
   onAction(unitId: string, description: string): void;
 }
+
+/** Abstand, ab dem eine Einheit beim Loslassen an eine gegnerische Kante angelegt wird (Zoll) */
+const CHARGE_SNAP = 1;
 
 /** Spielfeld: Tisch, Einheiten, Kamera und Maussteuerung. */
 export class Board {
   readonly world = new Container();
+  readonly tools: BoardTools;
   private readonly unitLayer = new Container();
+  private readonly rangeLayer = new Container();
+  /** Bewegungs- und Angriffsreichweiten der ausgewählten Einheit anzeigen */
+  showRanges = false;
+  private viewOnly = false;
   private readonly guide = new Graphics();
   private readonly moveLabel = new Text({
     text: '',
@@ -68,9 +87,21 @@ export class Board {
     app.stage.hitArea = app.screen;
 
     this.moveLabel.anchor.set(0.5, 1);
-    this.world.addChild(createTable(table.width, table.height), this.guide, this.unitLayer, this.moveLabel);
+    this.tools = new BoardTools(store, history, {
+      toInches: (e) => this.toInches(e),
+      worldScale: () => this.world.scale.x,
+      setUnitsInteractive: (on) => { this.unitLayer.eventMode = on ? 'passive' : 'none'; },
+      onSelectObject: (id) => {
+        if (id && this.selectedId) this.select(null);
+        this.events.onSelectObject(id);
+      },
+    });
+    const t = this.tools;
+    this.world.addChild(createTable(table.width, table.height), t.zoneLayer, t.terrainLayer, this.guide,
+      this.rangeLayer, this.unitLayer, t.overlayLayer, t.toolLayer, this.moveLabel);
 
     app.stage.on('pointerdown', (e) => {
+      if (this.tools.handleStageDown(e)) return;
       this.drag = { type: 'pan', gx: e.global.x, gy: e.global.y, wx: this.world.x, wy: this.world.y, moved: false };
     });
     app.stage.on('globalpointermove', (e) => this.onPointerMove(e));
@@ -78,8 +109,9 @@ export class Board {
     app.stage.on('pointerupoutside', () => this.endDrag());
     app.canvas.addEventListener('wheel', (e) => this.onWheel(e), { passive: false });
 
-    store.subscribe((state, { unitId, patch, meta }) => {
-      if (meta) return;
+    store.subscribe((state, change) => {
+      if (isNonUnitChange(change)) return;
+      const { unitId, patch } = change;
       const u = unitId ? state.units[unitId] : undefined;
       // Anschließen/Verlassen ändert zwei Einheiten, Löschen/Import beliebig viele
       if (!u || (patch && 'joinedTo' in patch) || !patch) {
@@ -93,8 +125,24 @@ export class Board {
 
   select(unitId: string | null): void {
     this.selectedId = unitId;
+    if (unitId && this.tools.selectedId) this.tools.select(null);
     this.syncAll();
     this.events.onSelect(unitId);
+  }
+
+  /** Zuschauer: nur ansehen und auswählen, nichts bewegen */
+  get readOnly(): boolean {
+    return this.viewOnly;
+  }
+
+  set readOnly(on: boolean) {
+    this.viewOnly = on;
+    this.tools.readOnly = on;
+  }
+
+  setShowRanges(on: boolean): void {
+    this.showRanges = on;
+    this.drawRanges();
   }
 
   /** Charakter aus seiner Einheit lösen und vor deren Front stellen. */
@@ -127,6 +175,82 @@ export class Board {
       }
     }
     for (const u of Object.values(units)) this.syncUnit(u);
+    this.drawRanges();
+  }
+
+  /**
+   * Reichweiten der ausgewählten Einheit als Abstand um ihre Fläche:
+   * Bewegung (M), Marsch (2 × M) und größte mögliche Angriffsreichweite (M + 6, Swiftstride +3, Battle Hunger +2).
+   */
+  private drawRanges(): void {
+    this.rangeLayer.removeChildren().forEach((c) => c.destroy());
+    const units = this.store.state.units;
+    let u = this.selectedId ? units[this.selectedId] : undefined;
+    if (u?.joinedTo && units[u.joinedTo]) u = units[u.joinedTo];
+    if (!this.showRanges || !u) return;
+    const m = movement(u);
+    if (!m) return;
+    const has = (re: RegExp) => [...u.info.rules, ...u.info.items].some((r) => re.test(r.name));
+    const charge = m + 6 + (has(/swiftstride/i) ? 3 : 0) + (has(/battle hunger/i) ? 2 : 0);
+    const { w, h } = unitFootprint(u, units);
+    const c = new Container();
+    c.position.set(u.x * PPI, u.y * PPI);
+    c.rotation = u.rotation;
+    const g = new Graphics();
+    c.addChild(g);
+    const ranges: [number, string, number][] = [[m, `Bewegung ${m}″`, 0xffffff], [2 * m, `Marsch ${2 * m}″`, 0x9ab4d8],
+      [charge, `Angriff max. ${charge}″`, STRAY_COLOR]];
+    for (const [d, text, color] of ranges) {
+      const D = d * PPI;
+      g.roundRect((-w / 2) * PPI - D, (-h / 2) * PPI - D, w * PPI + 2 * D, h * PPI + 2 * D, D)
+        .stroke({ width: 1.5, color, alpha: 0.7 });
+      const t = new Text({ text, style: { fontFamily: 'system-ui', fontSize: 8, fill: color, stroke: { color: 0x000000, width: 2 } }, resolution: 6 });
+      t.anchor.set(0.5, 1);
+      t.position.set(0, (-h / 2) * PPI - D - 1);
+      c.addChild(t);
+    }
+    this.rangeLayer.addChild(c);
+  }
+
+  /**
+   * Angriff: Liegt die Frontmitte der Einheit nach dem Loslassen höchstens 1″ vor einer Kante einer
+   * gegnerischen Einheit, wird sie bündig und mittig an diese Kante angelegt.
+   */
+  private chargeSnap(unitId: string): string | null {
+    const units = this.store.state.units;
+    const u = units[unitId];
+    const me = unitFootprint(u, units);
+    const front = this.unitPoint(u, 0, -me.h / 2);
+    let best: { dist: number; target: UnitState; p: Point; n: Point; side: string } | null = null;
+    for (const t of Object.values(units)) {
+      if (t.owner === u.owner || isJoined(t, units) || t.status === 'destroyed' || t.status === 'fledOff') continue;
+      const { w, h } = unitFootprint(t, units);
+      // Kanten des Ziels: Mittelpunkt, Richtung entlang der Kante, Außennormale, halbe Länge
+      const edges: [string, Point, Point, number][] = [
+        ['die Front', { x: 0, y: -h / 2 }, { x: 0, y: -1 }, w / 2],
+        ['den Rücken', { x: 0, y: h / 2 }, { x: 0, y: 1 }, w / 2],
+        ['die linke Flanke', { x: -w / 2, y: 0 }, { x: -1, y: 0 }, h / 2],
+        ['die rechte Flanke', { x: w / 2, y: 0 }, { x: 1, y: 0 }, h / 2],
+      ];
+      const local = this.toUnitLocal(t, front);
+      for (const [side, mid, n, half] of edges) {
+        const along = n.x === 0 ? local.x - mid.x : local.y - mid.y;
+        const out = (local.x - mid.x) * n.x + (local.y - mid.y) * n.y;
+        if (Math.abs(along) > half + 0.5 || out < -0.5 || out > CHARGE_SNAP) continue;
+        const clamped = Math.max(-half, Math.min(half, along));
+        const lp = n.x === 0 ? { x: mid.x + clamped, y: mid.y } : { x: mid.x, y: mid.y + clamped };
+        const p = this.unitPoint(t, lp.x, lp.y);
+        const c = Math.cos(t.rotation);
+        const s = Math.sin(t.rotation);
+        const wn = { x: n.x * c - n.y * s, y: n.x * s + n.y * c };
+        if (!best || Math.abs(out) < best.dist) best = { dist: Math.abs(out), target: t, p, n: wn, side };
+      }
+    }
+    if (!best) return null;
+    // Eigene Front zeigt gegen die Außennormale der Zielkante; Mitte liegt eine halbe Tiefe dahinter
+    const rotation = Math.atan2(-best.n.x, best.n.y);
+    this.store.updateUnit(unitId, { x: best.p.x + best.n.x * (me.h / 2), y: best.p.y + best.n.y * (me.h / 2), rotation });
+    return `greift ${best.target.info.name} in ${best.side} an`;
   }
 
   /** Kamera auf einen Punkt (in Zoll) zentrieren. */
@@ -166,6 +290,7 @@ export class Board {
     // Angeschlossene Charaktere zeichnet ihre Einheit mit
     view.visible = !isJoined(u, units);
     if (view.visible) view.update(u, unitLayout(u, units), units, this.selectedId);
+    if (this.showRanges && this.selectedId === u.id) this.drawRanges();
   }
 
   /**
@@ -175,6 +300,10 @@ export class Board {
   private startUnitDrag(unitId: string, type: UnitDragType, e: FederatedPointerEvent, pivotSide = 1,
     selectId = unitId): void {
     e.stopPropagation();
+    if (this.viewOnly) {
+      if (this.selectedId !== selectId) this.select(selectId);
+      return;
+    }
     const units = this.store.state.units;
     const u = units[unitId];
     const p = this.toInches(e);
@@ -196,6 +325,10 @@ export class Board {
 
   private startModelDrag(unitId: string, key: string, e: FederatedPointerEvent, charId?: string): void {
     e.stopPropagation();
+    if (this.viewOnly) {
+      this.select(charId ?? unitId);
+      return;
+    }
     const units = this.store.state.units;
     const u = units[unitId];
     const layout = unitLayout(u, units);
@@ -228,6 +361,7 @@ export class Board {
   }
 
   private onPointerMove(e: FederatedPointerEvent): void {
+    if (this.tools.handleMove(e)) return;
     const d = this.drag;
     if (!d) return;
     if (!d.moved && Math.hypot(e.global.x - d.gx, e.global.y - d.gy) < DRAG_THRESHOLD) return;
@@ -271,6 +405,7 @@ export class Board {
   }
 
   private endDrag(): void {
+    if (this.tools.handleUp()) return;
     const d = this.drag;
     this.drag = null;
     if (!d) return;
@@ -305,7 +440,9 @@ export class Board {
       return;
     }
     const text = this.describe(d);
-    if (text) this.events.onAction(d.unitId, text);
+    const charge = d.type === 'move' ? this.chargeSnap(d.unitId) : null;
+    const all = [text, charge].filter(Boolean).join(' · ');
+    if (all) this.events.onAction(d.unitId, all);
   }
 
   /**

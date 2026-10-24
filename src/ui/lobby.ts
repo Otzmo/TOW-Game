@@ -1,12 +1,11 @@
 import type { Store } from '../model/store';
-import type { PlayerId } from '../model/types';
-import { isOnlineAvailable, normalizeCode, OnlineRoom } from '../net/room';
+import { isOnlineAvailable, normalizeCode, OnlineRoom, type Seat } from '../net/room';
 
 const $ = (id: string) => document.getElementById(id)!;
 
 /** Startbildschirm: Online-Spiel erstellen, beitreten oder offline üben. */
 export class Lobby {
-  constructor(private store: Store, private onOnline: (me: PlayerId) => void) {
+  constructor(private store: Store, private onOnline: (me: Seat, room: OnlineRoom) => void) {
     const create = $('lobby-create') as HTMLButtonElement;
     const join = $('lobby-join') as HTMLButtonElement;
     const input = $('lobby-code') as HTMLInputElement;
@@ -49,7 +48,7 @@ export class Lobby {
     history.replaceState(null, '', `#${room.code}`);
     $('room-status').hidden = false;
     $('room-code').textContent = room.code;
-    $('room-me').textContent = `Du: Spieler ${room.me === 'p1' ? 1 : 2}`;
+    $('room-me').textContent = room.me === 'spectator' ? 'Du schaust zu' : `Du: Spieler ${room.me === 'p1' ? 1 : 2}`;
     room.onOpponent((joined) => {
       const el = $('room-opponent');
       el.textContent = joined ? 'Gegner verbunden' : 'Warte auf Gegner …';
@@ -60,7 +59,7 @@ export class Lobby {
       $('room-copy').textContent = 'Kopiert ✓';
       setTimeout(() => { $('room-copy').textContent = 'Link kopieren'; }, 1500);
     };
-    this.onOnline(room.me);
+    this.onOnline(room.me, room);
   }
 
   private setBusy(busy: boolean): void {

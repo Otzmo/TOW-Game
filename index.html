@@ -8,19 +8,6 @@
 <body>
   <div id="app"></div>
 
-  <div id="gamebar">
-    <span id="g-round"></span>
-    <button id="g-end">Zug beenden</button>
-    <button id="g-undo" title="Rückgängig (Strg+Z)" disabled>↶ Rückgängig</button>
-    <button id="g-score-toggle">Siegpunkte</button>
-    <div id="g-confirm" hidden>
-      <span id="g-confirm-text"></span>
-      <button id="g-confirm-yes" class="primary">Trotzdem beenden</button>
-      <button id="g-confirm-no">Abbrechen</button>
-    </div>
-  </div>
-  <aside id="scoreboard" hidden></aside>
-
   <div id="toolbar">
     <button data-import="p1"><span class="dot p1"></span>Armee laden · Spieler 1</button>
     <button data-import="p2"><span class="dot p2"></span>Armee laden · Spieler 2</button>
@@ -32,6 +19,82 @@
       <button id="room-copy">Link kopieren</button>
     </div>
   </div>
+
+  <div id="gamebar">
+    <span id="g-round"></span>
+    <button id="g-end">Zug beenden</button>
+    <button id="g-undo" title="Rückgängig (Strg+Z)" disabled>↶ Rückgängig</button>
+    <button id="g-score-toggle">Siegpunkte</button>
+    <div id="g-confirm" hidden>
+      <span id="g-confirm-text"></span>
+      <button id="g-confirm-yes" class="primary">Trotzdem beenden</button>
+      <button id="g-confirm-no">Abbrechen</button>
+    </div>
+  </div>
+
+  <!-- Werkzeuge links -->
+  <nav id="toolbox" aria-label="Werkzeuge">
+    <button data-tool="select" title="Auswählen und ziehen (V)">Auswählen</button>
+    <button data-tool="measure" title="Maßband: auf dem Tisch ziehen (M)">Maßband</button>
+    <button data-tool="sight" title="Sichtlinie: auf dem Tisch ziehen (L)">Sichtlinie</button>
+    <hr>
+    <button data-sheet="terrain">Gelände ▸</button>
+    <button data-sheet="markers">Marker ▸</button>
+    <button data-sheet="templates">Schablonen ▸</button>
+    <button data-sheet="zones">Aufstellung ▸</button>
+    <hr>
+    <button data-sheet="dice" title="Würfel (W)">Würfel</button>
+    <button data-sheet="log">Protokoll <span id="log-badge" hidden></span></button>
+    <hr>
+    <button id="save-game">Speichern</button>
+    <button id="load-game">Laden</button>
+    <input type="file" id="load-file" accept=".json,application/json" hidden>
+    <button data-sheet="help">Hilfe</button>
+  </nav>
+  <p id="tool-hint" hidden></p>
+
+  <!-- Seitenfenster neben den Werkzeugen; immer nur eins offen -->
+  <aside class="sheet" id="sheet-score" hidden></aside>
+  <aside class="sheet" id="sheet-terrain" hidden><h3>Gelände setzen</h3><div class="pick" data-kind="terrain"></div>
+    <p class="meta">Wählen, dann auf den Tisch klicken. Ausgewähltes Gelände: am Kreis drehen, am Quadrat skalieren.</p></aside>
+  <aside class="sheet" id="sheet-markers" hidden><h3>Marker setzen</h3><div class="pick" data-kind="marker"></div>
+    <p class="meta">Wählen, dann auf den Tisch klicken. Im Fenster rechts lässt sich ein Text eintragen.</p></aside>
+  <aside class="sheet" id="sheet-templates" hidden><h3>Schablonen</h3><div class="pick" data-kind="template"></div>
+    <p class="meta">Wählen, dann auf den Tisch klicken. Die Flammenschablone am Kreis drehen; die Spitze zeigt nach vorn.</p></aside>
+  <aside class="sheet" id="sheet-zones" hidden><h3>Aufstellungszonen</h3><div id="zone-list"></div></aside>
+  <aside class="sheet" id="sheet-dice" hidden>
+    <h3>Würfel</h3>
+    <div class="dice-form">
+      <label>Anzahl W6 <input id="d-count" type="number" min="1" max="100" value="10"></label>
+      <label>Trifft auf <select id="d-hit"></select></label>
+      <label>Verwundet auf <select id="d-wound"></select></label>
+      <label>Rüstungswurf <select id="d-save"></select></label>
+      <label>Rettungswurf <select id="d-ward"></select></label>
+      <label class="full">Wofür? <input id="d-note" type="text" maxlength="60" placeholder="z. B. Chosen gegen Ritter"></label>
+    </div>
+    <button id="d-roll" class="primary wide">Würfeln</button>
+    <div class="dice-quick">
+      <button data-quick="1d6">W6</button><button data-quick="2d6">2W6</button><button
+        data-quick="1d3">W3</button><button data-quick="3d6">3W6</button>
+    </div>
+    <div id="d-result"></div>
+  </aside>
+  <aside class="sheet" id="sheet-log" hidden>
+    <h3>Protokoll &amp; Chat</h3>
+    <ol id="log-list"></ol>
+    <form id="chat-form"><input id="chat-input" type="text" maxlength="300" placeholder="Nachricht …" autocomplete="off"><button>Senden</button></form>
+  </aside>
+  <aside class="sheet" id="sheet-help" hidden>
+    <h3>Steuerung</h3>
+    <ul class="help-list">
+      <li><b>Einheit ziehen</b>: bewegen. Liegt die Front danach höchstens 1″ vor einer gegnerischen Kante, wird sie zum Angriff bündig angelegt.</li>
+      <li><b>Goldene Ecken ziehen</b>: schwenken. <b>Weißer Kreis</b>: um die Mitte drehen. <b>Shift</b>: 15°-Schritte.</li>
+      <li><b>Plänkler</b>: Modell ziehen = einzeln, Shift + ziehen = ganze Einheit.</li>
+      <li><b>Charakter</b> auf eine eigene Einheit ziehen: anschließen.</li>
+      <li><b>Maßband / Sichtlinie</b>: Werkzeug wählen und auf dem Tisch ziehen. <b>Esc</b> zurück zu Auswählen.</li>
+      <li><b>Mausrad</b>: Zoom. <b>Freien Tisch ziehen</b>: Ansicht verschieben. <b>Strg+Z</b>: rückgängig. <b>Entf</b>: Objekt löschen.</li>
+    </ul>
+  </aside>
 
   <div id="lobby">
     <div class="card">
@@ -56,11 +119,30 @@
     </div>
   </dialog>
 
-  <div id="help">
-    <b>Einheit ziehen</b> = bewegen · <b>Ecke ziehen</b> = schwenken · <b>Kreis ziehen</b> = um die Mitte drehen
-    (Shift = 15°-Schritte) · <b>Plänkler:</b> Modell ziehen = einzeln, Shift + ziehen = ganze Einheit ·
-    <b>Klick</b> = Details · <b>Mausrad</b> = Zoom · <b>Tisch ziehen</b> = Ansicht verschieben
-  </div>
+  <dialog id="load-dialog">
+    <h2>Spielstand laden</h2>
+    <p id="load-text" class="meta"></p>
+    <div class="actions">
+      <button id="load-cancel">Abbrechen</button>
+      <button id="load-confirm" class="primary">Laden und ersetzen</button>
+    </div>
+  </dialog>
+
+  <!-- Ausgewähltes Objekt (Gelände, Marker, Schablone) -->
+  <aside id="obj-panel" hidden>
+    <header>
+      <h2 id="o-name"></h2>
+      <button id="o-close" aria-label="Schließen">×</button>
+    </header>
+    <label class="field">Beschriftung <input id="o-label" type="text" maxlength="40"></label>
+    <div class="size-row" id="o-size-row">
+      <label class="field">Breite ″ <input id="o-w" type="number" min="0.5" step="0.5"></label>
+      <label class="field">Tiefe ″ <input id="o-h" type="number" min="0.5" step="0.5"></label>
+    </div>
+    <label class="field" id="o-rot-row">Drehung ° <input id="o-rot" type="number" step="15"></label>
+    <p class="meta" id="o-meta"></p>
+    <button id="o-delete" class="wide danger">Entfernen</button>
+  </aside>
 
   <aside id="panel" hidden>
     <header>
@@ -69,6 +151,7 @@
       <button id="p-close" aria-label="Schließen">×</button>
     </header>
     <p class="meta" id="p-meta"></p>
+    <label class="check"><input type="checkbox" id="p-ranges"> Bewegungs- und Angriffsreichweite zeigen</label>
     <div id="p-join"></div>
 
     <div id="p-vp">

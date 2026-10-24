@@ -1,0 +1,53 @@
+import type { Store } from '../model/store';
+import type { LogEntry } from '../model/types';
+import { diceHtml } from './dice';
+import { onSheetChange, openedSheet } from './sheets';
+
+const $ = (id: string) => document.getElementById(id)!;
+
+const escapeHtml = (s: string) =>
+  s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+
+const WHO: Record<LogEntry['by'], string> = { p1: 'Spieler 1', p2: 'Spieler 2', spectator: 'Zuschauer' };
+
+/** Gemeinsames Protokoll: Aktionen, Würfe, Zugwechsel und Chat. */
+export class LogPanel {
+  private unread = 0;
+
+  constructor(private store: Store, sendChat: (text: string) => void) {
+    $('chat-form').onsubmit = (e) => {
+      e.preventDefault();
+      const input = $('chat-input') as HTMLInputElement;
+      const text = input.value.trim();
+      if (text) sendChat(text);
+      input.value = '';
+    };
+    store.subscribe((_, c) => {
+      if (!c.log && !c.loaded) return;
+      if (c.log && openedSheet() !== 'log') this.unread++;
+      this.render();
+    });
+    onSheetChange((name) => {
+      if (name !== 'log') return;
+      this.unread = 0;
+      this.render();
+      ($('chat-input') as HTMLInputElement).focus();
+    });
+    this.render();
+  }
+
+  private render(): void {
+    const badge = $('log-badge');
+    badge.hidden = this.unread === 0;
+    badge.textContent = String(this.unread);
+    if ($('sheet-log').hidden) return;
+    const list = $('log-list');
+    list.innerHTML = this.store.state.log.slice(-200).map((e) => {
+      const time = new Date(e.ts).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+      const dice = e.dice?.length ? `<div class="log-dice">${e.dice.map((d) => diceHtml(d)).join('<span class="sep">→</span>')}</div>` : '';
+      return `<li class="log-${e.kind}"><span class="log-meta"><span class="dot ${e.by}"></span>${WHO[e.by]} · ${time}</span>` +
+        `<span class="log-text">${escapeHtml(e.text)}</span>${dice}</li>`;
+    }).join('') || '<li class="empty">Noch nichts passiert.</li>';
+    list.scrollTop = list.scrollHeight;
+  }
+}

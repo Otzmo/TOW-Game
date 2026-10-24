@@ -1,6 +1,6 @@
 import type { Store } from '../model/store';
 import {
-  canSkirmish, isJoined, isSkirmish, joinedCharacters, SKIRMISH_GAP, spreadPositions, unitLayout,
+  canSkirmish, isJoined, isNonUnitChange, isSkirmish, joinedCharacters, SKIRMISH_GAP, spreadPositions, unitLayout,
 } from '../model/store';
 import type { History } from '../model/history';
 import { hasStandard, unitVictoryPoints, wounds } from '../model/score';
@@ -22,6 +22,7 @@ export interface PanelActions {
   close(): void;
   select(unitId: string): void;
   detach(charId: string): void;
+  showRanges(on: boolean): void;
 }
 
 /** Seitenpanel mit allen Angaben zur ausgewählten Einheit. */
@@ -32,6 +33,7 @@ export class UnitPanel {
   constructor(private store: Store, private history: History, actions: PanelActions) {
     $('p-close').onclick = () => actions.close();
     $('p-rank').onclick = () => this.arrangeInRanks();
+    ($('p-ranges') as HTMLInputElement).onchange = (e) => actions.showRanges((e.target as HTMLInputElement).checked);
     $('p-status').onclick = (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
       if (btn) this.change({ status: (btn.dataset.status || null) as UnitStatus | null });
@@ -64,8 +66,9 @@ export class UnitPanel {
       if (btn.dataset.select) actions.select(btn.dataset.select);
       if (btn.dataset.detach) actions.detach(btn.dataset.detach);
     };
-    store.subscribe((_, { unitId, patch, meta }) => {
-      if (meta) return;
+    store.subscribe((_, change) => {
+      if (isNonUnitChange(change)) return;
+      const { unitId, patch } = change;
       if (!unitId || unitId === this.unitId || (patch && 'joinedTo' in patch)) this.render();
     });
   }

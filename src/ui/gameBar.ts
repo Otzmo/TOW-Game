@@ -1,6 +1,7 @@
 import { armyPoints, victoryPoints } from '../model/score';
 import { isSkirmish, unitLayout, type Store } from '../model/store';
-import type { PlayerId } from '../model/types';
+import type { LogKind, PlayerId } from '../model/types';
+import { onSheetChange, toggleSheet } from './sheets';
 
 const $ = (id: string) => document.getElementById(id)!;
 
@@ -13,18 +14,20 @@ const other = (p: PlayerId): PlayerId => (p === 'p1' ? 'p2' : 'p1');
 /** Leiste oben: Runde, Spieler am Zug, Zug beenden, Rückgängig und Siegpunkte. */
 export class GameBar {
   /** Online: der eigene Spieler; offline null (beide spielen am selben Bildschirm) */
-  private me: PlayerId | null = null;
+  private me: PlayerId | 'spectator' | null = null;
 
-  constructor(private store: Store, private undo: () => boolean, canUndo: () => boolean) {
+  constructor(private store: Store, private undo: () => boolean, canUndo: () => boolean,
+    private log: (kind: LogKind, text: string) => void) {
     $('g-end').onclick = () => this.requestEndTurn();
     $('g-confirm-yes').onclick = () => this.endTurn();
     $('g-confirm-no').onclick = () => { $('g-confirm').hidden = true; };
     $('g-undo').onclick = () => this.undo();
-    $('g-score-toggle').onclick = () => {
-      $('scoreboard').hidden = !$('scoreboard').hidden;
-      this.render();
-    };
-    $('scoreboard').onchange = (e) => {
+    $('g-score-toggle').onclick = () => toggleSheet('score');
+    onSheetChange((name) => {
+      $('g-score-toggle').classList.toggle('on', name === 'score');
+      if (name === 'score') this.render();
+    });
+    $('sheet-score').onchange = (e) => {
       const box = e.target as HTMLInputElement;
       if (!box.dataset.break) return;
       const breakBonus = { ...this.store.state.meta.breakBonus, [box.dataset.break]: box.checked };
@@ -44,7 +47,7 @@ export class GameBar {
     this.render();
   }
 
-  setOnlinePlayer(me: PlayerId): void {
+  setOnlinePlayer(me: PlayerId | 'spectator'): void {
     this.me = me;
     this.render();
   }
@@ -68,7 +71,9 @@ export class GameBar {
     $('g-confirm').hidden = true;
     const { round, active } = this.store.state.meta;
     // Nach Spieler 2 beginnt die nächste Runde
-    this.store.setMeta({ active: other(active), round: active === 'p2' ? round + 1 : round });
+    const next = { active: other(active), round: active === 'p2' ? round + 1 : round };
+    this.store.setMeta(next);
+    this.log('turn', `${playerName(active)} beendet den Zug · Runde ${next.round}, ${playerName(next.active)} am Zug`);
   }
 
   private render(): void {
@@ -80,8 +85,8 @@ export class GameBar {
 
     const score = { p1: victoryPoints(state, 'p1'), p2: victoryPoints(state, 'p2') };
     $('g-score-toggle').innerHTML = `Siegpunkte <b>${score.p1.total}</b> : <b>${score.p2.total}</b>`;
-    if ($('scoreboard').hidden) return;
-    $('scoreboard').innerHTML = (['p1', 'p2'] as const).map((p) => {
+    if ($('sheet-score').hidden) return;
+    $('sheet-score').innerHTML = '<h3>Siegpunkte</h3>' + (['p1', 'p2'] as const).map((p) => {
       const lines = score[p].lines.map((l) =>
         `<li><span>${escapeHtml(l.label)}</span><b>${l.vp}</b></li>`).join('') || '<li class="empty">noch keine</li>';
       return `<section>
