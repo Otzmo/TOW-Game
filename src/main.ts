@@ -94,7 +94,7 @@ async function start(): Promise<void> {
   const setup = new SetupPanel(store, history, () => seat, (entry) => addLog(entry));
   gameBar.setupBlocker = () => setup.blocker();
   gameBar.refresh();
-  const actions = new ActionControls(store, board, prompts, () => seat, (entry) => addLog(entry));
+  const actions = new ActionControls(store, board, prompts, () => seat);
   new DicePanel((entry) => addLog(entry), (targetId, wounds, save, ward, note) =>
     prompts.requestSaves(seat && seat !== 'spectator' ? seat : store.state.meta.active, targetId, wounds, save, ward, note));
   new DiceLog(store);
@@ -105,15 +105,14 @@ async function start(): Promise<void> {
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
   // Ganzen Tisch zeigen, auch nach jedem Armeeimport
-  // Freier Bereich zwischen der Spalte links und der Spalte rechts (ausgeblendete Spalten zählen nicht)
+  // Freier Bereich rechts neben der Spalte links; die Popup-Spalte rechts legt sich bei Bedarf darüber
   board.viewArea = () => {
     const margin = 34; // Platz für die Zoll-Leisten
     const left = document.getElementById('sidebar')!;
-    const right = document.getElementById('rightbar')!;
     return {
       left: (views.hidden('left') ? 0 : left.getBoundingClientRect().right) + margin,
       top: margin,
-      right: (views.hidden('right') ? app.screen.width : right.getBoundingClientRect().left) - margin,
+      right: app.screen.width - margin,
       bottom: app.screen.height - margin,
     };
   };

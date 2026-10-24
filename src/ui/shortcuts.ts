@@ -34,6 +34,8 @@ interface Shortcut {
 const ctrl = (e: KeyboardEvent) => e.ctrlKey || e.metaKey;
 /** Element, auf dem die Taste gedrückt wurde (kann auch das Fenster sein) */
 const targetEl = (e: KeyboardEvent) => (e.target instanceof HTMLElement ? e.target : null);
+/** Nach der Aufstellung gibt es Gelände und Battlefield nicht mehr (siehe gameBar) */
+const inBattle = () => document.body.classList.contains('battle');
 const isTyping = (e: KeyboardEvent) => !!targetEl(e)?.closest('input, textarea, select');
 const plain = (e: KeyboardEvent) => !ctrl(e) && !e.altKey;
 /** Buchstabentaste ohne Strg/Alt; Umschalt optional bzw. verlangt */
@@ -68,7 +70,7 @@ export class Shortcuts {
         match: (e) => e.key === 'Escape', whileTyping: true, run: (e) => this.escape(e) },
       { group: 'View', keys: [['H']], desc: 'Hide / show all panels', match: letter('h'), run: () => views.toggleAll() },
       { group: 'View', keys: [['[']], desc: 'Hide / show the left column', match: char('['), run: () => views.toggle('left') },
-      { group: 'View', keys: [[']']], desc: 'Hide / show the right column', match: char(']'), run: () => views.toggle('right') },
+      { group: 'View', keys: [[']']], desc: 'Hide / show the popup column on the right', match: char(']'), run: () => views.toggle('right') },
       { group: 'General', keys: [['?'], ['F1']], desc: 'Show these shortcuts',
         match: (e) => char('?')(e) || e.key === 'F1', run: () => toggleSheet('keys') },
 
@@ -76,30 +78,27 @@ export class Shortcuts {
       { group: 'Tools', keys: [['V']], desc: 'Select and drag', match: letter('v'), run: () => tools.setTool('select') },
       { group: 'Tools', keys: [['M']], desc: 'Measuring tape', match: letter('m'), run: () => tools.setTool('measure') },
       { group: 'Tools', keys: [['L']], desc: 'Line of sight', match: letter('l'), run: () => tools.setTool('sight') },
-      { group: 'Tools', keys: [['G']], desc: 'Place terrain', match: letter('g'), run: () => toggleSheet('terrain') },
+      { group: 'Tools', keys: [['G']], desc: 'Place terrain (setup only)', match: letter('g'), run: () => { if (!inBattle()) toggleSheet('terrain'); } },
       { group: 'Tools', keys: [['K']], desc: 'Place markers', match: letter('k'), run: () => toggleSheet('markers') },
       { group: 'Tools', keys: [['B']], desc: 'Templates', match: letter('b'), run: () => toggleSheet('templates') },
-      { group: 'Tools', keys: [['A']], desc: 'Battlefield & setup (random generator)', match: letter('a'), run: () => toggleSheet('battlefield') },
+      { group: 'Tools', keys: [['A']], desc: 'Battlefield & setup (setup only)', match: letter('a'), run: () => { if (!inBattle()) toggleSheet('battlefield'); } },
 
       // Fenster und Spiel
-      { group: 'Game', keys: [['W']], desc: 'Dice (right): enter number', match: letter('w'), run: () => {
+      { group: 'Game', keys: [['W']], desc: 'Dice (left): enter number', match: letter('w'), run: () => {
         const input = $('d-count') as HTMLInputElement;
         input.focus();
         input.select();
       } },
-      { group: 'Game', keys: [['Enter']], desc: 'In the dice column: roll',
+      { group: 'Game', keys: [['Enter']], desc: 'In the dice area: roll',
         match: (e) => e.key === 'Enter' && plain(e) && !!targetEl(e)?.closest('#dicebar'),
         whileTyping: true, run: () => ($('d-roll') as HTMLButtonElement).click() },
-      { group: 'Game', keys: [['Z']], desc: 'Magic (right): enter the spell', match: letter('z'), run: () => {
-        (document.getElementById('m-spell') as HTMLInputElement).focus();
-      } },
       { group: 'Game', keys: [['J']], desc: 'Declare charge (then click the target)', match: letter('j'), run: () => actions.declareCharge() },
       { group: 'Game', keys: [['P']], desc: 'Log', match: letter('p'), run: () => toggleSheet('log') },
       { group: 'Game', keys: [['C']], desc: 'Write a chat message', match: letter('c'), run: () => {
         openSheet('log');
         ($('chat-input') as HTMLInputElement).focus();
       } },
-      { group: 'Game', keys: [['S']], desc: 'Victory Points (right): close sheet and selection', match: letter('s'), run: () => {
+      { group: 'Game', keys: [['S']], desc: 'Close sheet and selection', match: letter('s'), run: () => {
         openSheet(null);
         board.select(null);
       } },

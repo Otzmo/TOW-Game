@@ -415,19 +415,19 @@ body.sheet-open .bottom-panel { display: none; }
 .row-btns { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
 @media (max-width: 900px) { .setup-cols { grid-template-columns: 1fr; } }
 
-/* ==== Layout: Spalte links (Ablauf, Werkzeuge), Tisch in der Mitte, Spalte rechts (Infos oben, Würfel unten) ====
+/* ==== Layout: links alles (Ablauf, Werkzeuge, Siegpunkte, Würfel), rechts nur Popups, dazwischen der Tisch ====
    Alles passt sich an die Fenstergröße an: Spaltenbreiten und Schriftgrößen wachsen mit dem Fenster,
    in den Spalten scrollt jeder Bereich für sich, nichts liegt fest übereinander. */
 :root {
-  --side: clamp(170px, 14vw, 280px);
-  --right: clamp(260px, 22vw, 440px);
+  --side: clamp(220px, 17vw, 330px);
+  --right: clamp(280px, 24vw, 460px);
   /* Schriftfaktor: setzt main.ts je nach Fensterbreite (kleine Fenster kleiner, große Monitore größer) */
   --ui: 1;
   --lw: var(--side);
-  --rw: var(--right);
+  /* Die Popup-Spalte legt sich über den Tisch, sie verkleinert ihn nicht */
+  --rw: 0px;
 }
 body.hide-left { --lw: 0px; }
-body.hide-right { --rw: 0px; }
 body.hide-left #sidebar, body.hide-right #rightbar { display: none; }
 
 #sidebar { width: var(--side); }
@@ -435,8 +435,11 @@ body.hide-left #sidebar, body.hide-right #rightbar { display: none; }
 #rightbar {
   position: fixed; top: 0; right: 0; bottom: 0; width: var(--right); display: flex; flex-direction: column;
   background: rgba(20, 22, 24, .97); border-left: 1px solid var(--line); z-index: 2;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, .45);
 }
-#right-top { position: relative; flex: 1 1 58%; min-height: 0; border-bottom: 1px solid var(--line); }
+/* Ohne offenes Popup ist die rechte Spalte nicht da */
+#rightbar:not(:has(> #right-top > :not([hidden]))) { display: none; }
+#right-top { position: relative; flex: 1 1 auto; min-height: 0; }
 #right-top > .info-panel, #right-top > .bottom-panel, #right-top > .sheet {
   position: absolute; inset: 0; width: auto; height: auto; max-height: none; margin: 0; overflow-y: auto;
   border: 0; border-radius: 0; background: var(--panel); padding: 12px 14px;
@@ -445,11 +448,17 @@ body.hide-left #sidebar, body.hide-right #rightbar { display: none; }
 #right-top > .bottom-panel { z-index: 2; display: block; }
 #right-top > .bottom-panel[hidden] { display: none; }
 #right-top > .sheet { z-index: 3; }
-#dicebar {
-  position: static; top: auto; right: auto; bottom: auto; width: auto; flex: 1 1 42%; min-height: 0;
-  overflow-y: auto; border: 0; background: transparent; z-index: auto;
+/* Siegpunkte und Würfel in der linken Spalte */
+#score-panel, #dicebar {
+  position: static; top: auto; right: auto; bottom: auto; width: auto; height: auto; flex: none; min-height: 0;
+  overflow: visible; padding: 10px 0 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; z-index: auto;
 }
-#dice-log { min-height: 0; flex: none; overflow: visible; }
+#sidebar #score-panel h3:first-child, #sidebar #dicebar > h3:first-child { margin-top: 0; }
+#dice-log { min-height: 0; max-height: 40vh; flex: none; overflow-y: auto; }
+#sidebar .dice-form { margin-bottom: 8px; }
+#sidebar .dice-form label { font-size: calc(12px * var(--ui)); }
+#sidebar button.wide { text-align: center; }
+#sidebar .dice-quick button { text-align: center; padding: 6px 0; }
 
 /* Einheiten- und Objektleiste: eine Spalte untereinander */
 .bottom-panel header { display: flex; flex-wrap: wrap; align-items: center; padding-right: 24px; }
@@ -518,7 +527,8 @@ table.profile th, table.profile td { padding: 3px 2px; }
 .g-player .army { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Nach der Aufstellung: Armee laden, Gelände und Battlefield ausblenden */
-body.battle [data-import], body.battle #toolbox [data-sheet="battlefield"], body.battle #toolbox [data-sheet="terrain"] { display: none; }
+body.battle [data-import], body.battle [data-setup="nomansland"], body.battle #toolbox [data-sheet="battlefield"],
+body.battle #toolbox [data-sheet="terrain"] { display: none; }
 #lobby { z-index: 20; }
 
 /* Spalten ein- und ausblenden: kleine Knöpfe oben über dem Tisch */

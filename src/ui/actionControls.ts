@@ -1,9 +1,7 @@
-import { roll, wizardLevel } from '../model/flow';
 import { currentPhase, currentSub, SUB_DECLARE } from '../model/phases';
 import type { Store } from '../model/store';
-import type { LogEntry, PlayerId, UnitState } from '../model/types';
+import type { PlayerId, UnitState } from '../model/types';
 import type { Board } from '../view/board';
-import { diceHtml } from './dice';
 import type { PromptCenter } from './prompts';
 import { TEST_TYPES } from './prompts';
 import { onSheetChange } from './sheets';
@@ -15,7 +13,7 @@ const esc = (s: string) =>
 
 /**
  * Bedienelemente, die Abläufe mit dem Gegner auslösen: Angriff ansagen, Test verlangen,
- * Zauber wirken und Treffer an den Gegner zum Rüstungswurf geben.
+ * Ziel für Treffer, deren Rüstungswurf der Gegner macht.
  */
 export class ActionControls {
   constructor(
@@ -23,20 +21,16 @@ export class ActionControls {
     private board: Board,
     private prompts: PromptCenter,
     private seat: () => PlayerId | 'spectator' | null,
-    private log: (entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>) => void,
   ) {
     sel('p-test-type').innerHTML = Object.entries(TEST_TYPES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
     sel('p-test-mod').innerHTML = [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3]
       .map((n) => `<option value="${n}" ${n === 0 ? 'selected' : ''}>Ld ${n > 0 ? '+' : n < 0 ? '−' : '±'}${Math.abs(n)}</option>`).join('');
-    sel('m-value').innerHTML = Array.from({ length: 10 }, (_, i) => i + 3)
-      .map((n) => `<option value="${n}" ${n === 7 ? 'selected' : ''}>${n}+</option>`).join('');
 
     $('p-charge').onclick = () => this.declareCharge();
     $('p-test').onclick = () => {
       const id = this.board.selectedId;
       if (id) this.prompts.requestTest(this.me(), id, sel('p-test-type').value, Number(sel('p-test-mod').value));
     };
-    $('m-cast').onclick = () => this.cast();
 
     store.subscribe(() => this.refresh());
     onSheetChange(() => this.refresh());
@@ -91,21 +85,6 @@ export class ActionControls {
     return this.prompts.unsentCharges().find((c) => c.charger === host.id)?.id ?? null;
   }
 
-  private cast(): void {
-    const caster = this.store.state.units[sel('m-wizard').value];
-    if (!caster) return;
-    const spell = ($('m-spell') as HTMLInputElement).value.trim() || 'Spell';
-    const value = Number(sel('m-value').value);
-    const bonus = Math.ceil(wizardLevel(caster) / 2);
-    const dice = roll(2);
-    const result = dice[0] + dice[1] + bonus;
-    const ok = result >= value;
-    const text = `${caster.info.name} casts “${spell}”: ${dice.join(' + ')} + ${bonus} = ${result} vs ${value}+ – ${ok ? 'cast, the opponent may dispel' : 'casting failed'}`;
-    this.log({ kind: 'roll', text, dice: [dice] });
-    $('m-result').innerHTML = `${diceHtml(dice)} <span>${esc(text)}</span>`;
-    if (ok) this.prompts.requestDispel(caster, spell, result, value);
-  }
-
   /** Auswahllisten und Knöpfe an Auswahl, Phase und eigenen Platz anpassen. */
   private refresh(): void {
     const { units } = this.store.state;
@@ -126,8 +105,5 @@ export class ActionControls {
       if (list.some((u) => u.id === keep)) box.value = keep;
     };
     fill('d-target', Object.values(units).filter((u) => !own(u)), '– (roll saves yourself)');
-    const wizards = Object.values(units).filter((u) => own(u) && wizardLevel(u) > 0);
-    fill('m-wizard', wizards, wizards.length ? '– choose a Wizard –' : 'No Wizards');
-    if (wizards.length === 1) sel('m-wizard').value = wizards[0].id;
   }
 }

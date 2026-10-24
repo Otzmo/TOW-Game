@@ -122,7 +122,7 @@ function commandCode(optionId: string): string {
  * Geladene Armee im Niemandsland (Tischmitte) ablegen, damit man sieht, dass sie noch nicht
  * aufgestellt ist: Spieler 1 in Reihen ab der Mitte nach unten, Spieler 2 ab der Mitte nach oben.
  */
-function deploy(units: UnitState[], owner: PlayerId, table: { width: number; height: number }): void {
+export function deploy(units: UnitState[], owner: PlayerId, table: { width: number; height: number }): void {
   const gap = 1;
   let x = 4;
   let row = 0;

@@ -1,6 +1,7 @@
 import {
   DEPLOYMENTS, deploymentZones, generateBattlefield, MISSIONS, missionByKey, SCORING_RULES, TERRAIN_RULES,
 } from '../model/battlefield';
+import { deploy } from '../data/importer';
 import { roll } from '../model/flow';
 import type { History } from '../model/history';
 import { OBJECT_TYPES, pointInPolygon } from '../model/objects';
@@ -38,6 +39,7 @@ export class SetupPanel {
   ) {
     $('setup-options').innerHTML = this.optionsHtml();
     $('sheet-battlefield').onclick = (e) => this.onClick(e);
+    $('toolbar').addEventListener('click', (e) => this.onClick(e));
     let lastKey = '';
     store.subscribe((state, c) => {
       if (!c.meta && !c.loaded && !c.objectId && !c.unitId && !c.replacedOwner) return;
@@ -45,7 +47,7 @@ export class SetupPanel {
       const key = `${currentPhase(state.meta)}-${currentSub(state.meta)}`;
       if (key !== lastKey && currentPhase(state.meta) === 'setup' && (c.meta || c.loaded)) openSheet('battlefield');
       // Schlacht beginnt: das Fenster schließt sich, sein Knopf ist dann ausgeblendet
-      if (key !== lastKey && currentPhase(state.meta) !== 'setup' && openedSheet() === 'battlefield') openSheet(null);
+      if (key !== lastKey && currentPhase(state.meta) !== 'setup' && ['battlefield', 'terrain'].includes(openedSheet() ?? '')) openSheet(null);
       lastKey = key;
       this.render();
     });
@@ -108,6 +110,20 @@ export class SetupPanel {
     this.log({ kind: 'turn', text: `Battlefield: ${DEPLOYMENTS[s.deployment!]} · ${[missionByKey(s.missionTurn), missionByKey(s.missionGame)].filter(Boolean).map((m) => m!.name).join(' + ') || 'no mission'} · ${result.objects.filter((o) => o.kind === 'terrain').length} terrain features` });
   }
 
+  /** Alle Einheiten zurück ins Niemandsland (wie nach dem Laden der Armee) */
+  private toNoMansLand(): void {
+    const { units, table } = this.store.state;
+    this.history.record();
+    for (const owner of ['p1', 'p2'] as const) {
+      if (!this.mayAct(owner)) continue;
+      // Angeschlossene Charaktere ziehen mit ihrer Einheit mit
+      const list = Object.values(units).filter((u) => u.owner === owner && !isJoined(u, units)).map((u) => ({ ...u }));
+      deploy(list, owner, table);
+      for (const u of list) this.store.updateUnit(u.id, { x: u.x, y: u.y, rotation: u.rotation });
+    }
+    this.log({ kind: 'action', text: 'All units moved back to no man\'s land' });
+  }
+
   private clearTerrain(): void {
     this.history.record();
     for (const o of Object.values(this.store.state.objects)) if (o.kind === 'terrain' || o.type === 'objective') this.store.removeObject(o.id);
@@ -134,6 +150,7 @@ export class SetupPanel {
     const act = btn.dataset.setup!;
     if (act === 'randomise') this.randomise();
     else if (act === 'clear') this.clearTerrain();
+    else if (act === 'nomansland') this.toNoMansLand();
     else if (act === 'roll-attacker') {
       const r = this.rollOff();
       this.setSetup({ rollOff: r.rolls, rollWinner: r.winner, defender: null });

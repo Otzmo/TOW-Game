@@ -30,6 +30,7 @@
     <div id="toolbar">
       <button data-import="p1"><span class="dot p1"></span>Load army · Player 1</button>
       <button data-import="p2"><span class="dot p2"></span>Load army · Player 2</button>
+      <button data-setup="nomansland" title="Setup only: put every unit back into no man's land">↺ All units to no man's land</button>
       <input type="file" id="import-file" accept=".json,application/json" hidden>
       <div id="room-status" hidden>
         <span id="room-code"></span>
@@ -56,11 +57,33 @@
       <input type="file" id="load-file" accept=".json,application/json" hidden>
       <button data-sheet="keys" title="All keyboard shortcuts (?)">Shortcuts</button>
     </nav>
+    <!-- Siegpunkte: Killpoints und Missionspunkte -->
+    <section id="score-panel"></section>
+    <!-- Würfel und Würfelprotokoll -->
+    <section id="dicebar">
+      <h3>Dice</h3>
+      <div class="dice-form">
+        <label>Number of D6 <input id="d-count" type="number" min="1" max="100" value="10"></label>
+        <label>To Hit <select id="d-hit"></select></label>
+        <label>To Wound <select id="d-wound"></select></label>
+        <label>Armour Save <select id="d-save"></select></label>
+        <label>Ward save <select id="d-ward"></select></label>
+        <label class="full">Note <input id="d-note" type="text" maxlength="60" placeholder="e.g. Chosen vs. Knights"></label>
+        <label class="full">Target (opponent rolls saves) <select id="d-target"></select></label>
+      </div>
+      <button id="d-roll" class="primary wide">Roll</button>
+      <div class="dice-quick">
+        <button data-quick="1d6">D6</button><button data-quick="2d6">2D6</button><button
+          data-quick="1d3">D3</button><button data-quick="3d6">3D6</button>
+      </div>
+      <div id="d-result"></div>
+      <h3>Dice log</h3>
+      <ol id="dice-log"></ol>
+    </section>
   </aside>
-  <!-- Rechte Spalte: oben Siegpunkte als Grundanzeige, darüber Einheit, Objekt, Fenster und Aufforderungen; unten Würfel und Magie -->
+  <!-- Rechte Spalte: nur Popups (Einheit, Objekt, Fenster, Aufforderungen, Hinweise); leer = ausgeblendet -->
   <aside id="rightbar">
     <div id="right-top">
-  <aside id="score-panel" class="info-panel"></aside>
   <!-- Aufforderung an mich (Reaktion, Rüstungswurf, Bannen …) bzw. Ergebnis -->
   <section id="prompt-card" hidden>
     <header id="prompt-head"></header>
@@ -199,35 +222,6 @@
     </div>
   </aside>
     </div>
-  <!-- Rechte Seite unten: Würfel, Magie und Würfelprotokoll -->
-  <aside id="dicebar">
-    <h3>Dice</h3>
-    <div class="dice-form">
-      <label>Number of D6 <input id="d-count" type="number" min="1" max="100" value="10"></label>
-      <label>To Hit <select id="d-hit"></select></label>
-      <label>To Wound <select id="d-wound"></select></label>
-      <label>Armour Save <select id="d-save"></select></label>
-      <label>Ward save <select id="d-ward"></select></label>
-      <label class="full">Note <input id="d-note" type="text" maxlength="60" placeholder="e.g. Chosen vs. Knights"></label>
-      <label class="full">Target (opponent rolls saves) <select id="d-target"></select></label>
-    </div>
-    <button id="d-roll" class="primary wide">Roll</button>
-    <div class="dice-quick">
-      <button data-quick="1d6">D6</button><button data-quick="2d6">2D6</button><button
-        data-quick="1d3">D3</button><button data-quick="3d6">3D6</button>
-    </div>
-    <div id="d-result"></div>
-    <h3>Magic</h3>
-    <div class="dice-form">
-      <label>Wizard <select id="m-wizard"></select></label>
-      <label>Casting value <select id="m-value"></select></label>
-      <label class="full">Spell <input id="m-spell" type="text" maxlength="60" placeholder="e.g. Blue Fire"></label>
-    </div>
-    <button id="m-cast" class="primary wide">Casting roll</button>
-    <p class="meta" id="m-result"></p>
-    <h3>Dice log</h3>
-    <ol id="dice-log"></ol>
-  </aside>
   </aside>
   <!-- Ein- und Ausblenden der Spalten -->
   <div id="view-toggles">
