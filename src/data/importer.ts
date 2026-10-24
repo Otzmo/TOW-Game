@@ -99,15 +99,40 @@ function itemCost(item: FactionData['items'][string], isCharacter: boolean, mode
 
 const factionCache = new Map<string, FactionData>();
 
+/** JSON laden; null, wenn die Datei fehlt (der Entwicklungsserver liefert dann eine HTML-Seite) */
+async function fetchJson<T>(file: string): Promise<T | null> {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}data/${file}`);
+    return res.ok ? ((await res.json()) as T) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Ähnlichste vorhandene Fraktion: die meisten gemeinsamen Wörter der Kennung (z. B. "empire" → "empire-of-man") */
+function bestFaction(slug: string, index: { slug: string }[]): string | null {
+  const words = slug.split('-').filter((w) => w.length > 2 && !['and', 'the', 'of'].includes(w));
+  let best: { slug: string; score: number } | null = null;
+  for (const f of index) {
+    const score = words.filter((w) => f.slug.includes(w)).length;
+    if (score > 0 && (!best || score > best.score)) best = { slug: f.slug, score };
+  }
+  return best?.slug ?? null;
+}
+
 async function loadFaction(slug: string): Promise<FactionData> {
   const cached = factionCache.get(slug);
   if (cached) return cached;
-  const res = await fetch(`${import.meta.env.BASE_URL}data/${slug}.json`);
-  if (!res.ok) {
+  let data = await fetchJson<FactionData>(`${slug}.json`);
+  if (!data) {
+    // Kennung der Armeeliste weicht vom Dateinamen ab: in der Übersicht nach der passenden Fraktion suchen
+    const match = bestFaction(slug, (await fetchJson<{ slug: string }[]>('factions.json')) ?? []);
+    if (match) data = await fetchJson<FactionData>(`${match}.json`);
+  }
+  if (!data) {
     throw new Error(`There is no data for the faction "${slug}" yet. ` +
       `Run in the project folder: node scripts/fetch-faction.mjs ${slug}`);
   }
-  const data = (await res.json()) as FactionData;
   factionCache.set(slug, data);
   return data;
 }
