@@ -81,13 +81,19 @@ async function start(): Promise<void> {
     };
     const left = px('--side');
     const bottom = px('--bottom') + 12;
-    const margin = 36; // Platz für die Zoll-Leisten
+    const margin = 30; // Platz für die Zoll-Leisten
     const areaW = app.screen.width - left;
     const areaH = app.screen.height - bottom;
     const fit = Math.min((areaW - 2 * margin) / (width * PPI), (areaH - 2 * margin) / (height * PPI));
+    // Tisch liegt unten links an Hilfsmittel-Spalte und Einheitenleiste an
     board.world.scale.set(fit);
-    board.world.position.set(left + (areaW - width * PPI * fit) / 2, (areaH - height * PPI * fit) / 2);
+    board.world.position.set(left + margin, areaH - margin - height * PPI * fit);
   };
+  let resizeTimer = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(showTable, 100);
+  });
   new ImportDialog(store, () => {
     history.clear();
     showTable();
