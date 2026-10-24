@@ -68,6 +68,30 @@ export function movementOf(u: UnitState): number {
 }
 
 /** Moralwert: höchster Ld-Wert im Profil. */
+const STAT_INDEX = { M: 0, WS: 1, BS: 2, S: 3, T: 4, W: 5, I: 6, A: 7, Ld: 8 } as const;
+
+/** Profilwert der ersten Profilzeile als Zahl (0, wenn er fehlt oder kein Wert ist) */
+export function statOf(u: UnitState, key: keyof typeof STAT_INDEX): number {
+  const v = Number.parseInt(u.info.profile[0]?.values[STAT_INDEX[key]] ?? '', 10);
+  return Number.isFinite(v) ? v : 0;
+}
+
+/** Trefferwurf beim Schießen: BS 1 = 6+, BS 2 = 5+, BS 3 = 4+, BS 4 = 3+, BS 5+ = 2+ */
+export const toHitShooting = (bs: number) => Math.min(6, Math.max(2, 7 - bs));
+
+/** Trefferwurf im Nahkampf: höheres WS 3+, mehr als doppeltes WS des Gegners 5+, sonst 4+ */
+export function toHitCombat(ws: number, enemyWs: number): number {
+  if (ws > enemyWs) return 3;
+  if (enemyWs > 2 * ws) return 5;
+  return 4;
+}
+
+/** Verwundungswurf: Stärke gegen Widerstand */
+export function toWound(s: number, t: number): number {
+  const d = s - t;
+  return d >= 2 ? 2 : d === 1 ? 3 : d === 0 ? 4 : d === -1 ? 5 : 6;
+}
+
 export function leadershipOf(u: UnitState): number {
   const values = u.info.profile.map((r) => Number.parseInt(r.values[8], 10)).filter(Number.isFinite);
   return values.length ? Math.max(...values) : 7;

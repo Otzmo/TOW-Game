@@ -188,8 +188,8 @@ export class Board {
     this.drawCharges();
   }
 
-  /** Angriff ansagen: Hinweis zeigen und den nächsten Klick auf eine gegnerische Einheit abwarten. */
-  startChargePick(chargerId: string, onPick: (targetId: string) => void): void {
+  /** Ziel wählen (Angriff, Beschuss, Nahkampf): Hinweis zeigen und den nächsten Klick auf eine gegnerische Einheit abwarten. */
+  startChargePick(chargerId: string, onPick: (targetId: string) => void, action = 'Charge'): void {
     const charger = this.store.state.units[chargerId];
     if (!charger) return;
     this.tools.setTool('select');
@@ -198,7 +198,7 @@ export class Board {
       if (t && t.owner !== charger.owner) onPick(id);
     };
     const hint = document.getElementById('tool-hint')!;
-    hint.textContent = `Charge by ${charger.info.name}: click an enemy unit · Esc to cancel`;
+    hint.textContent = `${action} by ${charger.info.name}: click an enemy unit · Esc to cancel`;
     hint.hidden = false;
   }
 

@@ -27,6 +27,7 @@ export class ActionControls {
       .map((n) => `<option value="${n}" ${n === 0 ? 'selected' : ''}>Ld ${n > 0 ? '+' : n < 0 ? '−' : '±'}${Math.abs(n)}</option>`).join('');
 
     $('p-charge').onclick = () => this.declareCharge();
+    $('p-attack').onclick = () => this.attack();
     $('p-test').onclick = () => {
       const id = this.board.selectedId;
       if (id) this.prompts.requestTest(this.me(), id, sel('p-test-type').value, Number(sel('p-test-mod').value));
@@ -41,6 +42,34 @@ export class ActionControls {
   private me(): PlayerId {
     const s = this.seat();
     return s && s !== 'spectator' ? s : this.store.state.meta.active;
+  }
+
+  /**
+   * Beschuss (Fernkampfphase) oder Nahkampf: Ziel anklicken, dann führen Popups durch Treffer- und
+   * Verwundungswurf; der Gegner macht danach Rüstungs-, Rettungs- und Regenerationswurf.
+   */
+  attack(): void {
+    const reason = this.attackBlocked();
+    if (reason) return;
+    const units = this.store.state.units;
+    const id = this.board.selectedId!;
+    const attackerId = units[id]?.joinedTo && units[units[id].joinedTo!] ? units[id].joinedTo! : id;
+    const mode = currentPhase(this.store.state.meta) === 'shooting' ? 'shooting' : 'combat';
+    this.board.startChargePick(attackerId, (targetId) => this.prompts.startAttack(this.me(), attackerId, targetId, mode),
+      mode === 'shooting' ? 'Shooting' : 'Attack');
+  }
+
+  private attackBlocked(): string | null {
+    const { units, meta } = this.store.state;
+    const u = this.board.selectedId ? units[this.board.selectedId] : undefined;
+    if (!u) return 'Select one of your units first.';
+    const host = u.joinedTo && units[u.joinedTo] ? units[u.joinedTo] : u;
+    const phase = currentPhase(meta);
+    if (phase !== 'shooting' && phase !== 'combat') return 'Attacks are made in the Shooting phase (shooting) or the Combat phase (combat).';
+    if (this.seat() && this.seat() !== host.owner) return 'Online, each player attacks only with their own units.';
+    if (phase === 'shooting' && host.owner !== meta.active) return 'Only the active player shoots.';
+    if (host.status === 'fleeing') return 'Fleeing units cannot attack.';
+    return null;
   }
 
   /** Angriff ansagen: nur eigene Einheit in der eigenen Bewegungsphase. */
@@ -97,6 +126,12 @@ export class ActionControls {
     btn.title = withdraw ? 'Withdraw the charge while declaring' : blocked ?? 'Then click the enemy unit to charge (J)';
     // Warum der Knopf gesperrt ist, steht direkt darunter
     $('p-charge-why').textContent = withdraw ? '' : blocked ?? '';
+    const attackBlocked = this.attackBlocked();
+    const attackBtn = $('p-attack') as HTMLButtonElement;
+    attackBtn.textContent = currentPhase(this.store.state.meta) === 'combat' ? '⚔ Attack in combat' : '🎯 Shoot';
+    attackBtn.disabled = !!attackBlocked;
+    attackBtn.title = attackBlocked ?? 'Then click the enemy unit (To Hit, To Wound, then the opponent rolls saves)';
+    $('p-attack-why').textContent = attackBlocked ?? '';
 
     const own = (u: UnitState) => u.owner === me;
     const fill = (id: string, list: UnitState[], empty: string) => {

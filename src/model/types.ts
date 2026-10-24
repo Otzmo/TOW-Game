@@ -179,7 +179,7 @@ export interface Charge {
   success?: boolean | null;
 }
 
-export type PromptKind = 'chargeReaction' | 'chargeRoll' | 'saves' | 'dispel' | 'test';
+export type PromptKind = 'chargeReaction' | 'chargeRoll' | 'attack' | 'saves' | 'dispel' | 'test';
 
 /**
  * Aufforderung an einen Spieler (z. B. "Reaktion wählen", "Rüstungswurf ablegen").

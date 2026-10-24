@@ -1,6 +1,6 @@
 import {
   advanceToward, chargeDistance, chargeRoll, contactPose, fleeFrom, fleeRoll, hasBattleHunger, hasSwiftstride,
-  leadershipOf, movementOf, REACTION_NAMES, reactionOptions, roll, wizardLevel,
+  leadershipOf, movementOf, REACTION_NAMES, reactionOptions, roll, statOf, toHitCombat, toHitShooting, toWound, wizardLevel,
 } from '../model/flow';
 import type { History } from '../model/history';
 import { currentPhase, currentSub, SUB_CHARGE_MOVES, SUB_DECLARE, subLabel } from '../model/phases';
@@ -101,13 +101,13 @@ export class PromptCenter {
     this.store.setCharge(id, null);
   }
 
-  /** Nach Treffern und Verwundungen: Der Verteidiger legt Rüstungs- und Rettungswürfe ab. */
-  requestSaves(attacker: PlayerId, targetId: string, wounds: number, save: string, ward: string, note: string): void {
+  /** Nach Treffern und Verwundungen: Der Verteidiger legt Rüstungs-, Rettungs- und Regenerationswürfe ab. */
+  requestSaves(attacker: PlayerId, targetId: string, wounds: number, save: string, ward: string, note: string, regen = ''): void {
     const target = this.store.state.units[targetId];
     if (!target) return;
-    this.create('saves', target.owner, attacker, 'Armour Save',
-      `${note ? `${note}: ` : ''}${wounds} Verwundung${wounds === 1 ? '' : 'en'} gegen ${target.info.name}.`,
-      { targetId, wounds, save, ward });
+    this.create('saves', target.owner, attacker, 'Saves: Armour, Ward, Regeneration',
+      `${note ? `${note}: ` : ''}${wounds} wound${wounds === 1 ? '' : 's'} against ${target.info.name}.`,
+      { targetId, wounds, save, ward, regen });
   }
 
   /** Zauber gewirkt: Der Gegner darf bannen. */
@@ -246,6 +246,7 @@ export class PromptCenter {
     switch (p.kind) {
       case 'chargeReaction': return this.renderReaction(p, body);
       case 'chargeRoll': return this.renderChargeRoll(p, body);
+      case 'attack': return this.renderAttack(p, body);
       case 'saves': return this.renderSaves(p, body);
       case 'dispel': return this.renderDispel(p, body);
       case 'test': return this.renderTest(p, body);
@@ -359,6 +360,79 @@ export class PromptCenter {
     };
   }
 
+  // --- Beschuss und Nahkampf ----------------------------------------------------
+
+  /**
+   * Angriff (Beschuss oder Nahkampf) beginnen: Der Angreifer würfelt in eigenen Popups erst Treffer,
+   * dann Verwundungen; danach würfelt der Verteidiger Rüstung, Rettung und Regeneration.
+   */
+  startAttack(from: PlayerId, attackerId: string, targetId: string, mode: 'shooting' | 'combat'): void {
+    const { units } = this.store.state;
+    const a = units[attackerId];
+    const t = units[targetId];
+    if (!a || !t || a.owner === t.owner) return;
+    // Vorschläge aus dem Profil; im Popup änderbar
+    const dice = mode === 'shooting' ? a.models : a.models * Math.max(1, statOf(a, 'A'));
+    const hit = mode === 'shooting' ? toHitShooting(statOf(a, 'BS')) : toHitCombat(statOf(a, 'WS'), statOf(t, 'WS'));
+    const wound = toWound(statOf(a, 'S'), statOf(t, 'T'));
+    this.create('attack', a.owner, from, 'Roll To Hit', `${mode === 'shooting' ? 'Shooting' : 'Combat'}: ${a.info.name} → ${t.info.name}`,
+      { attackerId, targetId, mode, step: 'hit', dice, hit, wound, hits: 0 });
+  }
+
+  private renderAttack(p: Prompt, body: HTMLElement): void {
+    const { units } = this.store.state;
+    const a = units[String(p.data.attackerId)];
+    const t = units[String(p.data.targetId)];
+    if (!a || !t) {
+      this.store.setPrompt(p.id, null);
+      return;
+    }
+    const hitStep = p.data.step === 'hit';
+    const need = Number(hitStep ? p.data.hit : p.data.wound);
+    const done = this.stage.attack as { dice: number[]; success: number; need: number } | undefined;
+    if (!done) {
+      body.innerHTML = `<div class="prompt-form">
+          ${hitStep
+            ? `<label>Number of ${p.data.mode === 'shooting' ? 'shots' : 'attacks'} <input id="pr-dice" type="number" min="1" max="200" value="${Number(p.data.dice)}"></label>`
+            : `<label>Hits <input id="pr-dice" type="number" min="1" max="200" value="${Number(p.data.hits)}"></label>`}
+          <label>${hitStep ? 'To Hit' : 'To Wound'} <select id="pr-need">${targetOptions(String(need))}</select></label>
+        </div>
+        <div class="prompt-actions"><button class="primary" data-roll>${hitStep ? 'Roll To Hit' : 'Roll To Wound'}</button>
+          <button data-cancel>Cancel</button></div>`;
+      (body.querySelector('[data-roll]') as HTMLButtonElement).onclick = () => {
+        const n = Math.max(1, Math.min(200, Math.round(Number(($('pr-dice') as HTMLInputElement).value) || 1)));
+        const target = Number(sel('pr-need').value) || 0;
+        const dice = roll(n);
+        // Ohne Zielwert trifft bzw. verwundet jeder Würfel (z. B. automatische Treffer)
+        const success = target ? dice.filter((d) => d >= target).length : n;
+        this.stage.attack = { dice, success, need: target };
+        this.host.log({ kind: 'roll', dice: [dice],
+          text: `${a.info.name} → ${t.info.name}: ${n} ${hitStep ? 'to hit' : 'to wound'}${target ? ` (${target}+)` : ''} → ${success} ${hitStep ? 'hits' : 'wounds'}` });
+        this.render();
+      };
+      (body.querySelector('[data-cancel]') as HTMLButtonElement).onclick = () => this.store.setPrompt(p.id, null);
+      return;
+    }
+    const word = hitStep ? 'hit' : 'wound';
+    body.innerHTML = `<div class="dice-row">${diceHtml(done.dice, done.need || 1)}</div>
+      <p class="prompt-info"><b>${done.success} ${word}${done.success === 1 ? '' : 's'}</b>${done.need ? ` (${done.need}+)` : ''}</p>
+      <div class="prompt-actions">${done.success
+        ? `<button class="primary" data-next>${hitStep ? 'Continue: Roll To Wound ›' : `Send to ${esc(playerName(t.owner))} for saves ›`}</button>`
+        : '<button class="primary" data-next>Done</button>'}</div>`;
+    (body.querySelector('[data-next]') as HTMLButtonElement).onclick = () => {
+      this.stage = {};
+      if (!done.success) {
+        this.store.setPrompt(p.id, null);
+      } else if (hitStep) {
+        // Nächstes Popup: Verwundungswurf mit den erzielten Treffern
+        this.store.setPrompt(p.id, { ...p, title: 'Roll To Wound', data: { ...p.data, step: 'wound', hits: done.success } });
+      } else {
+        this.store.setPrompt(p.id, null);
+        this.requestSaves(p.from, t.id, done.success, '', '', `${a.info.name}`);
+      }
+    };
+  }
+
   private renderSaves(p: Prompt, body: HTMLElement): void {
     const target = this.store.state.units[String(p.data.targetId)];
     if (!target) {
@@ -366,24 +440,38 @@ export class PromptCenter {
       return;
     }
     const wounds = Number(p.data.wounds);
-    const done = this.stage.saves as { armour: number[]; ward: number[]; unsaved: number; text: string; save: number } | undefined;
+    type Saves = { armour: number[]; ward: number[]; regen: number[]; unsaved: number; text: string; save: number; wardNeed: number; regenNeed: number };
+    const done = this.stage.saves as Saves | undefined;
     if (!done) {
       body.innerHTML = `<div class="prompt-form">
           <label>Armour Save <select id="pr-save">${targetOptions(String(p.data.save ?? ''))}</select></label>
           <label>Ward save <select id="pr-ward">${targetOptions(String(p.data.ward ?? ''))}</select></label>
+          <label>Regeneration save <select id="pr-regen">${targetOptions(String(p.data.regen ?? ''))}</select></label>
         </div>
-        <div class="prompt-actions"><button class="primary" data-roll>Roll ${wounds} dice</button></div>`;
+        <div class="prompt-actions"><button class="primary" data-roll>Roll saves (${wounds} wound${wounds === 1 ? '' : 's'})</button></div>`;
       (body.querySelector('[data-roll]') as HTMLButtonElement).onclick = () => {
         const save = Number(sel('pr-save').value) || 0;
-        const ward = Number(sel('pr-ward').value) || 0;
-        const armour = save ? roll(wounds) : [];
-        let left = save ? armour.filter((d) => d < save).length : wounds;
-        const wardDice = ward && left ? roll(left) : [];
-        if (ward) left = wardDice.filter((d) => d < ward).length;
-        const text = `${wounds} wounds` + (save ? ` → ${armour.filter((d) => d >= save).length} saved by armour (${save}+)` : ' → no Armour Save')
-          + (ward ? ` → ${wardDice.filter((d) => d >= ward).length} durch Rettung (${ward}+) gehalten` : '') + ` → ${left} ungerettet`;
-        this.stage.saves = { armour, ward: wardDice, unsaved: left, text, save };
-        this.host.log({ kind: 'roll', text: `${target.info.name}: ${text}`, dice: [armour, wardDice].filter((d) => d.length) });
+        const wardNeed = Number(sel('pr-ward').value) || 0;
+        const regenNeed = Number(sel('pr-regen').value) || 0;
+        // Nacheinander: Rüstung, dann Rettung, dann Regeneration – jeweils für die noch übrigen Verwundungen
+        let left = wounds;
+        const parts = [`${wounds} wound${wounds === 1 ? '' : 's'}`];
+        const step = (need: number, name: string): number[] => {
+          if (!need || !left) return [];
+          const dice = roll(left);
+          const saved = dice.filter((d) => d >= need).length;
+          left -= saved;
+          parts.push(`${saved} saved by ${name} (${need}+)`);
+          return dice;
+        };
+        const armour = step(save, 'armour');
+        const ward = step(wardNeed, 'ward');
+        const regen = step(regenNeed, 'regeneration');
+        if (!save && !wardNeed && !regenNeed) parts.push('no saves');
+        parts.push(`${left} unsaved`);
+        const text = parts.join(' → ');
+        this.stage.saves = { armour, ward, regen, unsaved: left, text, save, wardNeed, regenNeed };
+        this.host.log({ kind: 'roll', text: `${target.info.name}: ${text}`, dice: [armour, ward, regen].filter((d) => d.length) });
         this.render();
       };
       return;
@@ -391,9 +479,10 @@ export class PromptCenter {
     const perModel = target.info.woundsPerModel ?? 1;
     const single = (target.info.startModels ?? target.models) === 1;
     const losses = single ? done.unsaved : Math.floor(done.unsaved / perModel);
-    body.innerHTML = `${done.armour.length ? `<div class="dice-row"><span class="dice-label">Armour</span>${diceHtml(done.armour, done.save || 7)}</div>` : ''}
-      ${done.ward.length ? `<div class="dice-row"><span class="dice-label">Ward</span>${diceHtml(done.ward)}</div>` : ''}
-      <p class="prompt-info"><b>${done.unsaved} ungerettet.</b> ${esc(done.text)}</p>
+    const row = (label: string, dice: number[], need: number) =>
+      dice.length ? `<div class="dice-row"><span class="dice-label">${label} ${need}+</span>${diceHtml(dice, need)}</div>` : '';
+    body.innerHTML = `${row('Armour', done.armour, done.save)}${row('Ward', done.ward, done.wardNeed)}${row('Regeneration', done.regen, done.regenNeed)}
+      <p class="prompt-info"><b>${done.unsaved} unsaved.</b> ${esc(done.text)}</p>
       <div class="prompt-actions">
         ${done.unsaved ? `<button class="primary" data-apply>${single ? `Remove ${losses} Wound${losses === 1 ? '' : 's'}` : `Remove ${losses} model${losses === 1 ? '' : 's'}`}</button>` : ''}
         <button data-ok>${done.unsaved ? 'Apply by hand' : 'Done'}</button>
