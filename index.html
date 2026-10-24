@@ -27,8 +27,6 @@
     </div>
 
     <div id="toolbar">
-      <button data-import="p1"><span class="dot p1"></span>Load army</button>
-      <button data-import="p2"><span class="dot p2"></span>Load army</button>
       <input type="file" id="import-file" accept=".json,application/json" hidden>
       <div id="room-status" hidden>
         <span id="room-code"></span>
@@ -45,7 +43,7 @@
       <button data-sheet="score" id="score-btn" title="Victory Points (S)">Victory Points</button>
       <button data-sheet="dice" title="Dice and dice log (W)">Dice</button>
       <hr>
-      <button data-sheet="battlefield" title="Setup: deployment, missions, terrain (A)">Battlefield ▸</button>
+      <button data-sheet="battlefield" title="Reopen the current setup step (A)">Setup ▸</button>
       <button data-sheet="markers">Markers ▸</button>
       <button data-sheet="templates">Templates ▸</button>
       <hr>
@@ -105,25 +103,35 @@
     <p class="meta">Choose, then click on the table. A label can be entered in the bar below.</p></aside>
   <aside class="sheet" id="sheet-templates" hidden><h3>Templates</h3><div class="pick" data-kind="template"></div>
     <p class="meta">Choose, then click on the table. Rotate the flame template at the circle; the narrow end points forward.</p></aside>
-  <aside class="sheet wide-sheet" id="sheet-battlefield" hidden>
-    <h3>Battlefield &amp; Setup</h3>
-    <div class="setup-cols">
-      <section>
-        <h4>Random battlefield</h4>
-        <div id="setup-options"></div>
-        <div class="row-btns">
-          <button id="setup-generate" data-setup="randomise" class="primary">🎲 Randomise battlefield</button>
-          <button data-setup="clear">Clear terrain</button>
-        </div>
-      </section>
-      <section id="setup-result"></section>
-      <section id="setup-step"></section>
-      <section id="setup-terrain">
-        <div class="row-btns"><button data-setup="nomansland" title="Put every unit outside both deployment zones">↺ All units to no man's land</button></div>
-        <h4>Place terrain</h4>
-        <div class="pick" data-kind="terrain"></div>
-        <p class="meta">Choose, then click on the table. Selected terrain: rotate at the circle, resize at the square. All terrain is area terrain and blocks line of sight.</p>
-      </section>
+  <!-- Aufstellung als Abfolge von Popups: je Schritt nur, was dort zu tun ist, unten bestätigen -->
+  <aside class="sheet" id="sheet-battlefield" hidden>
+    <h3 id="setup-title">Setup</h3>
+    <section id="setup-step"></section>
+    <section id="setup-armies">
+      <div class="row-btns">
+        <button data-import="p1"><span class="dot p1"></span>Load army</button>
+        <button data-import="p2"><span class="dot p2"></span>Load army</button>
+      </div>
+    </section>
+    <section id="setup-gen">
+      <div id="setup-options"></div>
+      <div class="row-btns">
+        <button id="setup-generate" data-setup="randomise" class="primary">🎲 Randomise battlefield</button>
+        <button data-setup="clear">Clear terrain</button>
+      </div>
+      <div id="setup-result"></div>
+    </section>
+    <section id="setup-nml">
+      <div class="row-btns"><button data-setup="nomansland" title="Put every unit outside both deployment zones">↺ All units to no man's land</button></div>
+    </section>
+    <section id="setup-terrain">
+      <h4>Place terrain</h4>
+      <div class="pick" data-kind="terrain"></div>
+      <p class="meta">Choose, then click on the table. Selected terrain: rotate at the circle, resize at the square. All terrain is area terrain and blocks line of sight.</p>
+    </section>
+    <div class="setup-confirm">
+      <p class="meta" id="setup-blocker"></p>
+      <button id="setup-confirm" class="primary wide">Confirm ✓</button>
     </div>
   </aside>
   <aside class="sheet" id="sheet-log" hidden>

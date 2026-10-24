@@ -518,6 +518,19 @@ table.profile th, table.profile td { padding: 3px 2px; }
 
 /* Nach der Aufstellung: Armee laden, Gelände und Battlefield ausblenden */
 body.battle [data-import], body.battle #toolbox [data-sheet="battlefield"] { display: none; }
+/* In der Aufstellung führen die Popups durch die Schritte; „Next“ links gibt es dann nicht */
+body:not(.battle) #g-end, body:not(.battle) #g-phase-end { display: none; }
+.setup-confirm { position: sticky; bottom: -12px; margin: 14px -14px -12px; padding: 10px 14px 12px; background: var(--panel); border-top: 1px solid var(--line); }
+.setup-confirm .meta { margin: 0 0 6px; color: #f0a35e; }
+#setup-confirm:disabled { opacity: .4; cursor: not-allowed; }
+.setup-confirm .meta:empty { display: none; }
+#sheet-battlefield section + section { margin-top: 10px; }
+#sheet-battlefield h4 { margin: 0 0 6px; font-size: calc(13px * var(--ui)); color: var(--accent); }
+#sheet-battlefield fieldset { border: 1px solid #3a3f44; border-radius: 6px; margin: 0 0 8px; padding: 4px 8px 6px; }
+#sheet-battlefield legend { font-size: calc(12px * var(--ui)); color: var(--muted); padding: 0 4px; }
+#sheet-battlefield fieldset .check { display: inline-flex; margin: 2px 10px 2px 0; font-size: calc(12px * var(--ui)); }
+#sheet-battlefield details p { white-space: pre-line; color: var(--muted); }
+#sheet-battlefield p { margin: 4px 0; }
 /* In der Aufstellung nur, was dafür gebraucht wird: Maßband, Sichtlinie, Marker, Schablonen, Siegpunkte und Würfel erst danach */
 body:not(.battle) #toolbox [data-tool="measure"], body:not(.battle) #toolbox [data-tool="sight"],
 body:not(.battle) #toolbox [data-sheet="markers"], body:not(.battle) #toolbox [data-sheet="templates"],

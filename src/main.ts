@@ -97,6 +97,7 @@ async function start(): Promise<void> {
   // Aufbauphase: Schlachtfeld, Roll-offs, Zonen und Aufstellen
   const setup = new SetupPanel(store, history, () => seat, (entry) => addLog(entry));
   gameBar.setupBlocker = () => setup.blocker();
+  setup.onNext = () => gameBar.requestNext();
   gameBar.refresh();
   const actions = new ActionControls(store, board, prompts, () => seat);
   new DicePanel((entry) => addLog(entry), (targetId, wounds, save, ward, note) =>

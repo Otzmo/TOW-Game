@@ -18,12 +18,13 @@ const other = (p: PlayerId): PlayerId => (p === 'p1' ? 'p2' : 'p1');
 
 /** Unterschritte der Aufbauphase (OTZMO-TOW Core Battle, Game Sequence) */
 export const SETUP_STEPS = {
-  battlefield: 0,
-  attacker: 1,
-  zones: 2,
-  deploy: 3,
-  scouts: 4,
-  firstTurn: 5,
+  armies: 0,
+  battlefield: 1,
+  attacker: 2,
+  zones: 3,
+  deploy: 4,
+  scouts: 5,
+  firstTurn: 6,
 };
 
 /**
@@ -39,6 +40,7 @@ export class SetupPanel {
   ) {
     $('setup-options').innerHTML = this.optionsHtml();
     $('sheet-battlefield').onclick = (e) => this.onClick(e);
+    $('setup-confirm').onclick = () => this.confirm();
     let lastKey = '';
     store.subscribe((state, c) => {
       if (!c.meta && !c.loaded && !c.objectId && !c.unitId && !c.replacedOwner) return;
@@ -51,6 +53,39 @@ export class SetupPanel {
       this.render();
     });
     this.render();
+    // Spielbeginn: der erste Aufbauschritt ist gleich offen
+    if (currentPhase(store.state.meta) === 'setup') openSheet('battlefield');
+  }
+
+  /** Weiter zum nächsten Aufbauschritt (von main.ts gesetzt: gameBar.requestNext) */
+  onNext: () => void = () => {};
+
+  /**
+   * Schritt bestätigen: Popup schließt sich, der Aufbau geht weiter und das nächste Popup öffnet sich
+   * (siehe subscribe im Konstruktor). Die Zonenwahl wird dabei zugleich festgelegt.
+   */
+  private confirm(): void {
+    const { meta } = this.store.state;
+    if (currentPhase(meta) !== 'setup' || this.confirmBlocker() || this.seat() === 'spectator') return;
+    const step = currentSub(meta);
+    if (step === SETUP_STEPS.zones && !meta.setup?.zoneChosen) {
+      this.setSetup({ zoneChosen: true });
+      this.log({ kind: 'turn', text: 'The Defender has chosen the Defender zone' });
+    }
+    openSheet(null);
+    this.onNext();
+    // Ging es nicht weiter (z. B. Rückfrage zu Plänklern links), bleibt der Schritt offen
+    const now = this.store.state.meta;
+    if (currentPhase(now) === 'setup' && currentSub(now) === step) openSheet('battlefield');
+  }
+
+  /** Was dem Bestätigen noch im Weg steht; die Zonenwahl bestätigt der Knopf selbst. */
+  private confirmBlocker(): string | null {
+    const { meta } = this.store.state;
+    if (currentPhase(meta) === 'setup' && currentSub(meta) === SETUP_STEPS.zones) {
+      return meta.setup?.defender ? null : 'Roll off for Attacker / Defender first';
+    }
+    return this.blocker();
   }
 
   /** Was noch fehlt, bevor es im Aufbau weitergeht (null = weiter möglich) */
@@ -59,6 +94,11 @@ export class SetupPanel {
     if (currentPhase(meta) !== 'setup') return null;
     const s = meta.setup ?? {};
     switch (currentSub(meta)) {
+      case SETUP_STEPS.armies: {
+        const units = Object.values(this.store.state.units);
+        const missing = (['p1', 'p2'] as const).filter((p) => !units.some((u) => u.owner === p));
+        return missing.length ? `Load the army of ${missing.map((p) => playerName(p)).join(' and ')}` : null;
+      }
       case SETUP_STEPS.battlefield: return s.deployment ? null : 'Generate the battlefield first';
       case SETUP_STEPS.attacker: return s.defender ? null : 'Roll off for Attacker / Defender';
       case SETUP_STEPS.zones: return s.zoneChosen ? null : 'Defender confirms the Defender zone';
@@ -161,9 +201,6 @@ export class SetupPanel {
       // Der Verteidiger wählt seine Zone: Angreifer- und Verteidigerzone tauschen
       this.setSetup({ swapZones: !s.swapZones });
       moveToNoMansLand(this.store);
-    } else if (act === 'zone-ok') {
-      this.setSetup({ zoneChosen: true });
-      this.log({ kind: 'turn', text: 'The Defender has chosen the Defender zone' });
     } else if (act === 'placed') {
       const next = other(s.deployNext ?? s.defender ?? 'p1');
       // Wer fertig ist, stellt nicht mehr auf
@@ -195,6 +232,18 @@ export class SetupPanel {
 
     // Ergebnis: Aufstellung, Missionen, Regeln
     const missions = [missionByKey(s.missionTurn), missionByKey(s.missionGame)];
+    // Je Schritt nur, was dort gebraucht wird
+    $('setup-armies').hidden = step !== SETUP_STEPS.armies;
+    $('setup-gen').hidden = step !== SETUP_STEPS.battlefield;
+    $('setup-nml').hidden = !(step >= SETUP_STEPS.battlefield && step <= SETUP_STEPS.deploy);
+    $('setup-terrain').hidden = step !== SETUP_STEPS.battlefield && step !== SETUP_STEPS.zones;
+    $('setup-title').textContent = inSetup ? `Setup · Step ${step + 1} of 7` : 'Setup';
+    const blocked = inSetup ? this.confirmBlocker() : 'The battle has started';
+    const confirm = $('setup-confirm') as HTMLButtonElement;
+    confirm.textContent = ['Armies loaded ✓', 'Confirm battlefield ✓', 'Confirm Attacker & Defender ✓', 'Confirm Defender zone ✓',
+      'Deployment finished ✓', 'Scouts & Vanguard done ✓', 'Start Battle ✓'][step] ?? 'Confirm ✓';
+    confirm.disabled = !!blocked || this.seat() === 'spectator';
+    $('setup-blocker').textContent = blocked ?? '';
     $('setup-result').innerHTML = s.deployment
       ? `<p><b>Deployment:</b> ${esc(DEPLOYMENTS[s.deployment])}</p>` +
         missions.map((m, i) => m ? `<details><summary>${i === 0 ? 'End of player turn' : 'End of game'}: ${esc(m.name)}</summary><p>${esc(m.rule)}</p></details>` : '').join('') +
@@ -210,32 +259,41 @@ export class SetupPanel {
   private stepHtml(step: number, s: SetupState, units: Record<string, UnitState>): string {
     const btn = (act: string, label: string, enabled = true, primary = false) =>
       `<button data-setup="${act}" class="${primary ? 'primary' : ''}" ${enabled ? '' : 'disabled'}>${esc(label)}</button>`;
-    const rolls = (r?: Partial<Record<PlayerId, number>> | null) => r ? `<p>Player 1: <b>${r.p1}</b> · Player 2: <b>${r.p2}</b></p>` : '';
+    const rolls = (r?: Partial<Record<PlayerId, number>> | null) => r ? `<p>${playerName('p1')}: <b>${r.p1}</b> · ${playerName('p2')}: <b>${r.p2}</b></p>` : '';
+    // Kurz zur Erinnerung: gewürfelte Aufstellung und Missionen
+    const missionLine = s.deployment ? `<p class="meta">${esc([DEPLOYMENTS[s.deployment], ...[missionByKey(s.missionTurn), missionByKey(s.missionGame)].filter(Boolean).map((m) => m!.name)].join(' · '))}</p>` : '';
     switch (step) {
+      case SETUP_STEPS.armies: {
+        const armies = this.store.state.meta.armies ?? {};
+        const count = (p: PlayerId) => Object.values(units).filter((u) => u.owner === p && !isJoined(u, units)).length;
+        return `<h4>Load Armies</h4><p>Each player loads their army list (.bb.json from oldworldrankings). The armies are placed in no man's land.</p>
+          ${(['p1', 'p2'] as const).map((p) => `<p><span class="dot ${p}"></span>${playerName(p)}: ${armies[p] ? `<b>${esc(armies[p]!.faction)}</b> · ${esc(armies[p]!.list)} (${count(p)} units)` : '<span class="meta">no army loaded</span>'}</p>`).join('')}`;
+      }
       case SETUP_STEPS.battlefield:
-        return `<h4>1 · Generate Battlefield</h4><p>Randomise deployment, missions and terrain (or place terrain by hand below).</p>`;
+        return `<h4>Generate Battlefield</h4><p>Randomise deployment, missions and terrain (or place terrain by hand below), then confirm.</p>`;
       case SETUP_STEPS.attacker:
-        return `<h4>2 · Roll-off: Attacker & Defender</h4><p>The winner of the roll-off decides if they are the Attacker or the Defender.</p>
+        return `<h4>Roll-off: Attacker & Defender</h4>${missionLine}<p>The winner of the roll-off decides if they are the Attacker or the Defender.</p>
           ${rolls(s.rollOff)}
           ${s.rollWinner ? `<p><b>${playerName(s.rollWinner)}</b> chooses:</p><div class="row-btns">${btn('attacker', 'Be the Attacker', this.mayAct(s.rollWinner))}${btn('defender', 'Be the Defender', this.mayAct(s.rollWinner))}</div>` : ''}
           ${s.defender ? `<p class="ok">Defender: Player ${s.defender === 'p1' ? 1 : 2} · Attacker: Player ${s.defender === 'p1' ? 2 : 1}</p>` : btn('roll-attacker', s.rollOff ? 'Roll again' : 'Roll off (D6)', this.mayAct(null), true)}`;
       case SETUP_STEPS.zones:
-        return `<h4>3 · Deployment Zone & Terrain</h4><p>The Defender chooses the deployment zone and places additional terrain and the Baggage Train first. The Defender declares Ambushers first.</p>
-          ${s.zoneChosen ? `<p class="ok">Defender zone and Attacker zone are set.</p>` : `<div class="row-btns">${btn('zone-swap', 'Swap Attacker and Defender zones', this.mayAct(s.defender))}${btn('zone-ok', 'Confirm Defender zone', this.mayAct(s.defender), true)}</div>`}`;
+        return `<h4>Deployment Zone & Terrain</h4><p>The Defender chooses the deployment zone (swap if needed) and places additional terrain and the Baggage Train first. The Defender declares Ambushers first.</p>
+          ${missionLine}
+          <div class="row-btns">${btn('zone-swap', 'Swap Attacker and Defender zones', this.mayAct(s.defender))}</div>`;
       case SETUP_STEPS.deploy: {
         const zones = deploymentZones(s);
         const outside = zones ? Object.values(units).filter((u) => !isJoined(u, units) && !pointInPolygon(u, zones[u.owner])) : [];
         const next = s.deployNext ?? s.defender ?? 'p1';
-        return `<h4>4 · Deploy Units</h4><p>The Defender places the first unit, then players alternate placing units. Scouts are either placed normally or after characters.</p>
+        return `<h4>Deploy Units</h4><p>The Defender places the first unit, then players alternate placing units. Scouts are either placed normally or after characters.</p>
           <p>Next to place a unit: <b><span class="dot ${next}"></span>${playerName(next)}</b></p>
           <div class="row-btns">${btn('placed', `Unit placed – ${playerName(other(next))}'s turn`, this.mayAct(next), true)}</div>
           <div class="row-btns">${(['p1', 'p2'] as const).map((p) => btn(`finished-${p}`, `${playerName(p)}: ${s.finished?.[p] ? 'finished ✓' : 'finished deploying'}`, this.mayAct(p))).join('')}</div>
           ${outside.length ? `<p class="warn">Outside their deployment zone: ${outside.map((u) => esc(u.info.name)).join(', ')}</p>` : ''}`;
       }
       case SETUP_STEPS.scouts:
-        return `<h4>5 · Scouts & Vanguard</h4><p>Scouts not yet deployed are placed now (after characters). Then Vanguard moves are made – roll off if both players have such units.</p>`;
+        return `<h4>Scouts & Vanguard</h4><p>Scouts not yet deployed are placed now (after characters). Then Vanguard moves are made – roll off if both players have such units.</p>`;
       case SETUP_STEPS.firstTurn:
-        return `<h4>6 · Roll-off for First Turn</h4><p>The winner chooses who has the first player turn (+1 for the player who finished deployment first${s.finishedFirst ? `: ${playerName(s.finishedFirst)}` : ''}).</p>
+        return `<h4>Roll-off for First Turn</h4><p>The winner chooses who has the first player turn (+1 for the player who finished deployment first${s.finishedFirst ? `: ${playerName(s.finishedFirst)}` : ''}).</p>
           ${rolls(s.firstRoll)}
           ${s.firstWinner && !s.firstPlayer ? `<p><b>${playerName(s.firstWinner)}</b> chooses:</p><div class="row-btns">${btn('first-me', 'Take the first turn', this.mayAct(s.firstWinner))}${btn('first-other', 'Give the first turn', this.mayAct(s.firstWinner))}</div>` : ''}
           ${s.firstPlayer ? `<p class="ok">${playerName(s.firstPlayer)} has the first player turn.</p>` : s.firstWinner ? '' : btn('roll-first', 'Roll off (D6)', this.mayAct(null), true)}`;

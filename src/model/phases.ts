@@ -8,7 +8,7 @@ export type Phase = 'setup' | 'strategy' | 'movement' | 'shooting' | 'combat';
 
 export const PHASES: { key: Phase; name: string; subs: string[]; repeat?: string }[] = [
   // Aufbau nach OTZMO-TOW (Core Battle, Game Sequence); Begriffe der Phasen wie auf tow.whfb.app
-  { key: 'setup', name: 'Setup', subs: ['Generate Battlefield', 'Roll-off: Attacker & Defender', 'Deployment Zone & Terrain', 'Deploy Units', 'Scouts & Vanguard', 'Roll-off for First Turn'] },
+  { key: 'setup', name: 'Setup', subs: ['Load Armies', 'Generate Battlefield', 'Roll-off: Attacker & Defender', 'Deployment Zone & Terrain', 'Deploy Units', 'Scouts & Vanguard', 'Roll-off for First Turn'] },
   { key: 'strategy', name: 'Strategy', subs: ['Start of Turn', 'Command', 'Conjuration', 'Rally Fleeing Troops'] },
   { key: 'movement', name: 'Movement', subs: ['Declare Charges & Charge Reactions', 'Charge Moves', 'Compulsory Moves', 'Remaining Moves'] },
   // Fernkampf und Nahkampf werden je Einheit bzw. je Kampf durchlaufen
