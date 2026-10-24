@@ -171,21 +171,7 @@ export class GameBar {
 
     // Nach der Aufstellung: Armee laden, Gelände und Battlefield ausblenden (siehe CSS)
     document.body.classList.toggle('battle', phase !== 'setup');
-    this.renderPlayers();
     this.renderScore();
-  }
-
-  /** Beide Spieler mit Angreifer/Verteidiger und geladener Armee */
-  private renderPlayers(): void {
-    const { meta } = this.store.state;
-    const defender = meta.setup?.defender;
-    $('g-players').innerHTML = (['p1', 'p2'] as const).map((p) => {
-      const role = !defender ? '' : p === defender ? 'defender' : 'attacker';
-      const army = meta.armies?.[p];
-      return `<div class="g-player"><b><span class="dot ${p}"></span>${playerName(p)}${this.me === p ? ' (you)' : ''}
-          ${role ? `<span class="role ${role}">${role === 'defender' ? 'Defender' : 'Attacker'}</span>` : ''}</b>
-        <span class="army" title="${escapeHtml(army ? `${army.faction} · ${army.list}` : '')}">${army ? escapeHtml(army.faction) + (army.list ? ` · ${escapeHtml(army.list)}` : '') : 'no army loaded'}</span></div>`;
-    }).join('');
   }
 
   /** Siegpunkte rechts: Killpoints je Einheit und Missionspunkte (von Hand) */
