@@ -67,8 +67,13 @@ async function start(): Promise<void> {
     close: () => board.tools.select(null),
     remove: () => board.tools.removeSelected(),
   });
+  // Knöpfe wie „Declare charge“ hängen von der Auswahl ab (wird gesetzt, sobald ActionControls steht)
+  let refreshActions = () => {};
   const board: Board = new Board(app, store, history, {
-    onSelect: (id) => panel.show(id),
+    onSelect: (id) => {
+      panel.show(id);
+      refreshActions();
+    },
     onSelectObject: (id) => objectPanel.show(id),
     onAction: (id, text) => {
       panel.setLastAction(id, text);
@@ -100,6 +105,7 @@ async function start(): Promise<void> {
   setup.onNext = () => gameBar.requestNext();
   gameBar.refresh();
   const actions = new ActionControls(store, board, prompts, () => seat);
+  refreshActions = () => actions.refresh();
   new DicePanel((entry) => addLog(entry), (targetId, wounds, save, ward, note) =>
     prompts.requestSaves(seat && seat !== 'spectator' ? seat : store.state.meta.active, targetId, wounds, save, ward, note));
   new DiceLog(store);

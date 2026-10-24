@@ -86,7 +86,7 @@ export class ActionControls {
   }
 
   /** Auswahllisten und Knöpfe an Auswahl, Phase und eigenen Platz anpassen. */
-  private refresh(): void {
+  refresh(): void {
     const { units } = this.store.state;
     const me = this.me();
     const blocked = this.chargeBlocked();
@@ -95,6 +95,8 @@ export class ActionControls {
     btn.textContent = withdraw ? '↶ Withdraw charge' : '⚔ Declare charge';
     btn.disabled = !withdraw && !!blocked;
     btn.title = withdraw ? 'Withdraw the charge while declaring' : blocked ?? 'Then click the enemy unit to charge (J)';
+    // Warum der Knopf gesperrt ist, steht direkt darunter
+    $('p-charge-why').textContent = withdraw ? '' : blocked ?? '';
 
     const own = (u: UnitState) => u.owner === me;
     const fill = (id: string, list: UnitState[], empty: string) => {
