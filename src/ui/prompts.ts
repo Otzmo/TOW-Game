@@ -43,6 +43,7 @@ export class PromptCenter {
     store.subscribe((state, c) => {
       if (c.chargeId || c.promptId || c.loaded || c.meta) this.advanceCharges();
       if (c.meta) this.clearOldCharges();
+      if (c.meta) this.closeExpiredChargeRolls();
       if (c.chargeId || c.promptId || c.loaded || c.meta) this.render();
       void state;
     });
@@ -179,6 +180,25 @@ export class PromptCenter {
       if (this.chargerOwner(c) !== meta.active || c.round !== meta.round) this.store.setCharge(c.id, null);
     }
     for (const p of Object.values(prompts)) if (p.status === 'done' && p.acknowledged) this.store.setPrompt(p.id, null);
+  }
+
+  /** Nach den Angriffsbewegungen: offene Angriffswürfe und Angriffs-Ergebnisse schließen sich. */
+  private closeExpiredChargeRolls(): void {
+    const { meta, prompts } = this.store.state;
+    if (currentPhase(meta) === 'movement' && currentSub(meta) <= SUB_CHARGE_MOVES) return;
+    const seat = this.host.seat();
+    for (const p of Object.values(prompts)) {
+      // Schließen übernimmt das Gerät dessen, der hätte würfeln sollen (offline: dieses)
+      if (p.kind !== 'chargeRoll' || p.status !== 'open' || (seat && seat !== p.to)) continue;
+      this.store.setPrompt(p.id, null);
+      this.stage = {};
+    }
+    // Unbestätigte Ergebnisse von Reaktion und Angriffswurf gelten ebenfalls als gesehen
+    for (const p of Object.values(prompts)) {
+      if ((p.kind !== 'chargeRoll' && p.kind !== 'chargeReaction') || p.status !== 'done' || p.acknowledged) continue;
+      if (seat && seat !== p.from) continue;
+      this.store.setPrompt(p.id, { ...p, acknowledged: true });
+    }
   }
 
   // --- Anzeige ----------------------------------------------------------------
