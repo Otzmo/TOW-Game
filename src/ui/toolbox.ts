@@ -1,6 +1,5 @@
 import type { History } from '../model/history';
 import { OBJECT_TYPES, typesOfKind } from '../model/objects';
-import { SCENARIOS } from '../model/scenarios';
 import type { Store } from '../model/store';
 import type { GameState, ObjectKind } from '../model/types';
 import type { BoardTools, Tool } from '../view/boardTools';
@@ -9,8 +8,8 @@ import { openSheet, toggleSheet } from './sheets';
 const $ = (id: string) => document.getElementById(id)!;
 
 const HINTS: Record<string, string> = {
-  measure: 'Maßband: auf dem Tisch ziehen · Esc beendet',
-  sight: 'Sichtlinie: vom Betrachter zum Ziel ziehen · Esc beendet',
+  measure: 'Measuring tape: drag on the table · Esc to stop',
+  sight: 'Line of sight: drag from the viewer to the target · Esc to stop',
 };
 
 const SAVE_FORMAT = 'tow-tabletop-save';
@@ -42,15 +41,6 @@ export class Toolbox {
       };
     });
 
-    this.renderZones();
-    $('zone-list').onclick = (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-zone]');
-      if (!btn) return;
-      store.setMeta({ scenario: btn.dataset.zone });
-      this.log(`Aufstellung: ${SCENARIOS[btn.dataset.zone!].name}`);
-    };
-    store.subscribe((_, c) => { if (c.meta || c.loaded) this.renderZones(); });
-
     $('save-game').onclick = () => this.save();
     $('load-game').onclick = () => this.openLoad();
     $('load-file').onchange = () => {
@@ -69,7 +59,7 @@ export class Toolbox {
       btn.classList.toggle('on', btn.dataset.tool === name);
     });
     const hint = typeof tool === 'object'
-      ? `${OBJECT_TYPES[tool.place].name}: auf den Tisch klicken · Esc bricht ab`
+      ? `${OBJECT_TYPES[tool.place].name}: click on the table · Esc to cancel`
       : HINTS[tool] ?? '';
     $('tool-hint').textContent = hint;
     $('tool-hint').hidden = !hint;
@@ -82,13 +72,6 @@ export class Toolbox {
     $('load-file').click();
   }
 
-  private renderZones(): void {
-    const current = this.store.state.meta.scenario ?? 'none';
-    $('zone-list').innerHTML = Object.entries(SCENARIOS)
-      .map(([key, s]) => `<button data-zone="${key}" class="${key === current ? 'on' : ''}">${s.name}</button>`)
-      .join('');
-  }
-
   // --- Speichern und Laden ----------------------------------------------------
 
   save(): void {
@@ -97,7 +80,7 @@ export class Toolbox {
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `tow-spiel-runde-${meta.round}-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `tow-game-round-${meta.round}-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   }
@@ -112,12 +95,12 @@ export class Toolbox {
         meta: { round: 1, active: 'p1', breakBonus: {}, ...data.meta },
       };
       const n = Object.keys(data.units).length;
-      $('load-text').textContent = `Spielstand vom ${new Date(data.savedAt).toLocaleString('de-DE')}: ` +
-        `Runde ${this.pendingLoad.meta.round}, ${n} Einheiten. Der aktuelle Tisch wird ersetzt – online auch beim Gegner.`;
+      $('load-text').textContent = `Saved game from ${new Date(data.savedAt).toLocaleString('en-GB')}: ` +
+        `round ${this.pendingLoad.meta.round}, ${n} units. The current table will be replaced – online for your opponent too.`;
       ($('load-confirm') as HTMLButtonElement).hidden = false;
     } catch {
       this.pendingLoad = null;
-      $('load-text').textContent = 'Diese Datei ist kein Spielstand von TOW Tabletop.';
+      $('load-text').textContent = 'This file is not a TOW Tabletop saved game.';
       ($('load-confirm') as HTMLButtonElement).hidden = true;
     }
     dialog.showModal();
@@ -128,7 +111,7 @@ export class Toolbox {
     if (!this.pendingLoad) return;
     this.history.clear();
     this.store.loadState(this.pendingLoad);
-    this.log(`Spielstand geladen (Runde ${this.pendingLoad.meta.round})`);
+    this.log(`Saved game loaded (round ${this.pendingLoad.meta.round})`);
     this.pendingLoad = null;
   }
 }

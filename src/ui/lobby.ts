@@ -14,7 +14,7 @@ export class Lobby {
       create.disabled = true;
       join.disabled = true;
       input.disabled = true;
-      this.message('Online-Spiel ist noch nicht eingerichtet (Firebase-Konfiguration fehlt).');
+      this.message('Online play is not set up yet (Firebase configuration missing).');
     }
 
     create.onclick = () => this.run(() => OnlineRoom.create(this.store));
@@ -32,7 +32,7 @@ export class Lobby {
 
   private async run(connect: () => Promise<OnlineRoom>): Promise<void> {
     this.setBusy(true);
-    this.message('Verbinde …');
+    this.message('Connecting …');
     try {
       const room = await connect();
       this.enterRoom(room);
@@ -48,16 +48,16 @@ export class Lobby {
     history.replaceState(null, '', `#${room.code}`);
     $('room-status').hidden = false;
     $('room-code').textContent = room.code;
-    $('room-me').textContent = room.me === 'spectator' ? 'Du schaust zu' : `Du: Spieler ${room.me === 'p1' ? 1 : 2}`;
+    $('room-me').textContent = room.me === 'spectator' ? 'You are spectating' : `You: Player ${room.me === 'p1' ? 1 : 2}`;
     room.onOpponent((joined) => {
       const el = $('room-opponent');
-      el.textContent = joined ? 'Gegner verbunden' : 'Warte auf Gegner …';
+      el.textContent = joined ? 'Opponent connected' : 'Waiting for opponent …';
       el.classList.toggle('on', joined);
     });
     $('room-copy').onclick = async () => {
       await navigator.clipboard.writeText(location.href);
-      $('room-copy').textContent = 'Kopiert ✓';
-      setTimeout(() => { $('room-copy').textContent = 'Link kopieren'; }, 1500);
+      $('room-copy').textContent = 'Copied ✓';
+      setTimeout(() => { $('room-copy').textContent = 'Copy link'; }, 1500);
     };
     this.onOnline(room.me, room);
   }

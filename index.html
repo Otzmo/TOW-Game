@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,70 +14,70 @@
       <span id="g-round"></span>
       <ol id="g-phases"></ol>
       <ol id="g-subs"></ol>
-      <button id="g-end" class="primary">Weiter ›</button>
+      <button id="g-end" class="primary">Next ›</button>
       <button id="g-repeat" hidden>↺</button>
-      <button id="g-phase-end">Phase beenden »</button>
-      <button id="g-undo" title="Rückgängig (Strg+Z)" disabled>↶ Rückgängig</button>
-      <button id="g-redo" title="Wiederholen (Strg+Y)" disabled>↷ Wiederholen</button>
-      <button id="g-score-toggle">Siegpunkte</button>
+      <button id="g-phase-end">End phase »</button>
+      <button id="g-undo" title="Undo (Ctrl+Z)" disabled>↶ Undo</button>
+      <button id="g-redo" title="Redo (Ctrl+Y)" disabled>↷ Redo</button>
+      <button id="g-score-toggle">Victory Points</button>
       <div id="g-confirm" hidden>
         <span id="g-confirm-text"></span>
-        <button id="g-confirm-yes" class="primary">Trotzdem beenden</button>
-        <button id="g-confirm-no">Abbrechen</button>
+        <button id="g-confirm-yes" class="primary">Continue anyway</button>
+        <button id="g-confirm-no">Cancel</button>
       </div>
     </div>
 
     <div id="toolbar">
-      <button data-import="p1"><span class="dot p1"></span>Armee laden · Spieler 1</button>
-      <button data-import="p2"><span class="dot p2"></span>Armee laden · Spieler 2</button>
+      <button data-import="p1"><span class="dot p1"></span>Load army · Player 1</button>
+      <button data-import="p2"><span class="dot p2"></span>Load army · Player 2</button>
       <input type="file" id="import-file" accept=".json,application/json" hidden>
       <div id="room-status" hidden>
         <span id="room-code"></span>
         <span id="room-me"></span>
         <span id="room-opponent"></span>
-        <button id="room-copy">Link kopieren</button>
+        <button id="room-copy">Copy link</button>
       </div>
     </div>
 
-    <nav id="toolbox" aria-label="Werkzeuge">
-      <button data-tool="select" title="Auswählen und ziehen (V)">Auswählen</button>
-      <button data-tool="measure" title="Maßband: auf dem Tisch ziehen (M)">Maßband</button>
-      <button data-tool="sight" title="Sichtlinie: auf dem Tisch ziehen (L)">Sichtlinie</button>
+    <nav id="toolbox" aria-label="Tools">
+      <button data-tool="select" title="Select and drag (V)">Select</button>
+      <button data-tool="measure" title="Measuring tape: drag on the table (M)">Measure</button>
+      <button data-tool="sight" title="Line of sight: drag on the table (L)">Line of Sight</button>
       <hr>
-      <button data-sheet="terrain">Gelände ▸</button>
-      <button data-sheet="markers">Marker ▸</button>
-      <button data-sheet="templates">Schablonen ▸</button>
-      <button data-sheet="zones">Aufstellung ▸</button>
+      <button data-sheet="battlefield" title="Setup: deployment, missions, terrain (A)">Battlefield ▸</button>
+      <button data-sheet="terrain">Terrain ▸</button>
+      <button data-sheet="markers">Markers ▸</button>
+      <button data-sheet="templates">Templates ▸</button>
       <hr>
-      <button data-sheet="magic" title="Zaubern (Z)">Magie</button>
-      <button data-sheet="log">Protokoll <span id="log-badge" hidden></span></button>
+      <button data-sheet="magic" title="Cast a spell (Z)">Magic</button>
+      <button data-sheet="log">Log <span id="log-badge" hidden></span></button>
       <hr>
-      <button id="save-game">Speichern</button>
-      <button id="load-game">Laden</button>
+      <button id="save-game">Save</button>
+      <button id="load-game">Load</button>
       <input type="file" id="load-file" accept=".json,application/json" hidden>
-      <button data-sheet="help">Hilfe</button>
-      <button data-sheet="keys" title="Alle Tastenkürzel (?)">Tastenkürzel</button>
+      <button data-sheet="help">Help</button>
+      <button data-sheet="keys" title="All keyboard shortcuts (?)">Shortcuts</button>
     </nav>
   </aside>
   <!-- Rechte kurze Tischkante: Würfel und Würfelprotokoll -->
   <aside id="dicebar">
-    <h3>Würfel</h3>
+    <h3>Dice</h3>
     <div class="dice-form">
-      <label>Anzahl W6 <input id="d-count" type="number" min="1" max="100" value="10"></label>
-      <label>Trifft auf <select id="d-hit"></select></label>
-      <label>Verwundet auf <select id="d-wound"></select></label>
-      <label>Rüstungswurf <select id="d-save"></select></label>
-      <label>Rettungswurf <select id="d-ward"></select></label>
-      <label class="full">Wofür? <input id="d-note" type="text" maxlength="60" placeholder="z. B. Chosen gegen Ritter"></label>
-      <label class="full">Ziel (Gegner würfelt Rüstung/Rettung) <select id="d-target"></select></label>
+      <label>Number of D6 <input id="d-count" type="number" min="1" max="100" value="10"></label>
+      <label>To Hit <select id="d-hit"></select></label>
+      <label>To Wound <select id="d-wound"></select></label>
+      <label>Armour Save <select id="d-save"></select></label>
+      <label>Ward save <select id="d-ward"></select></label>
+      <label class="full">Note <input id="d-note" type="text" maxlength="60" placeholder="e.g. Chosen vs. Knights"></label>
+      <label class="full">Target (opponent rolls saves) <select id="d-target"></select></label>
     </div>
-    <button id="d-roll" class="primary wide">Würfeln</button>
+    <button id="d-roll" class="primary wide">Roll</button>
     <div class="dice-quick">
-      <button data-quick="1d6">W6</button><button data-quick="2d6">2W6</button><button
-        data-quick="1d3">W3</button><button data-quick="3d6">3W6</button>
+      <button data-quick="1d6">D6</button><button data-quick="2d6">2D6</button><button
+        data-quick="1d3">D3</button><button data-quick="3d6">3D6</button>
     </div>
     <div id="d-result"></div>
-    <h3>Würfelprotokoll</h3>
+    <h3>Dice log</h3>
     <ol id="dice-log"></ol>
   </aside>
   <p id="tool-hint" hidden></p>
@@ -91,63 +91,78 @@
   <!-- Firebase lehnt Daten ab (meist fehlende Datenbankregeln) -->
   <div id="sync-error" role="alert" hidden>
     <span id="sync-text"></span>
-    <button id="sync-reload">Seite neu laden</button>
-    <button id="sync-close" class="close" aria-label="Schließen">×</button>
+    <button id="sync-reload">Reload page</button>
+    <button id="sync-close" class="close" aria-label="Close">×</button>
   </div>
   <div id="phase-notice" hidden>
     <span id="notice-text"></span>
-    <button id="notice-allow">Ausnahme erlauben (Sonderregel)</button>
-    <button id="notice-close" class="close" aria-label="Schließen">×</button>
+    <button id="notice-allow">Allow exception (special rule)</button>
+    <button id="notice-close" class="close" aria-label="Close">×</button>
   </div>
 
   <!-- Seitenfenster neben den Werkzeugen; immer nur eins offen -->
   <aside class="sheet" id="sheet-score" hidden></aside>
-  <aside class="sheet" id="sheet-terrain" hidden><h3>Gelände setzen</h3><div class="pick" data-kind="terrain"></div>
-    <p class="meta">Wählen, dann auf den Tisch klicken. Ausgewähltes Gelände: am Kreis drehen, am Quadrat skalieren.</p></aside>
-  <aside class="sheet" id="sheet-markers" hidden><h3>Marker setzen</h3><div class="pick" data-kind="marker"></div>
-    <p class="meta">Wählen, dann auf den Tisch klicken. Im Fenster rechts lässt sich ein Text eintragen.</p></aside>
-  <aside class="sheet" id="sheet-templates" hidden><h3>Schablonen</h3><div class="pick" data-kind="template"></div>
-    <p class="meta">Wählen, dann auf den Tisch klicken. Die Flammenschablone am Kreis drehen; die Spitze zeigt nach vorn.</p></aside>
-  <aside class="sheet" id="sheet-zones" hidden><h3>Aufstellungszonen</h3><div id="zone-list"></div></aside>
-  <aside class="sheet" id="sheet-magic" hidden>
-    <h3>Zauber wirken</h3>
-    <div class="dice-form">
-      <label>Zauberer <select id="m-wizard"></select></label>
-      <label>Zauberwert <select id="m-value"></select></label>
-      <label class="full">Zauber <input id="m-spell" type="text" maxlength="60" placeholder="z. B. Blue Fire"></label>
+  <aside class="sheet" id="sheet-terrain" hidden><h3>Place terrain</h3><div class="pick" data-kind="terrain"></div>
+    <p class="meta">Choose, then click on the table. Selected terrain: rotate at the circle, resize at the square. All terrain is area terrain and blocks line of sight.</p></aside>
+  <aside class="sheet" id="sheet-markers" hidden><h3>Place markers</h3><div class="pick" data-kind="marker"></div>
+    <p class="meta">Choose, then click on the table. A label can be entered in the bar below.</p></aside>
+  <aside class="sheet" id="sheet-templates" hidden><h3>Templates</h3><div class="pick" data-kind="template"></div>
+    <p class="meta">Choose, then click on the table. Rotate the flame template at the circle; the narrow end points forward.</p></aside>
+  <aside class="sheet wide-sheet" id="sheet-battlefield" hidden>
+    <h3>Battlefield &amp; Setup</h3>
+    <div class="setup-cols">
+      <section>
+        <h4>Random battlefield</h4>
+        <div id="setup-options"></div>
+        <div class="row-btns">
+          <button id="setup-generate" data-setup="randomise" class="primary">🎲 Randomise battlefield</button>
+          <button data-setup="clear">Clear terrain</button>
+        </div>
+      </section>
+      <section id="setup-result"></section>
+      <section id="setup-step"></section>
     </div>
-    <button id="m-cast" class="primary wide">Zaubern (2W6 + halbe Stufe)</button>
+  </aside>
+  <aside class="sheet" id="sheet-magic" hidden>
+    <h3>Cast a spell</h3>
+    <div class="dice-form">
+      <label>Wizard <select id="m-wizard"></select></label>
+      <label>Casting value <select id="m-value"></select></label>
+      <label class="full">Spell <input id="m-spell" type="text" maxlength="60" placeholder="e.g. Blue Fire"></label>
+    </div>
+    <button id="m-cast" class="primary wide">Casting roll</button>
     <p class="meta" id="m-result"></p>
   </aside>
   <aside class="sheet" id="sheet-log" hidden>
-    <h3>Protokoll &amp; Chat</h3>
+    <h3>Log &amp; Chat</h3>
     <ol id="log-list"></ol>
-    <form id="chat-form"><input id="chat-input" type="text" maxlength="300" placeholder="Nachricht …" autocomplete="off"><button>Senden</button></form>
+    <form id="chat-form"><input id="chat-input" type="text" maxlength="300" placeholder="Message …" autocomplete="off"><button>Send</button></form>
   </aside>
-  <aside class="sheet wide-sheet" id="sheet-keys" hidden><h3>Tastenkürzel</h3><div id="keys-list"></div></aside>
+  <aside class="sheet wide-sheet" id="sheet-keys" hidden><h3>Keyboard shortcuts</h3><div id="keys-list"></div></aside>
   <aside class="sheet" id="sheet-help" hidden>
-    <h3>Steuerung</h3>
+    <h3>Controls</h3>
     <ul class="help-list">
-      <li><b>Einheit ziehen</b>: bewegen. Liegt die Front danach höchstens 1″ vor einer gegnerischen Kante, wird sie zum Angriff bündig angelegt.</li>
-      <li><b>Goldene Ecken ziehen</b>: schwenken. <b>Weißer Kreis</b>: um die Mitte drehen. <b>Shift</b>: 15°-Schritte.</li>
-      <li><b>Plänkler</b>: Modell ziehen = einzeln, Shift + ziehen = ganze Einheit.</li>
-      <li><b>Charakter</b> auf eine eigene Einheit ziehen: anschließen.</li>
-      <li><b>Maßband / Sichtlinie</b>: Werkzeug wählen und auf dem Tisch ziehen. <b>Esc</b> zurück zu Auswählen.</li>
-      <li><b>Mausrad</b>: Zoom. <b>Freien Tisch ziehen</b>: Ansicht verschieben (hineingezoomt).</li>
-      <li>Alle Tastenkürzel: Knopf <b>Tastenkürzel</b> links oder <b>?</b> bzw. <b>F1</b>.</li>
+      <li><b>Drag a unit</b>: move it. If its front ends within 1″ of an enemy edge, it is aligned to it for the charge.</li>
+      <li><b>Drag the gold corners</b>: wheel. <b>White circle</b>: pivot around the centre. <b>Shift</b>: 15° steps.</li>
+      <li><b>Skirmishers</b>: drag a model to move it alone, Shift + drag moves the whole unit.</li>
+      <li>Drag a <b>character</b> onto a friendly unit to join it.</li>
+      <li><b>Measure / Line of Sight</b>: choose the tool and drag on the table. <b>Esc</b> returns to Select.</li>
+      <li><b>Mouse wheel</b>: zoom. <b>Drag empty table</b>: pan the view (when zoomed in).</li>
+      <li><b>Setup</b>: follow the steps in <b>Battlefield ▸</b>, then <b>Start Battle</b>.</li>
+      <li>All keyboard shortcuts: <b>Shortcuts</b> on the left, or <b>?</b> / <b>F1</b>.</li>
     </ul>
   </aside>
 
   <div id="lobby">
     <div class="card">
       <h1>TOW Tabletop</h1>
-      <p class="meta">Warhammer: The Old World · 2D-Spieltisch</p>
-      <button id="lobby-create" class="primary wide">Neues Online-Spiel</button>
+      <p class="meta">Warhammer: The Old World · 2D tabletop</p>
+      <button id="lobby-create" class="primary wide">New online game</button>
       <div class="join">
-        <input id="lobby-code" placeholder="Raumcode" maxlength="8" autocomplete="off" spellcheck="false">
-        <button id="lobby-join">Beitreten</button>
+        <input id="lobby-code" placeholder="Room code" maxlength="8" autocomplete="off" spellcheck="false">
+        <button id="lobby-join">Join</button>
       </div>
-      <button id="lobby-offline" class="wide">Offline üben</button>
+      <button id="lobby-offline" class="wide">Play offline</button>
       <p id="lobby-msg" class="meta"></p>
     </div>
   </div>
@@ -156,17 +171,17 @@
     <h2 id="import-title"></h2>
     <div id="import-body"></div>
     <div class="actions">
-      <button id="import-cancel">Abbrechen</button>
-      <button id="import-confirm" class="primary" hidden>Aufstellen</button>
+      <button id="import-cancel">Cancel</button>
+      <button id="import-confirm" class="primary" hidden>Deploy</button>
     </div>
   </dialog>
 
   <dialog id="load-dialog">
-    <h2>Spielstand laden</h2>
+    <h2>Load saved game</h2>
     <p id="load-text" class="meta"></p>
     <div class="actions">
-      <button id="load-cancel">Abbrechen</button>
-      <button id="load-confirm" class="primary">Laden und ersetzen</button>
+      <button id="load-cancel">Cancel</button>
+      <button id="load-confirm" class="primary">Load and replace</button>
     </div>
   </dialog>
 
@@ -175,16 +190,16 @@
     <header>
       <h2 id="o-name"></h2>
       <p class="meta" id="o-meta"></p>
-      <button id="o-close" class="close" aria-label="Schließen">×</button>
+      <button id="o-close" class="close" aria-label="Close">×</button>
     </header>
     <div class="cols">
-      <label class="field">Beschriftung <input id="o-label" type="text" maxlength="40"></label>
+      <label class="field">Label <input id="o-label" type="text" maxlength="40"></label>
       <div class="size-row" id="o-size-row">
-        <label class="field">Breite ″ <input id="o-w" type="number" min="0.5" step="0.5"></label>
-        <label class="field">Tiefe ″ <input id="o-h" type="number" min="0.5" step="0.5"></label>
+        <label class="field">Width ″ <input id="o-w" type="number" min="0.5" step="0.5"></label>
+        <label class="field">Depth ″ <input id="o-h" type="number" min="0.5" step="0.5"></label>
       </div>
-      <label class="field" id="o-rot-row">Drehung ° <input id="o-rot" type="number" step="15"></label>
-      <div class="field"><button id="o-delete" class="danger">Entfernen</button></div>
+      <label class="field" id="o-rot-row">Rotation ° <input id="o-rot" type="number" step="15"></label>
+      <div class="field"><button id="o-delete" class="danger">Remove</button></div>
     </div>
   </aside>
 
@@ -194,31 +209,31 @@
       <span class="swatch" id="p-swatch"></span>
       <h2 id="p-name"></h2>
       <p class="meta" id="p-meta"></p>
-      <button id="p-close" class="close" aria-label="Schließen">×</button>
+      <button id="p-close" class="close" aria-label="Close">×</button>
     </header>
     <div class="cols">
       <section class="col">
-        <h3>Spiel</h3>
-        <label class="check"><input type="checkbox" id="p-ranges"> Reichweiten zeigen</label>
-        <button id="p-charge" class="wide primary">⚔ Angriff ansagen</button>
+        <h3>Game</h3>
+        <label class="check"><input type="checkbox" id="p-ranges"> Show ranges</label>
+        <button id="p-charge" class="wide primary">⚔ Declare charge</button>
         <div class="test-row">
           <select id="p-test-type"></select>
-          <select id="p-test-mod" title="Modifikator auf den Moralwert"></select>
-          <button id="p-test">Test verlangen</button>
+          <select id="p-test-mod" title="Modifier to Leadership"></select>
+          <button id="p-test">Request test</button>
         </div>
         <div id="p-join"></div>
         <div id="p-vp">
           <div class="stack">
             <span class="label">Status</span>
             <div class="seg" id="p-status">
-              <button data-status="">Im Spiel</button><button data-status="fleeing">Flieht</button><button
-                data-status="fledOff">Geflohen</button><button data-status="destroyed">Vernichtet</button>
+              <button data-status="">In play</button><button data-status="fleeing">Fleeing</button><button
+                data-status="fledOff">Fled</button><button data-status="destroyed">Destroyed</button>
             </div>
           </div>
-          <div class="row" id="p-wounds-row"><span class="label">Lebenspunkte</span>
+          <div class="row" id="p-wounds-row"><span class="label">Wounds</span>
             <button data-wound="lose">−</button><output id="p-wounds"></output><button data-wound="heal">+</button></div>
-          <label class="check" id="p-captured-row"><input type="checkbox" id="p-captured"> Standarte vom Gegner erbeutet</label>
-          <div class="row"><span class="label">Punktkosten</span>
+          <label class="check" id="p-captured-row"><input type="checkbox" id="p-captured"> Standard captured by the enemy</label>
+          <div class="row"><span class="label">Points cost</span>
             <input id="p-points" type="number" min="0" step="1" inputmode="numeric"></div>
           <p class="meta" id="p-vp-value"></p>
         </div>
@@ -226,39 +241,39 @@
       </section>
 
       <section class="col wide-col">
-        <h3>Profil</h3>
+        <h3>Profile</h3>
         <table class="profile">
           <thead><tr><th></th><th>M</th><th>WS</th><th>BS</th><th>S</th><th>T</th><th>W</th><th>I</th><th>A</th><th>Ld</th></tr></thead>
           <tbody id="p-profile"></tbody>
         </table>
-        <h3>Ausrüstung</h3>
+        <h3>Equipment</h3>
         <p id="p-equip" class="pre"></p>
-        <h3>Optionen</h3>
+        <h3>Options</h3>
         <p id="p-options"></p>
       </section>
 
       <section class="col">
-        <h3 id="p-items-head">Magische Gegenstände &amp; Fähigkeiten</h3>
+        <h3 id="p-items-head">Magic Items &amp; Abilities</h3>
         <div id="p-items"></div>
       </section>
 
       <section class="col">
-        <h3>Sonderregeln</h3>
+        <h3>Special Rules</h3>
         <div id="p-rules"></div>
         <p class="meta" id="p-source"></p>
       </section>
 
       <section class="col" id="p-formation">
         <h3>Formation</h3>
-        <div class="row" id="p-form-row"><span class="label">Aufstellung</span>
+        <div class="row" id="p-form-row"><span class="label">Formation</span>
           <div class="seg">
-            <button data-form="close">Geschlossen</button><button data-form="skirmish">Plänkler</button>
+            <button data-form="close">Close Order</button><button data-form="skirmish">Skirmish</button>
           </div></div>
-        <div class="row" id="p-width-row"><span class="label">Breite (Modelle in Front)</span>
+        <div class="row" id="p-width-row"><span class="label">Width (models in front rank)</span>
           <button data-act="w-">−</button><output id="p-width"></output><button data-act="w+">+</button></div>
-        <div class="row"><span class="label">Modelle</span>
+        <div class="row"><span class="label">Models</span>
           <button data-act="m-">−</button><output id="p-models"></output><button data-act="m+">+</button></div>
-        <button id="p-rank" class="wide">In Reihen ordnen (0,5″ Abstand)</button>
+        <button id="p-rank" class="wide">Arrange in ranks (0.5″ apart)</button>
       </section>
     </div>
   </aside>

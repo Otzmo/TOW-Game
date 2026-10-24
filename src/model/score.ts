@@ -45,22 +45,22 @@ export function unitVictoryPoints(u: UnitState): ScoreLine[] {
   const name = u.info.name;
   const lines: ScoreLine[] = [];
   const gone = isDestroyed(u) || u.status === 'fledOff';
-  if (isDestroyed(u)) lines.push({ unitId: u.id, label: `${name} vernichtet`, vp: points });
-  else if (u.status === 'fledOff') lines.push({ unitId: u.id, label: `${name} vom Tisch geflohen`, vp: points });
-  else if (u.status === 'fleeing') lines.push({ unitId: u.id, label: `${name} flieht`, vp: Math.ceil(points / 2) });
-  else if (isBelowQuarter(u)) lines.push({ unitId: u.id, label: `${name} auf ≤ 25 %`, vp: Math.ceil(points / 2) });
+  if (isDestroyed(u)) lines.push({ unitId: u.id, label: `${name} destroyed`, vp: points });
+  else if (u.status === 'fledOff') lines.push({ unitId: u.id, label: `${name} fled the battlefield`, vp: points });
+  else if (u.status === 'fleeing') lines.push({ unitId: u.id, label: `${name} fleeing`, vp: Math.ceil(points / 2) });
+  else if (isBelowQuarter(u)) lines.push({ unitId: u.id, label: `${name} at ≤ 25% strength`, vp: Math.ceil(points / 2) });
 
   const out = gone || u.status === 'fleeing';
-  if (out && u.info.isGeneral) lines.push({ unitId: u.id, label: `General (${name}) ausgeschaltet`, vp: GENERAL_BONUS });
-  if (out && u.info.isBsb) lines.push({ unitId: u.id, label: `Armeestandarte (${name}) ausgeschaltet`, vp: BSB_BONUS });
-  if (u.standardCaptured) lines.push({ unitId: u.id, label: `Standarte von ${name} erbeutet`, vp: STANDARD_BONUS });
+  if (out && u.info.isGeneral) lines.push({ unitId: u.id, label: `General (${name}) slain or fled`, vp: GENERAL_BONUS });
+  if (out && u.info.isBsb) lines.push({ unitId: u.id, label: `Battle Standard (${name}) slain or fled`, vp: BSB_BONUS });
+  if (u.standardCaptured) lines.push({ unitId: u.id, label: `${name}'s standard captured`, vp: STANDARD_BONUS });
   return lines;
 }
 
 /** Alle Siegpunkte eines Spielers gegen die Einheiten des Gegners. */
 export function victoryPoints(state: GameState, scorer: PlayerId): { total: number; lines: ScoreLine[] } {
   const lines = Object.values(state.units).filter((u) => u.owner !== scorer).flatMap(unitVictoryPoints);
-  if (state.meta.breakBonus[scorer]) lines.push({ label: 'Gegnerische Armee gebrochen', vp: BREAK_BONUS });
+  if (state.meta.breakBonus[scorer]) lines.push({ label: 'Enemy army broken', vp: BREAK_BONUS });
   return { total: lines.reduce((s, l) => s + l.vp, 0), lines };
 }
 

@@ -9,6 +9,7 @@ import type { Seat } from './net/room';
 import { ActionControls } from './ui/actionControls';
 import { DiceLog, DicePanel } from './ui/dice';
 import { PromptCenter } from './ui/prompts';
+import { SetupPanel } from './ui/setupPanel';
 import { GameBar } from './ui/gameBar';
 import { ImportDialog } from './ui/importDialog';
 import { Lobby } from './ui/lobby';
@@ -35,7 +36,7 @@ async function start(): Promise<void> {
   const state: GameState = {
     table: { width: 72, height: 48 },
     units: {},
-    meta: { round: 1, active: 'p1', breakBonus: {}, scenario: 'none' },
+    meta: { round: 1, active: 'p1', breakBonus: {} },
     objects: defaultTerrain(),
     log: [],
     charges: {},
@@ -88,6 +89,10 @@ async function start(): Promise<void> {
     waiting: () => prompts.waitingCharges().length,
     send: () => prompts.sendReactionPrompts(),
   };
+  // Aufbauphase: Schlachtfeld, Roll-offs, Zonen und Aufstellen
+  const setup = new SetupPanel(store, history, () => seat, (entry) => addLog(entry));
+  gameBar.setupBlocker = () => setup.blocker();
+  gameBar.refresh();
   const actions = new ActionControls(store, board, prompts, () => seat, (entry) => addLog(entry));
   new DicePanel((entry) => addLog(entry), (targetId, wounds, save, ward, note) =>
     prompts.requestSaves(seat && seat !== 'spectator' ? seat : store.state.meta.active, targetId, wounds, save, ward, note));

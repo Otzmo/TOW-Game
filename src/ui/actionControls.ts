@@ -71,14 +71,14 @@ export class ActionControls {
   private chargeBlocked(): string | null {
     const { units, meta, charges } = this.store.state;
     const u = this.board.selectedId ? units[this.board.selectedId] : undefined;
-    if (!u) return 'Erst eine eigene Einheit auswählen.';
+    if (!u) return 'Select one of your units first.';
     const host = u.joinedTo && units[u.joinedTo] ? units[u.joinedTo] : u;
-    if (host.owner !== meta.active || (this.seat() && this.seat() !== host.owner)) return 'Nur der Spieler am Zug sagt Angriffe an.';
+    if (host.owner !== meta.active || (this.seat() && this.seat() !== host.owner)) return 'Only the active player declares charges.';
     if (currentPhase(meta) !== 'movement' || currentSub(meta) !== SUB_DECLARE) {
-      return 'Angriffe werden in der Bewegungsphase, Unterphase „Angriffe & Reaktionen ansagen“, angesagt.';
+      return 'Charges are declared in the Movement phase, sub-phase “Declare Charges & Charge Reactions”.';
     }
-    if (host.status === 'fleeing') return 'Fliehende Einheiten können nicht angreifen.';
-    if (Object.values(charges).some((c) => c.charger === host.id)) return 'Diese Einheit hat schon einen Angriff angesagt.';
+    if (host.status === 'fleeing') return 'Fleeing units cannot declare a charge.';
+    if (Object.values(charges).some((c) => c.charger === host.id)) return 'This unit has already declared a charge.';
     return null;
   }
 
@@ -94,13 +94,13 @@ export class ActionControls {
   private cast(): void {
     const caster = this.store.state.units[sel('m-wizard').value];
     if (!caster) return;
-    const spell = ($('m-spell') as HTMLInputElement).value.trim() || 'Zauber';
+    const spell = ($('m-spell') as HTMLInputElement).value.trim() || 'Spell';
     const value = Number(sel('m-value').value);
     const bonus = Math.ceil(wizardLevel(caster) / 2);
     const dice = roll(2);
     const result = dice[0] + dice[1] + bonus;
     const ok = result >= value;
-    const text = `${caster.info.name} wirkt „${spell}“: ${dice.join(' + ')} + ${bonus} = ${result} gegen ${value}+ – ${ok ? 'gewirkt, Gegner darf bannen' : 'nicht gewirkt'}`;
+    const text = `${caster.info.name} casts “${spell}”: ${dice.join(' + ')} + ${bonus} = ${result} vs ${value}+ – ${ok ? 'cast, the opponent may dispel' : 'casting failed'}`;
     this.log({ kind: 'roll', text, dice: [dice] });
     $('m-result').innerHTML = `${diceHtml(dice)} <span>${esc(text)}</span>`;
     if (ok) this.prompts.requestDispel(caster, spell, result, value);
@@ -113,9 +113,9 @@ export class ActionControls {
     const blocked = this.chargeBlocked();
     const btn = $('p-charge') as HTMLButtonElement;
     const withdraw = !!this.ownUnsentCharge();
-    btn.textContent = withdraw ? '↶ Angriff zurücknehmen' : '⚔ Angriff ansagen';
+    btn.textContent = withdraw ? '↶ Withdraw charge' : '⚔ Declare charge';
     btn.disabled = !withdraw && !!blocked;
-    btn.title = withdraw ? 'Angriff zurücknehmen, solange die Ansage läuft' : blocked ?? 'Danach die angegriffene gegnerische Einheit anklicken (J)';
+    btn.title = withdraw ? 'Withdraw the charge while declaring' : blocked ?? 'Then click the enemy unit to charge (J)';
 
     const own = (u: UnitState) => u.owner === me;
     const fill = (id: string, list: UnitState[], empty: string) => {
@@ -125,9 +125,9 @@ export class ActionControls {
         list.map((u) => `<option value="${u.id}">${esc(u.info.name)}${u.models > 1 ? ` (${u.models})` : ''}</option>`).join('');
       if (list.some((u) => u.id === keep)) box.value = keep;
     };
-    fill('d-target', Object.values(units).filter((u) => !own(u)), '– (selbst würfeln)');
+    fill('d-target', Object.values(units).filter((u) => !own(u)), '– (roll saves yourself)');
     const wizards = Object.values(units).filter((u) => own(u) && wizardLevel(u) > 0);
-    fill('m-wizard', wizards, wizards.length ? '– Zauberer wählen –' : 'Keine Zauberer');
+    fill('m-wizard', wizards, wizards.length ? '– choose a Wizard –' : 'No Wizards');
     if (wizards.length === 1) sel('m-wizard').value = wizards[0].id;
   }
 }

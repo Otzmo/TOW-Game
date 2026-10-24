@@ -4,12 +4,12 @@ const $ = (id: string) => document.getElementById(id)!;
 
 /** Verständliche Namen der Bereiche im Online-Raum */
 const AREA_NAMES: Record<string, string> = {
-  units: 'Einheiten',
-  objects: 'Gelände, Marker & Schablonen',
-  flow: 'Angriffe & Popups',
-  log: 'Protokoll & Würfe',
-  meta: 'Runde & Phasen',
-  players: 'Spielerplätze',
+  units: 'units',
+  objects: 'terrain, markers & templates',
+  flow: 'charges & prompts',
+  log: 'log & dice',
+  meta: 'round & phases',
+  players: 'player seats',
 };
 
 /**
@@ -32,12 +32,12 @@ export class SyncWarning {
     const list = [...this.problems.values()];
     const names = [...new Set(list.map((p) => AREA_NAMES[p.area] ?? p.area))];
     const kinds = new Set(list.map((p) => p.kind));
-    const what = kinds.has('read') && kinds.has('write') ? 'Lesen und Schreiben' : kinds.has('read') ? 'Lesen' : 'Schreiben';
+    const what = kinds.has('read') && kinds.has('write') ? 'reading and writing' : kinds.has('read') ? 'reading' : 'writing';
     $('sync-text').innerHTML =
-      `<b>Online-Abgleich gestört:</b> Firebase lehnt ${what} ab für <b>${names.join(', ')}</b>. ` +
-      'Der Gegner sieht diese Änderungen nicht. Meist erlauben die Datenbankregeln diesen Bereich noch nicht: ' +
-      'In der Firebase-Konsole unter <i>Realtime Database → Regeln</i> den Inhalt von <code>database.rules.json</code> ' +
-      'veröffentlichen und danach bei beiden Spielern die Seite neu laden.';
+      `<b>Online sync failed:</b> Firebase denies ${what} for <b>${names.join(', ')}</b>. ` +
+      'Your opponent does not see these changes. Usually the database rules do not allow this area yet: ' +
+      'in the Firebase console under <i>Realtime Database → Rules</i>, publish the content of <code>database.rules.json</code> ' +
+      'and then reload the page for both players.';
     $('sync-error').hidden = false;
   }
 }

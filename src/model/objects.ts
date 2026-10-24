@@ -10,32 +10,45 @@ export interface ObjectType {
   fill: number;
   stroke: number;
   alpha: number;
-  /** Sichtlinie: blockiert ganz oder gibt nur Deckung */
+  /** Sichtlinie: blockiert (Zonengelände nach OTZMO-TOW) oder gibt nur Deckung */
   sight?: 'blocks' | 'cover';
+  /** Geländeregeln (OTZMO-TOW Core Battle, Terrain Rules) */
+  rules?: string[];
   /** Kurzzeichen auf Markern */
   icon?: string;
-  /** Größe ist durch die Regeln festgelegt (Schablonen) */
+  /** Größe ist durch die Regeln festgelegt (Schablonen, Missionsziele) */
   fixedSize?: boolean;
 }
 
+const COVER = 'Cover (−1 to hit)';
+const FAR = 'Cannon fire stops at the far edge';
+
 export const OBJECT_TYPES: Record<string, ObjectType> = {
-  // Gelände
-  forest: { kind: 'terrain', name: 'Wald', shape: 'ellipse', w: 10, h: 7, fill: 0x24401f, stroke: 0x18301a, alpha: 0.9, sight: 'cover' },
-  hill: { kind: 'terrain', name: 'Hügel', shape: 'ellipse', w: 14, h: 8, fill: 0x6b6440, stroke: 0x8a8255, alpha: 0.55 },
-  building: { kind: 'terrain', name: 'Gebäude', shape: 'rect', w: 6, h: 4, fill: 0x5a4a3a, stroke: 0x2e241b, alpha: 0.95, sight: 'blocks' },
-  wall: { kind: 'terrain', name: 'Mauer / Hecke', shape: 'rect', w: 8, h: 0.6, fill: 0x8a8a80, stroke: 0x4a4a44, alpha: 0.95, sight: 'cover' },
-  river: { kind: 'terrain', name: 'Fluss', shape: 'rect', w: 16, h: 3, fill: 0x2f5f86, stroke: 0x1f3f5a, alpha: 0.75 },
-  marsh: { kind: 'terrain', name: 'Sumpf', shape: 'ellipse', w: 9, h: 6, fill: 0x4a5a3a, stroke: 0x34402a, alpha: 0.7 },
+  // Gelände: Maße und Eigenschaften wie in OTZMO-TOW (Core Battle)
+  woods: { kind: 'terrain', name: 'Woods', shape: 'rect', w: 6, h: 10, fill: 0x3d6b2c, stroke: 0x1f3a16, alpha: 0.9, sight: 'blocks',
+    rules: ['Difficult Terrain', COVER, FAR, 'Natural Terrain'] },
+  building: { kind: 'terrain', name: 'Building', shape: 'rect', w: 6, h: 8, fill: 0x8a4a1e, stroke: 0x3a1e0a, alpha: 0.95, sight: 'blocks',
+    rules: ['Impassable', 'Cannon fire stops at the near edge'] },
+  hill: { kind: 'terrain', name: 'Hill', shape: 'rect', w: 8, h: 6, fill: 0x8f7140, stroke: 0x5a4524, alpha: 0.8, sight: 'blocks',
+    rules: ['Two ranks may shoot', FAR] },
+  ruins: { kind: 'terrain', name: 'Ruins', shape: 'rect', w: 7, h: 7, fill: 0x6b645a, stroke: 0x2f2b26, alpha: 0.9, sight: 'blocks',
+    rules: [COVER, 'Difficult Terrain', 'Dangerous Terrain', FAR] },
+  field: { kind: 'terrain', name: 'Field', shape: 'rect', w: 6, h: 8, fill: 0xb59b4e, stroke: 0x6e5c28, alpha: 0.85, sight: 'blocks',
+    rules: [COVER, FAR] },
+  lake: { kind: 'terrain', name: 'Lake', shape: 'rect', w: 6, h: 10, fill: 0x3d6f9a, stroke: 0x1f3f5a, alpha: 0.85, sight: 'blocks',
+    rules: ['Difficult Terrain', 'Dangerous Terrain', FAR, 'Natural Terrain'] },
+  wall: { kind: 'terrain', name: 'Wall / Hedge', shape: 'rect', w: 8, h: 0.6, fill: 0x8a8a80, stroke: 0x4a4a44, alpha: 0.95, sight: 'cover',
+    rules: ['Low linear obstacle'] },
   // Marker
-  objective: { kind: 'marker', name: 'Missionsziel', shape: 'circle', w: 1.6, h: 1.6, fill: 0xe0b44c, stroke: 0x3a2a00, alpha: 1, icon: '★' },
+  objective: { kind: 'marker', name: 'Objective', shape: 'circle', w: 40 / 25.4, h: 40 / 25.4, fill: 0xe0b44c, stroke: 0x3a2a00, alpha: 1, icon: '★', fixedSize: true },
   disrupted: { kind: 'marker', name: 'Disrupted', shape: 'circle', w: 1.2, h: 1.2, fill: 0xf0603e, stroke: 0x3a0a00, alpha: 1, icon: 'D' },
-  spell: { kind: 'marker', name: 'Zauber', shape: 'circle', w: 1.2, h: 1.2, fill: 0x8a5cd6, stroke: 0x241040, alpha: 1, icon: '✦' },
-  wound: { kind: 'marker', name: 'Verwundung', shape: 'circle', w: 1, h: 1, fill: 0xb3261e, stroke: 0x2a0000, alpha: 1, icon: '+' },
-  note: { kind: 'marker', name: 'Notiz', shape: 'circle', w: 1.2, h: 1.2, fill: 0xd8dccf, stroke: 0x333333, alpha: 1, icon: '!' },
+  spell: { kind: 'marker', name: 'Spell', shape: 'circle', w: 1.2, h: 1.2, fill: 0x8a5cd6, stroke: 0x241040, alpha: 1, icon: '✦' },
+  wound: { kind: 'marker', name: 'Wound', shape: 'circle', w: 1, h: 1, fill: 0xb3261e, stroke: 0x2a0000, alpha: 1, icon: '+' },
+  note: { kind: 'marker', name: 'Note', shape: 'circle', w: 1.2, h: 1.2, fill: 0xd8dccf, stroke: 0x333333, alpha: 1, icon: '!' },
   // Schablonen
-  smallBlast: { kind: 'template', name: 'Kleine Schablone (3″)', shape: 'circle', w: 3, h: 3, fill: 0xf0603e, stroke: 0xf0603e, alpha: 0.25, fixedSize: true },
-  largeBlast: { kind: 'template', name: 'Große Schablone (5″)', shape: 'circle', w: 5, h: 5, fill: 0xf0603e, stroke: 0xf0603e, alpha: 0.25, fixedSize: true },
-  flame: { kind: 'template', name: 'Flammenschablone', shape: 'flame', w: 3, h: 8, fill: 0xf08a3e, stroke: 0xf08a3e, alpha: 0.3, fixedSize: true },
+  smallBlast: { kind: 'template', name: 'Small blast template (3″)', shape: 'circle', w: 3, h: 3, fill: 0xf0603e, stroke: 0xf0603e, alpha: 0.25, fixedSize: true },
+  largeBlast: { kind: 'template', name: 'Large blast template (5″)', shape: 'circle', w: 5, h: 5, fill: 0xf0603e, stroke: 0xf0603e, alpha: 0.25, fixedSize: true },
+  flame: { kind: 'template', name: 'Flame template', shape: 'flame', w: 3, h: 8, fill: 0xf08a3e, stroke: 0xf08a3e, alpha: 0.3, fixedSize: true },
 };
 
 export const typesOfKind = (kind: ObjectKind) => Object.entries(OBJECT_TYPES).filter(([, t]) => t.kind === kind);
@@ -48,11 +61,9 @@ export function newObject(type: string, at: Point): BoardObject {
   };
 }
 
-/** Startgelände für ein neues Spiel. */
+/** Ein neues Spiel beginnt ohne Gelände; es wird in der Aufbauphase gesetzt oder ausgewürfelt. */
 export function defaultTerrain(): Record<string, BoardObject> {
-  const forest = { ...newObject('forest', { x: 20, y: 14 }), id: 'terrain-forest-1' };
-  const hill = { ...newObject('hill', { x: 48, y: 30 }), id: 'terrain-hill-1' };
-  return { [forest.id]: forest, [hill.id]: hill };
+  return {};
 }
 
 /** Umriss eines Objekts auf dem Tisch als Polygon (Zoll). Ellipsen und Kreise werden angenähert. */

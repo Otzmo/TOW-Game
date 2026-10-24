@@ -168,7 +168,7 @@ export class Board {
       const { [charId]: _, ...rest } = host.positions;
       this.store.updateUnit(host.id, recenter(host, this.store.state.units, rest));
     }
-    this.events.onAction(charId, `hat ${host.info.name} verlassen`);
+    this.events.onAction(charId, `left ${host.info.name}`);
   }
 
   private syncAll(): void {
@@ -197,7 +197,7 @@ export class Board {
       if (t && t.owner !== charger.owner) onPick(id);
     };
     const hint = document.getElementById('tool-hint')!;
-    hint.textContent = `Angriff von ${charger.info.name}: gegnerische Einheit anklicken · Esc bricht ab`;
+    hint.textContent = `Charge by ${charger.info.name}: click an enemy unit · Esc to cancel`;
     hint.hidden = false;
   }
 
@@ -237,10 +237,10 @@ export class Board {
         return [p.x * PPI, p.y * PPI];
       });
       g.poly(corners).stroke({ width: 2, color, alpha: 0.9 });
-      const status = c.status === 'declared' ? 'Reaktion offen' : REACTION_NAMES[c.reaction ?? 'hold'];
-      const result = c.status === 'rolled' ? ` · ${c.range}″ ${c.success ? 'gelingt' : 'scheitert'}` : '';
+      const status = c.status === 'declared' ? 'awaiting reaction' : REACTION_NAMES[c.reaction ?? 'hold'];
+      const result = c.status === 'rolled' ? ` · ${c.range}″ ${c.success ? 'succeeds' : 'fails'}` : '';
       const label = new Text({
-        text: `⚔ Angriff · ${status}${result}`,
+        text: `⚔ Charge · ${status}${result}`,
         style: { fontFamily: 'system-ui', fontSize: 9, fontWeight: '700', fill: color, stroke: { color: 0x000000, width: 3 } },
         resolution: 6,
       });
@@ -270,8 +270,8 @@ export class Board {
     c.rotation = u.rotation;
     const g = new Graphics();
     c.addChild(g);
-    const ranges: [number, string, number][] = [[m, `Bewegung ${m}″`, 0xffffff], [2 * m, `Marsch ${2 * m}″`, 0x9ab4d8],
-      [charge, `Angriff max. ${charge}″`, STRAY_COLOR]];
+    const ranges: [number, string, number][] = [[m, `Move ${m}″`, 0xffffff], [2 * m, `March ${2 * m}″`, 0x9ab4d8],
+      [charge, `Charge max. ${charge}″`, STRAY_COLOR]];
     for (const [d, text, color] of ranges) {
       const D = d * PPI;
       g.roundRect((-w / 2) * PPI - D, (-h / 2) * PPI - D, w * PPI + 2 * D, h * PPI + 2 * D, D)
@@ -299,10 +299,10 @@ export class Board {
       const { w, h } = unitFootprint(t, units);
       // Kanten des Ziels: Mittelpunkt, Richtung entlang der Kante, Außennormale, halbe Länge
       const edges: [string, Point, Point, number][] = [
-        ['die Front', { x: 0, y: -h / 2 }, { x: 0, y: -1 }, w / 2],
-        ['den Rücken', { x: 0, y: h / 2 }, { x: 0, y: 1 }, w / 2],
-        ['die linke Flanke', { x: -w / 2, y: 0 }, { x: -1, y: 0 }, h / 2],
-        ['die rechte Flanke', { x: w / 2, y: 0 }, { x: 1, y: 0 }, h / 2],
+        ['front', { x: 0, y: -h / 2 }, { x: 0, y: -1 }, w / 2],
+        ['rear', { x: 0, y: h / 2 }, { x: 0, y: 1 }, w / 2],
+        ['left flank', { x: -w / 2, y: 0 }, { x: -1, y: 0 }, h / 2],
+        ['right flank', { x: w / 2, y: 0 }, { x: 1, y: 0 }, h / 2],
       ];
       const local = this.toUnitLocal(t, front);
       for (const [side, mid, n, half] of edges) {
@@ -322,7 +322,7 @@ export class Board {
     // Eigene Front zeigt gegen die Außennormale der Zielkante; Mitte liegt eine halbe Tiefe dahinter
     const rotation = Math.atan2(-best.n.x, best.n.y);
     this.store.updateUnit(unitId, { x: best.p.x + best.n.x * (me.h / 2), y: best.p.y + best.n.y * (me.h / 2), rotation });
-    return `greift ${best.target.info.name} in ${best.side} an`;
+    return `charges ${best.target.info.name} in the ${best.side}`;
   }
 
   /**
@@ -366,7 +366,7 @@ export class Board {
     const p = this.unitPoint(u, right, -forward);
     this.store.updateUnit(u.id, { x: p.x, y: p.y });
     const dist = Math.hypot(forward, right);
-    this.events.onAction(u.id, `${dist.toFixed(1)}″ ${forward > 0 ? 'vor' : forward < 0 ? 'zurück' : right > 0 ? 'nach rechts' : 'nach links'}`);
+    this.events.onAction(u.id, `${dist.toFixed(1)}″ ${forward > 0 ? 'forward' : forward < 0 ? 'backward' : right > 0 ? 'right' : 'left'}`);
   }
 
   /** Auswahl um ihre Mitte drehen (Grad, im Uhrzeigersinn positiv). */
@@ -632,7 +632,7 @@ export class Board {
         this.store.updateUnit(target.id, recenter(target, { ...units, [c.id]: { ...c, joinedTo: target.id } }, positions));
       }
       this.store.updateUnit(d.unitId, { joinedTo: target.id });
-      this.events.onAction(d.unitId, `hat sich ${target.info.name} angeschlossen`);
+      this.events.onAction(d.unitId, `joined ${target.info.name}`);
       return;
     }
     const text = this.describe(d);
@@ -654,8 +654,8 @@ export class Board {
     const end = u.positions?.[d.key] ?? d.start;
     const dist = Math.hypot(end.x - d.start.x, end.y - d.start.y);
     this.store.updateUnit(d.unitId, recenter(u, units, u.positions ?? d.startPositions));
-    const warn = layout.stray.size ? ` – ${layout.stray.size} Modell(e) mehr als ${SKIRMISH_GAP}″ entfernt, bis Zugende korrigieren` : '';
-    this.events.onAction(actor, `Modell ${dist.toFixed(1)}″ bewegt${warn}`);
+    const warn = layout.stray.size ? ` – ${layout.stray.size} model(s) more than ${SKIRMISH_GAP}″ away, fix before the end of the phase` : '';
+    this.events.onAction(actor, `model moved ${dist.toFixed(1)}″${warn}`);
   }
 
   /** Linie vom Start zum Modell, Strecke und Abstand zum nächsten Modell (rot über 1″). */
@@ -672,7 +672,7 @@ export class Board {
     this.guide.circle(a.x * PPI, a.y * PPI, 2.5).fill(0xffffff);
     this.guide.moveTo(a.x * PPI, a.y * PPI).lineTo(b.x * PPI, b.y * PPI).stroke({ width: 1.5, color: GUIDE_COLOR, alpha: 0.9 });
     this.moveLabel.text = `${Math.hypot(end.x - d.start.x, end.y - d.start.y).toFixed(1)}″ · ` +
-      `${near.toFixed(1)}″ zum nächsten Modell${tooFar ? ' – mehr als 1″!' : ''}`;
+      `${near.toFixed(1)}″ to the nearest model${tooFar ? ' – more than 1″!' : ''}`;
     this.moveLabel.style.fill = tooFar ? STRAY_COLOR : near <= SKIRMISH_GAP ? OK_COLOR : 0xffffff;
     this.moveLabel.scale.set(1 / this.world.scale.x);
     this.moveLabel.position.set(b.x * PPI, b.y * PPI - 1.5 * PPI);
@@ -692,12 +692,12 @@ export class Board {
     if (d.swing) {
       // Gemessen wird der Weg der äußeren Ecke
       const arc = Math.abs(turn) * d.swing.front;
-      return Math.abs(deg) >= 0.5 ? `${arc.toFixed(1)}″ geschwenkt (${Math.round(Math.abs(deg))}°)` : '';
+      return Math.abs(deg) >= 0.5 ? `wheeled ${arc.toFixed(1)}″ (${Math.round(Math.abs(deg))}°)` : '';
     }
     const dist = Math.hypot(u.x - d.sx, u.y - d.sy);
     const parts: string[] = [];
-    if (dist >= 0.05) parts.push(`${dist.toFixed(1)}″ bewegt`);
-    if (Math.abs(deg) >= 0.5) parts.push(`${Math.round(deg)}° gedreht`);
+    if (dist >= 0.05) parts.push(`moved ${dist.toFixed(1)}″`);
+    if (Math.abs(deg) >= 0.5) parts.push(`turned ${Math.round(deg)}°`);
     return parts.join(' · ');
   }
 
@@ -739,7 +739,7 @@ export class Board {
         return [target.x * PPI + lx * c - ly * s, target.y * PPI + lx * s + ly * c];
       });
       this.guide.poly(box).fill({ color: GUIDE_COLOR, alpha: 0.18 }).stroke({ width: 2, color: GUIDE_COLOR });
-      this.moveLabel.text = `Loslassen: ${target.info.name} anschließen`;
+      this.moveLabel.text = `Release: join ${target.info.name}`;
     }
     this.moveLabel.scale.set(1 / this.world.scale.x);
     this.moveLabel.position.set(u.x * PPI, u.y * PPI - Math.max(view.w, view.h) / 2 - 2 * PPI);

@@ -33,8 +33,8 @@ export class ImportDialog {
   private async load(file: File): Promise<void> {
     this.pending = null;
     $('import-confirm').hidden = true;
-    $('import-title').textContent = `Armee für Spieler ${this.owner === 'p1' ? 1 : 2}`;
-    $('import-body').innerHTML = '<p class="meta">Lade …</p>';
+    $('import-title').textContent = `Army for Player ${this.owner === 'p1' ? 1 : 2}`;
+    $('import-body').innerHTML = '<p class="meta">Loading …</p>';
     this.dialog.showModal();
     try {
       const json = JSON.parse(await file.text());
@@ -43,7 +43,7 @@ export class ImportDialog {
       this.renderPreview(result);
       $('import-confirm').hidden = false;
     } catch (e) {
-      const msg = e instanceof SyntaxError ? 'Die Datei ist kein gültiges JSON.' : (e as Error).message;
+      const msg = e instanceof SyntaxError ? 'The file is not valid JSON.' : (e as Error).message;
       $('import-body').innerHTML = `<p class="warn">${escapeHtml(msg)}</p>`;
     }
   }
@@ -63,11 +63,11 @@ export class ImportDialog {
     }).join('');
     const warnings = r.warnings.length
       ? `<ul class="warn">${r.warnings.map((w) => `<li>${escapeHtml(w)}</li>`).join('')}</ul>`
-      : '<p class="ok">Alle Einheiten, Regeln und Gegenstände zugeordnet.</p>';
+      : '<p class="ok">All units, special rules and items matched.</p>';
     $('import-body').innerHTML = `
-      <p class="meta">${escapeHtml(r.listName)} · ${escapeHtml(r.factionName)} · ${r.units.length} Einheiten</p>
+      <p class="meta">${escapeHtml(r.listName)} · ${escapeHtml(r.factionName)} · ${r.units.length} units</p>
       <table class="preview">
-        <thead><tr><th></th><th>Einheit</th><th>Typ</th><th>Base mm</th><th>Regeln</th><th>Gegenst.</th></tr></thead>
+        <thead><tr><th></th><th>Unit</th><th>Troop Type</th><th>Base mm</th><th>Rules</th><th>Items</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
       ${warnings}`;

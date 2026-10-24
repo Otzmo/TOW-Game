@@ -110,8 +110,8 @@ export class UnitView extends Container {
     }
     // Vernichtete oder geflohene Einheiten blass, fliehende markiert
     this.alpha = isDestroyed(u) || u.status === 'fledOff' ? 0.3 : 1;
-    const status = isDestroyed(u) ? ' · vernichtet' : u.status === 'fledOff' ? ' · geflohen'
-      : u.status === 'fleeing' ? ' · FLIEHT' : '';
+    const status = isDestroyed(u) ? ' · destroyed' : u.status === 'fledOff' ? ' · fled'
+      : u.status === 'fleeing' ? ' · FLEEING' : '';
     const name = new Text({
       text: `${u.info.name} (${u.models})${status}`,
       style: { fontFamily: 'system-ui', fontSize: 7, fontWeight: '600', fill: 0xffffff, stroke: { color: 0x000000, width: 2.5 } },

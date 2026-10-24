@@ -104,8 +104,8 @@ async function loadFaction(slug: string): Promise<FactionData> {
   if (cached) return cached;
   const res = await fetch(`${import.meta.env.BASE_URL}data/${slug}.json`);
   if (!res.ok) {
-    throw new Error(`Für die Fraktion "${slug}" gibt es noch keine Daten. ` +
-      `Im Projektordner ausführen: node scripts/fetch-faction.mjs ${slug}`);
+    throw new Error(`There is no data for the faction "${slug}" yet. ` +
+      `Run in the project folder: node scripts/fetch-faction.mjs ${slug}`);
   }
   const data = (await res.json()) as FactionData;
   factionCache.set(slug, data);
@@ -147,7 +147,7 @@ export async function importBbList(
 ): Promise<ImportResult> {
   const list = json as BbList;
   if (!list || !Array.isArray(list.units) || typeof list.factionId !== 'string') {
-    throw new Error('Das sieht nicht nach einer .bb.json-Datei von oldworldrankings aus.');
+    throw new Error('This does not look like a .bb.json file from oldworldrankings.');
   }
   const factionSlug = lastSegment(list.factionId);
   const data = await loadFaction(factionSlug);
@@ -160,14 +160,14 @@ export async function importBbList(
   const units: UnitState[] = list.units.map((entry) => {
     const slug = lastSegment(entry.unitEntryId);
     const src = data.units[slug];
-    if (!src) warnings.push(`Einheit "${slug}" nicht in den Daten gefunden – wird als leerer Block angelegt.`);
+    if (!src) warnings.push(`Unit "${slug}" not found in the data – created as an empty block.`);
 
     // Reittier: Option aus einer "-mount"-Gruppe, die selbst eine Einheit ist
     const mountOpt = entry.selectedOptions.find((o) => o.groupId.endsWith('-mount') && o.optionId !== 'on-foot');
     const mount = mountOpt
       ? data.units[mountOpt.optionId] ?? data.units[`${mountOpt.optionId}-${factionSlug}`]
       : undefined;
-    if (mountOpt && !mount) warnings.push(`${src?.name ?? slug}: Reittier "${mountOpt.optionId}" nicht gefunden.`);
+    if (mountOpt && !mount) warnings.push(`${src?.name ?? slug}: mount "${mountOpt.optionId}" not found.`);
 
     const ruleKeys = new Set<string>([...(src?.specialRules ?? []), ...(mount?.specialRules ?? [])]);
     for (const o of entry.selectedOptions) {
@@ -182,17 +182,17 @@ export async function importBbList(
     // Punkte: Grundkosten × Modelle + Optionen + Gegenstände
     let points = (src?.cost ?? 0) * q;
     for (const o of entry.selectedOptions) points += optionCost(src?.options ?? [], o.optionId, o.groupId, q) ?? 0;
-    if (src && src.cost == null) warnings.push(`${src.name}: keine Punktkosten gefunden – bitte im Panel eintragen.`);
+    if (src && src.cost == null) warnings.push(`${src.name}: no points cost found – please enter it in the unit bar.`);
 
     const items: RuleRef[] = entry.traitIds.map((id) => {
       const it = data.items[norm(lastSegment(id))];
       if (!it) {
-        warnings.push(`${src?.name ?? slug}: Gegenstand "${lastSegment(id)}" nicht gefunden.`);
+        warnings.push(`${src?.name ?? slug}: item "${lastSegment(id)}" not found.`);
         return { name: humanize(lastSegment(id)), text: '' };
       }
       const cost = itemCost(it, isCharacter, q);
       points += cost;
-      const note = [it.type, `${cost} Pkt.`].filter(Boolean).join(' · ');
+      const note = [it.type, `${cost} pts`].filter(Boolean).join(' · ');
       return { name: it.name, text: it.text, url: it.url, note };
     });
 
@@ -204,7 +204,7 @@ export async function importBbList(
     const base = mount?.base ?? src?.base ?? { width: 25, depth: 25 };
     const info: UnitInfo = {
       name: src?.name ?? humanize(slug),
-      troopType: mount ? `auf ${mount.name}` : src?.troopType ?? '',
+      troopType: mount ? `on ${mount.name}` : src?.troopType ?? '',
       baseWidth: base.width,
       baseDepth: base.depth,
       profile: [...(src?.profile ?? []), ...(mount?.profile ?? [])],

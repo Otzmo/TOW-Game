@@ -87,12 +87,43 @@ export interface GameMeta {
   active: PlayerId;
   /** Hat dieser Spieler die gegnerische Armee gebrochen? (+500 SP) */
   breakBonus: Partial<Record<PlayerId, boolean>>;
-  /** Aufstellungszonen, siehe SCENARIOS */
-  scenario?: string;
+  /** Aufbau vor dem Spiel: Schlachtfeld, Roll-offs, Zonen, Aufstellung */
+  setup?: SetupState;
   /** Aktuelle Phase, siehe phases.ts; fehlt = Aufstellung */
   phase?: 'setup' | 'strategy' | 'movement' | 'shooting' | 'combat';
   /** Unterphase (0–3), siehe PHASES in phases.ts */
   sub?: number;
+}
+
+/**
+ * Aufbau nach OTZMO-TOW (Core Battle): Schlachtfeld auswürfeln, Angreifer/Verteidiger,
+ * Zonenwahl, abwechselndes Aufstellen, Roll-off für den ersten Zug.
+ */
+export interface SetupState {
+  /** Schlüssel in DEPLOYMENTS (battlefield.ts) */
+  deployment?: string | null;
+  flipX?: boolean;
+  flipY?: boolean;
+  /** Spieler 1 bekommt Zone B statt A (Wahl des Verteidigers) */
+  swapZones?: boolean;
+  /** Mission "End of player turn" bzw. "End of game" (Schlüssel in MISSIONS) */
+  missionTurn?: string | null;
+  missionGame?: string | null;
+  /** Roll-off um Angreifer/Verteidiger */
+  rollOff?: Partial<Record<PlayerId, number>> | null;
+  rollWinner?: PlayerId | null;
+  defender?: PlayerId | null;
+  zoneChosen?: boolean;
+  /** Wer als Nächstes eine Einheit aufstellt */
+  deployNext?: PlayerId | null;
+  /** Wer zuerst mit dem Aufstellen fertig war (+1 beim Roll-off für den ersten Zug) */
+  finishedFirst?: PlayerId | null;
+  finished?: Partial<Record<PlayerId, boolean>>;
+  /** Roll-off für den ersten Zug */
+  firstRoll?: Partial<Record<PlayerId, number>> | null;
+  firstWinner?: PlayerId | null;
+  /** Wer den ersten Spielerzug hat */
+  firstPlayer?: PlayerId | null;
 }
 
 /** Gelände, Marker und Schablonen auf dem Tisch. */

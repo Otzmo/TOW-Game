@@ -8,7 +8,7 @@ const $ = (id: string) => document.getElementById(id)!;
 const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
-const WHO: Record<LogEntry['by'], string> = { p1: 'Spieler 1', p2: 'Spieler 2', spectator: 'Zuschauer' };
+const WHO: Record<LogEntry['by'], string> = { p1: 'Player 1', p2: 'Player 2', spectator: 'Spectator' };
 
 /** Gemeinsames Protokoll: Aktionen, Würfe, Zugwechsel und Chat. */
 export class LogPanel {
@@ -43,11 +43,11 @@ export class LogPanel {
     if ($('sheet-log').hidden) return;
     const list = $('log-list');
     list.innerHTML = this.store.state.log.slice(-200).map((e) => {
-      const time = new Date(e.ts).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+      const time = new Date(e.ts).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
       const dice = e.dice?.length ? `<div class="log-dice">${e.dice.map((d) => diceHtml(d)).join('<span class="sep">→</span>')}</div>` : '';
       return `<li class="log-${e.kind}"><span class="log-meta"><span class="dot ${e.by}"></span>${WHO[e.by]} · ${time}</span>` +
         `<span class="log-text">${escapeHtml(e.text)}</span>${dice}</li>`;
-    }).join('') || '<li class="empty">Noch nichts passiert.</li>';
+    }).join('') || '<li class="empty">Nothing has happened yet.</li>';
     list.scrollTop = list.scrollHeight;
   }
 }

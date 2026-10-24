@@ -22,7 +22,7 @@ export interface RollResult {
 export function chargeRoll(swiftstride: boolean, battleHunger: boolean): RollResult {
   const dice = roll(2);
   let total = Math.max(...dice);
-  const parts = [`höchster von ${dice.join(' und ')} = ${total}`];
+  const parts = [`highest of ${dice.join(' and ')} = ${total}`];
   if (swiftstride) {
     const x = d6();
     dice.push(x);
@@ -42,7 +42,7 @@ export function chargeRoll(swiftstride: boolean, battleHunger: boolean): RollRes
 export function fleeRoll(fireAndFlee: boolean, swiftstride: boolean): RollResult {
   const dice = roll(2);
   let total = fireAndFlee ? Math.max(...dice) : dice[0] + dice[1];
-  const parts = [fireAndFlee ? `höchster von ${dice.join(' und ')} = ${total}` : `${dice.join(' + ')} = ${total}`];
+  const parts = [fireAndFlee ? `highest of ${dice.join(' and ')} = ${total}` : `${dice.join(' + ')} = ${total}`];
   if (swiftstride) {
     const x = d6();
     dice.push(x);
@@ -112,11 +112,11 @@ export function chargeDistance(charger: UnitState, target: UnitState, units: Rec
 }
 
 export const REACTION_NAMES: Record<ChargeReaction, string> = {
-  hold: 'Halten',
-  standShoot: 'Stehen & Schießen',
-  flee: 'Fliehen',
+  hold: 'Hold',
+  standShoot: 'Stand & Shoot',
+  flee: 'Flee',
   fireFlee: 'Fire & Flee',
-  counter: 'Gegenangriff (Counter Charge)',
+  counter: 'Counter Charge',
 };
 
 /** Erlaubte Reaktionen auf einen Angriff, mit kurzer Erklärung. */
@@ -125,19 +125,19 @@ export function reactionOptions(state: GameState, charge: Charge): { key: Charge
   const charger = units[charge.charger];
   const target = units[charge.target];
   if (!charger || !target) return [];
-  if (target.status === 'fleeing') return [{ key: 'flee', note: 'Fliehende Einheiten müssen fliehen.' }];
+  if (target.status === 'fleeing') return [{ key: 'flee', note: 'Fleeing units must Flee.' }];
   const dist = chargeDistance(charger, target, units);
   const tooClose = dist < movementOf(charger);
   const options: { key: ChargeReaction; note: string }[] = [
-    { key: 'hold', note: 'Stehen bleiben und den Angriff empfangen.' },
+    { key: 'hold', note: 'Stand firm and receive the charge.' },
   ];
-  if (!tooClose) options.push({ key: 'standShoot', note: 'Nur mit Fernkampfwaffen und Sichtlinie; danach Halten.' });
-  options.push({ key: 'flee', note: 'Sofort vom Angreifer weg fliehen (2W6).' });
+  if (!tooClose) options.push({ key: 'standShoot', note: 'Only with missile weapons and line of sight; then Hold.' });
+  options.push({ key: 'flee', note: 'Flee directly away from the charger (2D6).' });
   if (!tooClose && hasRule(target, /fire (&|and) flee/i)) {
-    options.push({ key: 'fireFlee', note: 'Schießen, dann fliehen (2W6, niedrigerer fällt weg).' });
+    options.push({ key: 'fireFlee', note: 'Shoot, then Flee (2D6, discard the lowest).' });
   }
   if (!tooClose && hasRule(target, /counter charge/i)) {
-    options.push({ key: 'counter', note: 'Nur gegen Kavallerie, Streitwagen oder Monster in der Front.' });
+    options.push({ key: 'counter', note: 'Only against cavalry, chariots or monsters charging the front arc.' });
   }
   return options;
 }
@@ -158,12 +158,12 @@ export function contactPose(charger: UnitState, target: UnitState, units: Record
     const sign = p.y < 0 ? -1 : 1;
     lp = { x: Math.max(-w / 2, Math.min(w / 2, p.x)), y: (sign * h) / 2 };
     n = { x: 0, y: sign };
-    side = sign < 0 ? 'die Front' : 'den Rücken';
+    side = sign < 0 ? 'front' : 'rear';
   } else {
     const sign = p.x < 0 ? -1 : 1;
     lp = { x: (sign * w) / 2, y: Math.max(-h / 2, Math.min(h / 2, p.y)) };
     n = { x: sign, y: 0 };
-    side = sign < 0 ? 'die linke Flanke' : 'die rechte Flanke';
+    side = sign < 0 ? 'left flank' : 'right flank';
   }
   const contact = toTable(target, lp.x, lp.y);
   const c = Math.cos(target.rotation);

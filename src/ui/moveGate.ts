@@ -53,7 +53,7 @@ export class MoveGate {
     const u = units[unitId];
     if (!u) return '';
     const host = u.joinedTo && units[u.joinedTo] ? units[u.joinedTo] : u;
-    if (this.exceptions.has(host.id)) return 'Ausnahme/Sonderregel';
+    if (this.exceptions.has(host.id)) return 'exception/special rule';
     const check = checkMove(this.store.state.meta, host, this.seat, false, this.store.state.charges);
     return check.ok ? check.note ?? '' : '';
   }
@@ -63,7 +63,7 @@ export class MoveGate {
     const u = this.store.state.units[this.pendingId];
     this.exceptions.add(this.pendingId);
     const phase = phaseLabel(currentPhase(this.store.state.meta));
-    if (u) this.log(`Ausnahme: ${u.info.name} darf in der ${phase} bewegt werden (Sonderregel)`);
+    if (u) this.log(`Exception: ${u.info.name} may move in the ${phase} (special rule)`);
     this.hide();
   }
 

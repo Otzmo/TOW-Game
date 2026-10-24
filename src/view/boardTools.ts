@@ -1,7 +1,7 @@
 import { Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
 import type { History } from '../model/history';
 import { newObject, OBJECT_TYPES, objectPolygon, segmentHitsPolygon } from '../model/objects';
-import { SCENARIOS } from '../model/scenarios';
+import { CENTRE_CIRCLE, circleBlocksDeployment, deploymentZones, TABLE_H, TABLE_W } from '../model/battlefield';
 import type { Store } from '../model/store';
 import type { BoardObject, Point } from '../model/types';
 import { ObjectView } from './objectView';
@@ -31,7 +31,8 @@ export interface ToolHost {
 
 /** Gelände, Marker, Schablonen, Aufstellungszonen sowie Maßband und Sichtlinie. */
 export class BoardTools {
-  readonly zoneLayer = new Graphics();
+  /** Aufstellungszonen, Mittelkreis, Viertel (Domination) und Kontrollradien der Missionsziele */
+  readonly zoneLayer = new Container();
   readonly terrainLayer = new Container();
   readonly overlayLayer = new Container();
   readonly toolLayer = new Container();
@@ -56,7 +57,7 @@ export class BoardTools {
     store.subscribe((state, change) => {
       if (change.objectId) this.syncObject(change.objectId);
       if (change.loaded) this.syncAll();
-      if (change.meta || change.loaded) this.drawZones();
+      if (change.meta || change.loaded || change.objectId) this.drawZones();
       void state;
     });
     this.syncAll();
@@ -218,13 +219,13 @@ export class BoardTools {
       const names = (list: BoardObject[]) => [...new Set(list.map((o) => o.label || OBJECT_TYPES[o.type].name))].join(', ');
       if (blocks.length) {
         color = STRAY_COLOR;
-        text += ` · blockiert durch ${names(blocks)}`;
+        text += ` · blocked by ${names(blocks)}`;
       } else if (crossed.length) {
         color = CAUTION_COLOR;
-        text += ` · durch ${names(crossed)} (Deckung)`;
+        text += ` · through ${names(crossed)} (cover)`;
       } else {
         color = OK_COLOR;
-        text += ' · freie Sicht';
+        text += ' · clear line of sight';
       }
     }
     g.clear();
@@ -251,13 +252,45 @@ export class BoardTools {
   // --- Aufstellungszonen ------------------------------------------------------
 
   private drawZones(): void {
-    const g = this.zoneLayer;
-    g.clear();
-    const zones = SCENARIOS[this.store.state.meta.scenario ?? 'none']?.zones;
+    this.zoneLayer.removeChildren().forEach((c) => c.destroy());
+    const setup = this.store.state.meta.setup;
+    const zones = deploymentZones(setup);
     if (!zones) return;
+    const g = new Graphics();
+    this.zoneLayer.addChild(g);
+    const label = (text: string, p: Point, color: number) => {
+      const t = new Text({ text, style: { fontFamily: 'system-ui', fontSize: 14, fontWeight: '700', fill: color, stroke: { color: 0x000000, width: 3 } }, resolution: 4 });
+      t.anchor.set(0.5);
+      t.alpha = 0.85;
+      t.position.set(p.x * PPI, p.y * PPI);
+      this.zoneLayer.addChild(t);
+    };
+    // Vor der Zonenwahl neutral als Zone A/B, danach in Spielerfarben
+    const assigned = !!setup?.zoneChosen;
     for (const p of ['p1', 'p2'] as const) {
-      const pts = zones[p].flatMap((pt) => [pt.x * PPI, pt.y * PPI]);
-      g.poly(pts).fill({ color: PLAYER_COLORS[p].fill, alpha: 0.18 }).stroke({ width: 2, color: PLAYER_COLORS[p].edge, alpha: 0.5 });
+      const pts = zones[p];
+      const colors = assigned ? PLAYER_COLORS[p] : { fill: 0xb9b2a0, edge: 0xe8e6e3 };
+      g.poly(pts.flatMap((pt) => [pt.x * PPI, pt.y * PPI])).fill({ color: colors.fill, alpha: 0.2 }).stroke({ width: 2, color: colors.edge, alpha: 0.55 });
+      const c = { x: pts.reduce((s, q) => s + q.x, 0) / pts.length, y: pts.reduce((s, q) => s + q.y, 0) / pts.length };
+      const name = assigned ? `Player ${p === 'p1' ? 1 : 2} deployment zone` : `Zone ${(p === 'p1') !== !!setup?.swapZones ? 'A' : 'B'}`;
+      label(name, c, colors.edge);
+    }
+    // Mittelkreis: frei von Gelände; bei Close Encounter auch frei von Aufstellung
+    const r = (CENTRE_CIRCLE / 2) * PPI;
+    g.circle((TABLE_W / 2) * PPI, (TABLE_H / 2) * PPI, r)
+      .stroke({ width: 1.5, color: 0xffffff, alpha: circleBlocksDeployment(setup) ? 0.6 : 0.2 });
+    if (circleBlocksDeployment(setup)) label('No deployment', { x: TABLE_W / 2, y: TABLE_H / 2 - CENTRE_CIRCLE / 2 + 1.5 }, 0xffffff);
+    // Domination: Tischviertel
+    if (setup?.missionTurn === 'domination') {
+      g.moveTo((TABLE_W / 2) * PPI, 0).lineTo((TABLE_W / 2) * PPI, TABLE_H * PPI)
+        .moveTo(0, (TABLE_H / 2) * PPI).lineTo(TABLE_W * PPI, (TABLE_H / 2) * PPI)
+        .stroke({ width: 1.5, color: 0xe0b44c, alpha: 0.45 });
+    }
+    // Strategic Locations: 6″ Kontrollradius um jedes Missionsziel
+    if (setup?.missionTurn === 'locations') {
+      for (const o of Object.values(this.store.state.objects)) {
+        if (o.type === 'objective') g.circle(o.x * PPI, o.y * PPI, 6 * PPI).stroke({ width: 1, color: 0xe0b44c, alpha: 0.45 });
+      }
     }
   }
 }

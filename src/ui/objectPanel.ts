@@ -47,8 +47,8 @@ export class ObjectPanel {
     set('o-rot', String(Math.round((((o.rotation * 180) / Math.PI) % 360 + 360) % 360)));
     $('o-size-row').hidden = !!t?.fixedSize || o.kind === 'marker';
     $('o-rot-row').hidden = o.kind === 'marker';
-    const sight = t?.sight === 'blocks' ? 'Blockiert die Sichtlinie.' : t?.sight === 'cover' ? 'Sichtlinie hindurch gibt Deckung.' : '';
-    $('o-meta').textContent = [t?.kind === 'template' ? `Feste Größe: ${t.w}″ × ${t.h}″.` : '', sight]
+    const sight = t?.sight === 'blocks' ? 'Blocks line of sight.' : t?.sight === 'cover' ? 'Line of sight through it grants cover.' : '';
+    $('o-meta').textContent = [t?.kind === 'template' ? `Fixed size: ${t.w}″ × ${t.h}″.` : '', sight]
       .filter(Boolean).join(' ');
   }
 }

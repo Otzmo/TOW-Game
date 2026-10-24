@@ -57,81 +57,81 @@ export class Shortcuts {
 
     this.list = [
       // Allgemein
-      { group: 'Allgemein', keys: [['Strg', 'Z']], desc: 'Rückgängig', match: withCtrl('z'), run: () => history.undo() },
-      { group: 'Allgemein', keys: [['Strg', 'Y'], ['Strg', 'Umschalt', 'Z']], desc: 'Wiederholen',
+      { group: 'General', keys: [['Ctrl', 'Z']], desc: 'Undo', match: withCtrl('z'), run: () => history.undo() },
+      { group: 'General', keys: [['Ctrl', 'Y'], ['Ctrl', 'Shift', 'Z']], desc: 'Redo',
         match: (e) => withCtrl('y')(e) || withCtrl('z', true)(e), run: () => history.redo() },
-      { group: 'Allgemein', keys: [['Strg', 'S']], desc: 'Spielstand speichern', match: withCtrl('s'), run: () => toolbox.save() },
-      { group: 'Allgemein', keys: [['Strg', 'O']], desc: 'Spielstand laden', match: withCtrl('o'), run: () => toolbox.openLoad() },
-      { group: 'Allgemein', keys: [['Esc']], desc: 'Werkzeug beenden, Fenster schließen, dann Auswahl aufheben',
+      { group: 'General', keys: [['Ctrl', 'S']], desc: 'Save game', match: withCtrl('s'), run: () => toolbox.save() },
+      { group: 'General', keys: [['Ctrl', 'O']], desc: 'Load game', match: withCtrl('o'), run: () => toolbox.openLoad() },
+      { group: 'General', keys: [['Esc']], desc: 'Stop tool, close sheet, then clear selection',
         match: (e) => e.key === 'Escape', whileTyping: true, run: (e) => this.escape(e) },
-      { group: 'Allgemein', keys: [['?'], ['F1']], desc: 'Diese Tastenkürzel anzeigen',
+      { group: 'General', keys: [['?'], ['F1']], desc: 'Show these shortcuts',
         match: (e) => char('?')(e) || e.key === 'F1', run: () => toggleSheet('keys') },
-      { group: 'Allgemein', keys: [['H']], desc: 'Hilfe zur Steuerung', match: letter('h'), run: () => toggleSheet('help') },
+      { group: 'General', keys: [['H']], desc: 'Controls help', match: letter('h'), run: () => toggleSheet('help') },
 
       // Werkzeuge
-      { group: 'Werkzeuge', keys: [['V']], desc: 'Auswählen und ziehen', match: letter('v'), run: () => tools.setTool('select') },
-      { group: 'Werkzeuge', keys: [['M']], desc: 'Maßband', match: letter('m'), run: () => tools.setTool('measure') },
-      { group: 'Werkzeuge', keys: [['L']], desc: 'Sichtlinie', match: letter('l'), run: () => tools.setTool('sight') },
-      { group: 'Werkzeuge', keys: [['G']], desc: 'Gelände setzen', match: letter('g'), run: () => toggleSheet('terrain') },
-      { group: 'Werkzeuge', keys: [['K']], desc: 'Marker setzen', match: letter('k'), run: () => toggleSheet('markers') },
-      { group: 'Werkzeuge', keys: [['B']], desc: 'Schablonen', match: letter('b'), run: () => toggleSheet('templates') },
-      { group: 'Werkzeuge', keys: [['A']], desc: 'Aufstellungszonen', match: letter('a'), run: () => toggleSheet('zones') },
+      { group: 'Tools', keys: [['V']], desc: 'Select and drag', match: letter('v'), run: () => tools.setTool('select') },
+      { group: 'Tools', keys: [['M']], desc: 'Measuring tape', match: letter('m'), run: () => tools.setTool('measure') },
+      { group: 'Tools', keys: [['L']], desc: 'Line of sight', match: letter('l'), run: () => tools.setTool('sight') },
+      { group: 'Tools', keys: [['G']], desc: 'Place terrain', match: letter('g'), run: () => toggleSheet('terrain') },
+      { group: 'Tools', keys: [['K']], desc: 'Place markers', match: letter('k'), run: () => toggleSheet('markers') },
+      { group: 'Tools', keys: [['B']], desc: 'Templates', match: letter('b'), run: () => toggleSheet('templates') },
+      { group: 'Tools', keys: [['A']], desc: 'Battlefield & setup (random generator)', match: letter('a'), run: () => toggleSheet('battlefield') },
 
       // Fenster und Spiel
-      { group: 'Spiel', keys: [['W']], desc: 'Würfel (rechts): Anzahl eingeben', match: letter('w'), run: () => {
+      { group: 'Game', keys: [['W']], desc: 'Dice (right): enter number', match: letter('w'), run: () => {
         const input = $('d-count') as HTMLInputElement;
         input.focus();
         input.select();
       } },
-      { group: 'Spiel', keys: [['Enter']], desc: 'In den Würfeln rechts: würfeln',
+      { group: 'Game', keys: [['Enter']], desc: 'In the dice column: roll',
         match: (e) => e.key === 'Enter' && plain(e) && !!targetEl(e)?.closest('#dicebar'),
         whileTyping: true, run: () => ($('d-roll') as HTMLButtonElement).click() },
-      { group: 'Spiel', keys: [['Z']], desc: 'Magie: Zauber wirken', match: letter('z'), run: () => toggleSheet('magic') },
-      { group: 'Spiel', keys: [['J']], desc: 'Angriff ansagen (dann Ziel anklicken)', match: letter('j'), run: () => actions.declareCharge() },
-      { group: 'Spiel', keys: [['P']], desc: 'Protokoll', match: letter('p'), run: () => toggleSheet('log') },
-      { group: 'Spiel', keys: [['C']], desc: 'Chat-Nachricht schreiben', match: letter('c'), run: () => {
+      { group: 'Game', keys: [['Z']], desc: 'Magic: cast a spell', match: letter('z'), run: () => toggleSheet('magic') },
+      { group: 'Game', keys: [['J']], desc: 'Declare charge (then click the target)', match: letter('j'), run: () => actions.declareCharge() },
+      { group: 'Game', keys: [['P']], desc: 'Log', match: letter('p'), run: () => toggleSheet('log') },
+      { group: 'Game', keys: [['C']], desc: 'Write a chat message', match: letter('c'), run: () => {
         openSheet('log');
         ($('chat-input') as HTMLInputElement).focus();
       } },
-      { group: 'Spiel', keys: [['S']], desc: 'Siegpunkte', match: letter('s'), run: () => toggleSheet('score') },
-      { group: 'Spiel', keys: [['N']], desc: 'Weiter zur nächsten Unterphase', match: letter('n'), run: () => gameBar.requestNext() },
-      { group: 'Spiel', keys: [['Umschalt', 'N']], desc: 'Phase beenden (nach dem Nahkampf: Zug abgeben)', match: letter('n', true), run: () => gameBar.requestEndPhase() },
-      { group: 'Spiel', keys: [['U']], desc: 'Fernkampf/Nahkampf: nächste Einheit bzw. nächster Kampf', match: letter('u'), run: () => gameBar.repeat() },
-      { group: 'Spiel', keys: [['Tab'], ['Umschalt', 'Tab']], desc: 'Nächste / vorige Einheit auswählen',
+      { group: 'Game', keys: [['S']], desc: 'Victory Points', match: letter('s'), run: () => toggleSheet('score') },
+      { group: 'Game', keys: [['N']], desc: 'Next sub-phase', match: letter('n'), run: () => gameBar.requestNext() },
+      { group: 'Game', keys: [['Shift', 'N']], desc: 'End phase (after the Combat phase: end turn)', match: letter('n', true), run: () => gameBar.requestEndPhase() },
+      { group: 'Game', keys: [['U']], desc: 'Shooting/Combat: next unit or next combat', match: letter('u'), run: () => gameBar.repeat() },
+      { group: 'Game', keys: [['Tab'], ['Shift', 'Tab']], desc: 'Select next / previous unit',
         match: (e) => e.key === 'Tab' && plain(e), run: (e) => board.selectNext(e.shiftKey ? -1 : 1) },
 
       // Ausgewählte Einheit oder ausgewähltes Objekt
-      { group: 'Auswahl', keys: [['↑'], ['↓']], desc: '1″ vor / zurück (mit Umschalt 0,1″)',
+      { group: 'Selection', keys: [['↑'], ['↓']], desc: '1″ forward / backward (Shift: 0.1″)',
         match: (e) => plain(e) && (e.key === 'ArrowUp' || e.key === 'ArrowDown'),
         run: (e) => nudge(e.key === 'ArrowUp' ? 1 : -1, 0)(e) },
-      { group: 'Auswahl', keys: [['←'], ['→']], desc: '1″ nach links / rechts (mit Umschalt 0,1″)',
+      { group: 'Selection', keys: [['←'], ['→']], desc: '1″ left / right (Shift: 0.1″)',
         match: (e) => plain(e) && (e.key === 'ArrowLeft' || e.key === 'ArrowRight'),
         run: (e) => nudge(0, e.key === 'ArrowRight' ? 1 : -1)(e) },
-      { group: 'Auswahl', keys: [['Q'], ['E']], desc: '15° nach links / rechts drehen (mit Umschalt 1°)',
+      { group: 'Selection', keys: [['Q'], ['E']], desc: 'Turn 15° left / right (Shift: 1°)',
         match: (e) => letter('q', null)(e) || letter('e', null)(e),
         run: (e) => board.rotateSelected((e.key.toLowerCase() === 'e' ? 1 : -1) * (e.shiftKey ? 1 : 15)) },
-      { group: 'Auswahl', keys: [['R']], desc: 'Bewegungs- und Angriffsreichweite zeigen', match: letter('r'), run: () => panel.toggleRanges() },
-      { group: 'Auswahl', keys: [['F']], desc: 'Geschlossen / Plänkler wechseln', match: letter('f'), run: () => panel.toggleFormation() },
-      { group: 'Auswahl', keys: [['O']], desc: 'Plänkler in Reihen ordnen (0,5″)', match: letter('o'), run: () => panel.arrangeInRanks() },
-      { group: 'Auswahl', keys: [[','], ['.']], desc: 'Formation schmaler / breiter', match: char(',', '.'),
+      { group: 'Selection', keys: [['R']], desc: 'Show movement and charge ranges', match: letter('r'), run: () => panel.toggleRanges() },
+      { group: 'Selection', keys: [['F']], desc: 'Toggle close order / skirmish', match: letter('f'), run: () => panel.toggleFormation() },
+      { group: 'Selection', keys: [['O']], desc: 'Arrange skirmishers in ranks (0.5″)', match: letter('o'), run: () => panel.arrangeInRanks() },
+      { group: 'Selection', keys: [[','], ['.']], desc: 'Narrower / wider formation', match: char(',', '.'),
         run: (e) => panel.onFormation(e.key === ',' ? 'w-' : 'w+') },
-      { group: 'Auswahl', keys: [['-'], ['+']], desc: 'Modell entfernen / hinzufügen', match: char('-', '+'),
+      { group: 'Selection', keys: [['-'], ['+']], desc: 'Remove / add model', match: char('-', '+'),
         run: (e) => panel.onFormation(e.key === '-' ? 'm-' : 'm+') },
-      { group: 'Auswahl', keys: [['1'], ['2'], ['3'], ['4']], desc: 'Status: im Spiel / flieht / geflohen / vernichtet',
+      { group: 'Selection', keys: [['1'], ['2'], ['3'], ['4']], desc: 'Status: in play / fleeing / fled / destroyed',
         match: char('1', '2', '3', '4'),
         run: (e) => status(([null, 'fleeing', 'fledOff', 'destroyed'] as const)[Number(e.key) - 1])() },
-      { group: 'Auswahl', keys: [['X']], desc: 'Charakter verlässt seine Einheit', match: letter('x'), run: () => {
+      { group: 'Selection', keys: [['X']], desc: 'Character leaves its unit', match: letter('x'), run: () => {
         if (board.selectedId) board.detachCharacter(board.selectedId);
       } },
-      { group: 'Auswahl', keys: [['Entf'], ['Rücktaste']], desc: 'Gelände, Marker oder Schablone entfernen',
+      { group: 'Selection', keys: [['Del'], ['Backspace']], desc: 'Remove terrain, marker or template',
         match: (e) => plain(e) && (e.key === 'Delete' || e.key === 'Backspace'), run: () => tools.removeSelected() },
 
       // Ansicht
-      { group: 'Ansicht', keys: [['Bild ↑'], ['Bild ↓']], desc: 'Hinein- / herauszoomen (auch Mausrad)',
+      { group: 'View', keys: [['PgUp'], ['PgDn']], desc: 'Zoom in / out (also mouse wheel)',
         match: (e) => plain(e) && (e.key === 'PageUp' || e.key === 'PageDown'),
         run: (e) => board.zoomBy(e.key === 'PageUp' ? 1.25 : 1 / 1.25) },
-      { group: 'Ansicht', keys: [['Pos1']], desc: 'Ganzen Tisch zeigen', match: (e) => plain(e) && e.key === 'Home', run: () => board.fitView() },
-      { group: 'Ansicht', keys: [['Strg', '↑ ↓ ← →']], desc: 'Ansicht verschieben (hineingezoomt)',
+      { group: 'View', keys: [['Home']], desc: 'Show the whole table', match: (e) => plain(e) && e.key === 'Home', run: () => board.fitView() },
+      { group: 'View', keys: [['Ctrl', '↑ ↓ ← →']], desc: 'Pan the view (when zoomed in)',
         match: (e) => ctrl(e) && e.key.startsWith('Arrow'),
         run: (e) => board.panBy({ ArrowLeft: 80, ArrowRight: -80 }[e.key] ?? 0, { ArrowUp: 80, ArrowDown: -80 }[e.key] ?? 0) },
     ];

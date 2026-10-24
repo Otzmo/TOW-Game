@@ -28,8 +28,8 @@ export class DicePanel {
    */
   constructor(private publish: (entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>) => void,
     private sendSaves: (targetId: string, wounds: number, save: string, ward: string, note: string) => void = () => {}) {
-    for (const [id, def, none] of [['d-hit', '4', '– (trifft automatisch)'], ['d-wound', '4', '– (überspringen)'],
-      ['d-save', '', '– (keiner)'], ['d-ward', '', '– (keiner)']] as const) {
+    for (const [id, def, none] of [['d-hit', '4', '– (hits automatically)'], ['d-wound', '4', '– (skip)'],
+      ['d-save', '', '– (none)'], ['d-ward', '', '– (none)']] as const) {
       select(id).innerHTML = `<option value="">${none}</option>` +
         [2, 3, 4, 5, 6].map((n) => `<option value="${n}" ${String(n) === def ? 'selected' : ''}>${n}+</option>`).join('');
     }
@@ -43,7 +43,7 @@ export class DicePanel {
     const count = Math.max(1, Math.min(100, Math.round(Number(($('d-count') as HTMLInputElement).value) || 1)));
     const note = ($('d-note') as HTMLInputElement).value.trim();
     const stages: DiceStage[] = [];
-    const parts: string[] = [`${count} W6`];
+    const parts: string[] = [`${count} D6`];
     let pool = count;
 
     const step = (id: string, label: string, word: string, saving: boolean) => {
@@ -56,21 +56,21 @@ export class DicePanel {
       pool = saving ? pool - ok : ok;
       parts.push(`${saving ? pool : ok} ${word} (${t}+)`);
     };
-    step('d-hit', 'Treffer', 'Treffer', false);
-    step('d-wound', 'Verwunden', 'Verwundungen', false);
+    step('d-hit', 'To Hit', 'hits', false);
+    step('d-wound', 'To Wound', 'wounds', false);
     // Mit Ziel würfelt der Gegner Rüstung und Rettung selbst
     const targetId = select('d-target')?.value ?? '';
     const toOpponent = !!targetId && stages.length > 0 && pool > 0;
     if (toOpponent) {
-      parts.push('Gegner würfelt Rüstung/Rettung');
+      parts.push('opponent rolls saves');
     } else {
-      step('d-save', 'Rüstung', 'nicht gerüstet', true);
-      step('d-ward', 'Rettung', 'ungerettet', true);
+      step('d-save', 'Armour Save', 'unsaved', true);
+      step('d-ward', 'Ward save', 'unsaved', true);
     }
     if (!stages.length) {
       const dice = roll(count);
-      stages.push({ label: 'Wurf', dice, success: 7 });
-      parts.push(`Summe ${dice.reduce((s, d) => s + d, 0)}`);
+      stages.push({ label: 'Roll', dice, success: 7 });
+      parts.push(`total ${dice.reduce((s, d) => s + d, 0)}`);
     }
 
     const text = (note ? `${note}: ` : '') + parts.join(' → ');
@@ -83,8 +83,8 @@ export class DicePanel {
     const [n, sides] = kind.split('d').map(Number);
     const dice = roll(n).map((d) => (sides === 3 ? Math.ceil(d / 2) : d));
     const sum = dice.reduce((s, d) => s + d, 0);
-    const text = `${n > 1 ? n : ''}W${sides}: ${dice.join(' + ')}${n > 1 ? ` = ${sum}` : ''}`;
-    this.show(text, [{ label: `${n}W${sides}`, dice, success: 7 }]);
+    const text = `${n > 1 ? n : ''}D${sides}: ${dice.join(' + ')}${n > 1 ? ` = ${sum}` : ''}`;
+    this.show(text, [{ label: `${n}D${sides}`, dice, success: 7 }]);
     this.publish({ kind: 'roll', text, dice: [dice] });
   }
 
@@ -102,7 +102,7 @@ function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 }
 
-const WHO: Record<LogEntry['by'], string> = { p1: 'Spieler 1', p2: 'Spieler 2', spectator: 'Zuschauer' };
+const WHO: Record<LogEntry['by'], string> = { p1: 'Player 1', p2: 'Player 2', spectator: 'Spectator' };
 
 /** Würfelprotokoll in der rechten Spalte: alle Würfe beider Spieler, neueste oben. */
 export class DiceLog {
@@ -116,10 +116,10 @@ export class DiceLog {
   private render(): void {
     const rolls = this.store.state.log.filter((e) => e.kind === 'roll').slice(-100).reverse();
     $('dice-log').innerHTML = rolls.map((e) => {
-      const time = new Date(e.ts).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+      const time = new Date(e.ts).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
       const dice = e.dice?.length ? `<div class="log-dice">${e.dice.map((d) => diceHtml(d)).join('<span class="sep">→</span>')}</div>` : '';
       return `<li><span class="log-meta"><span class="dot ${e.by}"></span>${WHO[e.by]} · ${time}</span>` +
         `<span class="log-text">${escapeHtml(e.text)}</span>${dice}</li>`;
-    }).join('') || '<li class="empty">Noch nicht gewürfelt.</li>';
+    }).join('') || '<li class="empty">No dice rolled yet.</li>';
   }
 }

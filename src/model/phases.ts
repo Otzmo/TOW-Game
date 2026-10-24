@@ -7,12 +7,13 @@ import type { Charge, GameMeta, PlayerId, UnitState } from './types';
 export type Phase = 'setup' | 'strategy' | 'movement' | 'shooting' | 'combat';
 
 export const PHASES: { key: Phase; name: string; subs: string[]; repeat?: string }[] = [
-  { key: 'setup', name: 'Aufstellung', subs: ['Aufstellen (auch Vanguard)'] },
-  { key: 'strategy', name: 'Strategie', subs: ['Zugbeginn', 'Kommando', 'Beschwörung', 'Fliehende sammeln'] },
-  { key: 'movement', name: 'Bewegung', subs: ['Angriffe & Reaktionen ansagen', 'Angriffsbewegungen', 'Pflichtbewegungen', 'Übrige Bewegungen'] },
+  // Aufbau nach OTZMO-TOW (Core Battle, Game Sequence); Begriffe der Phasen wie auf tow.whfb.app
+  { key: 'setup', name: 'Setup', subs: ['Generate Battlefield', 'Roll-off: Attacker & Defender', 'Deployment Zone & Terrain', 'Deploy Units', 'Scouts & Vanguard', 'Roll-off for First Turn'] },
+  { key: 'strategy', name: 'Strategy', subs: ['Start of Turn', 'Command', 'Conjuration', 'Rally Fleeing Troops'] },
+  { key: 'movement', name: 'Movement', subs: ['Declare Charges & Charge Reactions', 'Charge Moves', 'Compulsory Moves', 'Remaining Moves'] },
   // Fernkampf und Nahkampf werden je Einheit bzw. je Kampf durchlaufen
-  { key: 'shooting', name: 'Fernkampf', subs: ['Einheit & Ziel wählen', 'Treffen', 'Verwunden & Rüstung', 'Verluste & Paniktest'], repeat: 'Nächste Einheit' },
-  { key: 'combat', name: 'Nahkampf', subs: ['Kampf wählen & kämpfen', 'Kampfergebnis', 'Aufriebstest', 'Nachsetzen & Verfolgung'], repeat: 'Nächster Kampf' },
+  { key: 'shooting', name: 'Shooting', subs: ['Choose Unit & Declare Target', 'Roll To Hit', 'Roll To Wound & Make Armour Saves', 'Remove Casualties & Make Panic Tests'], repeat: 'Next unit' },
+  { key: 'combat', name: 'Combat', subs: ['Choose & Fight Combat', 'Calculate Combat Result', 'Break Test', 'Follow Up & Pursuit'], repeat: 'Next combat' },
 ];
 
 /** Unterphasen der Bewegungsphase */
@@ -22,7 +23,7 @@ export const SUB_COMPULSORY = 2;
 
 /** Vollständiger Name, z. B. "Bewegungsphase" */
 export const phaseLabel = (p: Phase): string =>
-  ({ setup: 'Aufstellung', strategy: 'Strategiephase', movement: 'Bewegungsphase', shooting: 'Fernkampfphase', combat: 'Nahkampfphase' })[p];
+  ({ setup: 'Setup', strategy: 'Strategy phase', movement: 'Movement phase', shooting: 'Shooting phase', combat: 'Combat phase' })[p];
 export const currentPhase = (meta: GameMeta): Phase => meta.phase ?? 'setup';
 export const currentSub = (meta: GameMeta): number => meta.sub ?? 0;
 export const phaseInfo = (p: Phase) => PHASES.find((x) => x.key === p)!;
@@ -33,10 +34,13 @@ type Step = Pick<GameMeta, 'phase' | 'sub' | 'active' | 'round'>;
 /** Nächste Phase (Unterphase 0); nach dem Nahkampf ist der andere Spieler dran, nach Spieler 2 neue Runde. */
 export function nextPhase(meta: GameMeta): Step {
   const phase = currentPhase(meta);
-  if (phase === 'setup') return { phase: 'strategy', sub: 0, active: 'p1', round: Math.max(1, meta.round) };
+  // Nach dem Aufbau beginnt, wer den ersten Zug hat (Roll-off)
+  if (phase === 'setup') return { phase: 'strategy', sub: 0, active: meta.setup?.firstPlayer ?? 'p1', round: Math.max(1, meta.round) };
   if (phase === 'combat') {
     const active: PlayerId = meta.active === 'p1' ? 'p2' : 'p1';
-    return { phase: 'strategy', sub: 0, active, round: meta.active === 'p2' ? meta.round + 1 : meta.round };
+    // Eine Runde endet, wenn der Spieler mit dem zweiten Zug fertig ist
+    const second: PlayerId = meta.setup?.firstPlayer === 'p2' ? 'p1' : 'p2';
+    return { phase: 'strategy', sub: 0, active, round: meta.active === second ? meta.round + 1 : meta.round };
   }
   const order: Phase[] = ['strategy', 'movement', 'shooting', 'combat'];
   return { phase: order[order.indexOf(phase) + 1], sub: 0, active: meta.active, round: meta.round };
@@ -70,40 +74,40 @@ export type MoveCheck =
  */
 export function checkMove(meta: GameMeta, unit: UnitState, seat: PlayerId | 'spectator' | null, exception: boolean,
   charges: Record<string, Charge> = {}): MoveCheck {
-  if (seat === 'spectator') return { ok: false, reason: 'Zuschauer können nichts bewegen.', overridable: false };
+  if (seat === 'spectator') return { ok: false, reason: 'Spectators cannot move units.', overridable: false };
   if (seat && unit.owner !== seat) {
-    return { ok: false, reason: 'Online bewegt jeder Spieler nur seine eigenen Einheiten.', overridable: false };
+    return { ok: false, reason: 'Online, each player moves only their own units.', overridable: false };
   }
   const phase = currentPhase(meta);
   if (phase === 'setup' || exception) return { ok: true };
   const own = unit.owner === meta.active;
-  if (phase === 'combat') return { ok: true, note: 'Nahkampfbewegung' };
+  if (phase === 'combat') return { ok: true, note: 'Combat move' };
   if (phase === 'movement' && own) {
     const sub = currentSub(meta);
     const charging = Object.values(charges).some((c) => c.charger === unit.id);
     const fleeing = unit.status === 'fleeing';
     if (sub === SUB_DECLARE) {
-      return { ok: false, overridable: true, reason: 'Erst Angriffe ansagen – bewegt wird in den folgenden Unterphasen.' };
+      return { ok: false, overridable: true, reason: 'Declare charges first – units move in the following sub-phases.' };
     }
     if (sub === SUB_CHARGE_MOVES) {
-      return charging ? { ok: true, note: 'Angriffsbewegung' }
-        : { ok: false, overridable: true, reason: 'In den Angriffsbewegungen ziehen nur angreifende Einheiten.' };
+      return charging ? { ok: true, note: 'Charge move' }
+        : { ok: false, overridable: true, reason: 'Only charging units move during Charge Moves.' };
     }
     if (sub === SUB_COMPULSORY) {
-      return fleeing ? { ok: true, note: 'Pflichtbewegung' }
-        : { ok: false, overridable: true, reason: 'Pflichtbewegungen: nur fliehende und andere zur Bewegung gezwungene Einheiten.' };
+      return fleeing ? { ok: true, note: 'Compulsory move' }
+        : { ok: false, overridable: true, reason: 'Compulsory Moves: only fleeing units and others forced to move.' };
     }
     if (charging || fleeing) {
-      return { ok: false, overridable: true, reason: 'Angreifende und fliehende Einheiten bewegen sich in den übrigen Bewegungen nicht mehr.' };
+      return { ok: false, overridable: true, reason: 'Charging and fleeing units do not move during Remaining Moves.' };
     }
     return { ok: true };
   }
   if (phase === 'movement' && !own) {
     const rule = [...unit.info.rules].find((r) => REACTION_RULES.test(r.name));
-    if (rule) return { ok: true, note: `Reaktion (${rule.name})` };
+    if (rule) return { ok: true, note: `Reaction (${rule.name})` };
     return { ok: false, overridable: true,
-      reason: 'Der Gegner ist in seiner Bewegungsphase. Eigene Einheiten bewegen sich jetzt nur als Reaktion (z. B. Flucht).' };
+      reason: "It is your opponent's Movement phase. Your units only move now as a charge reaction (e.g. Flee)." };
   }
   return { ok: false, overridable: true,
-    reason: `Bewegen ist in der ${phaseLabel(phase)} nicht erlaubt – nur in der Bewegungsphase.` };
+    reason: `Units cannot move in the ${phaseLabel(phase)} – only in the Movement phase.` };
 }

@@ -14,8 +14,8 @@ const escapeHtml = (s: string) =>
 
 function ruleHtml(r: RuleRef): string {
   const note = r.note ? `<span class="note">${escapeHtml(r.note)}</span>` : '';
-  const link = r.url ? `\n<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">Volltext ↗</a>` : '';
-  return `<details><summary>${escapeHtml(r.name)}${note}</summary><p>${escapeHtml(r.text || 'Kein Text gefunden.')}${link}</p></details>`;
+  const link = r.url ? `\n<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">Full text ↗</a>` : '';
+  return `<details><summary>${escapeHtml(r.name)}${note}</summary><p>${escapeHtml(r.text || 'No text found.')}${link}</p></details>`;
 }
 
 export interface PanelActions {
@@ -117,7 +117,7 @@ export class UnitPanel {
     const u = this.unit();
     if (!u || !isSkirmish(u) || !this.canMove(u.id)) return;
     this.change({ positions: spreadPositions(u, this.store.state.units) });
-    this.setLastAction(u.id, 'in Reihen mit 0,5″ Abstand geordnet');
+    this.setLastAction(u.id, 'arranged in ranks 0.5″ apart');
   }
 
   /** Zwischen geschlossener Formation und Plänklern wechseln, falls erlaubt */
@@ -144,7 +144,7 @@ export class UnitPanel {
     } else {
       this.store.updateUnit(u.id, { formation: 'close', positions: null });
     }
-    this.setLastAction(u.id, form === 'skirmish' ? 'in Plänklerformation gewechselt' : 'in geschlossene Formation gewechselt');
+    this.setLastAction(u.id, form === 'skirmish' ? 'changed to skirmish formation' : 'changed to close order formation');
   }
 
   private render(): void {
@@ -160,12 +160,12 @@ export class UnitPanel {
     $('p-swatch').style.background = PLAYER_COLORS[u.owner].css;
     $('p-name').textContent = info.name;
     const base = `Base ${info.baseWidth}×${info.baseDepth} mm`;
-    const warn = stray.size ? ` · <span class="warn-line">${stray.size} außerhalb von ${SKIRMISH_GAP}″</span>` : '';
+    const warn = stray.size ? ` · <span class="warn-line">${stray.size} beyond ${SKIRMISH_GAP}″</span>` : '';
     $('p-meta').innerHTML = joined
-      ? `${u.models} Modell · ${base}`
+      ? `${u.models} model · ${base}`
       : skirmish
-        ? `${u.models} Modelle · ${base} · Plänkler · Fläche ${w.toFixed(1)}″ × ${h.toFixed(1)}″${warn}`
-        : `${u.models} Modelle · ${base} · Formation ${cols} × ${ranks} · Fläche ${w.toFixed(1)}″ × ${h.toFixed(1)}″`;
+        ? `${u.models} models · ${base} · Skirmish · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″${warn}`
+        : `${u.models} models · ${base} · formation ${cols} × ${ranks} · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″`;
     $('p-join').innerHTML = this.joinHtml(u.id);
     $('p-profile').innerHTML = info.profile
       .map((r) => `<tr><td>${escapeHtml(r.name)}</td>${r.values.map((v) => `<td>${escapeHtml(v)}</td>`).join('')}</tr>`)
@@ -176,13 +176,13 @@ export class UnitPanel {
     $('p-items').innerHTML = info.items.map(ruleHtml).join('');
     $('p-rules').innerHTML = info.rules.map(ruleHtml).join('') || '<p>–</p>';
     $('p-source').innerHTML = info.url
-      ? `Quelle: <a href="${escapeHtml(info.url)}" target="_blank" rel="noopener">tow.whfb.app ↗</a>`
+      ? `Source: <a href="${escapeHtml(info.url)}" target="_blank" rel="noopener">tow.whfb.app ↗</a>`
       : '';
     // Ein angeschlossener Charakter hat keine eigene Formation
     $('p-formation').hidden = joined;
     $('p-form-row').hidden = !canSkirmish(u) && !skirmish;
     $('p-rank').hidden = !skirmish;
-    $('p-width-row').querySelector('.label')!.textContent = skirmish ? 'Breite beim Ordnen' : 'Breite (Modelle in Front)';
+    $('p-width-row').querySelector('.label')!.textContent = skirmish ? 'Width when arranging' : 'Width (models in front rank)';
 
     // Siegpunkte
     document.querySelectorAll<HTMLButtonElement>('[data-status]').forEach((btn) => {
@@ -198,15 +198,15 @@ export class UnitPanel {
     if (document.activeElement !== pointsInput) pointsInput.value = String(info.points ?? 0);
     const vp = unitVictoryPoints(u);
     const total = vp.reduce((s, l) => s + l.vp, 0);
-    const tags = [info.isGeneral ? 'General' : '', info.isBsb ? 'Armeestandarte' : ''].filter(Boolean).join(' · ');
-    $('p-vp-value').textContent = `Bringt dem Gegner jetzt ${total} SP` + (tags ? ` · ${tags}` : '');
+    const tags = [info.isGeneral ? 'General' : '', info.isBsb ? 'Battle Standard Bearer' : ''].filter(Boolean).join(' · ');
+    $('p-vp-value').textContent = `Worth ${total} VP to the opponent right now` + (tags ? ` · ${tags}` : '');
     document.querySelectorAll<HTMLButtonElement>('[data-form]').forEach((btn) => {
       btn.classList.toggle('on', btn.dataset.form === (u.formation ?? 'close'));
     });
     $('p-width').textContent = String(skirmish ? Math.min(u.width, u.models) : cols);
     $('p-models').textContent = String(u.models);
     const last = this.lastAction.get(u.id);
-    $('p-move').textContent = last ? `Letzte Aktion: ${last}` : '';
+    $('p-move').textContent = last ? `Last action: ${last}` : '';
   }
 
   /** Anschluss-Status: Charakter in Einheit, Charaktere einer Einheit oder Hinweis zum Anschließen. */
@@ -215,17 +215,17 @@ export class UnitPanel {
     const u = units[id];
     if (isJoined(u, units)) {
       const host = units[u.joinedTo!];
-      return `<div class="join-row"><span>In Einheit: <button class="link" data-select="${escapeHtml(host.id)}">` +
+      return `<div class="join-row"><span>Joined to: <button class="link" data-select="${escapeHtml(host.id)}">` +
         `${escapeHtml(host.info.name)}</button></span>` +
-        `<button data-detach="${escapeHtml(u.id)}">Einheit verlassen</button></div>`;
+        `<button data-detach="${escapeHtml(u.id)}">Leave unit</button></div>`;
     }
     const chars = joinedCharacters(u, units);
     if (chars.length) {
       const list = chars.map((c) => `<button class="link" data-select="${escapeHtml(c.id)}">${escapeHtml(c.info.name)}</button>`);
-      return `<div class="join-row"><span>Charaktere: ${list.join(', ')}</span></div>`;
+      return `<div class="join-row"><span>Characters: ${list.join(', ')}</span></div>`;
     }
     if (u.info.isCharacter) {
-      return '<p class="hint">Zum Anschließen auf eine eigene Einheit ziehen.</p>';
+      return '<p class="hint">Drag onto a friendly unit to join it.</p>';
     }
     return '';
   }

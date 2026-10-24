@@ -180,9 +180,8 @@ body.placing canvas { cursor: crosshair; }
   background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px;
 }
 .sheet > h3:first-child { margin-top: 0; }
-.pick, #zone-list { display: flex; flex-direction: column; gap: 6px; }
-.pick button, #zone-list button { display: flex; align-items: center; gap: 8px; text-align: left; }
-#zone-list button.on { border-color: var(--accent); color: var(--accent); }
+.pick { display: flex; flex-direction: column; gap: 6px; }
+.pick button { display: flex; align-items: center; gap: 8px; text-align: left; }
 .swatch-sm { width: 14px; height: 14px; border-radius: 3px; flex: none; border: 1px solid rgba(255, 255, 255, .3); }
 .help-list { margin: 0; padding-left: 18px; font-size: 13px; display: flex; flex-direction: column; gap: 6px; }
 
@@ -280,8 +279,8 @@ kbd {
 body.sheet-open .bottom-panel { display: none; }
 
 /* Auswahllisten nebeneinander */
-.pick, #zone-list { flex-direction: row; flex-wrap: wrap; }
-.pick button, #zone-list button { flex: 0 0 auto; }
+.pick { flex-direction: row; flex-wrap: wrap; }
+.pick button { flex: 0 0 auto; }
 .help-list { columns: 2 320px; column-gap: 28px; display: block; }
 .help-list li { break-inside: avoid; margin-bottom: 6px; }
 
@@ -403,3 +402,16 @@ body.sheet-open .bottom-panel { display: none; }
 #sync-text code { background: rgba(0, 0, 0, .3); padding: 1px 4px; border-radius: 4px; }
 #sync-reload { white-space: nowrap; padding: 5px 10px; font-size: 13px; }
 #sync-error .close { background: none; border: 0; color: #fde3da; font-size: 20px; padding: 0 6px; }
+
+/* Battlefield & Setup: Generator, Ergebnis und aktueller Aufbauschritt nebeneinander */
+.setup-cols { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(240px, 1.3fr) minmax(240px, 1.3fr); gap: 18px; }
+.setup-cols h4 { margin: 0 0 6px; font-size: 13px; color: var(--accent); }
+.setup-cols p { margin: 4px 0; font-size: 13px; }
+.setup-cols fieldset { border: 1px solid #3a3f44; border-radius: 6px; margin: 0 0 8px; padding: 4px 8px 6px; }
+.setup-cols legend { font-size: 12px; color: var(--muted); padding: 0 4px; }
+.setup-cols fieldset .check { display: inline-flex; margin: 2px 10px 2px 0; font-size: 12px; }
+.setup-cols details { margin: 4px 0; font-size: 13px; }
+.setup-cols details p { white-space: pre-line; color: var(--muted); }
+.setup-cols summary { cursor: pointer; }
+.row-btns { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+@media (max-width: 900px) { .setup-cols { grid-template-columns: 1fr; } }

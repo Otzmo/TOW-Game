@@ -14,7 +14,7 @@ function addCloseButtons(): void {
   document.querySelectorAll<HTMLElement>('.sheet').forEach((el) => {
     const btn = document.createElement('button');
     btn.className = 'close sheet-close';
-    btn.setAttribute('aria-label', 'Schließen');
+    btn.setAttribute('aria-label', 'Close');
     btn.textContent = '×';
     btn.onclick = () => openSheet(null);
     el.prepend(btn);

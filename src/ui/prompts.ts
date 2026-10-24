@@ -11,7 +11,7 @@ import { diceHtml } from './dice';
 const $ = (id: string) => document.getElementById(id)!;
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
-const playerName = (p: PlayerId) => `Spieler ${p === 'p1' ? 1 : 2}`;
+const playerName = (p: PlayerId) => `Player ${p === 'p1' ? 1 : 2}`;
 const other = (p: PlayerId): PlayerId => (p === 'p1' ? 'p2' : 'p1');
 const newId = (prefix: string) => `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
 const sel = (id: string) => $(id) as HTMLSelectElement;
@@ -19,7 +19,7 @@ const targetOptions = (def = '') => '<option value="">–</option>' +
   [2, 3, 4, 5, 6].map((n) => `<option value="${n}" ${String(n) === def ? 'selected' : ''}>${n}+</option>`).join('');
 
 export const TEST_TYPES: Record<string, string> = {
-  break: 'Aufriebstest', panic: 'Paniktest', fear: 'Angsttest', terror: 'Terrortest', rally: 'Sammeltest', ld: 'Moralwerttest',
+  break: 'Break test', panic: 'Panic test', fear: 'Fear test', terror: 'Terror test', rally: 'Rally test', ld: 'Leadership test',
 };
 
 export interface PromptHost {
@@ -61,8 +61,8 @@ export class PromptCenter {
     const max = movementOf(charger) + 6 + (hasSwiftstride(charger) ? 3 : 0) + (hasBattleHunger(charger) ? 2 : 0);
     const charge: Charge = { id: newId('charge'), charger: chargerId, target: targetId, round: meta.round, status: 'declared' };
     this.store.setCharge(charge.id, charge);
-    const far = dist > max ? ` – außerhalb der größten Angriffsreichweite (${max}″)!` : '';
-    this.host.log({ kind: 'action', text: `${charger.info.name} sagt einen Angriff auf ${target.info.name} an (Abstand ${dist.toFixed(1)}″${far})` });
+    const far = dist > max ? ` – beyond the maximum charge range (${max}″)!` : '';
+    this.host.log({ kind: 'action', text: `${charger.info.name} declares a charge against ${target.info.name} (distance ${dist.toFixed(1)}″${far})` });
   }
 
   /** Angesagte Angriffe des Spielers am Zug, deren Reaktions-Popup noch nicht verschickt ist. */
@@ -86,11 +86,11 @@ export class PromptCenter {
       const target = units[c.target];
       if (!charger || !target) continue;
       const dist = chargeDistance(charger, target, units);
-      this.create('chargeReaction', target.owner, charger.owner, 'Angriff!',
-        `${charger.info.name} greift ${target.info.name} an (Abstand ${dist.toFixed(1)}″). Reaktion wählen:`,
+      this.create('chargeReaction', target.owner, charger.owner, 'Charge!',
+        `${charger.info.name} charges ${target.info.name} (distance ${dist.toFixed(1)}″). Choose a charge reaction:`,
         { chargeId: c.id }, `react-${c.id}`);
     }
-    if (list.length) this.host.log({ kind: 'turn', text: `Angriffe angesagt: ${list.length} – der Gegner wählt die Reaktionen` });
+    if (list.length) this.host.log({ kind: 'turn', text: `Charges declared: ${list.length} – the opponent chooses charge reactions` });
   }
 
   /** Angriff zurücknehmen, solange der Gegner noch nicht gefragt wurde. */
@@ -104,15 +104,15 @@ export class PromptCenter {
   requestSaves(attacker: PlayerId, targetId: string, wounds: number, save: string, ward: string, note: string): void {
     const target = this.store.state.units[targetId];
     if (!target) return;
-    this.create('saves', target.owner, attacker, 'Rüstungswurf',
+    this.create('saves', target.owner, attacker, 'Armour Save',
       `${note ? `${note}: ` : ''}${wounds} Verwundung${wounds === 1 ? '' : 'en'} gegen ${target.info.name}.`,
       { targetId, wounds, save, ward });
   }
 
   /** Zauber gewirkt: Der Gegner darf bannen. */
   requestDispel(caster: UnitState, spell: string, result: number, castValue: number): void {
-    this.create('dispel', other(caster.owner), caster.owner, 'Zauber bannen?',
-      `${caster.info.name} wirkt „${spell}“ mit ${result} (Zauberwert ${castValue}+). Bannen gelingt, wenn der Bannwurf ${result} übertrifft.`,
+    this.create('dispel', other(caster.owner), caster.owner, 'Dispel the spell?',
+      `${caster.info.name} casts “${spell}” with ${result} (casting value ${castValue}+). The spell is dispelled if the dispel roll beats ${result}.`,
       { casterId: caster.id, spell, result });
   }
 
@@ -122,7 +122,7 @@ export class PromptCenter {
     if (!u) return;
     const ld = leadershipOf(u) + modifier;
     this.create('test', u.owner, from, TEST_TYPES[type] ?? 'Test',
-      `${u.info.name} muss einen ${TEST_TYPES[type] ?? 'Test'} ablegen: 2W6 höchstens ${ld} (Ld ${leadershipOf(u)}${modifier ? ` ${modifier > 0 ? '+' : ''}${modifier}` : ''}).`,
+      `${u.info.name} must take a ${TEST_TYPES[type] ?? 'Test'}: 2D6 equal to or below ${ld} (Ld ${leadershipOf(u)}${modifier ? ` ${modifier > 0 ? '+' : ''}${modifier}` : ''}).`,
       { unitId, type, ld });
   }
 
@@ -151,7 +151,7 @@ export class PromptCenter {
     // Alle Reaktionen da: weiter zu den Angriffsbewegungen
     if (currentSub(meta) === SUB_DECLARE) {
       this.store.setMeta({ sub: SUB_CHARGE_MOVES });
-      this.host.log({ kind: 'turn', text: `Alle Reaktionen gewählt – ${subLabel(this.store.state.meta)}` });
+      this.host.log({ kind: 'turn', text: `All charge reactions chosen – ${subLabel(this.store.state.meta)}` });
     }
     if (currentSub(this.store.state.meta) !== SUB_CHARGE_MOVES) return;
     for (const c of current) {
@@ -159,7 +159,7 @@ export class PromptCenter {
       const charger = this.store.state.units[c.charger];
       const target = this.store.state.units[c.target];
       if (!charger || !target) continue;
-      this.create('chargeRoll', charger.owner, target.owner, 'Angriffswurf',
+      this.create('chargeRoll', charger.owner, target.owner, 'Charge roll',
         `${charger.info.name} → ${target.info.name} (${REACTION_NAMES[c.reaction ?? 'hold']}).`,
         { chargeId: c.id }, `roll-${c.id}`);
     }
@@ -201,7 +201,7 @@ export class PromptCenter {
     const waiting = Object.values(this.store.state.prompts).filter((p) => p.status === 'open' && seat && p.to !== seat);
     $('prompt-wait').hidden = !waiting.length;
     $('prompt-wait').textContent = waiting.length
-      ? `Warte auf ${playerName(waiting[0].to)}: ${waiting.map((p) => p.title).join(', ')}` : '';
+      ? `Waiting for ${playerName(waiting[0].to)}: ${waiting.map((p) => p.title).join(', ')}` : '';
     if (!cur) {
       card.hidden = true;
       this.shownId = null;
@@ -214,7 +214,7 @@ export class PromptCenter {
     card.className = `prompt-${p.kind}`;
     const more = Object.values(this.store.state.prompts).filter((x) => x.status === 'open' && (!seat || x.to === seat)).length - 1;
     const who = seat ? '' : `<span class="prompt-who"><span class="dot ${mode === 'act' ? p.to : p.from}"></span>${playerName(mode === 'act' ? p.to : p.from)}</span>`;
-    $('prompt-head').innerHTML = `${who}<b>${esc(mode === 'result' ? `Ergebnis: ${p.title}` : p.title)}</b>${more > 0 ? `<span class="prompt-more">+${more} weitere</span>` : ''}`;
+    $('prompt-head').innerHTML = `${who}<b>${esc(mode === 'result' ? `Result: ${p.title}` : p.title)}</b>${more > 0 ? `<span class="prompt-more">+${more} more</span>` : ''}`;
     $('prompt-text').textContent = mode === 'result' ? p.result ?? '' : p.text;
     const body = $('prompt-body');
     if (mode === 'result') {
@@ -237,7 +237,7 @@ export class PromptCenter {
   private renderReaction(p: Prompt, body: HTMLElement): void {
     const charge = this.store.state.charges[String(p.data.chargeId)];
     if (!charge) {
-      this.finish(p, 'Angriff wurde zurückgenommen.');
+      this.finish(p, 'The charge was withdrawn.');
       return;
     }
     const options = reactionOptions(this.store.state, charge);
@@ -261,7 +261,7 @@ export class PromptCenter {
       this.history.record();
       this.host.allowMove(target.id);
       this.store.updateUnit(target.id, { ...pose, status: 'fleeing' });
-      result = `${target.info.name}: ${REACTION_NAMES[reaction]}${reaction === 'fireFlee' ? ' (erst schießen)' : ''} – flieht ${r.total}″ (${r.text}).`;
+      result = `${target.info.name}: ${REACTION_NAMES[reaction]}${reaction === 'fireFlee' ? ' (shoot first)' : ''} – flees ${r.total}″ (${r.text}).`;
       dice = [r.dice];
     } else if (reaction === 'counter') {
       // Dem Angreifer zuwenden
@@ -269,9 +269,9 @@ export class PromptCenter {
       this.history.record();
       this.host.allowMove(target.id);
       this.store.updateUnit(target.id, { rotation });
-      result += ' Die Einheit hat sich dem Angreifer zugewandt; beide gelten als angreifend.';
+      result += ' The unit has turned to face the charger; both count as charging.';
     } else if (reaction === 'standShoot') {
-      result += ' Jetzt das Schießen auswürfeln, danach hält die Einheit.';
+      result += ' Now roll the shooting; afterwards the unit Holds.';
     }
     this.store.setCharge(charge.id, { ...charge, reaction, status: 'reacted' });
     this.host.log({ kind: 'action', text: result, dice });
@@ -284,19 +284,19 @@ export class PromptCenter {
     const charger = charge && units[charge.charger];
     const target = charge && units[charge.target];
     if (!charge || !charger || !target) {
-      this.finish(p, 'Angriff entfällt.');
+      this.finish(p, 'The charge is cancelled.');
       return;
     }
     const done = this.stage.rolled as { success: boolean; range: number; dist: number; total: number; text: string; dice: number[] } | undefined;
     const dist = chargeDistance(charger, target, units);
     const m = movementOf(charger);
     if (!done) {
-      body.innerHTML = `<p class="prompt-info">Abstand ${dist.toFixed(1)}″ · Bewegung ${m}″ · Wurf: 2W6, der niedrigere fällt weg.</p>
+      body.innerHTML = `<p class="prompt-info">Distance ${dist.toFixed(1)}″ · Movement ${m}″ · Roll: 2D6, discard the lowest.</p>
         <div class="prompt-checks">
-          ${hasSwiftstride(charger) ? '<label><input type="checkbox" id="pr-swift" checked> Swiftstride (+W6)</label>' : ''}
-          ${hasBattleHunger(charger) ? '<label><input type="checkbox" id="pr-hunger" checked> Battle Hunger (+W3)</label>' : ''}
+          ${hasSwiftstride(charger) ? '<label><input type="checkbox" id="pr-swift" checked> Swiftstride (+D6)</label>' : ''}
+          ${hasBattleHunger(charger) ? '<label><input type="checkbox" id="pr-hunger" checked> Battle Hunger (+D3)</label>' : ''}
         </div>
-        <div class="prompt-actions"><button class="primary" data-roll>Angriffswurf</button></div>`;
+        <div class="prompt-actions"><button class="primary" data-roll>Charge roll</button></div>`;
       (body.querySelector('[data-roll]') as HTMLButtonElement).onclick = () => {
         const swift = (document.getElementById('pr-swift') as HTMLInputElement | null)?.checked ?? false;
         const hunger = (document.getElementById('pr-hunger') as HTMLInputElement | null)?.checked ?? false;
@@ -307,15 +307,15 @@ export class PromptCenter {
         this.stage.rolled = { success, range, dist: now, total: r.total, text: r.text, dice: r.dice };
         this.store.setCharge(charge.id, { ...charge, status: 'rolled', dice: r.dice, range, distance: now, success });
         this.host.log({ kind: 'roll', dice: [r.dice],
-          text: `Angriffswurf ${charger.info.name} → ${target.info.name}: ${r.text}, Reichweite ${range}″ bei ${now.toFixed(1)}″ – ${success ? 'Angriff gelingt' : 'Angriff scheitert'}` });
+          text: `Charge roll ${charger.info.name} → ${target.info.name}: ${r.text}, charge range ${range}″ at ${now.toFixed(1)}″ – ${success ? 'charge succeeds' : 'failed charge'}` });
         this.render();
       };
       return;
     }
     body.innerHTML = `<div class="dice-row">${diceHtml(done.dice)}</div>
-      <p class="prompt-info"><b>${done.success ? 'Angriff gelingt' : 'Angriff scheitert'}</b> – Reichweite ${done.range}″ (${esc(done.text)}), Abstand ${done.dist.toFixed(1)}″.</p>
+      <p class="prompt-info"><b>${done.success ? 'Charge succeeds' : 'Failed charge'}</b> – charge range ${done.range}″ (${esc(done.text)}), distance ${done.dist.toFixed(1)}″.</p>
       <div class="prompt-actions">
-        <button class="primary" data-move>${done.success ? 'In Kontakt bringen' : `${done.total}″ auf das Ziel zu`}</button>
+        <button class="primary" data-move>${done.success ? 'Move into contact' : `${done.total}″ towards the target`}</button>
         <button data-skip>Selbst bewegen</button>
       </div>`;
     (body.querySelector('[data-move]') as HTMLButtonElement).onclick = () => {
@@ -325,34 +325,34 @@ export class PromptCenter {
       if (done.success) {
         const pose = contactPose(charger, target, units);
         this.store.updateUnit(charger.id, { x: pose.x, y: pose.y, rotation: pose.rotation });
-        text = `${charger.info.name} greift ${target.info.name} in ${pose.side} an.`;
+        text = `${charger.info.name} charges ${target.info.name} in the ${pose.side}.`;
       } else {
         this.store.updateUnit(charger.id, advanceToward(charger, target, units, done.total));
-        text = `${charger.info.name}: Angriff gescheitert, ${done.total}″ auf ${target.info.name} zu.`;
+        text = `${charger.info.name}: failed charge, ${done.total}″ towards ${target.info.name}.`;
       }
       this.host.log({ kind: 'action', text });
       this.finish(p, text);
     };
     (body.querySelector('[data-skip]') as HTMLButtonElement).onclick = () => {
       this.host.allowMove(charger.id);
-      this.finish(p, `${charger.info.name}: ${done.success ? 'Angriff gelingt' : `Angriff gescheitert (${done.total}″)`} – wird von Hand bewegt.`);
+      this.finish(p, `${charger.info.name}: ${done.success ? 'charge succeeds' : `failed charge (${done.total}″)`} – moved by hand.`);
     };
   }
 
   private renderSaves(p: Prompt, body: HTMLElement): void {
     const target = this.store.state.units[String(p.data.targetId)];
     if (!target) {
-      this.finish(p, 'Ziel nicht mehr da.');
+      this.finish(p, 'The target is gone.');
       return;
     }
     const wounds = Number(p.data.wounds);
     const done = this.stage.saves as { armour: number[]; ward: number[]; unsaved: number; text: string; save: number } | undefined;
     if (!done) {
       body.innerHTML = `<div class="prompt-form">
-          <label>Rüstungswurf <select id="pr-save">${targetOptions(String(p.data.save ?? ''))}</select></label>
-          <label>Rettungswurf <select id="pr-ward">${targetOptions(String(p.data.ward ?? ''))}</select></label>
+          <label>Armour Save <select id="pr-save">${targetOptions(String(p.data.save ?? ''))}</select></label>
+          <label>Ward save <select id="pr-ward">${targetOptions(String(p.data.ward ?? ''))}</select></label>
         </div>
-        <div class="prompt-actions"><button class="primary" data-roll>${wounds} Würfel werfen</button></div>`;
+        <div class="prompt-actions"><button class="primary" data-roll>Roll ${wounds} dice</button></div>`;
       (body.querySelector('[data-roll]') as HTMLButtonElement).onclick = () => {
         const save = Number(sel('pr-save').value) || 0;
         const ward = Number(sel('pr-ward').value) || 0;
@@ -360,7 +360,7 @@ export class PromptCenter {
         let left = save ? armour.filter((d) => d < save).length : wounds;
         const wardDice = ward && left ? roll(left) : [];
         if (ward) left = wardDice.filter((d) => d < ward).length;
-        const text = `${wounds} Verwundungen` + (save ? ` → ${armour.filter((d) => d >= save).length} durch Rüstung (${save}+) gehalten` : ' → keine Rüstung')
+        const text = `${wounds} wounds` + (save ? ` → ${armour.filter((d) => d >= save).length} saved by armour (${save}+)` : ' → no Armour Save')
           + (ward ? ` → ${wardDice.filter((d) => d >= ward).length} durch Rettung (${ward}+) gehalten` : '') + ` → ${left} ungerettet`;
         this.stage.saves = { armour, ward: wardDice, unsaved: left, text, save };
         this.host.log({ kind: 'roll', text: `${target.info.name}: ${text}`, dice: [armour, wardDice].filter((d) => d.length) });
@@ -371,12 +371,12 @@ export class PromptCenter {
     const perModel = target.info.woundsPerModel ?? 1;
     const single = (target.info.startModels ?? target.models) === 1;
     const losses = single ? done.unsaved : Math.floor(done.unsaved / perModel);
-    body.innerHTML = `${done.armour.length ? `<div class="dice-row"><span class="dice-label">Rüstung</span>${diceHtml(done.armour, done.save || 7)}</div>` : ''}
-      ${done.ward.length ? `<div class="dice-row"><span class="dice-label">Rettung</span>${diceHtml(done.ward)}</div>` : ''}
+    body.innerHTML = `${done.armour.length ? `<div class="dice-row"><span class="dice-label">Armour</span>${diceHtml(done.armour, done.save || 7)}</div>` : ''}
+      ${done.ward.length ? `<div class="dice-row"><span class="dice-label">Ward</span>${diceHtml(done.ward)}</div>` : ''}
       <p class="prompt-info"><b>${done.unsaved} ungerettet.</b> ${esc(done.text)}</p>
       <div class="prompt-actions">
-        ${done.unsaved ? `<button class="primary" data-apply>${single ? `${losses} Lebenspunkte abziehen` : `${losses} Modell${losses === 1 ? '' : 'e'} entfernen`}</button>` : ''}
-        <button data-ok>${done.unsaved ? 'Selbst eintragen' : 'Fertig'}</button>
+        ${done.unsaved ? `<button class="primary" data-apply>${single ? `Remove ${losses} Wound${losses === 1 ? '' : 's'}` : `Remove ${losses} model${losses === 1 ? '' : 's'}`}</button>` : ''}
+        <button data-ok>${done.unsaved ? 'Apply by hand' : 'Done'}</button>
       </div>`;
     const apply = body.querySelector('[data-apply]') as HTMLButtonElement | null;
     if (apply) apply.onclick = () => {
@@ -385,7 +385,7 @@ export class PromptCenter {
       // Alle Modelle verloren: Einheit gilt als vernichtet (bleibt für die Siegpunkte sichtbar)
       else if (target.models - losses <= 0) this.store.updateUnit(target.id, { status: 'destroyed' });
       else this.store.updateUnit(target.id, { models: target.models - losses });
-      this.finish(p, `${target.info.name}: ${done.text}; ${single ? `${losses} Lebenspunkte verloren` : `${losses} Modelle entfernt`}.`);
+      this.finish(p, `${target.info.name}: ${done.text}; ${single ? `${losses} Wounds lost` : `${losses} models removed`}.`);
     };
     (body.querySelector('[data-ok]') as HTMLButtonElement).onclick = () => this.finish(p, `${target.info.name}: ${done.text}.`);
   }
@@ -394,24 +394,24 @@ export class PromptCenter {
     const wizards = Object.values(this.store.state.units).filter((u) => u.owner === p.to && wizardLevel(u) > 0);
     const castResult = Number(p.data.result);
     body.innerHTML = `<div class="prompt-form">
-        <label>Bannen mit <select id="pr-wiz">
-          ${wizards.map((w) => `<option value="${w.id}">${esc(w.info.name)} (Stufe ${wizardLevel(w)}, +${Math.ceil(wizardLevel(w) / 2)})</option>`).join('')}
-          <option value="">Schicksalsbann (ohne Zauberer)</option>
+        <label>Dispel with <select id="pr-wiz">
+          ${wizards.map((w) => `<option value="${w.id}">${esc(w.info.name)} (Level ${wizardLevel(w)}, +${Math.ceil(wizardLevel(w) / 2)})</option>`).join('')}
+          <option value="">Dispel without a Wizard</option>
         </select></label>
       </div>
-      <div class="prompt-actions"><button class="primary" data-roll>Bannwurf (2W6)</button><button data-no>Nicht bannen</button></div>`;
+      <div class="prompt-actions"><button class="primary" data-roll>Dispel roll (2D6)</button><button data-no>Do not dispel</button></div>`;
     (body.querySelector('[data-roll]') as HTMLButtonElement).onclick = () => {
       const wiz = this.store.state.units[sel('pr-wiz').value];
       const bonus = wiz ? Math.ceil(wizardLevel(wiz) / 2) : 0;
       const dice = roll(2);
       const total = dice[0] + dice[1] + bonus;
       const ok = total > castResult;
-      const text = `„${p.data.spell}“: Bannwurf ${dice.join(' + ')}${bonus ? ` + ${bonus}` : ''} = ${total} gegen ${castResult} – ${ok ? 'gebannt' : 'nicht gebannt'}${wiz ? ` (${wiz.info.name})` : ' (Schicksalsbann)'}.`;
+      const text = `“${p.data.spell}”: dispel roll ${dice.join(' + ')}${bonus ? ` + ${bonus}` : ''} = ${total} vs ${castResult} – ${ok ? 'dispelled' : 'not dispelled'}${wiz ? ` (${wiz.info.name})` : ' (without a Wizard)'}.`;
       this.host.log({ kind: 'roll', text, dice: [dice] });
       this.finish(p, text);
     };
     (body.querySelector('[data-no]') as HTMLButtonElement).onclick = () => {
-      const text = `„${p.data.spell}“ wird nicht gebannt und wirkt.`;
+      const text = `“${p.data.spell}” is not dispelled and takes effect.`;
       this.host.log({ kind: 'action', text });
       this.finish(p, text);
     };
@@ -420,38 +420,38 @@ export class PromptCenter {
   private renderTest(p: Prompt, body: HTMLElement): void {
     const u = this.store.state.units[String(p.data.unitId)];
     if (!u) {
-      this.finish(p, 'Einheit nicht mehr da.');
+      this.finish(p, 'The unit is gone.');
       return;
     }
     const ld = Number(p.data.ld);
     const done = this.stage.test as { dice: number[]; pass: boolean; sum: number } | undefined;
     if (!done) {
-      body.innerHTML = `<div class="prompt-actions"><button class="primary" data-roll>2W6 würfeln</button></div>`;
+      body.innerHTML = `<div class="prompt-actions"><button class="primary" data-roll>Roll 2D6</button></div>`;
       (body.querySelector('[data-roll]') as HTMLButtonElement).onclick = () => {
         const dice = roll(2);
         const sum = dice[0] + dice[1];
         // Doppel-1 besteht immer (Insane Courage)
         const pass = sum <= ld || (dice[0] === 1 && dice[1] === 1);
         this.stage.test = { dice, pass, sum };
-        this.host.log({ kind: 'roll', dice: [dice], text: `${u.info.name}: ${p.title} ${sum} gegen ${ld} – ${pass ? 'bestanden' : 'nicht bestanden'}` });
+        this.host.log({ kind: 'roll', dice: [dice], text: `${u.info.name}: ${p.title} ${sum} vs ${ld} – ${pass ? 'passed' : 'failed'}` });
         this.render();
       };
       return;
     }
     const canFlee = !done.pass && ['break', 'panic', 'terror'].includes(String(p.data.type));
-    const text = `${u.info.name}: ${p.title} ${done.sum} gegen ${ld} – ${done.pass ? 'bestanden' : 'nicht bestanden'}`;
+    const text = `${u.info.name}: ${p.title} ${done.sum} vs ${ld} – ${done.pass ? 'passed' : 'failed'}`;
     body.innerHTML = `<div class="dice-row">${diceHtml(done.dice)}</div>
-      <p class="prompt-info"><b>${done.pass ? 'Bestanden' : 'Nicht bestanden'}</b> (${done.sum} gegen ${ld}).</p>
+      <p class="prompt-info"><b>${done.pass ? 'Passed' : 'Failed'}</b> (${done.sum} vs ${ld}).</p>
       <div class="prompt-actions">
-        ${canFlee ? '<button class="primary" data-flee>Einheit flieht</button>' : ''}
-        <button data-ok>${canFlee ? 'Selbst regeln' : 'OK'}</button>
+        ${canFlee ? '<button class="primary" data-flee>Unit flees</button>' : ''}
+        <button data-ok>${canFlee ? 'Resolve by hand' : 'OK'}</button>
       </div>`;
     const flee = body.querySelector('[data-flee]') as HTMLButtonElement | null;
     if (flee) flee.onclick = () => {
       this.history.record();
       this.store.updateUnit(u.id, { status: 'fleeing' });
       this.host.allowMove(u.id);
-      this.finish(p, `${text} – die Einheit flieht.`);
+      this.finish(p, `${text} – the unit flees.`);
     };
     (body.querySelector('[data-ok]') as HTMLButtonElement).onclick = () => this.finish(p, `${text}.`);
   }

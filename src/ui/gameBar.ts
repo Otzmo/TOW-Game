@@ -14,7 +14,7 @@ const $ = (id: string) => document.getElementById(id)!;
 const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
-const playerName = (p: PlayerId) => `Spieler ${p === 'p1' ? 1 : 2}`;
+const playerName = (p: PlayerId) => `Player ${p === 'p1' ? 1 : 2}`;
 const other = (p: PlayerId): PlayerId => (p === 'p1' ? 'p2' : 'p1');
 
 /** Leiste oben: Runde, Spieler am Zug, Zug beenden, Rückgängig und Siegpunkte. */
@@ -57,6 +57,14 @@ export class GameBar {
   /** Angriffe: Reaktions-Popups erst nach Ende der Ansage verschicken (von PromptCenter gesetzt) */
   chargeFlow: { unsent(): number; waiting(): number; send(): void } = { unsent: () => 0, waiting: () => 0, send: () => {} };
 
+  /** Aufbau: was vor dem nächsten Schritt noch fehlt (von SetupPanel gesetzt) */
+  setupBlocker: () => string | null = () => null;
+
+  /** Neu anzeigen, z. B. nachdem setupBlocker gesetzt wurde */
+  refresh(): void {
+    this.render();
+  }
+
   /** Weiter zur nächsten Unterphase (nach der letzten: nächste Phase). */
   requestNext(): void {
     this.request(nextSub(this.store.state.meta));
@@ -83,6 +91,7 @@ export class GameBar {
   private request(next: Step): void {
     const { units, meta } = this.store.state;
     const phase = currentPhase(meta);
+    if (this.setupBlocker()) return;
     if (phase === 'movement' && currentSub(meta) === SUB_DECLARE) {
       if (this.chargeFlow.unsent() > 0) {
         this.chargeFlow.send();
@@ -102,7 +111,7 @@ export class GameBar {
     }
     this.pending = next;
     $('g-confirm-text').textContent =
-      `${broken.join(', ')}: Modelle stehen mehr als 1″ vom Rest der Einheit entfernt. Trotzdem weiter?`;
+      `${broken.join(', ')}: models are more than 1″ from the rest of their unit (skirmishers). Continue anyway?`;
     $('g-confirm').hidden = false;
   }
 
@@ -118,7 +127,7 @@ export class GameBar {
     const now = this.store.state.meta;
     const turnChange = before === 'combat' && next.phase === 'strategy' || before === 'setup';
     this.log('turn', turnChange
-      ? `${before === 'setup' ? 'Aufstellung beendet' : `${playerName(prev)} beendet den Zug`} · Runde ${now.round}, ${playerName(now.active)}: ${phaseLabel(currentPhase(now))} – ${subLabel(now)}`
+      ? `${before === 'setup' ? 'Setup finished – the battle begins' : `${playerName(prev)} ends their turn`} · Round ${now.round}, ${playerName(now.active)}: ${phaseLabel(currentPhase(now))} – ${subLabel(now)}`
       : `${playerName(prev)}: ${phaseLabel(currentPhase(now))} – ${subLabel(now)}`);
   }
 
@@ -129,8 +138,8 @@ export class GameBar {
     const sub = currentSub(state.meta);
     const info = phaseInfo(phase);
     $('g-round').innerHTML = phase === 'setup'
-      ? '<b>Aufstellung</b> · vor Runde 1'
-      : `Runde <b>${round}</b> · <span class="dot ${active}"></span>${playerName(active)} am Zug`;
+      ? '<b>Setup</b> · before round 1'
+      : `Round <b>${round}</b> · <span class="dot ${active}"></span>${playerName(active)}'s turn`;
     // Phasen und Unterphasen der aktuellen Phase
     $('g-phases').innerHTML = PHASES.filter((p) => (phase === 'setup') === (p.key === 'setup'))
       .map((p) => `<li class="${p.key === phase ? 'on' : ''}">${p.name}</li>`).join('');
@@ -144,14 +153,16 @@ export class GameBar {
     const unsent = declaring ? this.chargeFlow.unsent() : 0;
     const waiting = declaring ? this.chargeFlow.waiting() : 0;
     const lastSub = sub + 1 >= info.subs.length;
-    next.textContent = phase === 'setup' ? 'Aufstellung beenden'
-      : unsent ? `Ansagen abschließen (${unsent} Angriff${unsent === 1 ? '' : 'e'})`
-      : waiting ? `Warte auf Reaktionen (${waiting})`
-      : lastSub ? (phase === 'combat' ? 'Zug abgeben »' : 'Phase beenden »') : 'Weiter ›';
-    next.disabled = notMine || waiting > 0;
+    const blocked = this.setupBlocker();
+    next.textContent = phase === 'setup' ? (lastSub ? 'Start Battle »' : 'Next ›')
+      : unsent ? `Finish declaring (${unsent} charge${unsent === 1 ? '' : 's'})`
+      : waiting ? `Waiting for charge reactions (${waiting})`
+      : lastSub ? (phase === 'combat' ? 'End turn »' : 'End phase »') : 'Next ›';
+    next.disabled = notMine || waiting > 0 || !!blocked;
+    next.title = blocked ?? '';
     const endBtn = $('g-phase-end') as HTMLButtonElement;
     endBtn.hidden = phase === 'setup' || lastSub;
-    endBtn.textContent = phase === 'combat' ? 'Zug abgeben »' : 'Phase beenden »';
+    endBtn.textContent = phase === 'combat' ? 'End turn »' : 'End phase »';
     endBtn.disabled = notMine || waiting > 0 || unsent > 0;
     const rep = $('g-repeat') as HTMLButtonElement;
     rep.hidden = !info.repeat || sub === 0;
@@ -159,18 +170,18 @@ export class GameBar {
     rep.disabled = notMine;
 
     const score = { p1: victoryPoints(state, 'p1'), p2: victoryPoints(state, 'p2') };
-    $('g-score-toggle').innerHTML = `Siegpunkte <b>${score.p1.total}</b> : <b>${score.p2.total}</b>`;
+    $('g-score-toggle').innerHTML = `Victory Points <b>${score.p1.total}</b> : <b>${score.p2.total}</b>`;
     if ($('sheet-score').hidden) return;
-    $('sheet-score').innerHTML = '<h3>Siegpunkte</h3>' + (['p1', 'p2'] as const).map((p) => {
+    $('sheet-score').innerHTML = '<h3>Victory Points</h3>' + (['p1', 'p2'] as const).map((p) => {
       const lines = score[p].lines.map((l) =>
-        `<li><span>${escapeHtml(l.label)}</span><b>${l.vp}</b></li>`).join('') || '<li class="empty">noch keine</li>';
+        `<li><span>${escapeHtml(l.label)}</span><b>${l.vp}</b></li>`).join('') || '<li class="empty">none yet</li>';
       return `<section>
-        <h3><span class="dot ${p}"></span>${playerName(p)} <span class="vp">${score[p].total} SP</span></h3>
-        <p class="meta">Armee ${armyPoints(state, p)} Pkt.</p>
+        <h3><span class="dot ${p}"></span>${playerName(p)} <span class="vp">${score[p].total} VP</span></h3>
+        <p class="meta">Army ${armyPoints(state, p)} pts</p>
         <ul>${lines}</ul>
         <label><input type="checkbox" data-break="${p}" ${breakBonus[p] ? 'checked' : ''}>
-          Armee von ${playerName(other(p))} gebrochen (+500)</label>
+          ${playerName(other(p))}'s army is broken (+500)</label>
       </section>`;
-    }).join('') + '<p class="meta note">Stand, als würde das Spiel jetzt enden.</p>';
+    }).join('') + '<p class="meta note">Score as if the game ended now (without mission Victory Points).</p>';
   }
 }

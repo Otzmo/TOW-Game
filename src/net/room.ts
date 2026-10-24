@@ -32,7 +32,7 @@ export function onSyncError(fn: (err: SyncError) => void): void {
 
 export function reportSyncError(kind: SyncError['kind'], path: string, e: Error): void {
   const area = path.split('/').filter(Boolean)[0] ?? '';
-  console.error(`Firebase: ${kind === 'read' ? 'Lesen' : 'Schreiben'} von "${path}" abgelehnt`, e);
+  console.error(`Firebase: ${kind} of "${path}" denied`, e);
   for (const fn of syncErrorListeners) fn({ kind, area, message: e?.message ?? String(e) });
 }
 
@@ -41,7 +41,7 @@ let app: FirebaseApp | null = null;
 export const isOnlineAvailable = () => firebaseConfig !== null;
 
 async function connect(): Promise<{ db: Database; uid: string }> {
-  if (!firebaseConfig) throw new Error('Firebase ist noch nicht eingerichtet.');
+  if (!firebaseConfig) throw new Error('Firebase is not set up yet.');
   // Anmeldung bleibt im Browser gespeichert: Mit dem Raumlink kommt man später auf seinen Platz zurück.
   // Zwei Spieler auf einem Rechner brauchen deshalb zwei Browser oder ein privates Fenster.
   if (!app) {
@@ -109,7 +109,7 @@ export class OnlineRoom {
         if (!String((e as Error).message).toLowerCase().includes('permission')) throw e;
       }
     }
-    throw new Error('Konnte keinen Raum anlegen: Zugriff verweigert. Sind die Datenbankregeln veröffentlicht?');
+    throw new Error('Could not create a room: permission denied. Have the database rules been published?');
   }
 
   /** Beitreten: freier Platz → Spieler 2, eigener Platz → zurück ins Spiel, sonst als Zuschauer. */
@@ -117,7 +117,7 @@ export class OnlineRoom {
     const code = normalizeCode(rawCode);
     const { db, uid } = await connect();
     const players = (await get(ref(db, `rooms/${code}/players`))).val() as Partial<Record<PlayerId, string>> | null;
-    if (!players) throw new Error(`Raum ${code} gibt es nicht.`);
+    if (!players) throw new Error(`Room ${code} does not exist.`);
     let me: Seat;
     if (players.p1 === uid) me = 'p1';
     else if (players.p2 === uid) me = 'p2';
