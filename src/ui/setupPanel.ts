@@ -113,9 +113,10 @@ export class SetupPanel {
   /** Alle Einheiten zurück ins Niemandsland (wie nach dem Laden der Armee) */
   private toNoMansLand(): void {
     const { units, table } = this.store.state;
+    // Gilt für beide Armeen, auch online; nur Zuschauer dürfen es nicht
+    if (this.seat() === 'spectator') return;
     this.history.record();
     for (const owner of ['p1', 'p2'] as const) {
-      if (!this.mayAct(owner)) continue;
       // Angeschlossene Charaktere ziehen mit ihrer Einheit mit
       const list = Object.values(units).filter((u) => u.owner === owner && !isJoined(u, units)).map((u) => ({ ...u }));
       deploy(list, owner, table);

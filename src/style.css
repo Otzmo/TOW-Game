@@ -241,7 +241,7 @@ button.danger:hover { border-color: #f0603e; }
 body.spectator #gamebar #g-end, body.spectator #gamebar #g-undo,
 body.spectator #toolbox [data-sheet="terrain"], body.spectator #toolbox [data-sheet="markers"],
 body.spectator #toolbox [data-sheet="templates"], body.spectator #toolbox [data-sheet="zones"],
-body.spectator #load-game, body.spectator #chat-form { display: none; }
+body.spectator #load-game, body.spectator #chat-form, body.spectator [data-setup="nomansland"] { display: none; }
 body.spectator #panel button:not(#p-close), body.spectator #panel input:not(#p-ranges),
 body.spectator #obj-panel input, body.spectator #o-delete { pointer-events: none; opacity: .5; }
 .sheet { z-index: 2; }
