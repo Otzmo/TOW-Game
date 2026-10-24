@@ -5,6 +5,7 @@ import {
   isJoined, isNonUnitChange, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
 } from '../model/store';
 import type { History } from '../model/history';
+import { currentPhase, currentSub, SUB_CHARGE_MOVES } from '../model/phases';
 import type { Point, UnitState } from '../model/types';
 import { createTable } from './table';
 import { GUIDE_COLOR, OK_COLOR, PPI, STRAY_COLOR } from './theme';
@@ -117,7 +118,7 @@ export class Board {
     app.canvas.addEventListener('wheel', (e) => this.onWheel(e), { passive: false });
 
     store.subscribe((state, change) => {
-      if (change.chargeId || change.loaded) this.drawCharges();
+      if (change.chargeId || change.loaded || change.meta) this.drawCharges();
       if (isNonUnitChange(change)) return;
       const { unitId, patch } = change;
       const u = unitId ? state.units[unitId] : undefined;
@@ -211,7 +212,9 @@ export class Board {
   /** Pfeile für alle Angriffe: rot = angesagt, grün = gelungen, grau = gescheitert. */
   private drawCharges(): void {
     this.chargeLayer.removeChildren().forEach((c) => c.destroy());
-    const { units, charges } = this.store.state;
+    const { units, charges, meta } = this.store.state;
+    // Angriffe nur beim Ansagen und in den Angriffsbewegungen zeigen, danach nicht mehr
+    if (currentPhase(meta) !== 'movement' || currentSub(meta) > SUB_CHARGE_MOVES) return;
     for (const c of Object.values(charges)) {
       const charger = units[c.charger];
       const target = units[c.target];
