@@ -88,6 +88,12 @@
     <div id="prompt-body"></div>
   </section>
   <p id="prompt-wait" hidden></p>
+  <!-- Firebase lehnt Daten ab (meist fehlende Datenbankregeln) -->
+  <div id="sync-error" role="alert" hidden>
+    <span id="sync-text"></span>
+    <button id="sync-reload">Seite neu laden</button>
+    <button id="sync-close" class="close" aria-label="Schließen">×</button>
+  </div>
   <div id="phase-notice" hidden>
     <span id="notice-text"></span>
     <button id="notice-allow">Ausnahme erlauben (Sonderregel)</button>

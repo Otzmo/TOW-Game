@@ -16,6 +16,26 @@ const ECHO_WINDOW_MS = 500;
 
 export type Seat = PlayerId | 'spectator';
 
+/** Von Firebase abgelehnter Zugriff, z. B. weil die Datenbankregeln einen Bereich nicht erlauben */
+export interface SyncError {
+  kind: 'read' | 'write';
+  /** Bereich im Raum, z. B. "flow" oder "units" */
+  area: string;
+  message: string;
+}
+
+const syncErrorListeners = new Set<(err: SyncError) => void>();
+
+export function onSyncError(fn: (err: SyncError) => void): void {
+  syncErrorListeners.add(fn);
+}
+
+export function reportSyncError(kind: SyncError['kind'], path: string, e: Error): void {
+  const area = path.split('/').filter(Boolean)[0] ?? '';
+  console.error(`Firebase: ${kind === 'read' ? 'Lesen' : 'Schreiben'} von "${path}" abgelehnt`, e);
+  for (const fn of syncErrorListeners) fn({ kind, area, message: e?.message ?? String(e) });
+}
+
 let app: FirebaseApp | null = null;
 
 export const isOnlineAvailable = () => firebaseConfig !== null;
@@ -133,16 +153,16 @@ export class OnlineRoom {
     };
 
     this.unsubscribers.push(
-      onChildAdded(unitsRef, (s) => onUnit(s.key, s.val())),
-      onChildChanged(unitsRef, (s) => onUnit(s.key, s.val())),
+      onChildAdded(unitsRef, (s) => onUnit(s.key, s.val()), this.readFailed('units')),
+      onChildChanged(unitsRef, (s) => onUnit(s.key, s.val()), this.readFailed('units')),
       onChildRemoved(unitsRef, (s) => {
         if (!s.key) return;
         this.owners.delete(s.key);
         this.store.removeUnit(s.key, 'remote');
-      }),
-      onChildAdded(objectsRef, (s) => onObject(s.key, s.val())),
-      onChildChanged(objectsRef, (s) => onObject(s.key, s.val())),
-      onChildRemoved(objectsRef, (s) => { if (s.key) this.store.removeObject(s.key, 'remote'); }),
+      }, this.readFailed('units')),
+      onChildAdded(objectsRef, (s) => onObject(s.key, s.val()), this.readFailed('objects')),
+      onChildChanged(objectsRef, (s) => onObject(s.key, s.val()), this.readFailed('objects')),
+      onChildRemoved(objectsRef, (s) => { if (s.key) this.store.removeObject(s.key, 'remote'); }, this.readFailed('objects')),
       // Angriffe und Aufforderungen
       ...(['charges', 'prompts'] as const).flatMap((kind) => {
         const r = ref(this.db, this.path(`flow/${kind}`));
@@ -152,24 +172,24 @@ export class OnlineRoom {
           else this.store.setPrompt(key, { ...(val as Prompt), id: key, data: (val as Prompt).data ?? {} }, 'remote');
         };
         return [
-          onChildAdded(r, (s) => put(s.key, s.val())),
-          onChildChanged(r, (s) => put(s.key, s.val())),
+          onChildAdded(r, (s) => put(s.key, s.val()), this.readFailed('flow')),
+          onChildChanged(r, (s) => put(s.key, s.val()), this.readFailed('flow')),
           onChildRemoved(r, (s) => {
             if (!s.key) return;
             if (kind === 'charges') this.store.setCharge(s.key, null, 'remote');
             else this.store.setPrompt(s.key, null, 'remote');
-          }),
+          }, this.readFailed('flow')),
         ];
       }),
       onChildAdded(ref(this.db, this.path('log')), (s) => {
         const val = s.val() as LogEntry;
         if (s.key && val) this.store.addLog({ ...val, id: s.key }, 'remote');
-      }),
+      }, this.readFailed('log')),
       // Runde, Spieler am Zug, Aufstellungszonen und Siegpunkt-Boni
       onValue(ref(this.db, this.path('meta/game')), (s) => {
         const val = s.val() as GameMeta | null;
         if (val) this.store.setMeta({ ...val, breakBonus: val.breakBonus ?? {} }, 'remote');
-      }),
+      }, this.readFailed('meta')),
       this.store.subscribe((state, change) => this.onLocalChange(state, change)),
     );
     return this;
@@ -183,35 +203,35 @@ export class OnlineRoom {
     if (change.loaded) {
       // Gespeicherter Spielstand: alles im Raum ersetzen
       for (const u of Object.values(units)) this.owners.set(u.id, u.owner);
-      set(ref(this.db, this.path('units')), toDb(units));
-      set(ref(this.db, this.path('objects')), toDb(objects));
-      set(ref(this.db, this.path('log')), toDb(Object.fromEntries(state.log.map((e) => [e.id, e]))));
-      set(ref(this.db, this.path('meta/game')), toDb(meta));
-      set(ref(this.db, this.path('flow')), toDb({ charges: state.charges, prompts: state.prompts }));
+      this.write('units', toDb(units));
+      this.write('objects', toDb(objects));
+      this.write('log', toDb(Object.fromEntries(state.log.map((e) => [e.id, e]))));
+      this.write('meta/game', toDb(meta));
+      this.write('flow', toDb({ charges: state.charges, prompts: state.prompts }));
       return;
     }
     if (change.chargeId) {
-      set(ref(this.db, this.path(`flow/charges/${change.chargeId}`)), state.charges[change.chargeId] ? toDb(state.charges[change.chargeId]) : null);
+      this.write(`flow/charges/${change.chargeId}`, state.charges[change.chargeId] ? toDb(state.charges[change.chargeId]) : null);
       return;
     }
     if (change.promptId) {
-      set(ref(this.db, this.path(`flow/prompts/${change.promptId}`)), state.prompts[change.promptId] ? toDb(state.prompts[change.promptId]) : null);
+      this.write(`flow/prompts/${change.promptId}`, state.prompts[change.promptId] ? toDb(state.prompts[change.promptId]) : null);
       return;
     }
     if (change.meta) {
-      set(ref(this.db, this.path('meta/game')), toDb(meta));
+      this.write('meta/game', toDb(meta));
       return;
     }
     if (change.log) {
-      set(ref(this.db, this.path(`log/${change.log.id}`)), toDb(change.log));
+      this.write(`log/${change.log.id}`, toDb(change.log));
       return;
     }
     if (change.objectId) {
       const id = change.objectId;
       this.lastLocal.set(id, Date.now());
-      if (change.objectRemoved) set(ref(this.db, this.path(`objects/${id}`)), null);
+      if (change.objectRemoved) this.write(`objects/${id}`, null);
       else if (change.objectPatch) this.queue('objects', id, change.objectPatch);
-      else if (objects[id]) set(ref(this.db, this.path(`objects/${id}`)), toDb(objects[id]));
+      else if (objects[id]) this.write(`objects/${id}`, toDb(objects[id]));
       return;
     }
 
@@ -224,7 +244,7 @@ export class OnlineRoom {
         paths[u.id] = toDb(u);
         this.owners.set(u.id, u.owner);
       }
-      update(ref(this.db, this.path('units')), paths);
+      this.patch('units', paths);
       return;
     }
 
@@ -232,7 +252,7 @@ export class OnlineRoom {
     if (!id) return;
     this.lastLocal.set(id, Date.now());
     if (change.patch) this.queue('units', id, change.patch);
-    else if (units[id]) set(ref(this.db, this.path(`units/${id}`)), toDb(units[id]));
+    else if (units[id]) this.write(`units/${id}`, toDb(units[id]));
   }
 
   /** Änderungen sammeln und höchstens alle WRITE_INTERVAL_MS senden (flüssiges Ziehen). */
@@ -250,7 +270,22 @@ export class OnlineRoom {
       this.lastLocal.set(key.split('/')[1], Date.now());
     }
     this.pending.clear();
-    if (Object.keys(paths).length) update(ref(this.db, this.path('')), paths);
+    if (Object.keys(paths).length) this.patch('', paths);
+  }
+
+  /** In die Datenbank schreiben; abgelehnte Schreibzugriffe sichtbar melden. */
+  private write(sub: string, value: unknown): void {
+    set(ref(this.db, this.path(sub)), value).catch((e: Error) => reportSyncError('write', sub, e));
+  }
+
+  private patch(sub: string, paths: Record<string, unknown>): void {
+    update(ref(this.db, this.path(sub)), paths).catch((e: Error) =>
+      reportSyncError('write', sub || Object.keys(paths)[0] || '', e));
+  }
+
+  /** Lesen abgebrochen (z. B. Regeln verbieten den Bereich) */
+  private readFailed(sub: string): (e: Error) => void {
+    return (e) => reportSyncError('read', sub, e);
   }
 
   leave(): void {

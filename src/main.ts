@@ -17,6 +17,7 @@ import { MoveGate } from './ui/moveGate';
 import { ObjectPanel } from './ui/objectPanel';
 import { UnitPanel } from './ui/panel';
 import { Shortcuts } from './ui/shortcuts';
+import { SyncWarning } from './ui/syncWarning';
 import { Toolbox } from './ui/toolbox';
 import { Board } from './view/board';
 
@@ -91,6 +92,7 @@ async function start(): Promise<void> {
   new DicePanel((entry) => addLog(entry), (targetId, wounds, save, ward, note) =>
     prompts.requestSaves(seat && seat !== 'spectator' ? seat : store.state.meta.active, targetId, wounds, save, ward, note));
   new DiceLog(store);
+  new SyncWarning();
   new Shortcuts({ board, panel, gameBar, toolbox, history, actions });
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
