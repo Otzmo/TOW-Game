@@ -265,14 +265,15 @@ export class BoardTools {
       t.position.set(p.x * PPI, p.y * PPI);
       this.zoneLayer.addChild(t);
     };
-    // Vor der Zonenwahl neutral als Zone A/B, danach in Spielerfarben
-    const assigned = !!setup?.zoneChosen;
+    // Zonen nach Rolle; sobald Angreifer und Verteidiger feststehen, in Spielerfarben
+    const defender = setup?.defender;
     for (const p of ['p1', 'p2'] as const) {
       const pts = zones[p];
-      const colors = assigned ? PLAYER_COLORS[p] : { fill: 0xb9b2a0, edge: 0xe8e6e3 };
+      const colors = defender ? PLAYER_COLORS[p] : { fill: 0xb9b2a0, edge: 0xe8e6e3 };
       g.poly(pts.flatMap((pt) => [pt.x * PPI, pt.y * PPI])).fill({ color: colors.fill, alpha: 0.2 }).stroke({ width: 2, color: colors.edge, alpha: 0.55 });
       const c = { x: pts.reduce((s, q) => s + q.x, 0) / pts.length, y: pts.reduce((s, q) => s + q.y, 0) / pts.length };
-      const name = assigned ? `Player ${p === 'p1' ? 1 : 2} deployment zone` : `Zone ${(p === 'p1') !== !!setup?.swapZones ? 'A' : 'B'}`;
+      const role = (defender ?? 'p2') === p ? 'Defender' : 'Attacker';
+      const name = defender ? `${role} zone · Player ${p === 'p1' ? 1 : 2}` : `${role} zone`;
       label(name, c, colors.edge);
     }
     // Mittelkreis: frei von Gelände; bei Close Encounter auch frei von Aufstellung

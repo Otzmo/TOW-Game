@@ -62,7 +62,7 @@ export class SetupPanel {
     switch (currentSub(meta)) {
       case SETUP_STEPS.battlefield: return s.deployment ? null : 'Generate the battlefield first';
       case SETUP_STEPS.attacker: return s.defender ? null : 'Roll off for Attacker / Defender';
-      case SETUP_STEPS.zones: return s.zoneChosen ? null : 'Defender chooses a deployment zone';
+      case SETUP_STEPS.zones: return s.zoneChosen ? null : 'Defender confirms the Defender zone';
       case SETUP_STEPS.deploy: return s.finished?.p1 && s.finished?.p2 ? null : 'Both players finish deploying';
       case SETUP_STEPS.firstTurn: return s.firstPlayer ? null : 'Roll off for the first turn';
       default: return null;
@@ -158,12 +158,13 @@ export class SetupPanel {
       // Der Verteidiger stellt die erste Einheit auf
       this.setSetup({ defender, deployNext: defender });
       this.log({ kind: 'turn', text: `${playerName(winner)} chooses to be the ${act === 'defender' ? 'Defender' : 'Attacker'} · Defender: ${playerName(defender)}` });
-    } else if (act === 'zone-a' || act === 'zone-b') {
-      // Der Verteidiger wählt; Spieler 1 hat ohne Tausch Zone A
-      const defenderTakesA = act === 'zone-a';
-      const p1HasA = s.defender === 'p1' ? defenderTakesA : !defenderTakesA;
-      this.setSetup({ swapZones: !p1HasA, zoneChosen: true });
-      this.log({ kind: 'turn', text: `Defender (${playerName(s.defender!)}) chooses Zone ${defenderTakesA ? 'A' : 'B'}` });
+    } else if (act === 'zone-swap') {
+      // Der Verteidiger wählt seine Zone: Angreifer- und Verteidigerzone tauschen
+      this.setSetup({ swapZones: !s.swapZones });
+      moveToNoMansLand(this.store);
+    } else if (act === 'zone-ok') {
+      this.setSetup({ zoneChosen: true });
+      this.log({ kind: 'turn', text: `Defender (${playerName(s.defender!)}) has chosen the Defender zone` });
     } else if (act === 'placed') {
       const next = other(s.deployNext ?? s.defender ?? 'p1');
       // Wer fertig ist, stellt nicht mehr auf
@@ -221,7 +222,7 @@ export class SetupPanel {
           ${s.defender ? `<p class="ok">Defender: ${playerName(s.defender)} · Attacker: ${playerName(other(s.defender))}</p>` : btn('roll-attacker', s.rollOff ? 'Roll again' : 'Roll off (D6)', this.mayAct(null), true)}`;
       case SETUP_STEPS.zones:
         return `<h4>3 · Deployment Zone & Terrain</h4><p>The Defender chooses the deployment zone and places additional terrain and the Baggage Train first. The Defender declares Ambushers first.</p>
-          ${s.zoneChosen ? `<p class="ok">Zones assigned.</p>` : `<div class="row-btns">${btn('zone-a', 'Defender takes Zone A', this.mayAct(s.defender))}${btn('zone-b', 'Defender takes Zone B', this.mayAct(s.defender))}</div>`}`;
+          ${s.zoneChosen ? `<p class="ok">Defender zone: ${playerName(s.defender!)} · Attacker zone: ${playerName(other(s.defender!))}</p>` : `<div class="row-btns">${btn('zone-swap', 'Swap Attacker and Defender zones', this.mayAct(s.defender))}${btn('zone-ok', 'Confirm Defender zone', this.mayAct(s.defender), true)}</div>`}`;
       case SETUP_STEPS.deploy: {
         const zones = deploymentZones(s);
         const outside = zones ? Object.values(units).filter((u) => !isJoined(u, units) && !pointInPolygon(u, zones[u.owner])) : [];

@@ -51,15 +51,23 @@ const PRESETS: Record<string, () => [Point[], Point[]]> = {
 };
 
 /** Zonen beider Spieler auf dem Tisch (gespiegelt und zugeteilt wie im Aufbau festgelegt). */
-export function deploymentZones(setup: SetupState | undefined): Record<PlayerId, Point[]> | null {
+/** Zonen nach Rolle: ohne Tausch ist die erste Zone die des Verteidigers. */
+export function zonesByRole(setup: SetupState | undefined): { attacker: Point[]; defender: Point[] } | null {
   if (!setup?.deployment || !PRESETS[setup.deployment]) return null;
   const flip = (pts: Point[]) => pts.map((p) => ({
     x: setup.flipX ? TABLE_W - p.x : p.x,
     y: setup.flipY ? TABLE_H - p.y : p.y,
   }));
   const [a, b] = PRESETS[setup.deployment]().map(flip);
-  // Spieler 1 hat Zone A, außer der Verteidiger hat getauscht
-  return setup.swapZones ? { p1: b, p2: a } : { p1: a, p2: b };
+  return setup.swapZones ? { attacker: a, defender: b } : { attacker: b, defender: a };
+}
+
+/** Zone je Spieler; vor dem Roll-off gilt Spieler 2 vorläufig als Verteidiger. */
+export function deploymentZones(setup: SetupState | undefined): Record<PlayerId, Point[]> | null {
+  const z = zonesByRole(setup);
+  if (!z) return null;
+  const defender = setup?.defender ?? 'p2';
+  return defender === 'p1' ? { p1: z.defender, p2: z.attacker } : { p1: z.attacker, p2: z.defender };
 }
 
 /** Bei Close Encounter darf im Mittelkreis niemand aufstellen. */

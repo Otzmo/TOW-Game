@@ -108,7 +108,7 @@ export interface SetupState {
   deployment?: string | null;
   flipX?: boolean;
   flipY?: boolean;
-  /** Spieler 1 bekommt Zone B statt A (Wahl des Verteidigers) */
+  /** Angreifer- und Verteidigerzone getauscht (Wahl des Verteidigers) */
   swapZones?: boolean;
   /** Mission "End of player turn" bzw. "End of game" (Schlüssel in MISSIONS) */
   missionTurn?: string | null;
