@@ -7,6 +7,7 @@ import { isSkirmish, unitLayout, type Store } from '../model/store';
 import type { GameMeta, LogKind, PlayerId } from '../model/types';
 
 import { missionByKey } from '../model/battlefield';
+import { playerName } from '../model/players';
 
 type Step = Pick<GameMeta, 'phase' | 'sub' | 'active' | 'round'>;
 
@@ -15,7 +16,6 @@ const $ = (id: string) => document.getElementById(id)!;
 const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
-const playerName = (p: PlayerId) => `Player ${p === 'p1' ? 1 : 2}`;
 const other = (p: PlayerId): PlayerId => (p === 'p1' ? 'p2' : 'p1');
 
 /** Leiste oben: Runde, Spieler am Zug, Zug beenden, Rückgängig und Siegpunkte. */
@@ -171,6 +171,12 @@ export class GameBar {
 
     // Nach der Aufstellung: Armee laden, Gelände und Battlefield ausblenden (siehe CSS)
     document.body.classList.toggle('battle', phase !== 'setup');
+    // Namen nach Rolle (Attacker/Defender), sobald der Roll-off entschieden ist
+    document.querySelectorAll<HTMLButtonElement>('[data-import]').forEach((btn) => {
+      const p = btn.dataset.import as PlayerId;
+      btn.innerHTML = `<span class="dot ${p}"></span>Load army · ${playerName(p)}`;
+    });
+    if (this.me) $('room-me').textContent = this.me === 'spectator' ? 'You are spectating' : `You: ${playerName(this.me)}`;
     this.renderScore();
   }
 

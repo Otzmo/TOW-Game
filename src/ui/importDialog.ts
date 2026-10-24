@@ -1,5 +1,6 @@
 import { importBbList, type ImportResult } from '../data/importer';
 import { moveToNoMansLand } from '../model/noMansLand';
+import { playerName } from '../model/players';
 import type { Store } from '../model/store';
 import type { PlayerId } from '../model/types';
 
@@ -34,7 +35,7 @@ export class ImportDialog {
   private async load(file: File): Promise<void> {
     this.pending = null;
     $('import-confirm').hidden = true;
-    $('import-title').textContent = `Army for Player ${this.owner === 'p1' ? 1 : 2}`;
+    $('import-title').textContent = `Army for ${playerName(this.owner)}`;
     $('import-body').innerHTML = '<p class="meta">Loading …</p>';
     this.dialog.showModal();
     try {

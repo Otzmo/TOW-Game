@@ -273,7 +273,7 @@ export class BoardTools {
       g.poly(pts.flatMap((pt) => [pt.x * PPI, pt.y * PPI])).fill({ color: colors.fill, alpha: 0.2 }).stroke({ width: 2, color: colors.edge, alpha: 0.55 });
       const c = { x: pts.reduce((s, q) => s + q.x, 0) / pts.length, y: pts.reduce((s, q) => s + q.y, 0) / pts.length };
       const role = (defender ?? 'p2') === p ? 'Defender' : 'Attacker';
-      const name = defender ? `${role} zone · Player ${p === 'p1' ? 1 : 2}` : `${role} zone`;
+      const name = `${role} zone`;
       label(name, c, colors.edge);
     }
     // Mittelkreis: frei von Gelände; bei Close Encounter auch frei von Aufstellung

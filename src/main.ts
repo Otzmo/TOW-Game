@@ -3,6 +3,7 @@ import './style.css';
 import { importBbList } from './data/importer';
 import { History } from './model/history';
 import { moveToNoMansLand } from './model/noMansLand';
+import { bindPlayerNames } from './model/players';
 import { defaultTerrain } from './model/objects';
 import { Store } from './model/store';
 import type { GameState, LogEntry } from './model/types';
@@ -45,6 +46,8 @@ async function start(): Promise<void> {
     prompts: {},
   };
   const store = new Store(state);
+  // Spielernamen nach Rolle (Attacker/Defender) aus dem aktuellen Spielstand
+  bindPlayerNames(() => store.state.meta);
   const history = new History(store);
 
   // Wer schreibt ins Protokoll: online der eigene Platz, offline der Spieler am Zug

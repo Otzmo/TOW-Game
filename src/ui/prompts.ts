@@ -4,6 +4,7 @@ import {
 } from '../model/flow';
 import type { History } from '../model/history';
 import { currentPhase, currentSub, SUB_CHARGE_MOVES, SUB_DECLARE, subLabel } from '../model/phases';
+import { playerName } from '../model/players';
 import type { Store } from '../model/store';
 import type { Charge, ChargeReaction, LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
 import { diceHtml } from './dice';
@@ -11,7 +12,6 @@ import { diceHtml } from './dice';
 const $ = (id: string) => document.getElementById(id)!;
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
-const playerName = (p: PlayerId) => `Player ${p === 'p1' ? 1 : 2}`;
 const other = (p: PlayerId): PlayerId => (p === 'p1' ? 'p2' : 'p1');
 const newId = (prefix: string) => `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
 const sel = (id: string) => $(id) as HTMLSelectElement;

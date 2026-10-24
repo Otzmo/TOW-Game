@@ -1,4 +1,5 @@
 import type { Store } from '../model/store';
+import { playerName } from '../model/players';
 import type { LogEntry } from '../model/types';
 
 const $ = (id: string) => document.getElementById(id)!;
@@ -102,7 +103,6 @@ function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 }
 
-const WHO: Record<LogEntry['by'], string> = { p1: 'Player 1', p2: 'Player 2', spectator: 'Spectator' };
 
 /** Würfelprotokoll in der rechten Spalte: alle Würfe beider Spieler, neueste oben. */
 export class DiceLog {
@@ -118,7 +118,7 @@ export class DiceLog {
     $('dice-log').innerHTML = rolls.map((e) => {
       const time = new Date(e.ts).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
       const dice = e.dice?.length ? `<div class="log-dice">${e.dice.map((d) => diceHtml(d)).join('<span class="sep">→</span>')}</div>` : '';
-      return `<li><span class="log-meta"><span class="dot ${e.by}"></span>${WHO[e.by]} · ${time}</span>` +
+      return `<li><span class="log-meta"><span class="dot ${e.by}"></span>${playerName(e.by)} · ${time}</span>` +
         `<span class="log-text">${escapeHtml(e.text)}</span>${dice}</li>`;
     }).join('') || '<li class="empty">No dice rolled yet.</li>';
   }
