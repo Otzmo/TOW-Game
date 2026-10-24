@@ -1,3 +1,4 @@
+import type { History } from '../model/history';
 import { armyPoints, victoryPoints } from '../model/score';
 import { isSkirmish, unitLayout, type Store } from '../model/store';
 import type { LogKind, PlayerId } from '../model/types';
@@ -16,12 +17,12 @@ export class GameBar {
   /** Online: der eigene Spieler; offline null (beide spielen am selben Bildschirm) */
   private me: PlayerId | 'spectator' | null = null;
 
-  constructor(private store: Store, private undo: () => boolean, canUndo: () => boolean,
-    private log: (kind: LogKind, text: string) => void) {
+  constructor(private store: Store, history: History, private log: (kind: LogKind, text: string) => void) {
     $('g-end').onclick = () => this.requestEndTurn();
     $('g-confirm-yes').onclick = () => this.endTurn();
     $('g-confirm-no').onclick = () => { $('g-confirm').hidden = true; };
-    $('g-undo').onclick = () => this.undo();
+    $('g-undo').onclick = () => history.undo();
+    $('g-redo').onclick = () => history.redo();
     $('g-score-toggle').onclick = () => toggleSheet('score');
     onSheetChange((name) => {
       $('g-score-toggle').classList.toggle('on', name === 'score');
@@ -33,15 +34,9 @@ export class GameBar {
       const breakBonus = { ...this.store.state.meta.breakBonus, [box.dataset.break]: box.checked };
       this.store.setMeta({ breakBonus });
     };
-    window.addEventListener('keydown', (e) => {
-      const typing = (e.target as HTMLElement).closest('input, textarea');
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !typing) {
-        e.preventDefault();
-        this.undo();
-      }
-    });
     store.subscribe(() => {
-      ($('g-undo') as HTMLButtonElement).disabled = !canUndo();
+      ($('g-undo') as HTMLButtonElement).disabled = !history.canUndo();
+      ($('g-redo') as HTMLButtonElement).disabled = !history.canRedo();
       this.render();
     });
     this.render();
@@ -53,7 +48,7 @@ export class GameBar {
   }
 
   /** Vor dem Zugende prüfen, ob Plänkler des aktiven Spielers mehr als 1″ auseinanderstehen. */
-  private requestEndTurn(): void {
+  requestEndTurn(): void {
     const { units, meta } = this.store.state;
     const broken = Object.values(units)
       .filter((u) => u.owner === meta.active && isSkirmish(u) && unitLayout(u, units).stray.size > 0)

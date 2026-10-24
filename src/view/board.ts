@@ -267,6 +267,85 @@ export class Board {
     return Math.min((a.right - a.left) / (width * PPI), (a.bottom - a.top) / (height * PPI));
   }
 
+  // --- Aktionen für Tastenkürzel -----------------------------------------------
+
+  /** Ausgewählte Einheit (ein angeschlossener Charakter bewegt seine Einheit) */
+  private movableUnit(): UnitState | undefined {
+    const units = this.store.state.units;
+    const u = this.selectedId ? units[this.selectedId] : undefined;
+    return u?.joinedTo && units[u.joinedTo] ? units[u.joinedTo] : u;
+  }
+
+  /**
+   * Auswahl verschieben: Einheiten in ihrer Blickrichtung (vor/zurück, seitlich),
+   * Objekte entlang des Tisches. Werte in Zoll.
+   */
+  nudgeSelected(forward: number, right: number): void {
+    if (this.viewOnly) return;
+    const obj = this.tools.selectedId ? this.store.state.objects[this.tools.selectedId] : undefined;
+    if (obj) {
+      this.history.record();
+      this.store.updateObject(obj.id, { x: obj.x + right, y: obj.y - forward });
+      return;
+    }
+    const u = this.movableUnit();
+    if (!u) return;
+    this.history.record();
+    const p = this.unitPoint(u, right, -forward);
+    this.store.updateUnit(u.id, { x: p.x, y: p.y });
+    const dist = Math.hypot(forward, right);
+    this.events.onAction(u.id, `${dist.toFixed(1)}″ ${forward > 0 ? 'vor' : forward < 0 ? 'zurück' : right > 0 ? 'nach rechts' : 'nach links'}`);
+  }
+
+  /** Auswahl um ihre Mitte drehen (Grad, im Uhrzeigersinn positiv). */
+  rotateSelected(deg: number): void {
+    if (this.viewOnly) return;
+    const rad = (deg * Math.PI) / 180;
+    const obj = this.tools.selectedId ? this.store.state.objects[this.tools.selectedId] : undefined;
+    if (obj) {
+      this.history.record();
+      this.store.updateObject(obj.id, { rotation: obj.rotation + rad });
+      return;
+    }
+    const u = this.movableUnit();
+    if (!u) return;
+    this.history.record();
+    this.store.updateUnit(u.id, { rotation: u.rotation + rad });
+    this.events.onAction(u.id, `${Math.abs(deg)}° ${deg > 0 ? 'rechts' : 'links'} gedreht`);
+  }
+
+  /** Nächste bzw. vorige Einheit auswählen (bevorzugt die des Spielers am Zug). */
+  selectNext(dir: 1 | -1): void {
+    const units = this.store.state.units;
+    const active = this.store.state.meta.active;
+    const list = Object.values(units).filter((u) => !isJoined(u, units))
+      .sort((a, b) => Number(b.owner === active) - Number(a.owner === active) || a.x - b.x);
+    if (!list.length) return;
+    const i = list.findIndex((u) => u.id === this.selectedId);
+    const next = list[(i + dir + list.length) % list.length] ?? list[0];
+    this.select(next.id);
+  }
+
+  /** Um die Mitte des freien Bereichs zoomen. */
+  zoomBy(factor: number): void {
+    const a = this.viewArea();
+    const mx = (a.left + a.right) / 2;
+    const my = (a.top + a.bottom) / 2;
+    const s = this.world.scale.x;
+    const ns = Math.min(8, Math.max(this.minScale(), s * factor));
+    const wx = (mx - this.world.x) / s;
+    const wy = (my - this.world.y) / s;
+    this.world.scale.set(ns);
+    this.world.position.set(mx - wx * ns, my - wy * ns);
+    this.clampView();
+  }
+
+  /** Ansicht verschieben (Bildschirmpixel), bleibt an den Leisten. */
+  panBy(dx: number, dy: number): void {
+    this.world.position.set(this.world.x + dx, this.world.y + dy);
+    this.clampView();
+  }
+
   /** Ganzen Tisch zeigen, unten links an Spalte und Leiste angelegt. */
   fitView(): void {
     this.world.scale.set(this.minScale());

@@ -14,6 +14,7 @@
       <span id="g-round"></span>
       <button id="g-end">Zug beenden</button>
       <button id="g-undo" title="Rückgängig (Strg+Z)" disabled>↶ Rückgängig</button>
+      <button id="g-redo" title="Wiederholen (Strg+Y)" disabled>↷ Wiederholen</button>
       <button id="g-score-toggle">Siegpunkte</button>
       <div id="g-confirm" hidden>
         <span id="g-confirm-text"></span>
@@ -51,6 +52,7 @@
       <button id="load-game">Laden</button>
       <input type="file" id="load-file" accept=".json,application/json" hidden>
       <button data-sheet="help">Hilfe</button>
+      <button data-sheet="keys" title="Alle Tastenkürzel (?)">Tastenkürzel</button>
     </nav>
   </aside>
   <p id="tool-hint" hidden></p>
@@ -86,6 +88,7 @@
     <ol id="log-list"></ol>
     <form id="chat-form"><input id="chat-input" type="text" maxlength="300" placeholder="Nachricht …" autocomplete="off"><button>Senden</button></form>
   </aside>
+  <aside class="sheet wide-sheet" id="sheet-keys" hidden><h3>Tastenkürzel</h3><div id="keys-list"></div></aside>
   <aside class="sheet" id="sheet-help" hidden>
     <h3>Steuerung</h3>
     <ul class="help-list">
@@ -94,7 +97,8 @@
       <li><b>Plänkler</b>: Modell ziehen = einzeln, Shift + ziehen = ganze Einheit.</li>
       <li><b>Charakter</b> auf eine eigene Einheit ziehen: anschließen.</li>
       <li><b>Maßband / Sichtlinie</b>: Werkzeug wählen und auf dem Tisch ziehen. <b>Esc</b> zurück zu Auswählen.</li>
-      <li><b>Mausrad</b>: Zoom. <b>Freien Tisch ziehen</b>: Ansicht verschieben. <b>Strg+Z</b>: rückgängig. <b>Entf</b>: Objekt löschen.</li>
+      <li><b>Mausrad</b>: Zoom. <b>Freien Tisch ziehen</b>: Ansicht verschieben (hineingezoomt).</li>
+      <li>Alle Tastenkürzel: Knopf <b>Tastenkürzel</b> links oder <b>?</b> bzw. <b>F1</b>.</li>
     </ul>
   </aside>
 

@@ -13,6 +13,7 @@ import { Lobby } from './ui/lobby';
 import { LogPanel } from './ui/logPanel';
 import { ObjectPanel } from './ui/objectPanel';
 import { UnitPanel } from './ui/panel';
+import { Shortcuts } from './ui/shortcuts';
 import { Toolbox } from './ui/toolbox';
 import { Board } from './view/board';
 
@@ -63,10 +64,10 @@ async function start(): Promise<void> {
       addLog({ kind: 'action', text: `${name} ${text}` });
     },
   });
-  const gameBar = new GameBar(store, () => history.undo(), () => history.canUndo(),
-    (kind, text) => addLog({ kind, text }));
-  new Toolbox(store, history, board.tools, (text) => addLog({ kind: 'action', text }));
+  const gameBar = new GameBar(store, history, (kind, text) => addLog({ kind, text }));
+  const toolbox = new Toolbox(store, history, board.tools, (text) => addLog({ kind: 'action', text }));
   new DicePanel((entry) => addLog(entry));
+  new Shortcuts({ board, panel, gameBar, toolbox, history });
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
   // Ganzen Tisch zeigen, auch nach jedem Armeeimport

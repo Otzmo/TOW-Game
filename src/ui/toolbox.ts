@@ -52,10 +52,7 @@ export class Toolbox {
     store.subscribe((_, c) => { if (c.meta || c.loaded) this.renderZones(); });
 
     $('save-game').onclick = () => this.save();
-    $('load-game').onclick = () => {
-      ($('load-file') as HTMLInputElement).value = '';
-      $('load-file').click();
-    };
+    $('load-game').onclick = () => this.openLoad();
     $('load-file').onchange = () => {
       const file = ($('load-file') as HTMLInputElement).files?.[0];
       if (file) this.prepareLoad(file);
@@ -63,16 +60,6 @@ export class Toolbox {
     $('load-cancel').onclick = () => ($('load-dialog') as HTMLDialogElement).close();
     $('load-confirm').onclick = () => this.load();
 
-    window.addEventListener('keydown', (e) => {
-      if ((e.target as HTMLElement).closest('input, textarea, select') || e.ctrlKey || e.metaKey || e.altKey) return;
-      const key = e.key.toLowerCase();
-      if (key === 'escape') { tools.setTool('select'); openSheet(null); }
-      else if (key === 'v') tools.setTool('select');
-      else if (key === 'm') tools.setTool('measure');
-      else if (key === 'l') tools.setTool('sight');
-      else if (key === 'w') toggleSheet('dice');
-      else if (key === 'delete' || key === 'backspace') tools.removeSelected();
-    });
     this.showTool(tools.tool);
   }
 
@@ -89,6 +76,12 @@ export class Toolbox {
     document.body.classList.toggle('placing', name !== 'select');
   }
 
+  /** Dateiauswahl für einen gespeicherten Spielstand öffnen */
+  openLoad(): void {
+    ($('load-file') as HTMLInputElement).value = '';
+    $('load-file').click();
+  }
+
   private renderZones(): void {
     const current = this.store.state.meta.scenario ?? 'none';
     $('zone-list').innerHTML = Object.entries(SCENARIOS)
@@ -98,7 +91,7 @@ export class Toolbox {
 
   // --- Speichern und Laden ----------------------------------------------------
 
-  private save(): void {
+  save(): void {
     const { units, meta, objects, log } = this.store.state;
     const data = { format: SAVE_FORMAT, version: 1, savedAt: new Date().toISOString(), units, meta, objects, log };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });

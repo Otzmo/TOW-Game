@@ -88,14 +88,15 @@ export class UnitPanel {
   }
 
   /** Änderung an der ausgewählten Einheit, rückgängig machbar. */
-  private change(patch: Partial<UnitState>): void {
+  change(patch: Partial<UnitState>): void {
     const u = this.unit();
     if (!u) return;
     this.history.record();
     this.store.updateUnit(u.id, patch);
   }
 
-  private onFormation(act: string): void {
+  /** Breite (w-/w+) oder Modellzahl (m-/m+) der ausgewählten Einheit ändern */
+  onFormation(act: string): void {
     const units = this.store.state.units;
     const u = this.unit();
     if (!u) return;
@@ -109,14 +110,27 @@ export class UnitPanel {
   }
 
   /** Plänkler in Reihen mit 0,5″ Abstand aufstellen (Breite wie eingestellt). */
-  private arrangeInRanks(): void {
+  arrangeInRanks(): void {
     const u = this.unit();
-    if (!u) return;
+    if (!u || !isSkirmish(u)) return;
     this.change({ positions: spreadPositions(u, this.store.state.units) });
     this.setLastAction(u.id, 'in Reihen mit 0,5″ Abstand geordnet');
   }
 
-  private setFormation(form: 'close' | 'skirmish'): void {
+  /** Zwischen geschlossener Formation und Plänklern wechseln, falls erlaubt */
+  toggleFormation(): void {
+    const u = this.unit();
+    if (u && (canSkirmish(u) || isSkirmish(u))) this.setFormation(isSkirmish(u) ? 'close' : 'skirmish');
+  }
+
+  /** Reichweiten-Anzeige umschalten (wie das Häkchen) */
+  toggleRanges(): void {
+    const box = $('p-ranges') as HTMLInputElement;
+    box.checked = !box.checked;
+    box.dispatchEvent(new Event('change'));
+  }
+
+  setFormation(form: 'close' | 'skirmish'): void {
     const units = this.store.state.units;
     const u = this.unit();
     if (!u || (u.formation ?? 'close') === form) return;

@@ -251,3 +251,16 @@ body.spectator #obj-panel input, body.spectator #o-delete { pointer-events: none
 .stack .seg button + button { border-left: 0; }
 .stack .seg button:nth-child(even) { border-left: 1px solid var(--line); }
 .stack .seg button:nth-child(n+3) { border-top: 1px solid var(--line); }
+
+/* Tastenkürzel-Legende */
+.sheet.wide-sheet { width: 440px; }
+#keys-list h4 { margin: 14px 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); }
+#keys-list h4:first-child { margin-top: 0; }
+table.keys { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+table.keys td { padding: 4px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.keys td:first-child { width: 46%; padding-right: 10px; }
+kbd {
+  display: inline-block; min-width: 20px; padding: 1px 6px; margin: 1px 1px; border-radius: 5px; text-align: center;
+  font: 600 12px/1.5 system-ui, sans-serif; color: var(--text); background: #2a2e32;
+  border: 1px solid var(--line); border-bottom-width: 2px;
+}
