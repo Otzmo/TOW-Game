@@ -51,7 +51,7 @@ export class Shortcuts {
   private readonly list: Shortcut[];
 
   constructor(private t: ShortcutTargets) {
-    const { board, panel, gameBar, toolbox, history, actions, views } = t;
+    const { board, panel, gameBar, toolbox, history, views } = t;
     const tools = board.tools;
     const nudge = (f: number, r: number) => (e: KeyboardEvent) => {
       const step = e.shiftKey ? 0.1 : 1;
@@ -94,7 +94,6 @@ export class Shortcuts {
       { group: 'Game', keys: [['Enter']], desc: 'In the dice popup: roll',
         match: (e) => e.key === 'Enter' && plain(e) && !!targetEl(e)?.closest('#dicebar'),
         whileTyping: true, run: () => ($('d-roll') as HTMLButtonElement).click() },
-      { group: 'Game', keys: [['J']], desc: 'Declare charge (then click the target)', match: letter('j'), run: () => actions.declareCharge() },
       { group: 'Game', keys: [['P']], desc: 'Log', match: letter('p'), run: () => toggleSheet('log') },
       { group: 'Game', keys: [['C']], desc: 'Write a chat message', match: letter('c'), run: () => {
         openSheet('log');

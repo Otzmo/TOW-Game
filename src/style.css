@@ -351,15 +351,7 @@ body.sheet-open .bottom-panel { display: none; }
   padding: 7px 14px; border-radius: 999px; background: #2a2e32; border: 1px solid var(--line); color: var(--muted); font-size: calc(13px * var(--ui));
 }
 
-/* Angriff ansagen und Test verlangen im Einheitenpanel */
-#p-charge { margin: 4px 0 8px; }
-#p-charge:disabled { opacity: .5; cursor: not-allowed; }
-#p-charge-why { margin: -4px 0 8px; font-size: calc(12px * var(--ui)); }
-#p-charge-why:empty { display: none; }
-#p-attack { margin: 0 0 8px; }
-#p-attack:disabled { opacity: .5; cursor: not-allowed; }
-#p-attack-why { margin: -4px 0 8px; font-size: calc(12px * var(--ui)); }
-#p-attack-why:empty { display: none; }
+/* Test verlangen im Einheitenpanel */
 .test-row { display: flex; gap: 6px; margin-bottom: 8px; }
 .test-row select { flex: 1; min-width: 0; font: inherit; font-size: calc(12px * var(--ui)); color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 4px; }
 .test-row button { white-space: nowrap; padding: 5px 8px; font-size: calc(12px * var(--ui)); }

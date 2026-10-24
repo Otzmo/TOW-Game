@@ -90,8 +90,9 @@ export function checkMove(meta: GameMeta, unit: UnitState, seat: PlayerId | 'spe
       return { ok: false, overridable: true, reason: 'Declare charges first – units move in the following sub-phases.' };
     }
     if (sub === SUB_CHARGE_MOVES) {
-      return charging ? { ok: true, note: 'Charge move' }
-        : { ok: false, overridable: true, reason: 'Only charging units move during Charge Moves.' };
+      // Angriffe werden von Hand geklärt: jede eigene Einheit, die nicht flieht, darf angreifen
+      return fleeing ? { ok: false, overridable: true, reason: 'Fleeing units cannot charge.' }
+        : { ok: true, note: 'Charge move' };
     }
     if (sub === SUB_COMPULSORY) {
       return fleeing ? { ok: true, note: 'Compulsory move' }

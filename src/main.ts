@@ -67,13 +67,8 @@ async function start(): Promise<void> {
     close: () => board.tools.select(null),
     remove: () => board.tools.removeSelected(),
   });
-  // Knöpfe wie „Declare charge“ hängen von der Auswahl ab (wird gesetzt, sobald ActionControls steht)
-  let refreshActions = () => {};
   const board: Board = new Board(app, store, history, {
-    onSelect: (id) => {
-      panel.show(id);
-      refreshActions();
-    },
+    onSelect: (id) => panel.show(id),
     onSelectObject: (id) => objectPanel.show(id),
     onAction: (id, text) => {
       panel.setLastAction(id, text);
@@ -94,20 +89,13 @@ async function start(): Promise<void> {
     log: (entry) => addLog(entry),
     allowMove: (id) => gate.grant(id),
   });
-  gameBar.chargeFlow = {
-    unsent: () => prompts.unsentCharges().length,
-    waiting: () => prompts.waitingCharges().length,
-    send: () => prompts.sendReactionPrompts(),
-  };
   // Aufbauphase: Schlachtfeld, Roll-offs, Zonen und Aufstellen
   const setup = new SetupPanel(store, history, () => seat, (entry) => addLog(entry));
   gameBar.setupBlocker = () => setup.blocker();
   setup.onNext = () => gameBar.requestNext();
   gameBar.refresh();
   const actions = new ActionControls(store, board, prompts, () => seat);
-  refreshActions = () => actions.refresh();
-  new DicePanel((entry) => addLog(entry), (targetId, wounds, save, ward, note) =>
-    prompts.requestSaves(seat && seat !== 'spectator' ? seat : store.state.meta.active, targetId, wounds, save, ward, note));
+  new DicePanel((entry) => addLog(entry));
   new DiceLog(store);
   new SyncWarning();
   // Spalten links/rechts ein- und ausblenden; danach den Tisch neu einpassen

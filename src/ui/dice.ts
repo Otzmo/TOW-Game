@@ -22,15 +22,11 @@ export interface DiceStage {
   success: number;
 }
 
-/** Würfel: Pool aus Treffer → Verwundung → Rüstung → Rettung, und schnelle Einzelwürfe. */
+/** Würfel: Pool aus Treffer → Verwundung → Rüstung → Rettung → Regeneration, und schnelle Einzelwürfe. */
 export class DicePanel {
-  /**
-   * @param sendSaves Verwundungen an den Gegner zum Rüstungs-/Rettungswurf geben (wenn ein Ziel gewählt ist)
-   */
-  constructor(private publish: (entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>) => void,
-    private sendSaves: (targetId: string, wounds: number, save: string, ward: string, note: string) => void = () => {}) {
+  constructor(private publish: (entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>) => void) {
     for (const [id, def, none] of [['d-hit', '4', '– (hits automatically)'], ['d-wound', '4', '– (skip)'],
-      ['d-save', '', '– (none)'], ['d-ward', '', '– (none)']] as const) {
+      ['d-save', '', '– (none)'], ['d-ward', '', '– (none)'], ['d-regen', '', '– (none)']] as const) {
       select(id).innerHTML = `<option value="">${none}</option>` +
         [2, 3, 4, 5, 6].map((n) => `<option value="${n}" ${String(n) === def ? 'selected' : ''}>${n}+</option>`).join('');
     }
@@ -59,15 +55,9 @@ export class DicePanel {
     };
     step('d-hit', 'To Hit', 'hits', false);
     step('d-wound', 'To Wound', 'wounds', false);
-    // Mit Ziel würfelt der Gegner Rüstung und Rettung selbst
-    const targetId = select('d-target')?.value ?? '';
-    const toOpponent = !!targetId && stages.length > 0 && pool > 0;
-    if (toOpponent) {
-      parts.push('opponent rolls saves');
-    } else {
-      step('d-save', 'Armour Save', 'unsaved', true);
-      step('d-ward', 'Ward save', 'unsaved', true);
-    }
+    step('d-save', 'Armour Save', 'unsaved', true);
+    step('d-ward', 'Ward save', 'unsaved', true);
+    step('d-regen', 'Regeneration', 'unsaved', true);
     if (!stages.length) {
       const dice = roll(count);
       stages.push({ label: 'Roll', dice, success: 7 });
@@ -77,7 +67,6 @@ export class DicePanel {
     const text = (note ? `${note}: ` : '') + parts.join(' → ');
     this.show(text, stages);
     this.publish({ kind: 'roll', text, dice: stages.map((s) => s.dice) });
-    if (toOpponent) this.sendSaves(targetId, pool, select('d-save').value, select('d-ward').value, note);
   }
 
   private rollQuick(kind: string): void {
