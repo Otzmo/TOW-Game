@@ -104,7 +104,6 @@ export class Shortcuts {
         if (inBattle()) toggleSheet('score');
       } },
       { group: 'Game', keys: [['N']], desc: 'Next sub-phase', match: letter('n'), run: () => gameBar.requestNext() },
-      { group: 'Game', keys: [['Shift', 'N']], desc: 'End phase (after the Combat phase: end turn)', match: letter('n', true), run: () => gameBar.requestEndPhase() },
       { group: 'Game', keys: [['U']], desc: 'Shooting/Combat: next unit or next combat', match: letter('u'), run: () => gameBar.repeat() },
       { group: 'Game', keys: [['Tab'], ['Shift', 'Tab']], desc: 'Select next / previous unit',
         match: (e) => e.key === 'Tab' && plain(e), run: (e) => board.selectNext(e.shiftKey ? -1 : 1) },

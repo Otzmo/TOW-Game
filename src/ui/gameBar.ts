@@ -1,6 +1,6 @@
 import type { History } from '../model/history';
 import {
-  currentPhase, currentSub, nextPhase, nextSub, PHASES, phaseInfo, phaseLabel, repeatPhase, SUB_DECLARE, subLabel,
+  currentPhase, currentSub, nextSub, PHASES, phaseInfo, phaseLabel, repeatPhase, SUB_DECLARE, subLabel,
 } from '../model/phases';
 import { armyPoints, victoryPoints } from '../model/score';
 import { isSkirmish, unitLayout, type Store } from '../model/store';
@@ -25,7 +25,6 @@ export class GameBar {
 
   constructor(private store: Store, history: History, private log: (kind: LogKind, text: string) => void) {
     $('g-end').onclick = () => this.requestNext();
-    $('g-phase-end').onclick = () => this.requestEndPhase();
     $('g-repeat').onclick = () => this.repeat();
     $('g-confirm-yes').onclick = () => { if (this.pending) this.go(this.pending); };
     $('g-confirm-no').onclick = () => { $('g-confirm').hidden = true; };
@@ -68,11 +67,6 @@ export class GameBar {
   /** Weiter zur nächsten Unterphase (nach der letzten: nächste Phase). */
   requestNext(): void {
     this.request(nextSub(this.store.state.meta));
-  }
-
-  /** Phase direkt beenden (überspringt die übrigen Unterphasen). */
-  requestEndPhase(): void {
-    this.request(nextPhase(this.store.state.meta));
   }
 
   /** Fernkampf/Nahkampf: zurück zur ersten Unterphase für die nächste Einheit bzw. den nächsten Kampf. */
@@ -160,10 +154,6 @@ export class GameBar {
       : lastSub ? (phase === 'combat' ? 'End turn »' : 'End phase »') : 'Next ›';
     next.disabled = notMine || waiting > 0 || !!blocked;
     next.title = blocked ?? '';
-    const endBtn = $('g-phase-end') as HTMLButtonElement;
-    endBtn.hidden = phase === 'setup' || lastSub;
-    endBtn.textContent = phase === 'combat' ? 'End turn »' : 'End phase »';
-    endBtn.disabled = notMine || waiting > 0 || unsent > 0;
     const rep = $('g-repeat') as HTMLButtonElement;
     rep.hidden = !info.repeat || sub === 0;
     rep.textContent = `↺ ${info.repeat ?? ''}`;

@@ -519,7 +519,17 @@ table.profile th, table.profile td { padding: 3px 2px; }
 /* Nach der Aufstellung: Armee laden, Gelände und Battlefield ausblenden */
 body.battle [data-import], body.battle #toolbox [data-sheet="battlefield"] { display: none; }
 /* In der Aufstellung führen die Popups durch die Schritte; „Next“ links gibt es dann nicht */
-body:not(.battle) #g-end, body:not(.battle) #g-phase-end { display: none; }
+body:not(.battle) #g-end { display: none; }
+
+/* Phasenleiste kompakt: Phasen in einer Zeile, Unterphasen und Knopf kleiner */
+#gamebar { gap: 4px; }
+#g-round { padding: 0 2px 2px; font-size: calc(12px * var(--ui)); }
+#g-phases { flex-wrap: nowrap; gap: 2px; margin: 0; }
+#g-phases li { flex: 1 1 0; min-width: 0; padding: 2px 2px; font-size: calc(10px * var(--ui)); border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#g-subs { gap: 0; margin: 0 0 2px; }
+#g-subs li { gap: 5px; padding: 1px 5px; font-size: calc(11px * var(--ui)); border-radius: 4px; }
+#g-subs li span { width: 13px; height: 13px; font-size: calc(9px * var(--ui)); }
+#sidebar #gamebar button { padding: 4px 8px; }
 .setup-confirm { position: sticky; bottom: -12px; margin: 14px -14px -12px; padding: 10px 14px 12px; background: var(--panel); border-top: 1px solid var(--line); }
 .setup-confirm .meta { margin: 0 0 6px; color: #f0a35e; }
 #setup-confirm:disabled { opacity: .4; cursor: not-allowed; }
