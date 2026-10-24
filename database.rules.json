@@ -21,6 +21,10 @@
           ".read": "auth != null",
           ".write": "auth != null && (root.child('rooms').child($room).child('players/p1').val() === auth.uid || root.child('rooms').child($room).child('players/p2').val() === auth.uid)"
         },
+        "flow": {
+          ".read": "auth != null",
+          ".write": "auth != null && (root.child('rooms').child($room).child('players/p1').val() === auth.uid || root.child('rooms').child($room).child('players/p2').val() === auth.uid)"
+        },
         "log": {
           ".read": "auth != null",
           ".write": "auth != null && (root.child('rooms').child($room).child('players/p1').val() === auth.uid || root.child('rooms').child($room).child('players/p2').val() === auth.uid)"

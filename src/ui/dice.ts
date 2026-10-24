@@ -22,7 +22,11 @@ export interface DiceStage {
 
 /** Würfel: Pool aus Treffer → Verwundung → Rüstung → Rettung, und schnelle Einzelwürfe. */
 export class DicePanel {
-  constructor(private publish: (entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>) => void) {
+  /**
+   * @param sendSaves Verwundungen an den Gegner zum Rüstungs-/Rettungswurf geben (wenn ein Ziel gewählt ist)
+   */
+  constructor(private publish: (entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>) => void,
+    private sendSaves: (targetId: string, wounds: number, save: string, ward: string, note: string) => void = () => {}) {
     for (const [id, def, none] of [['d-hit', '4', '– (trifft automatisch)'], ['d-wound', '4', '– (überspringen)'],
       ['d-save', '', '– (keiner)'], ['d-ward', '', '– (keiner)']] as const) {
       select(id).innerHTML = `<option value="">${none}</option>` +
@@ -53,8 +57,15 @@ export class DicePanel {
     };
     step('d-hit', 'Treffer', 'Treffer', false);
     step('d-wound', 'Verwunden', 'Verwundungen', false);
-    step('d-save', 'Rüstung', 'nicht gerüstet', true);
-    step('d-ward', 'Rettung', 'ungerettet', true);
+    // Mit Ziel würfelt der Gegner Rüstung und Rettung selbst
+    const targetId = select('d-target')?.value ?? '';
+    const toOpponent = !!targetId && stages.length > 0 && pool > 0;
+    if (toOpponent) {
+      parts.push('Gegner würfelt Rüstung/Rettung');
+    } else {
+      step('d-save', 'Rüstung', 'nicht gerüstet', true);
+      step('d-ward', 'Rettung', 'ungerettet', true);
+    }
     if (!stages.length) {
       const dice = roll(count);
       stages.push({ label: 'Wurf', dice, success: 7 });
@@ -64,6 +75,7 @@ export class DicePanel {
     const text = (note ? `${note}: ` : '') + parts.join(' → ');
     this.show(text, stages);
     this.publish({ kind: 'roll', text, dice: stages.map((s) => s.dice) });
+    if (toOpponent) this.sendSaves(targetId, pool, select('d-save').value, select('d-ward').value, note);
   }
 
   private rollQuick(kind: string): void {

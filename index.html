@@ -47,6 +47,7 @@
       <button data-sheet="zones">Aufstellung ▸</button>
       <hr>
       <button data-sheet="dice" title="Würfel (W)">Würfel</button>
+      <button data-sheet="magic" title="Zaubern (Z)">Magie</button>
       <button data-sheet="log">Protokoll <span id="log-badge" hidden></span></button>
       <hr>
       <button id="save-game">Speichern</button>
@@ -57,6 +58,13 @@
     </nav>
   </aside>
   <p id="tool-hint" hidden></p>
+  <!-- Aufforderung an mich (Reaktion, Rüstungswurf, Bannen …) bzw. Ergebnis -->
+  <section id="prompt-card" hidden>
+    <header id="prompt-head"></header>
+    <p id="prompt-text"></p>
+    <div id="prompt-body"></div>
+  </section>
+  <p id="prompt-wait" hidden></p>
   <div id="phase-notice" hidden>
     <span id="notice-text"></span>
     <button id="notice-allow">Ausnahme erlauben (Sonderregel)</button>
@@ -81,6 +89,7 @@
       <label>Rüstungswurf <select id="d-save"></select></label>
       <label>Rettungswurf <select id="d-ward"></select></label>
       <label class="full">Wofür? <input id="d-note" type="text" maxlength="60" placeholder="z. B. Chosen gegen Ritter"></label>
+      <label class="full">Ziel (Gegner würfelt Rüstung/Rettung) <select id="d-target"></select></label>
     </div>
     <button id="d-roll" class="primary wide">Würfeln</button>
     <div class="dice-quick">
@@ -88,6 +97,16 @@
         data-quick="1d3">W3</button><button data-quick="3d6">3W6</button>
     </div>
     <div id="d-result"></div>
+  </aside>
+  <aside class="sheet" id="sheet-magic" hidden>
+    <h3>Zauber wirken</h3>
+    <div class="dice-form">
+      <label>Zauberer <select id="m-wizard"></select></label>
+      <label>Zauberwert <select id="m-value"></select></label>
+      <label class="full">Zauber <input id="m-spell" type="text" maxlength="60" placeholder="z. B. Blue Fire"></label>
+    </div>
+    <button id="m-cast" class="primary wide">Zaubern (2W6 + halbe Stufe)</button>
+    <p class="meta" id="m-result"></p>
   </aside>
   <aside class="sheet" id="sheet-log" hidden>
     <h3>Protokoll &amp; Chat</h3>
@@ -170,6 +189,12 @@
       <section class="col">
         <h3>Spiel</h3>
         <label class="check"><input type="checkbox" id="p-ranges"> Reichweiten zeigen</label>
+        <button id="p-charge" class="wide primary">⚔ Angriff ansagen</button>
+        <div class="test-row">
+          <select id="p-test-type"></select>
+          <select id="p-test-mod" title="Modifikator auf den Moralwert"></select>
+          <button id="p-test">Test verlangen</button>
+        </div>
         <div id="p-join"></div>
         <div id="p-vp">
           <div class="stack">

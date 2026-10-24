@@ -42,6 +42,11 @@ export class MoveGate {
     return false;
   }
 
+  /** Ausnahme ohne Rückfrage, z. B. für Flucht oder Gegenangriff als Reaktion */
+  grant(unitId: string): void {
+    this.exceptions.add(unitId);
+  }
+
   /** Zusatz für das Protokoll, z. B. "Reaktion (Counter Charge)" */
   note(unitId: string): string {
     const units = this.store.state.units;

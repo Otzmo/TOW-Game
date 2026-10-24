@@ -1,4 +1,4 @@
-import type { BoardObject, GameMeta, GameState, LogEntry, PlayerId, Point, UnitState } from './types';
+import type { BoardObject, Charge, GameMeta, GameState, LogEntry, PlayerId, Point, Prompt, UnitState } from './types';
 
 /** Woher eine Änderung kommt: vom eigenen Bildschirm oder vom Mitspieler über das Netz. */
 export type Origin = 'local' | 'remote';
@@ -21,10 +21,13 @@ export interface Change {
   log?: LogEntry;
   /** Kompletter Spielstand geladen */
   loaded?: boolean;
+  /** Geänderter Angriff bzw. geänderte Aufforderung */
+  chargeId?: string;
+  promptId?: string;
 }
 
 /** Änderungen, die nur Objekte, Protokoll oder Spielinfos betreffen – nicht die Einheiten. */
-export const isNonUnitChange = (c: Change) => !!(c.meta || c.objectId || c.log);
+export const isNonUnitChange = (c: Change) => !!(c.meta || c.objectId || c.log || c.chargeId || c.promptId);
 
 type Listener = (state: GameState, change: Change) => void;
 
@@ -90,12 +93,31 @@ export class Store {
     this.emit({ origin, log: entry });
   }
 
+  /** Angriff setzen oder (mit null) entfernen. */
+  setCharge(id: string, charge: Charge | null, origin: Origin = 'local'): void {
+    if (charge) this.state.charges[id] = charge;
+    else if (this.state.charges[id]) delete this.state.charges[id];
+    else return;
+    this.emit({ origin, chargeId: id });
+  }
+
+  /** Aufforderung setzen oder (mit null) entfernen. */
+  setPrompt(id: string, prompt: Prompt | null, origin: Origin = 'local'): void {
+    if (prompt) this.state.prompts[id] = prompt;
+    else if (this.state.prompts[id]) delete this.state.prompts[id];
+    else return;
+    this.emit({ origin, promptId: id });
+  }
+
   /** Kompletten Spielstand übernehmen (Laden einer Datei). */
-  loadState(s: Pick<GameState, 'units' | 'meta' | 'objects' | 'log'>, origin: Origin = 'local'): void {
+  loadState(s: Pick<GameState, 'units' | 'meta' | 'objects' | 'log'> & Partial<Pick<GameState, 'charges' | 'prompts'>>,
+    origin: Origin = 'local'): void {
     this.state.units = s.units;
     this.state.meta = s.meta;
     this.state.objects = s.objects;
     this.state.log = s.log;
+    this.state.charges = s.charges ?? {};
+    this.state.prompts = s.prompts ?? {};
     this.emit({ origin, loaded: true });
   }
 

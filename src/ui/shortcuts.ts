@@ -1,6 +1,7 @@
 import type { History } from '../model/history';
 import type { UnitStatus } from '../model/types';
 import type { Board } from '../view/board';
+import type { ActionControls } from './actionControls';
 import type { GameBar } from './gameBar';
 import type { UnitPanel } from './panel';
 import { openedSheet, openSheet, toggleSheet } from './sheets';
@@ -14,6 +15,7 @@ export interface ShortcutTargets {
   gameBar: GameBar;
   toolbox: Toolbox;
   history: History;
+  actions: ActionControls;
 }
 
 interface Shortcut {
@@ -45,7 +47,7 @@ export class Shortcuts {
   private readonly list: Shortcut[];
 
   constructor(private t: ShortcutTargets) {
-    const { board, panel, gameBar, toolbox, history } = t;
+    const { board, panel, gameBar, toolbox, history, actions } = t;
     const tools = board.tools;
     const nudge = (f: number, r: number) => (e: KeyboardEvent) => {
       const step = e.shiftKey ? 0.1 : 1;
@@ -80,6 +82,8 @@ export class Shortcuts {
       { group: 'Spiel', keys: [['Enter']], desc: 'Im Würfelfenster: würfeln',
         match: (e) => e.key === 'Enter' && plain(e) && !!targetEl(e)?.closest('#sheet-dice'),
         whileTyping: true, run: () => ($('d-roll') as HTMLButtonElement).click() },
+      { group: 'Spiel', keys: [['Z']], desc: 'Magie: Zauber wirken', match: letter('z'), run: () => toggleSheet('magic') },
+      { group: 'Spiel', keys: [['J']], desc: 'Angriff ansagen (dann Ziel anklicken)', match: letter('j'), run: () => actions.declareCharge() },
       { group: 'Spiel', keys: [['P']], desc: 'Protokoll', match: letter('p'), run: () => toggleSheet('log') },
       { group: 'Spiel', keys: [['C']], desc: 'Chat-Nachricht schreiben', match: letter('c'), run: () => {
         openSheet('log');
@@ -146,6 +150,7 @@ export class Shortcuts {
   private escape(e: KeyboardEvent): void {
     const { board } = this.t;
     if (isTyping(e)) targetEl(e)?.blur();
+    else if (board.cancelPick()) return;
     else if (board.tools.tool !== 'select') board.tools.setTool('select');
     else if (openedSheet()) openSheet(null);
     else if (board.tools.selectedId) board.tools.select(null);

@@ -124,10 +124,55 @@ export interface LogEntry {
   dice?: number[][];
 }
 
+/** Reaktion einer angegriffenen Einheit */
+export type ChargeReaction = 'hold' | 'standShoot' | 'flee' | 'fireFlee' | 'counter';
+
+/** Angesagter Angriff: von der Ansage über die Reaktion bis zum Angriffswurf */
+export interface Charge {
+  id: string;
+  charger: string;
+  target: string;
+  round: number;
+  status: 'declared' | 'reacted' | 'rolled';
+  reaction?: ChargeReaction | null;
+  /** Angriffswurf: Würfel und Ergebnis */
+  dice?: number[] | null;
+  range?: number | null;
+  distance?: number | null;
+  success?: boolean | null;
+}
+
+export type PromptKind = 'chargeReaction' | 'chargeRoll' | 'saves' | 'dispel' | 'test';
+
+/**
+ * Aufforderung an einen Spieler (z. B. "Reaktion wählen", "Rüstungswurf ablegen").
+ * Ist sie erledigt, sieht der auslösende Spieler das Ergebnis, bis er es bestätigt.
+ */
+export interface Prompt {
+  id: string;
+  kind: PromptKind;
+  /** wer handeln muss */
+  to: PlayerId;
+  /** wer die Aufforderung ausgelöst hat */
+  from: PlayerId;
+  ts: number;
+  status: 'open' | 'done';
+  title: string;
+  text: string;
+  /** Art-spezifische Angaben (Einheiten, Werte) */
+  data: Record<string, string | number | boolean | null>;
+  /** Ergebnis in Worten, sobald erledigt */
+  result?: string | null;
+  /** auslösender Spieler hat das Ergebnis gesehen */
+  acknowledged?: boolean;
+}
+
 export interface GameState {
   table: { width: number; height: number };
   units: Record<string, UnitState>;
   meta: GameMeta;
   objects: Record<string, BoardObject>;
   log: LogEntry[];
+  charges: Record<string, Charge>;
+  prompts: Record<string, Prompt>;
 }

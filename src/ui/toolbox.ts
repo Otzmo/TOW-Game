@@ -17,7 +17,7 @@ const SAVE_FORMAT = 'tow-tabletop-save';
 
 /** Werkzeugleiste links: Werkzeuge, Objekte setzen, Aufstellungszonen, Speichern und Laden. */
 export class Toolbox {
-  private pendingLoad: Pick<GameState, 'units' | 'meta' | 'objects' | 'log'> | null = null;
+  private pendingLoad: Pick<GameState, 'units' | 'meta' | 'objects' | 'log' | 'charges' | 'prompts'> | null = null;
 
   constructor(private store: Store, private history: History, tools: BoardTools,
     private log: (text: string) => void) {
@@ -92,8 +92,8 @@ export class Toolbox {
   // --- Speichern und Laden ----------------------------------------------------
 
   save(): void {
-    const { units, meta, objects, log } = this.store.state;
-    const data = { format: SAVE_FORMAT, version: 1, savedAt: new Date().toISOString(), units, meta, objects, log };
+    const { units, meta, objects, log, charges, prompts } = this.store.state;
+    const data = { format: SAVE_FORMAT, version: 1, savedAt: new Date().toISOString(), units, meta, objects, log, charges, prompts };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -108,7 +108,7 @@ export class Toolbox {
       const data = JSON.parse(await file.text());
       if (data?.format !== SAVE_FORMAT || typeof data.units !== 'object') throw new Error();
       this.pendingLoad = {
-        units: data.units, objects: data.objects ?? {}, log: data.log ?? [],
+        units: data.units, objects: data.objects ?? {}, log: data.log ?? [], charges: data.charges ?? {}, prompts: data.prompts ?? {},
         meta: { round: 1, active: 'p1', breakBonus: {}, ...data.meta },
       };
       const n = Object.keys(data.units).length;

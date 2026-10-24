@@ -1,5 +1,6 @@
 import { Application, Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
 import { BoardTools } from './boardTools';
+import { frontCenter, REACTION_NAMES } from '../model/flow';
 import {
   isJoined, isNonUnitChange, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
 } from '../model/store';
@@ -67,6 +68,10 @@ export class Board {
   readonly tools: BoardTools;
   private readonly unitLayer = new Container();
   private readonly rangeLayer = new Container();
+  /** Angriffspfeile: wer wen angreift, mit Reaktion und Ergebnis */
+  private readonly chargeLayer = new Container();
+  /** Zielauswahl beim Angriff ansagen: nächster Klick auf eine Einheit */
+  private pickTarget: ((unitId: string) => void) | null = null;
   /** Bewegungs- und Angriffsreichweiten der ausgewählten Einheit anzeigen */
   showRanges = false;
   private viewOnly = false;
@@ -100,7 +105,7 @@ export class Board {
     });
     const t = this.tools;
     this.world.addChild(createTable(table.width, table.height), t.zoneLayer, t.terrainLayer, this.guide,
-      this.rangeLayer, this.unitLayer, t.overlayLayer, t.toolLayer, this.moveLabel);
+      this.rangeLayer, this.unitLayer, this.chargeLayer, t.overlayLayer, t.toolLayer, this.moveLabel);
 
     app.stage.on('pointerdown', (e) => {
       if (this.tools.handleStageDown(e)) return;
@@ -112,6 +117,7 @@ export class Board {
     app.canvas.addEventListener('wheel', (e) => this.onWheel(e), { passive: false });
 
     store.subscribe((state, change) => {
+      if (change.chargeId || change.loaded) this.drawCharges();
       if (isNonUnitChange(change)) return;
       const { unitId, patch } = change;
       const u = unitId ? state.units[unitId] : undefined;
@@ -178,6 +184,70 @@ export class Board {
     }
     for (const u of Object.values(units)) this.syncUnit(u);
     this.drawRanges();
+    this.drawCharges();
+  }
+
+  /** Angriff ansagen: Hinweis zeigen und den nächsten Klick auf eine gegnerische Einheit abwarten. */
+  startChargePick(chargerId: string, onPick: (targetId: string) => void): void {
+    const charger = this.store.state.units[chargerId];
+    if (!charger) return;
+    this.tools.setTool('select');
+    this.pickTarget = (id) => {
+      const t = this.store.state.units[id];
+      if (t && t.owner !== charger.owner) onPick(id);
+    };
+    const hint = document.getElementById('tool-hint')!;
+    hint.textContent = `Angriff von ${charger.info.name}: gegnerische Einheit anklicken · Esc bricht ab`;
+    hint.hidden = false;
+  }
+
+  cancelPick(): boolean {
+    if (!this.pickTarget) return false;
+    this.pickTarget = null;
+    document.getElementById('tool-hint')!.hidden = true;
+    return true;
+  }
+
+  /** Pfeile für alle Angriffe: rot = angesagt, grün = gelungen, grau = gescheitert. */
+  private drawCharges(): void {
+    this.chargeLayer.removeChildren().forEach((c) => c.destroy());
+    const { units, charges } = this.store.state;
+    for (const c of Object.values(charges)) {
+      const charger = units[c.charger];
+      const target = units[c.target];
+      if (!charger || !target) continue;
+      const a = frontCenter(charger, units);
+      // Nächster Punkt auf der Fläche des Ziels
+      const { w, h } = unitFootprint(target, units);
+      const local = this.toUnitLocal(target, a);
+      const b = this.unitPoint(target, Math.max(-w / 2, Math.min(w / 2, local.x)), Math.max(-h / 2, Math.min(h / 2, local.y)));
+      const color = c.success === true ? OK_COLOR : c.success === false ? 0x9a9fa4 : STRAY_COLOR;
+      const g = new Graphics();
+      const ang = Math.atan2(b.y - a.y, b.x - a.x);
+      const head = 1.1;
+      g.moveTo(a.x * PPI, a.y * PPI).lineTo(b.x * PPI, b.y * PPI).stroke({ width: 3, color, alpha: 0.95 });
+      g.poly([
+        b.x * PPI, b.y * PPI,
+        (b.x - head * Math.cos(ang - 0.45)) * PPI, (b.y - head * Math.sin(ang - 0.45)) * PPI,
+        (b.x - head * Math.cos(ang + 0.45)) * PPI, (b.y - head * Math.sin(ang + 0.45)) * PPI,
+      ]).fill(color);
+      // Ziel umranden
+      const corners = [[-1, -1], [1, -1], [1, 1], [-1, 1]].flatMap(([sx, sy]) => {
+        const p = this.unitPoint(target, (sx * w) / 2 + sx * 0.15, (sy * h) / 2 + sy * 0.15);
+        return [p.x * PPI, p.y * PPI];
+      });
+      g.poly(corners).stroke({ width: 2, color, alpha: 0.9 });
+      const status = c.status === 'declared' ? 'Reaktion offen' : REACTION_NAMES[c.reaction ?? 'hold'];
+      const result = c.status === 'rolled' ? ` · ${c.range}″ ${c.success ? 'gelingt' : 'scheitert'}` : '';
+      const label = new Text({
+        text: `⚔ Angriff · ${status}${result}`,
+        style: { fontFamily: 'system-ui', fontSize: 9, fontWeight: '700', fill: color, stroke: { color: 0x000000, width: 3 } },
+        resolution: 6,
+      });
+      label.anchor.set(0.5);
+      label.position.set(((a.x + b.x) / 2) * PPI, ((a.y + b.y) / 2) * PPI - 8);
+      this.chargeLayer.addChild(g, label);
+    }
   }
 
   /**
@@ -377,6 +447,14 @@ export class Board {
       const v = new UnitView(u.id);
       view = v;
       v.on('pointerdown', (e) => {
+        // Zielauswahl für einen Angriff
+        if (this.pickTarget) {
+          e.stopPropagation();
+          const pick = this.pickTarget;
+          this.cancelPick();
+          pick(u.id);
+          return;
+        }
         const local = v.toLocal(e.global);
         const hit = v.slotRects.find((s) => s.rect.contains(local.x, local.y));
         const unit = this.store.state.units[u.id];
@@ -399,6 +477,8 @@ export class Board {
     view.visible = !isJoined(u, units);
     if (view.visible) view.update(u, unitLayout(u, units), units, this.selectedId);
     if (this.showRanges && this.selectedId === u.id) this.drawRanges();
+    // Angriffspfeile folgen bewegten Einheiten
+    if (Object.values(this.store.state.charges).some((c) => c.charger === u.id || c.target === u.id)) this.drawCharges();
   }
 
   /**

@@ -6,7 +6,9 @@ import { defaultTerrain } from './model/objects';
 import { Store } from './model/store';
 import type { GameState, LogEntry } from './model/types';
 import type { Seat } from './net/room';
+import { ActionControls } from './ui/actionControls';
 import { DicePanel } from './ui/dice';
+import { PromptCenter } from './ui/prompts';
 import { GameBar } from './ui/gameBar';
 import { ImportDialog } from './ui/importDialog';
 import { Lobby } from './ui/lobby';
@@ -35,6 +37,8 @@ async function start(): Promise<void> {
     meta: { round: 1, active: 'p1', breakBonus: {}, scenario: 'none' },
     objects: defaultTerrain(),
     log: [],
+    charges: {},
+    prompts: {},
   };
   const store = new Store(state);
   const history = new History(store);
@@ -72,8 +76,16 @@ async function start(): Promise<void> {
   panel.canMove = (id) => gate.allow(id);
   const gameBar = new GameBar(store, history, (kind, text) => addLog({ kind, text }));
   const toolbox = new Toolbox(store, history, board.tools, (text) => addLog({ kind: 'action', text }));
-  new DicePanel((entry) => addLog(entry));
-  new Shortcuts({ board, panel, gameBar, toolbox, history });
+  // Abläufe mit dem Gegner: Angriffe, Rüstungswürfe, Bannen, Tests
+  const prompts = new PromptCenter(store, history, {
+    seat: () => seat,
+    log: (entry) => addLog(entry),
+    allowMove: (id) => gate.grant(id),
+  });
+  const actions = new ActionControls(store, board, prompts, () => seat, (entry) => addLog(entry));
+  new DicePanel((entry) => addLog(entry), (targetId, wounds, save, ward, note) =>
+    prompts.requestSaves(seat && seat !== 'spectator' ? seat : store.state.meta.active, targetId, wounds, save, ward, note));
+  new Shortcuts({ board, panel, gameBar, toolbox, history, actions });
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
   // Ganzen Tisch zeigen, auch nach jedem Armeeimport

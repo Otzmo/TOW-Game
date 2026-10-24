@@ -5,7 +5,7 @@ import {
   type Database,
 } from 'firebase/database';
 import type { Change, Store } from '../model/store';
-import type { BoardObject, GameMeta, GameState, LogEntry, PlayerId, UnitState } from '../model/types';
+import type { BoardObject, Charge, GameMeta, GameState, LogEntry, PlayerId, Prompt, UnitState } from '../model/types';
 import { firebaseConfig } from './firebaseConfig';
 
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // ohne leicht verwechselbare Zeichen
@@ -143,6 +143,24 @@ export class OnlineRoom {
       onChildAdded(objectsRef, (s) => onObject(s.key, s.val())),
       onChildChanged(objectsRef, (s) => onObject(s.key, s.val())),
       onChildRemoved(objectsRef, (s) => { if (s.key) this.store.removeObject(s.key, 'remote'); }),
+      // Angriffe und Aufforderungen
+      ...(['charges', 'prompts'] as const).flatMap((kind) => {
+        const r = ref(this.db, this.path(`flow/${kind}`));
+        const put = (key: string | null, val: unknown) => {
+          if (!key || !val) return;
+          if (kind === 'charges') this.store.setCharge(key, { ...(val as Charge), id: key }, 'remote');
+          else this.store.setPrompt(key, { ...(val as Prompt), id: key, data: (val as Prompt).data ?? {} }, 'remote');
+        };
+        return [
+          onChildAdded(r, (s) => put(s.key, s.val())),
+          onChildChanged(r, (s) => put(s.key, s.val())),
+          onChildRemoved(r, (s) => {
+            if (!s.key) return;
+            if (kind === 'charges') this.store.setCharge(s.key, null, 'remote');
+            else this.store.setPrompt(s.key, null, 'remote');
+          }),
+        ];
+      }),
       onChildAdded(ref(this.db, this.path('log')), (s) => {
         const val = s.val() as LogEntry;
         if (s.key && val) this.store.addLog({ ...val, id: s.key }, 'remote');
@@ -169,6 +187,15 @@ export class OnlineRoom {
       set(ref(this.db, this.path('objects')), toDb(objects));
       set(ref(this.db, this.path('log')), toDb(Object.fromEntries(state.log.map((e) => [e.id, e]))));
       set(ref(this.db, this.path('meta/game')), toDb(meta));
+      set(ref(this.db, this.path('flow')), toDb({ charges: state.charges, prompts: state.prompts }));
+      return;
+    }
+    if (change.chargeId) {
+      set(ref(this.db, this.path(`flow/charges/${change.chargeId}`)), state.charges[change.chargeId] ? toDb(state.charges[change.chargeId]) : null);
+      return;
+    }
+    if (change.promptId) {
+      set(ref(this.db, this.path(`flow/prompts/${change.promptId}`)), state.prompts[change.promptId] ? toDb(state.prompts[change.promptId]) : null);
       return;
     }
     if (change.meta) {
