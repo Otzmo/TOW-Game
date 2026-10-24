@@ -39,7 +39,6 @@ export class SetupPanel {
   ) {
     $('setup-options').innerHTML = this.optionsHtml();
     $('sheet-battlefield').onclick = (e) => this.onClick(e);
-    $('toolbar').addEventListener('click', (e) => this.onClick(e));
     let lastKey = '';
     store.subscribe((state, c) => {
       if (!c.meta && !c.loaded && !c.objectId && !c.unitId && !c.replacedOwner) return;
@@ -47,7 +46,7 @@ export class SetupPanel {
       const key = `${currentPhase(state.meta)}-${currentSub(state.meta)}`;
       if (key !== lastKey && currentPhase(state.meta) === 'setup' && (c.meta || c.loaded)) openSheet('battlefield');
       // Schlacht beginnt: das Fenster schließt sich, sein Knopf ist dann ausgeblendet
-      if (key !== lastKey && currentPhase(state.meta) !== 'setup' && ['battlefield', 'terrain'].includes(openedSheet() ?? '')) openSheet(null);
+      if (key !== lastKey && currentPhase(state.meta) !== 'setup' && openedSheet() === 'battlefield') openSheet(null);
       lastKey = key;
       this.render();
     });
@@ -214,7 +213,7 @@ export class SetupPanel {
     const rolls = (r?: Partial<Record<PlayerId, number>> | null) => r ? `<p>Player 1: <b>${r.p1}</b> · Player 2: <b>${r.p2}</b></p>` : '';
     switch (step) {
       case SETUP_STEPS.battlefield:
-        return `<h4>1 · Generate Battlefield</h4><p>Randomise deployment, missions and terrain (or place terrain by hand via Terrain ▸).</p>`;
+        return `<h4>1 · Generate Battlefield</h4><p>Randomise deployment, missions and terrain (or place terrain by hand below).</p>`;
       case SETUP_STEPS.attacker:
         return `<h4>2 · Roll-off: Attacker & Defender</h4><p>The winner of the roll-off decides if they are the Attacker or the Defender.</p>
           ${rolls(s.rollOff)}

@@ -29,7 +29,6 @@
     <div id="toolbar">
       <button data-import="p1"><span class="dot p1"></span>Load army</button>
       <button data-import="p2"><span class="dot p2"></span>Load army</button>
-      <button data-setup="nomansland" title="Setup only: put every unit back into no man's land">↺ All units to no man's land</button>
       <input type="file" id="import-file" accept=".json,application/json" hidden>
       <div id="room-status" hidden>
         <span id="room-code"></span>
@@ -47,7 +46,6 @@
       <button data-sheet="dice" title="Dice and dice log (W)">Dice</button>
       <hr>
       <button data-sheet="battlefield" title="Setup: deployment, missions, terrain (A)">Battlefield ▸</button>
-      <button data-sheet="terrain">Terrain ▸</button>
       <button data-sheet="markers">Markers ▸</button>
       <button data-sheet="templates">Templates ▸</button>
       <hr>
@@ -103,8 +101,6 @@
   </div>
 
   <!-- Seitenfenster neben den Werkzeugen; immer nur eins offen -->
-  <aside class="sheet" id="sheet-terrain" hidden><h3>Place terrain</h3><div class="pick" data-kind="terrain"></div>
-    <p class="meta">Choose, then click on the table. Selected terrain: rotate at the circle, resize at the square. All terrain is area terrain and blocks line of sight.</p></aside>
   <aside class="sheet" id="sheet-markers" hidden><h3>Place markers</h3><div class="pick" data-kind="marker"></div>
     <p class="meta">Choose, then click on the table. A label can be entered in the bar below.</p></aside>
   <aside class="sheet" id="sheet-templates" hidden><h3>Templates</h3><div class="pick" data-kind="template"></div>
@@ -122,6 +118,12 @@
       </section>
       <section id="setup-result"></section>
       <section id="setup-step"></section>
+      <section id="setup-terrain">
+        <div class="row-btns"><button data-setup="nomansland" title="Put every unit outside both deployment zones">↺ All units to no man's land</button></div>
+        <h4>Place terrain</h4>
+        <div class="pick" data-kind="terrain"></div>
+        <p class="meta">Choose, then click on the table. Selected terrain: rotate at the circle, resize at the square. All terrain is area terrain and blocks line of sight.</p>
+      </section>
     </div>
   </aside>
   <aside class="sheet" id="sheet-log" hidden>
