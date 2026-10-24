@@ -1,0 +1,4346 @@
+{
+ "faction": "dwarfen-mountain-holds",
+ "name": "Dwarfen Mountain Holds",
+ "source": "https://tow.whfb.app/army/dwarfen-mountain-holds",
+ "fetchedAt": "2026-10-24T20:02:13.879Z",
+ "units": {
+  "anvil-of-doom": {
+   "slug": "anvil-of-doom",
+   "name": "Anvil of Doom",
+   "url": "https://tow.whfb.app/unit/anvil-of-doom",
+   "base": null,
+   "unitSize": "1",
+   "troopType": "War Machine",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Anvil of Doom",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "-",
+      "7",
+      "5",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Forgefather & Anvil Guard",
+     "values": [
+      "3",
+      "6",
+      "4",
+      "4",
+      "5",
+      "4",
+      "3",
+      "5",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons, heavy armour and shields",
+   "specialRules": [
+    "ancestral-shield",
+    "gromril-armour",
+    "gromril-weapons",
+    "hatred",
+    "immune-to-psychology",
+    "immovable-object",
+    "magic-resistance",
+    "resolute",
+    "rune-lore",
+    "skirmish-formation",
+    "strike-the-runes",
+    "unbreakable"
+   ],
+   "cost": 235,
+   "options": []
+  },
+  "bolt-thrower": {
+   "slug": "bolt-thrower",
+   "name": "Bolt Thrower",
+   "url": "https://tow.whfb.app/unit/bolt-thrower",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "War Machine",
+   "category": "War Machine",
+   "profile": [
+    {
+     "name": "Bolt Thrower",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "-",
+      "6",
+      "3",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Dwarf Crew",
+     "values": [
+      "3",
+      "3",
+      "3",
+      "3",
+      "4",
+      "3",
+      "2",
+      "3",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Bolt thrower, hand weapons and light armour",
+   "specialRules": [
+    "hatred",
+    "magic-resistance",
+    "skirmish-formation",
+    "stubborn"
+   ],
+   "cost": 55,
+   "options": []
+  },
+  "brotherhood-of-grimnir": {
+   "slug": "brotherhood-of-grimnir",
+   "name": "Brotherhood of Grimnir",
+   "url": "https://tow.whfb.app/unit/brotherhood-of-grimnir",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5-30 models",
+   "troopType": "Regular Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Shrine Guards",
+     "values": [
+      "3",
+      "5",
+      "3",
+      "4",
+      "4",
+      "1",
+      "3",
+      "2",
+      "10"
+     ]
+    },
+    {
+     "name": "Shrine Keeper",
+     "values": [
+      "3",
+      "6",
+      "3",
+      "4",
+      "4",
+      "2",
+      "3",
+      "2",
+      "10"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons",
+   "specialRules": [
+    "blessings-of-grimnir",
+    "close-order",
+    "deathblow",
+    "gromril-weapons",
+    "hatred",
+    "immune-to-psychology",
+    "loner",
+    "magic-resistance",
+    "motley-crew",
+    "open-order-formation",
+    "resolute",
+    "slayer",
+    "unbreakable"
+   ],
+   "cost": 18,
+   "options": [
+    {
+     "label": "• Additional hand weapon",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Great weapon",
+     "cost": 2,
+     "per": "model"
+    },
+    {
+     "label": "• Upgrade one model to a Shrine Keeper (champion)",
+     "cost": 21,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 6,
+     "per": "unit"
+    }
+   ]
+  },
+  "burlok-damminson": {
+   "slug": "burlok-damminson",
+   "name": "Burlok Damminson",
+   "url": "https://tow.whfb.app/unit/burlok-damminson",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Named Character",
+   "profile": [
+    {
+     "name": "Burlok Damminson",
+     "values": [
+      "3",
+      "5",
+      "5",
+      "4",
+      "4",
+      "2",
+      "2",
+      "3",
+      "10"
+     ]
+    }
+   ],
+   "equipment": "Furnace hammer, rivet gun, and heavy armour",
+   "specialRules": [
+    "dwarf-crafted",
+    "gromril-armour",
+    "hatred",
+    "magic-resistance",
+    "prepared-positions",
+    "range-finding-optics",
+    "resolute",
+    "stand-back-chief",
+    "stubborn"
+   ],
+   "cost": 85,
+   "options": []
+  },
+  "cannon": {
+   "slug": "cannon",
+   "name": "Cannon",
+   "url": "https://tow.whfb.app/unit/cannon",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "War Machine",
+   "category": "War Machine",
+   "profile": [
+    {
+     "name": "Cannon",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "-",
+      "7",
+      "3",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Dwarf Crew",
+     "values": [
+      "3",
+      "3",
+      "3",
+      "3",
+      "4",
+      "3",
+      "2",
+      "3",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Cannon, hand weapons and light armour",
+   "specialRules": [
+    "hatred",
+    "magic-resistance",
+    "skirmish-formation",
+    "stubborn"
+   ],
+   "cost": 95,
+   "options": []
+  },
+  "daemon-slayer": {
+   "slug": "daemon-slayer",
+   "name": "Daemon Slayer",
+   "url": "https://tow.whfb.app/unit/daemon-slayer",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Daemon Slayer",
+     "values": [
+      "3",
+      "7",
+      "3",
+      "4",
+      "5",
+      "3",
+      "5",
+      "4",
+      "10"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon",
+   "specialRules": [
+    "deathblow",
+    "gromril-weapons",
+    "hatred",
+    "immune-to-psychology",
+    "killing-blow",
+    "loner",
+    "magic-resistance",
+    "resolute",
+    "slayer-of-daemons",
+    "unbreakable",
+    "vanguard"
+   ],
+   "cost": 130,
+   "options": [
+    {
+     "label": "• Additional hand weapon",
+     "cost": 3,
+     "per": "unit"
+    },
+    {
+     "label": "• Great weapon",
+     "cost": 4,
+     "per": "unit"
+    }
+   ]
+  },
+  "doomseeker": {
+   "slug": "doomseeker",
+   "name": "Doomseeker",
+   "url": "https://tow.whfb.app/unit/doomseeker",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Doomseeker",
+     "values": [
+      "3",
+      "5",
+      "0",
+      "5",
+      "4",
+      "2",
+      "3",
+      "2D3",
+      "10"
+     ]
+    }
+   ],
+   "equipment": "Whirling blades of death (counts as a hand weapon)",
+   "specialRules": [
+    "deathblow",
+    "doomseeker",
+    "first-to-the-fray",
+    "gromril-weapons",
+    "hatred",
+    "immune-to-psychology",
+    "impact-hits",
+    "loner",
+    "magic-resistance",
+    "random-attacks",
+    "resolute",
+    "skirmish-formation",
+    "unbreakable",
+    "vanguard",
+    "whirlwind-of-death"
+   ],
+   "cost": 50,
+   "options": []
+  },
+  "dragon-slayer": {
+   "slug": "dragon-slayer",
+   "name": "Dragon Slayer",
+   "url": "https://tow.whfb.app/unit/dragon-slayer",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Dragon Slayer",
+     "values": [
+      "3",
+      "6",
+      "3",
+      "4",
+      "5",
+      "2",
+      "4",
+      "3",
+      "10"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon",
+   "specialRules": [
+    "deathblow",
+    "gromril-weapons",
+    "hatred",
+    "immune-to-psychology",
+    "killing-blow",
+    "loner",
+    "magic-resistance",
+    "resolute",
+    "slayer-of-dragons",
+    "unbreakable",
+    "vanguard"
+   ],
+   "cost": 70,
+   "options": [
+    {
+     "label": "• Additional hand weapon",
+     "cost": 3,
+     "per": "unit"
+    },
+    {
+     "label": "• Great weapon",
+     "cost": 4,
+     "per": "unit"
+    }
+   ]
+  },
+  "dwarf-cart": {
+   "slug": "dwarf-cart",
+   "name": "Dwarf Cart",
+   "url": "https://tow.whfb.app/unit/dwarf-cart",
+   "base": {
+    "width": 50,
+    "depth": 75
+   },
+   "unitSize": "1",
+   "troopType": "Light Chariot",
+   "category": "Chariot",
+   "profile": [
+    {
+     "name": "Dwarf Cart",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "4",
+      "5",
+      "3",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Dwarf Crew (x1)",
+     "values": [
+      "-",
+      "4",
+      "4",
+      "3",
+      "-",
+      "-",
+      "2",
+      "1",
+      "8"
+     ]
+    },
+    {
+     "name": "Draft Pony",
+     "values": [
+      "6",
+      "3",
+      "-",
+      "3",
+      "-",
+      "-",
+      "3",
+      "1",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "• Dwarf Crew: Hand weapons\n• Draft Pony: Iron-shod hooves (counts as a hand weapon)",
+   "specialRules": [
+    "hatred",
+    "impact-hits",
+    "magic-resistance",
+    "open-order-formation",
+    "resolute"
+   ],
+   "cost": 65,
+   "options": [
+    {
+     "label": "• Bugman's Cart",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Miner's Cart",
+     "cost": 0,
+     "per": "unit"
+    }
+   ]
+  },
+  "dwarf-warriors": {
+   "slug": "dwarf-warriors",
+   "name": "Dwarf Warriors",
+   "url": "https://tow.whfb.app/unit/dwarf-warriors",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Dwarf Warrior",
+     "values": [
+      "3",
+      "4",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Veteran",
+     "values": [
+      "3",
+      "4",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons and heavy armour",
+   "specialRules": [
+    "close-order",
+    "hatred",
+    "magic-resistance",
+    "resolute",
+    "shieldwall"
+   ],
+   "cost": 8,
+   "options": [
+    {
+     "label": "• Great weapons",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Shields",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Upgrade one model to a Veteran (champion)",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Drilled special rule",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Have the Veteran special rule",
+     "cost": 1,
+     "per": "model"
+    }
+   ]
+  },
+  "engineer": {
+   "slug": "engineer",
+   "name": "Engineer",
+   "url": "https://tow.whfb.app/unit/engineer",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Engineer",
+     "values": [
+      "3",
+      "4",
+      "5",
+      "4",
+      "4",
+      "2",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon and heavy armour",
+   "specialRules": [
+    "artillery-master",
+    "dwarf-crafted",
+    "entrenchment",
+    "gromril-armour",
+    "hatred",
+    "magic-resistance",
+    "resolute",
+    "stand-back-chief",
+    "stubborn"
+   ],
+   "cost": 50,
+   "options": [
+    {
+     "label": "• Pistol",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Brace of pistols",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Great weapon",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• Handgun",
+     "cost": 8,
+     "per": "unit"
+    }
+   ]
+  },
+  "engineer-sapper": {
+   "slug": "engineer-sapper",
+   "name": "Engineer Sapper",
+   "url": "https://tow.whfb.app/unit/engineer-sapper",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Engineer Sapper",
+     "values": [
+      "3",
+      "4",
+      "5",
+      "4",
+      "4",
+      "2",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon and heavy armour",
+   "specialRules": [
+    "dig-in",
+    "dwarf-crafted",
+    "gromril-armour",
+    "hatred",
+    "hostile-terrain",
+    "magic-resistance",
+    "resolute",
+    "stubborn"
+   ],
+   "cost": 70,
+   "options": [
+    {
+     "label": "• Pistol",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Brace of pistols",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Great weapon",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• Handgun",
+     "cost": 8,
+     "per": "unit"
+    }
+   ]
+  },
+  "flame-cannon": {
+   "slug": "flame-cannon",
+   "name": "Flame Cannon",
+   "url": "https://tow.whfb.app/unit/flame-cannon",
+   "base": {
+    "width": 50,
+    "depth": 75
+   },
+   "unitSize": "1",
+   "troopType": "War Machine",
+   "category": "War Machine",
+   "profile": [
+    {
+     "name": "Flame Cannon",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "-",
+      "6",
+      "3",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Dwarf Crew",
+     "values": [
+      "3",
+      "3",
+      "3",
+      "3",
+      "4",
+      "3",
+      "2",
+      "3",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Fire thrower, hand weapons and light armour",
+   "specialRules": [
+    "hatred",
+    "magic-resistance",
+    "skirmish-formation",
+    "stubborn"
+   ],
+   "cost": 120,
+   "options": []
+  },
+  "goblin-hewer": {
+   "slug": "goblin-hewer",
+   "name": "Goblin-Hewer",
+   "url": "https://tow.whfb.app/unit/goblin-hewer",
+   "base": {
+    "width": 50,
+    "depth": 75
+   },
+   "unitSize": "1",
+   "troopType": "War Machine",
+   "category": "War Machine",
+   "profile": [
+    {
+     "name": "Goblin-Hewer",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "-",
+      "6",
+      "3",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Slayer Crew",
+     "values": [
+      "3",
+      "4",
+      "3",
+      "3",
+      "4",
+      "2",
+      "2",
+      "2",
+      "10"
+     ]
+    }
+   ],
+   "equipment": "Goblin-Hewer and hand weapons",
+   "specialRules": [
+    "hatred",
+    "immune-to-psychology",
+    "magic-resistance",
+    "skirmish-formation",
+    "unbreakable"
+   ],
+   "cost": 120,
+   "options": []
+  },
+  "grudge-thrower": {
+   "slug": "grudge-thrower",
+   "name": "Grudge Thrower",
+   "url": "https://tow.whfb.app/unit/grudge-thrower",
+   "base": {
+    "width": 50,
+    "depth": 75
+   },
+   "unitSize": "1",
+   "troopType": "War Machine",
+   "category": "War Machine",
+   "profile": [
+    {
+     "name": "Grudge Thrower",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "-",
+      "7",
+      "3",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Dwarf Crew",
+     "values": [
+      "3",
+      "3",
+      "3",
+      "3",
+      "4",
+      "3",
+      "2",
+      "3",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Stone thrower, hand weapons and light armour",
+   "specialRules": [
+    "hatred",
+    "magic-resistance",
+    "skirmish-formation",
+    "stubborn"
+   ],
+   "cost": 95,
+   "options": []
+  },
+  "gyrobomber": {
+   "slug": "gyrobomber",
+   "name": "Gyrobomber",
+   "url": "https://tow.whfb.app/unit/gyrobomber",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "Monstrous Creature",
+   "category": "Cavalry",
+   "profile": [
+    {
+     "name": "Gyrobomber",
+     "values": [
+      "1",
+      "4",
+      "3",
+      "4",
+      "5",
+      "4",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon, steam gun and armoured fuselage (counts as full plate armour)",
+   "specialRules": [
+    "bombing-run",
+    "close-order",
+    "fly",
+    "hatred",
+    "impact-hits",
+    "magic-resistance",
+    "swiftstride"
+   ],
+   "cost": 95,
+   "options": [
+    {
+     "label": "• Brimstone gun",
+     "cost": 5,
+     "per": "model"
+    },
+    {
+     "label": "• Clattergun",
+     "cost": 10,
+     "per": "model"
+    }
+   ]
+  },
+  "gyrocopter": {
+   "slug": "gyrocopter",
+   "name": "Gyrocopter",
+   "url": "https://tow.whfb.app/unit/gyrocopter",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1-6",
+   "troopType": "Monstrous Cavalry",
+   "category": "Cavalry",
+   "profile": [
+    {
+     "name": "Gyrocopter",
+     "values": [
+      "1",
+      "4",
+      "3",
+      "4",
+      "5",
+      "3",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon, steam gun and armoured fuselage (counts as full plate armour)",
+   "specialRules": [
+    "dispersed-formation",
+    "dive-bomb",
+    "fire-and-flee",
+    "fly",
+    "hatred",
+    "impact-hits",
+    "magic-resistance",
+    "skirmish-formation",
+    "swiftstride",
+    "vanguard"
+   ],
+   "cost": 60,
+   "options": [
+    {
+     "label": "• Brimstone gun",
+     "cost": 5,
+     "per": "model"
+    },
+    {
+     "label": "• Clattergun",
+     "cost": 10,
+     "per": "model"
+    }
+   ]
+  },
+  "hammerers": {
+   "slug": "hammerers",
+   "name": "Hammerers",
+   "url": "https://tow.whfb.app/unit/hammerers",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Hammerer",
+     "values": [
+      "3",
+      "5",
+      "3",
+      "4",
+      "4",
+      "1",
+      "3",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Royal Champion",
+     "values": [
+      "3",
+      "5",
+      "3",
+      "4",
+      "4",
+      "1",
+      "3",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons, great hammers and heavy armour",
+   "specialRules": [
+    "close-order",
+    "gromril-armour",
+    "gromril-weapons",
+    "hatred",
+    "magic-resistance",
+    "resolute",
+    "royal-guard",
+    "shieldwall",
+    "stoic-defenders",
+    "stubborn"
+   ],
+   "cost": 16,
+   "options": [
+    {
+     "label": "• The entire unit may take shields",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Upgrade one model to a Royal Champion (champion)",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Drilled special rule",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Have the Veteran special rule",
+     "cost": 1,
+     "per": "model"
+    }
+   ]
+  },
+  "imperial-dwarf-mercenaries": {
+   "slug": "imperial-dwarf-mercenaries",
+   "name": "Imperial Dwarf Mercenaries",
+   "url": "https://tow.whfb.app/unit/imperial-dwarf-mercenaries",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Warrior",
+     "values": [
+      "3",
+      "4",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Veteran",
+     "values": [
+      "3",
+      "4",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons and light armour",
+   "specialRules": [
+    "close-order",
+    "hatred",
+    "magic-resistance",
+    "resolute",
+    "shieldwall"
+   ],
+   "cost": 8,
+   "options": [
+    {
+     "label": "• Great weapons",
+     "cost": 2,
+     "per": "model"
+    },
+    {
+     "label": "• Thrusting spears",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Crossbows",
+     "cost": 2,
+     "per": "model"
+    },
+    {
+     "label": "• Handguns",
+     "cost": 3,
+     "per": "model"
+    },
+    {
+     "label": "• Upgrade one model to a Veteran (champion)",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Take shields",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Replace light armour with heavy armour",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Have the Drilled special rule",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Have the Veteran special rule",
+     "cost": 1,
+     "per": "model"
+    }
+   ]
+  },
+  "ironbreakers": {
+   "slug": "ironbreakers",
+   "name": "Ironbreakers",
+   "url": "https://tow.whfb.app/unit/ironbreakers",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Ironbreaker",
+     "values": [
+      "3",
+      "5",
+      "3",
+      "4",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Ironbeard",
+     "values": [
+      "3",
+      "5",
+      "3",
+      "4",
+      "4",
+      "1",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons, full plate armour and shields",
+   "specialRules": [
+    "close-order",
+    "gromril-armour",
+    "gromril-weapons",
+    "hatred",
+    "magic-resistance",
+    "regimental-unit",
+    "resolute",
+    "runes-of-protection",
+    "shieldwall",
+    "stubborn"
+   ],
+   "cost": 15,
+   "options": [
+    {
+     "label": "• Upgrade one model to an Ironbeard (champion)",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Brace of drakefire pistols",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Drakegun (see below)",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• An Ironbeard may take cinderblast bombs (see opposite)",
+     "cost": 15,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Drilled special rule",
+     "cost": 1,
+     "per": "model"
+    }
+   ]
+  },
+  "irondrakes": {
+   "slug": "irondrakes",
+   "name": "Irondrakes",
+   "url": "https://tow.whfb.app/unit/irondrakes",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Irondrake",
+     "values": [
+      "3",
+      "4",
+      "4",
+      "4",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Ironwarden",
+     "values": [
+      "3",
+      "4",
+      "5",
+      "4",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons, drakeguns and full plate armour",
+   "specialRules": [
+    "close-order",
+    "detachment-special-rules",
+    "gromril-armour",
+    "hatred",
+    "magic-resistance",
+    "resolute",
+    "runes-of-warding",
+    "stubborn"
+   ],
+   "cost": 15,
+   "options": [
+    {
+     "label": "• Upgrade one model to an Ironwarden (champion)",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Brace of drakefire pistols",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Trollhammer torpedo",
+     "cost": 15,
+     "per": "unit"
+    },
+    {
+     "label": "• An Ironwarden may take cinderblast bombs",
+     "cost": 15,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Drilled special rule",
+     "cost": 1,
+     "per": "model"
+    }
+   ]
+  },
+  "king": {
+   "slug": "king",
+   "name": "King",
+   "url": "https://tow.whfb.app/unit/king",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "King",
+     "values": [
+      "3",
+      "7",
+      "4",
+      "4",
+      "5",
+      "3",
+      "4",
+      "4",
+      "10"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon and full plate armour",
+   "specialRules": [
+    "ancestral-grudge",
+    "dwarf-crafted",
+    "gromril-armour",
+    "gromril-weapons",
+    "hatred",
+    "magic-resistance",
+    "rallying-cry",
+    "resolute",
+    "stubborn"
+   ],
+   "cost": 125,
+   "options": [
+    {
+     "label": "• Great weapon",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• Crossbow",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Handgun",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• May take a pistol",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• May take a shield",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• Oathstone",
+     "cost": 15,
+     "per": "unit"
+    },
+    {
+     "label": "• Shieldbearers",
+     "cost": 60,
+     "per": "unit"
+    }
+   ]
+  },
+  "longbeards": {
+   "slug": "longbeards",
+   "name": "Longbeards",
+   "url": "https://tow.whfb.app/unit/longbeards",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Longbeard",
+     "values": [
+      "3",
+      "5",
+      "3",
+      "4",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Elder",
+     "values": [
+      "3",
+      "5",
+      "3",
+      "4",
+      "4",
+      "1",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons and heavy armour",
+   "specialRules": [
+    "close-order",
+    "gromril-weapons",
+    "hatred",
+    "magic-resistance",
+    "resolute",
+    "shieldwall",
+    "venerable",
+    "veteran"
+   ],
+   "cost": 12,
+   "options": []
+  },
+  "miners": {
+   "slug": "miners",
+   "name": "Miners",
+   "url": "https://tow.whfb.app/unit/miners",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Miner",
+     "values": [
+      "3",
+      "4",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Prospector",
+     "values": [
+      "3",
+      "4",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons, great weapons and heavy armour",
+   "specialRules": [
+    "ambushers",
+    "close-order",
+    "hatred",
+    "magic-resistance",
+    "resolute",
+    "vanguard"
+   ],
+   "cost": 12,
+   "options": [
+    {
+     "label": "• The entire unit may take blasting charges",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Upgrade one model to a Prospector (champion)",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• A Prospector may take a steam drill",
+     "cost": 20,
+     "per": "unit"
+    },
+    {
+     "label": "",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Veteran special rule",
+     "cost": 1,
+     "per": "model"
+    }
+   ]
+  },
+  "organ-gun": {
+   "slug": "organ-gun",
+   "name": "Organ Gun",
+   "url": "https://tow.whfb.app/unit/organ-gun",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "War Machine",
+   "category": "War Machine",
+   "profile": [
+    {
+     "name": "Organ Gun",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "-",
+      "7",
+      "3",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Dwarf Crew",
+     "values": [
+      "3",
+      "3",
+      "3",
+      "3",
+      "4",
+      "3",
+      "2",
+      "3",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Organ gun, hand weapons and light armour",
+   "specialRules": [
+    "hatred",
+    "magic-resistance",
+    "skirmish-formation",
+    "stubborn"
+   ],
+   "cost": 115,
+   "options": []
+  },
+  "quarrellers": {
+   "slug": "quarrellers",
+   "name": "Quarrellers",
+   "url": "https://tow.whfb.app/unit/quarrellers",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Quarreller",
+     "values": [
+      "3",
+      "3",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Veteran",
+     "values": [
+      "3",
+      "3",
+      "4",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons, crossbows and heavy armour",
+   "specialRules": [
+    "close-order",
+    "dwarf-crafted",
+    "hatred",
+    "magic-resistance",
+    "resolute"
+   ],
+   "cost": 9,
+   "options": [
+    {
+     "label": "• Great weapons",
+     "cost": 2,
+     "per": "model"
+    },
+    {
+     "label": "• Shields",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Upgrade one model to a Veteran (champion)",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Pistol",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Brace of pistols",
+     "cost": 5,
+     "per": "unit"
+    }
+   ]
+  },
+  "rangers": {
+   "slug": "rangers",
+   "name": "Rangers",
+   "url": "https://tow.whfb.app/unit/rangers",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5-20",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Ranger",
+     "values": [
+      "3",
+      "4",
+      "4",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Ol' Deadeye",
+     "values": [
+      "3",
+      "4",
+      "4",
+      "3",
+      "4",
+      "1",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons, crossbows and heavy armour",
+   "specialRules": [
+    "dwarf-crafted",
+    "hatred",
+    "magic-resistance",
+    "move-through-cover",
+    "open-order-formation",
+    "resolute",
+    "scouts",
+    "skirmish-formation"
+   ],
+   "cost": 11,
+   "options": [
+    {
+     "label": "• Great weapons",
+     "cost": 2,
+     "per": "model"
+    },
+    {
+     "label": "• Shields",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Take throwing axes",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Replace crossbows with throwing axes",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to an Ol' Deadeye (champion)",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Pistol",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Brace of pistols",
+     "cost": 5,
+     "per": "unit"
+    }
+   ]
+  },
+  "royal-clan-warriors": {
+   "slug": "royal-clan-warriors",
+   "name": "Royal Clan Warriors",
+   "url": "https://tow.whfb.app/unit/royal-clan-warriors",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Royal Clan Warrior",
+     "values": [
+      "3",
+      "4",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Royal Clan Veteran",
+     "values": [
+      "3",
+      "4",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons, shields and heavy armour",
+   "specialRules": [
+    "close-order",
+    "gromril-armour",
+    "gromril-weapons",
+    "hatred",
+    "magic-resistance",
+    "resolute",
+    "shieldwall"
+   ],
+   "cost": 10,
+   "options": [
+    {
+     "label": "• Replace shields with gromril  great axes",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Upgrade one model to a Royal Clan Veteran (champion)",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Drilled special rule",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Have the Stubborn special rule",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Have the Veteran special rule",
+     "cost": 1,
+     "per": "model"
+    }
+   ]
+  },
+  "runelord": {
+   "slug": "runelord",
+   "name": "Runelord",
+   "url": "https://tow.whfb.app/unit/runelord",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Runelord",
+     "values": [
+      "3",
+      "6",
+      "4",
+      "4",
+      "5",
+      "3",
+      "3",
+      "3",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon and heavy armour",
+   "specialRules": [
+    "armour-bane",
+    "forgefire",
+    "gromril-armour",
+    "gromril-weapons",
+    "hatred",
+    "magic-resistance",
+    "resolute",
+    "rune-lore",
+    "stubborn"
+   ],
+   "cost": 120,
+   "options": [
+    {
+     "label": "• May take a great weapon",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• May take a shield",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• May replace heavy armour with full plate armour",
+     "cost": 3,
+     "per": "unit"
+    },
+    {
+     "label": "• May take an Oathstone",
+     "cost": 15,
+     "per": "unit"
+    }
+   ]
+  },
+  "runesmith": {
+   "slug": "runesmith",
+   "name": "Runesmith",
+   "url": "https://tow.whfb.app/unit/runesmith",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Runesmith",
+     "values": [
+      "3",
+      "5",
+      "4",
+      "4",
+      "4",
+      "2",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon and heavy armour",
+   "specialRules": [
+    "armour-bane",
+    "forgefire",
+    "gromril-armour",
+    "gromril-weapons",
+    "hatred",
+    "magic-resistance",
+    "resolute",
+    "rune-lore",
+    "stubborn"
+   ],
+   "cost": 65,
+   "options": [
+    {
+     "label": "• May take a great weapon",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• May take a shield",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• May replace heavy armour with full plate armour",
+     "cost": 3,
+     "per": "unit"
+    },
+    {
+     "label": "• May take an Oathstone",
+     "cost": 15,
+     "per": "unit"
+    }
+   ]
+  },
+  "scout-gyrocopter": {
+   "slug": "scout-gyrocopter",
+   "name": "Scout Gyrocopter",
+   "url": "https://tow.whfb.app/unit/scout-gyrocopter",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1-2",
+   "troopType": "Monstrous Cavalry",
+   "category": "Cavalry",
+   "profile": [
+    {
+     "name": "Scout Gyrocopters",
+     "values": [
+      "1",
+      "4",
+      "4",
+      "4",
+      "4",
+      "3",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon, clattergun and lightly armoured fuselage (counts as heavy armour)",
+   "specialRules": [
+    "dispersed-formation",
+    "fire-and-flee",
+    "fly",
+    "hatred",
+    "hit-and-run",
+    "impact-hits",
+    "magic-resistance",
+    "skirmish-formation",
+    "swiftstride",
+    "vanguard"
+   ],
+   "cost": 60,
+   "options": []
+  },
+  "shieldbearers": {
+   "slug": "shieldbearers",
+   "name": "Shieldbearers",
+   "url": "https://tow.whfb.app/unit/shieldbearers",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Mount",
+   "profile": [
+    {
+     "name": "Shieldbearers",
+     "values": [
+      "3",
+      "5",
+      "-",
+      "4",
+      "-",
+      "(+3)",
+      "2",
+      "3",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon",
+   "specialRules": [
+    "borne-aloft",
+    "gromril-weapons",
+    "hatred",
+    "resolute"
+   ],
+   "cost": null,
+   "options": []
+  },
+  "slayers": {
+   "slug": "slayers",
+   "name": "Slayers",
+   "url": "https://tow.whfb.app/unit/slayers",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Regular Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Troll Slayer",
+     "values": [
+      "3",
+      "4",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "10"
+     ]
+    },
+    {
+     "name": "Giant Slayer",
+     "values": [
+      "3",
+      "5",
+      "3",
+      "4",
+      "4",
+      "1",
+      "3",
+      "2",
+      "10"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons",
+   "specialRules": [
+    "deathblow",
+    "fight-me",
+    "furious-charge",
+    "hatred",
+    "immune-to-psychology",
+    "loner",
+    "magic-resistance",
+    "motley-crew",
+    "open-order-formation",
+    "resolute",
+    "slayer",
+    "unbreakable"
+   ],
+   "cost": 12,
+   "options": [
+    {
+     "label": "• Additional hand weapon",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Great weapon",
+     "cost": 2,
+     "per": "model"
+    },
+    {
+     "label": "• Any number of models may be upgraded to Giant Slayers",
+     "cost": 7,
+     "per": "model"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 6,
+     "per": "unit"
+    }
+   ]
+  },
+  "thane": {
+   "slug": "thane",
+   "name": "Thane",
+   "url": "https://tow.whfb.app/unit/thane",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Thane",
+     "values": [
+      "3",
+      "6",
+      "4",
+      "4",
+      "5",
+      "2",
+      "3",
+      "3",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon and full plate armour",
+   "specialRules": [
+    "ancestral-grudge",
+    "dwarf-crafted",
+    "gromril-armour",
+    "gromril-weapons",
+    "hatred",
+    "magic-resistance",
+    "rallying-cry",
+    "resolute",
+    "stubborn"
+   ],
+   "cost": 60,
+   "options": [
+    {
+     "label": "• Great weapon",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• Crossbow",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Handgun",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• May take a pistol",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• May take a shield",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• Oathstone",
+     "cost": 15,
+     "per": "unit"
+    },
+    {
+     "label": "• Shieldbearers",
+     "cost": 60,
+     "per": "unit"
+    }
+   ]
+  },
+  "thorgrim-ulleksson": {
+   "slug": "thorgrim-ulleksson",
+   "name": "Thorgrim Ulleksson",
+   "url": "https://tow.whfb.app/unit/thorgrim-ulleksson",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Named Character",
+   "profile": [
+    {
+     "name": "Thorgrim Ulleksson",
+     "values": [
+      "3",
+      "6",
+      "4",
+      "4",
+      "5",
+      "3",
+      "3",
+      "3",
+      "10"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon, Grudge-Settler, the Grudgestone, the Armour of Skaldour and shield",
+   "specialRules": [
+    "gromril-armour",
+    "grudgelore",
+    "hatred",
+    "magic-resistance",
+    "rallying-cry",
+    "resolute",
+    "stubborn"
+   ],
+   "cost": 250,
+   "options": []
+  },
+  "thunderers": {
+   "slug": "thunderers",
+   "name": "Thunderers",
+   "url": "https://tow.whfb.app/unit/thunderers",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Thunderer",
+     "values": [
+      "3",
+      "3",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Veteran",
+     "values": [
+      "3",
+      "3",
+      "4",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons, handguns and heavy armour",
+   "specialRules": [
+    "close-order",
+    "dwarf-crafted",
+    "hatred",
+    "magic-resistance",
+    "resolute"
+   ],
+   "cost": 10,
+   "options": [
+    {
+     "label": "• Great weapons",
+     "cost": 2,
+     "per": "model"
+    },
+    {
+     "label": "• Shields",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Upgrade one model to a Veteran (champion)",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Pistol",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Brace of pistols",
+     "cost": 5,
+     "per": "unit"
+    }
+   ]
+  },
+  "ungrim-ironfist": {
+   "slug": "ungrim-ironfist",
+   "name": "Ungrim Ironfist",
+   "url": "https://tow.whfb.app/unit/ungrim-ironfist",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Named Character",
+   "profile": [
+    {
+     "name": "Ungrim Ironfist",
+     "values": [
+      "3",
+      "9",
+      "4",
+      "4",
+      "6",
+      "3",
+      "5",
+      "4",
+      "10"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon, the Axe of Dargo, the Slayer Crown and light armour",
+   "specialRules": [
+    "deathblow",
+    "gromril-armour",
+    "hatred",
+    "immune-to-psychology",
+    "king-of-the-slayer-hold",
+    "magic-resistance",
+    "rallying-cry",
+    "resolute",
+    "slayer",
+    "unbreakable"
+   ],
+   "cost": 315,
+   "options": []
+  }
+ },
+ "rules": {
+  "ancestral-fury": {
+   "key": "ancestral-fury",
+   "name": "Ancestral Fury",
+   "text": "During a turn in which a unit in a Royal Clan army makes a charge move of 3\" or more, or made a follow up move, it gains a +1 modifier to its Strength characteristic.",
+   "url": "https://tow.whfb.app/special-rules/ancestral-fury"
+  },
+  "ancestral-grudge": {
+   "key": "ancestral-grudge",
+   "name": "Ancestral Grudge",
+   "text": "A model with this special rule has the Hatred (enemy characters) special rule, meaning it hates all characters in the opposing army. If this character joins a unit of Longbeards or Hammerers, that unit will also gain this special rule. Should this character leave a unit of Longbeards or Hammerers they have joined for any reason, that unit loses this special rule.",
+   "url": "https://tow.whfb.app/special-rules/ancestral-grudge"
+  },
+  "blessings-of-grimnir": {
+   "key": "blessings-of-grimnir",
+   "name": "Blessings of Grimnir",
+   "text": "A model with this special rule may be nominated to attempt a Wizardly Dispel, as if it were a Wizard. However, unlike regular Wizards, a Shrine Keeper does not have a Level of Wizardry to determine their Dispel range or modify their Dispel rolls. Instead, a Shrine Keeper has a Dispel range of 21\" and may apply a +1 modifier to their Dispel rolls.",
+   "url": "https://tow.whfb.app/special-rules/blessings-of-grimnir"
+  },
+  "from-the-wilds": {
+   "key": "from-the-wilds",
+   "name": "From the Wilds",
+   "text": "• 0-1 unit of Slayers with a Unit Strength of 10 or less in a Slayer Host Army of Infamy may have the Ambushers and Skirmishers special rules for +1 point per model.",
+   "url": "https://tow.whfb.app/special-rules/from-the-wilds"
+  },
+  "look-snorri-trolls": {
+   "key": "look-snorri-trolls",
+   "name": "\"Look Snorri, Trolls!\"",
+   "text": "After deployment, but before deploying Scouts or making any Vanguard moves, all units of Slayers and Brotherhood of Grimnir within a Slayer Host Army of Infamy may make a \"Look Snorri, Trolls!\" move. A unit making a \"Look Snorri, Trolls!\" move moves D3\"+ 1 as described in the Basic Movement rules. It may manoeuvre normally but cannot march. Roll separately for each eligible unit.",
+   "url": "https://tow.whfb.app/special-rules/look-snorri-trolls"
+  },
+  "oathstone": {
+   "key": "oathstone",
+   "name": "Oathstone",
+   "text": "Challenges issued by a character with an Oathstone cannot be refused. In addition, a character with an Oathstone and any unit they have joined automatically passes any Panic tests they are required to make, but cannot choose to Flee as a charge reaction.",
+   "url": "https://tow.whfb.app/special-rules/oathstone"
+  },
+  "riches-and-heirlooms": {
+   "key": "riches-and-heirlooms",
+   "name": "Riches & Heirlooms",
+   "text": "Character models in this army may spend an additional 25 points on runes. In addition, units that are able to purchase Standard runes may spend an additional 25 points on Standard runes (with the exception of Royal Clan Warriors, who already have this bonus included on their profile).",
+   "url": "https://tow.whfb.app/special-rules/riches-and-heirlooms"
+  },
+  "borne-aloft": {
+   "key": "borne-aloft",
+   "name": "Borne Aloft",
+   "text": "A model with Shieldbearers consists of not one, but four models – the character and three loyal retainers – occupying a single base and acting together as a single entity. To represent this, a model with Shieldbearers has a split profile and follows the Split Profile (Cavalry) rule. In all other respects, this model is heavy infantry.",
+   "url": "https://tow.whfb.app/special-rules/borne-aloft"
+  },
+  "striking-a-grudge": {
+   "key": "striking-a-grudge",
+   "name": "Striking a Grudge",
+   "text": "After deployment but before the first turn begins, nominate a single enemy character. For one reason or another, this individual has earned themselves a place in the Clan's Book of Grudges and must be brought to justice. All friendly models gain the Hatred (nominated enemy character) special rule. In addition, you win a bonus of 75 Victory Points if the nominated character is slain, has fled the battlefield or is fleeing when the game ends.",
+   "url": "https://tow.whfb.app/special-rules/striking-a-grudge"
+  },
+  "troll-hunters": {
+   "key": "troll-hunters",
+   "name": "Troll Hunters",
+   "text": "• 0-1 character per 1,000 points in a Slayer Host Army of Infamy (not including Ungrim Ironfist) may have the Scouts special rule for +10 points per model.",
+   "url": "https://tow.whfb.app/special-rules/troll-hunters"
+  },
+  "ancestral-shield": {
+   "key": "ancestral-shield",
+   "name": "Ancestral Shield",
+   "text": "An Anvil of Doom and the Forgefather & Anvil Guard have a 5+ Ward save against any wounds suffered.",
+   "url": "https://tow.whfb.app/special-rules/ancestral-shield"
+  },
+  "expeditionary-marksmen": {
+   "key": "expeditionary-marksmen",
+   "name": "Expeditionary Marksmen",
+   "text": "• 0-1 unit of Thunderers per 1,000 points may be upgraded to Expeditionary Marksmen for +1 point per model. Expeditionary Marksmen do not suffer any negative To Hit modifiers for Moving and Shooting Shooting. In addition, any Dwarf Engineer may be upgraded to an Expeditionary Marksman for +10 points.",
+   "url": "https://tow.whfb.app/special-rules/expeditionary-marksmen"
+  },
+  "wards-of-grimnir": {
+   "key": "wards-of-grimnir",
+   "name": "Wards of Grimnir",
+   "text": "• Any unit in a Slayer Host Army of Infamy that includes a standard bearer may purchase Wards of Grimnir for +1 point per model. A unit with Wards of Grimnir has a 6+ Ward save against any wounds suffered during the Shooting phase that were caused by a non-magical enemy attack.",
+   "url": "https://tow.whfb.app/special-rules/wards-of-grimnir"
+  },
+  "function-over-form": {
+   "key": "function-over-form",
+   "name": "Function Over Form",
+   "text": "When writing your muster list, you may reduce the Toughness characteristic of any of the following war machines by 1 (to a minimum of 1):\n\n• Cannon\n• Organ Guns\n• Flame Cannon\n\nAny war machine that has its Toughness reduced in this way also loses the Move or Shoot special rule.",
+   "url": "https://tow.whfb.app/special-rules/function-over-form"
+  },
+  "strike-the-runes": {
+   "key": "strike-the-runes",
+   "name": "Strike the Runes",
+   "text": "An Anvil of Doom can cast the following Bound spells, with a Power Level of 2: Rune of Oath & Steel, Rune of Hearth & Home, Rune of Haste & Urgency & Rune of Wrath & Ruin",
+   "url": "https://tow.whfb.app/special-rules/strike-the-runes"
+  },
+  "worst-among-equals": {
+   "key": "worst-among-equals",
+   "name": "Worst Among Equals",
+   "text": "If your army includes Ungrim Ironfist, he must be your General. If not, you must nominate a Daemon Slayer or Dragon Slayer to act as your General, even though the Loner special rule would normally prevent this. However, to reflect that Slayers make poor leaders, a Dragon Slayer or Daemon Slayer that is the General of a Slayer Host does not gain the Inspiring Presence special rule.\n\nNote that, if the General of a Slayer Host Army of Infamy bears the Rune of the Dishonoured runic tattoo, the enemy player can win the bonus Victory Points for slaying them as normal.",
+   "url": "https://tow.whfb.app/special-rules/worst-among-equals"
+  },
+  "forgefire": {
+   "key": "forgefire",
+   "name": "Forgefire",
+   "text": "If this character joins a unit, that unit will gain the Armour Bane (2) and Flaming Attacks special rules. Should this character leave a unit it has joined for any reason, that unit loses these special rules.",
+   "url": "https://tow.whfb.app/special-rules/forgefire"
+  },
+  "subterranean-ambush": {
+   "key": "subterranean-ambush",
+   "name": "Subterranean Ambush",
+   "text": "If your army includes a unit of Miners you may, after both sides have deployed but before the first turn of the game begins, deploy two 32mm round Mine markers, plus one additional marker for each additional unit of Miners your army includes. These markers can be deployed anywhere on the battlefield that is not within:\n\n• The enemy player's deployment zone\n• 12\" of another friendly Mine marker\n• 6\" of an enemy unit\n• 3\" of a special feature or an objective marker\n\nWhen a unit of Miners would arrive onto the battlefield as Reserves, it can be placed anywhere on the battlefield within 6\" of a Mine marker, but not within 6\" of an enemy unit. The unit cannot charge during this turn and counts as having moved for the purposes of shooting, but can otherwise act as normal.",
+   "url": "https://tow.whfb.app/special-rules/subterranean-ambush"
+  },
+  "grudgelore": {
+   "key": "grudgelore",
+   "name": "Grudgelore",
+   "text": "Once Thorgrim has set the Grudgestone, both he and any unit he has joined replaces the Hatred (Orcs & Goblins) special rule with the Hatred (all enemies) special rule.",
+   "url": "https://tow.whfb.app/special-rules/grudgelore"
+  },
+  "slayer-of-daemons": {
+   "key": "slayer-of-daemons",
+   "name": "Slayer of Daemons",
+   "text": "When this character makes a roll To Wound, a roll of 4+ is always a success, regardless of the target's Toughness. In addition, each unsaved wound inflicted by this character against an enemy model with the Warp-spawned special rule, or whose troop type is behemoth, has the Multiple Wounds (D3) special rule.",
+   "url": "https://tow.whfb.app/special-rules/slayer-of-daemons"
+  },
+  "slayer-of-dragons": {
+   "key": "slayer-of-dragons",
+   "name": "Slayer of Dragons",
+   "text": "When this character makes a roll To Wound, a roll of 4+ is always a success, regardless of the target's Toughness. In addition, each unsaved wound inflicted by this character against an enemy model whose troop type is behemoth has the Multiple Wounds (D3) special rule.",
+   "url": "https://tow.whfb.app/special-rules/slayer-of-dragons"
+  },
+  "the-grudgestone": {
+   "key": "the-grudgestone",
+   "name": "The Grudgestone",
+   "text": "During any Start of Turn sub-phase, Thorgrim may set the Grudgestone. Once set, Thorgrim and any unit he has joined gains the Unbreakable special rule and automatically passes any Panic tests they are required to make. However, once the Grudgestone has been set, Thorgrim and his unit cannot choose to Flee as a charge reaction and cannot move other than to Give Ground, to make a follow up move or to reform.",
+   "url": "https://tow.whfb.app/special-rules/the-grudgestone"
+  },
+  "artillery-master": {
+   "key": "artillery-master",
+   "name": "Artillery Master",
+   "text": "Unless this character is fleeing or engaged in combat, once per turn, during the Shooting phase, a friendly unit of Quarrellers, unit of Thunderers or Dwarf war machine that is within its Command range can either re-roll any rolls To Hit of a natural 1, or re-roll a single Artillery dice.",
+   "url": "https://tow.whfb.app/special-rules/artillery-master"
+  },
+  "dispersed-formation": {
+   "key": "dispersed-formation",
+   "name": "Dispersed Formation",
+   "text": "To maintain Skirmish formation, every model in this unit must be within 3\" of another model belonging to the same unit, rather than the usual 1\". However, unlike most Skirmishers, models with this special rule do not have a 360° vision arc; they instead have a 90° vision arc, corresponding to their front arc.",
+   "url": "https://tow.whfb.app/special-rules/dispersed-formation"
+  },
+  "king-of-the-slayer-hold": {
+   "key": "king-of-the-slayer-hold",
+   "name": "King of the Slayer Hold",
+   "text": "Ungrim Ironfist may join a unit of Hammerers or a unit of Slayers (even though he does not have the Loner special rule). A unit of Hammerers joined by Ungrim gains the Immune to Psychology and Unbreakable special rules for as long as he remains with the unit. In addition, if Ungrim Ironfist is taken as the General of a Royal Clan army:\n\n• Daemon Slayers and Dragon Slayers may be taken as Character choices\n• 0-1 unit of Slayers per 1,000 points may be taken as a Core choice\n• 0-4 Doomseekers per 1,000 points may be taken as Special choices",
+   "url": "https://tow.whfb.app/special-rules/king-of-the-slayer-hold"
+  },
+  "entrenchment": {
+   "key": "entrenchment",
+   "name": "Entrenchment",
+   "text": "During deployment, you may 'Entrench' a single non-character model whose troop type is 'war machine' for each character in your army with this special rule. An Entrenched war machine is considered to be behind partial cover and to be defending a low linear obstacle. Should the war machine move for any reason, it is no longer Entrenched.",
+   "url": "https://tow.whfb.app/special-rules/entrenchment"
+  },
+  "prepared-positions": {
+   "key": "prepared-positions",
+   "name": "Prepared Positions",
+   "text": "During deployment, you may 'Entrench' a single non-character model whose troop type is war machine and a single unit of Quarrellers or Thunderers. An Entrenched unit is considered to be behind partial cover and to be defending a low linear obstacle. Should an Entrenched unit move for any reason, it is no longer Entrenched.",
+   "url": "https://tow.whfb.app/special-rules/prepared-positions"
+  },
+  "stand-back-chief": {
+   "key": "stand-back-chief",
+   "name": "\"Stand Back Chief\"",
+   "text": "A character with this special rule cannot be targeted by enemy shooting or by enemy spells whilst it is within 3\" of a friendly unit whose troop type is war machine.",
+   "url": "https://tow.whfb.app/special-rules/stand-back-chief"
+  },
+  "range-finding-optics": {
+   "key": "range-finding-optics",
+   "name": "Range Finding Optics",
+   "text": "Unless Burlok is fleeing or engaged in combat, once per turn, during the Shooting phase, a friendly unit of Quarrellers, Thunderers or a Dwarf war machine that is within his Command range can either re-roll any rolls To Hit of a natural 1, or re-roll a single Artillery dice. In addition, Burlok and any unit he has joined do not suffer the usual -1 To Hit modifier when shooting at Long Range.",
+   "url": "https://tow.whfb.app/special-rules/range-finding-optics"
+  },
+  "dig-in": {
+   "key": "dig-in",
+   "name": "\"Dig In!\"",
+   "text": "During any Command sub-phase, if they are not engaged in combat, this character may attempt to lead their unit in the digging of some fieldworks by making a Leadership test (using their own Leadership). If this test is passed, this character and any unit they have joined becomes 'Entrenched'. An Entrenched unit is considered to be behind partial cover and to be defending a low linear obstacle. Should the unit move for any reason, it is no longer Entrenched.",
+   "url": "https://tow.whfb.app/special-rules/dig-in"
+  },
+  "venerable": {
+   "key": "venerable",
+   "name": "Venerable",
+   "text": "Unless this unit is fleeing, friendly units within 6\" of it can re-roll any failed Panic test.",
+   "url": "https://tow.whfb.app/special-rules/venerable"
+  },
+  "hostile-terrain": {
+   "key": "hostile-terrain",
+   "name": "Hostile Terrain",
+   "text": "Any enemy model that ends its movement within the Command range of one or more characters with this special rule (that are not fleeing or engaged in combat) must make a Dangerous Terrain test.",
+   "url": "https://tow.whfb.app/special-rules/hostile-terrain"
+  },
+  "royal-guard": {
+   "key": "royal-guard",
+   "name": "Royal Guard",
+   "text": "Your army may include one unit of Hammerers for every King or Thane it includes. Any model in a unit of Hammerers that has been joined by a King or Thane can issue and accept challenges in the same manner as a character. Should the King or Thane leave the unit for any reason, the unit loses this ability.",
+   "url": "https://tow.whfb.app/special-rules/royal-guard"
+  },
+  "doomseeker": {
+   "key": "doomseeker",
+   "name": "Doomseeker",
+   "text": "At the end of the battle, a Doomseeker that has been slain is worth no Victory Points. However, if a Doomseeker is still alive, the enemy player wins a bonus number of Victory Points equal to 100% of its points cost.",
+   "url": "https://tow.whfb.app/special-rules/doomseeker"
+  },
+  "immovable-object": {
+   "key": "immovable-object",
+   "name": "Immovable Object",
+   "text": "Once this model has been placed on the battlefield during deployment it cannot be moved by its crew during the Remaining Moves sub-phase.\n\nNote that the model can still pivot freely at any time during its turn (the better to face the enemy) and may make a follow up move as normal.",
+   "url": "https://tow.whfb.app/special-rules/immovable-object"
+  },
+  "stoic-defenders": {
+   "key": "stoic-defenders",
+   "name": "Stoic Defenders",
+   "text": "During a turn in which it was charged by the enemy, a model with this special rule gains a +1 modifier to its Initiative and Attacks characteristics.",
+   "url": "https://tow.whfb.app/special-rules/stoic-defenders"
+  },
+  "first-to-the-fray": {
+   "key": "first-to-the-fray",
+   "name": "First to the Fray",
+   "text": "This model increases its maximum possible charge range by 3\" and, when it makes a Charge roll, may apply a +D3 modifier to the result.",
+   "url": "https://tow.whfb.app/special-rules/first-to-the-fray"
+  },
+  "runes-of-protection": {
+   "key": "runes-of-protection",
+   "name": "Runes of Protection",
+   "text": "Models with this special rule have a 6+ Ward save against any wounds suffered that were caused by a non-magical enemy attack.",
+   "url": "https://tow.whfb.app/special-rules/runes-of-protection"
+  },
+  "runes-of-warding": {
+   "key": "runes-of-warding",
+   "name": "Runes of Warding",
+   "text": "A model with this special rule has a 5+ Ward save against any wounds suffered that were caused by an attack that has the Flaming Attacks special rule.",
+   "url": "https://tow.whfb.app/special-rules/runes-of-warding"
+  },
+  "whirlwind-of-death": {
+   "key": "whirlwind-of-death",
+   "name": "Whirlwind of Death",
+   "text": "Impact Hits caused by this model are resolved using the profile of its whirling blades of death. In addition, when this model makes a roll To Wound, a roll of 4+ is always a success, regardless of the target's Toughness.",
+   "url": "https://tow.whfb.app/special-rules/whirlwind-of-death"
+  },
+  "fight-me": {
+   "key": "fight-me",
+   "name": "\"Fight Me!\"",
+   "text": "Any model with this special rule can issue and accept challenges in the same manner as a character.",
+   "url": "https://tow.whfb.app/special-rules/fight-me"
+  },
+  "slayer": {
+   "key": "slayer",
+   "name": "Slayer",
+   "text": "When this model makes a roll To Wound, a roll of 4+ is always a success, regardless of the target's Toughness.",
+   "url": "https://tow.whfb.app/special-rules/slayer"
+  },
+  "dive-bomb": {
+   "key": "dive-bomb",
+   "name": "Dive Bomb",
+   "text": "Once per game, a unit with this special rule may perform a 'Dive Bomb' attack against a single enemy unit that is not engaged in combat. To do so, this unit must move (by flying) over the unit it wishes to attack during the Remaining Moves sub-phase. Once this unit's movement is complete, the enemy unit suffers D6 Strength 3 hits, each with an AP of -1, for each model in this unit that moved over it. However, for each roll of a natural 1 made when determining the number of hits, a bomb has misfired and this unit loses a single Wound instead.",
+   "url": "https://tow.whfb.app/special-rules/dive-bomb"
+  },
+  "hit-and-run": {
+   "key": "hit-and-run",
+   "name": "Hit & Run",
+   "text": "Should it win a round of combat, a unit with this special rule may choose to Fall Back in Good Order rather than making a follow up or pursuit move.",
+   "url": "https://tow.whfb.app/special-rules/hit-and-run"
+  },
+  "bombing-run": {
+   "key": "bombing-run",
+   "name": "Bombing Run",
+   "text": "This model may perform a 'Bombing Run' attack against a single enemy unit that is not engaged in combat. To do so, this model must move (by flying) over the unit it wishes to attack during the Remaining Moves sub-phase. Once this model's movement is complete, roll on the Bombing Run table below:\n\nD6 | Result\n1 | Premature Detonation: The release mechanism jams and a bomb explodes prematurely. This model loses a single Wound.\n2 | Dud: A solitary bomb is released, but fails to detonate before landing squarely upon the head of an unfortunate enemy. The enemy unit loses a single Wound.\n3-4 | Direct Hit: A cluster of bombs lands directly on-target. Place a large (5\") blast template so that its central hole is directly over the centre of the enemy unit. Once placed, the template will scatter D6\". Any model whose base lies underneath the template's final position risks being hit and suffering a single Strength 4 hit with an AP of -1.\n5-6 | Bombs Away: A cluster of bombs is released, falling over a wide area. Place two small (3\") blast templates so that their central hole is over the enemy unit. Once placed, each template will scatter D6\". Any model whose base lies underneath a template's final position risks being hit and suffering a single Strength 4 hit with an AP of -1.",
+   "url": "https://tow.whfb.app/special-rules/bombing-run"
+  },
+  "bugmans-cart": {
+   "key": "bugmans-cart",
+   "name": "Bugman's Cart",
+   "text": "During the Command sub-phase of their turn, any Dwarf unit that is not fleeing or engaged in combat and that is within 6\" of a friendly Bugman's Cart (that is itself not fleeing or engaged) gains a +1 modifier to its Movement characteristic until the end of the turn.\n\nNote that this modifier is not cumulative.",
+   "url": "https://tow.whfb.app/special-rules/bugmans-cart"
+  },
+  "deathblow": {
+   "key": "deathblow",
+   "name": "Deathblow",
+   "text": "When a model with this special rule is reduced to zero Wounds by an enemy attack during the Combat phase, the unit that made the attack suffers a Strength 3 hit, with an AP of -1.\n\nNote that if this model is reduced to zero Wounds whilst engaged in a challenge, it is the model that made the attack that suffers this hit, rather than its unit.",
+   "url": "https://tow.whfb.app/special-rules/deathblow"
+  },
+  "miners-cart": {
+   "key": "miners-cart",
+   "name": "Miner's Cart",
+   "text": "Any Dwarf unit that is within 3\" of a friendly Miner's Cart that is not fleeing or engaged in combat may make a Stand & Shoot charge reaction and/or a shooting attack as if it were equipped with Blasting Charges. Additionally, when a Miner's Cart loses its last Wound to an enemy attack during the Combat phase, roll a D6. On a roll of 4+, the Miner's Cart explodes and every unit (friend or foe) within 3\" suffers D6 Strength 3 hits, each with an AP of -1 and with the Flaming Attacks special rule.",
+   "url": "https://tow.whfb.app/special-rules/miners-cart"
+  },
+  "dwarf-crafted": {
+   "key": "dwarf-crafted",
+   "name": "Dwarf Crafted",
+   "text": "Models with this special rule do not suffer the usual -1 To Hit modifier when making a Stand & Shoot charge reaction.",
+   "url": "https://tow.whfb.app/special-rules/dwarf-crafted"
+  },
+  "whirling-doom": {
+   "key": "whirling-doom",
+   "name": "Whirling Doom",
+   "text": "With a single salvo of spinning axes, a Goblin-hewer can cut through several ranks of troops. When shooting a Goblin-hewer, roll an Artillery dice before making any rolls To Hit. The number of shots fired is equal to the roll of the Artillery dice plus a D3 modifier:\n\n• Per rank (including the rear rank, even if it is incomplete), if the Goblin-hewer lies in the unit's front or rear arc.\n• Per file, if the Goblin-hewer lies in the unit's flank arc.\n\nHowever, if a misfire is rolled on the Artillery dice, no shots are fired and a critical fault has occurred. Roll immediately on the appropriate Misfire table to determine exactly what.",
+   "url": "https://tow.whfb.app/special-rules/whirling-doom"
+  },
+  "gromril-armour": {
+   "key": "gromril-armour",
+   "name": "Gromril Armour",
+   "text": "A model with this special rule may re-roll any roll of a natural 1 made when making an Armour Save roll.",
+   "url": "https://tow.whfb.app/special-rules/gromril-armour"
+  },
+  "gromril-weapons": {
+   "key": "gromril-weapons",
+   "name": "Gromril Weapons",
+   "text": "A hand weapon carried by a model with this special rule has an Armour Piercing characteristic of -1.\n\nNote that this special rule only applies to a single, ordinary hand weapon. If the model is using two hand weapons or any other sort of weapon, or if their hand weapon is inscribed with any Weapon runes, this special rule ceases to apply.",
+   "url": "https://tow.whfb.app/special-rules/gromril-weapons"
+  },
+  "resolute": {
+   "key": "resolute",
+   "name": "Resolute",
+   "text": "Models with this special rule suffer a -1 modifier to the result of any Flee roll or Pursuit roll they make (to a minimum of 1).\n\nNote that this modifier does not apply to Chaos Dwarf mounted characters.",
+   "url": "https://tow.whfb.app/special-rules/resolute"
+  },
+  "rune-lore": {
+   "key": "rune-lore",
+   "name": "Rune Lore",
+   "text": "A model with this special rule may be nominated to attempt a Wizardly Dispel as if it were a Wizard. However, unlike regular Wizards, models with this special rule do not have Level of Wizardry Wizardry with which to determine their Dispel range or modify their Dispel rolls. Instead:\n\n• An Anvil of Doom has a Dispel range of 24\" and may apply a +3 modifier to its Dispel rolls.\n• A Runelord has a Dispel range of 21\" and may apply a +2 modifier to their Dispel rolls.\n• A Runesmith has a Dispel range of 18\" and may apply a +1 modifier to their Dispel rolls.",
+   "url": "https://tow.whfb.app/special-rules/rune-lore"
+  },
+  "hatred": {
+   "key": "hatred",
+   "name": "Hatred (X)",
+   "text": "A model with this special rule may re-roll any failed rolls To Hit made against a hated enemy during the first round of combat.\n\nWhich enemies are hated varies from model to model and will be shown in brackets after the name of this special rule (shown here as 'X'). Some models hate 'all enemies', meaning they hate all enemy models equally.",
+   "url": "https://tow.whfb.app/special-rules/hatred"
+  },
+  "immune-to-psychology": {
+   "key": "immune-to-psychology",
+   "name": "Immune to Psychology",
+   "text": "If the majority of the models in a unit are Immune to Psychology, the unit automatically passes any Fear, Panic or Terror tests it is required to make. However, if the majority of the models in a unit have this special rule, the unit cannot choose to Flee as a charge reaction.\n\nNote that this special rule does not make a unit immune to any test made against Leadership not stated here.",
+   "url": "https://tow.whfb.app/special-rules/immune-to-psychology"
+  },
+  "magic-resistance": {
+   "key": "magic-resistance",
+   "name": "Magic Resistance (-X)",
+   "text": "The Casting roll of any enemy spell (including Bound spells) that targets a unit that includes one or more models with this special rule suffers a modifier, as shown in brackets after the name of this special rule (shown here as '-X').\n\nNote that this special rule is not cumulative. If two or more models in a unit have this special rule, use the highest modifier.",
+   "url": "https://tow.whfb.app/special-rules/magic-resistance"
+  },
+  "skirmish-formation": {
+   "key": "skirmish-formation",
+   "name": "Skirmish Formation",
+   "text": "A unit of models in Skirmish formation (often referred to as 'Skirmishers' in the rules that follow) never consists of rigid ranks and files. Instead, it moves as a single loose group or rough line. This enables Skirmishers to move quickly and take advantage of terrain to shelter from the enemy.",
+   "url": "https://tow.whfb.app/special-rules/skirmish-formation"
+  },
+  "unbreakable": {
+   "key": "unbreakable",
+   "name": "Unbreakable",
+   "text": "If a unit with this special rule loses a round of combat, it is not required to make a Break test. Instead, it will automatically Give Ground as it is pushed back by the enemy. Characters that are not Unbreakable cannot join units that are, and vice versa.",
+   "url": "https://tow.whfb.app/special-rules/unbreakable"
+  },
+  "stubborn": {
+   "key": "stubborn",
+   "name": "Stubborn",
+   "text": "The first time this unit is required to make a Break test it may choose not to and will automatically Falling Back in Good Order instead, even if the Unit Strength of the winning side is more than twice that of the losing side. A unit that is not Stubborn does not become Stubborn when joined by a character that is. A Stubborn character cannot use this special rule whilst part of a unit that is not Stubborn.",
+   "url": "https://tow.whfb.app/special-rules/stubborn"
+  },
+  "close-order": {
+   "key": "close-order",
+   "name": "Close Order",
+   "text": "A unit consisting of models with this special rule may adopt a Close Order formation.",
+   "url": "https://tow.whfb.app/special-rules/close-order"
+  },
+  "loner": {
+   "key": "loner",
+   "name": "Loner",
+   "text": "A character with this special rule cannot be your General and cannot join a unit without this special rule. A unit with this special rule cannot be joined by a character without this special rule.",
+   "url": "https://tow.whfb.app/special-rules/loner"
+  },
+  "motley-crew": {
+   "key": "motley-crew",
+   "name": "Motley Crew",
+   "text": "Units with this special rule may include models of the same type that are equipped differently to one another, and/or models of different types that fight together in a single unit. If necessary, the army list entry for such units will be accompanied by a brief explanation of the unit's composition.\n\nDifferent Weapons\n\nThe fighting rank of a Motley Crew may contain models that are armed with different weapons. In such cases, the controlling player must roll different batches of dice for the different models, making it clear to their opponent which model's attacks they represent and where they are being directed. These attacks are made in the Initiative order of the individual models, as usual.\n\nDifferent Armour\n\nModels within a Motley Crew may have different armour values. In combat, use the armour value of the majority of the models in the fighting rank. Against enemy shooting, use the armour value of the majority of the models in the unit.\n\nCasualty Removal\n\nAgainst enemy shooting, casualty removal should be divided as equally as possible between the different models within the unit. In combat, casualties should be removed from among the majority of the models that make up the fighting rank. In either case, available models are brought forward from rear ranks to fill any gaps, as chosen by the controlling player.",
+   "url": "https://tow.whfb.app/special-rules/motley-crew"
+  },
+  "open-order-formation": {
+   "key": "open-order-formation",
+   "name": "Open Order Formation",
+   "text": "A unit arrayed in an Open Order formation closely resembles one in a Close Order formation; the key differences lie in how the unit moves and interacts with terrain. As with a unit in Close Order, a unit in Open Order consists of two or more models that are arranged in base contact with each other, edge-to-edge and front corner to front corner, as shown in Fig 182.1.\n\nAll models in such a unit must face the same direction. In addition, all models in the unit must be arranged in a formation that consists of one or more horizontal rows, called ranks, and a number of vertical rows, called files.\n\nAs far as possible, there must be the same number of models in each rank. Where this is not possible, it must be the rear rank that has fewer models.",
+   "url": "https://tow.whfb.app/special-rules/open-order-formation"
+  },
+  "killing-blow": {
+   "key": "killing-blow",
+   "name": "Killing Blow",
+   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound for an attack made in combat, it has struck a 'Killing Blow'. Enemy models whose troop type is infantry or cavalry are not permitted an armour or Regeneration save against a Killing Blow (Ward saves can be attempted as normal). If an enemy model whose troop type is infantry or cavalry suffers an unsaved wound from a Killing Blow, it loses all of its remaining Wounds.\n\nNote that if an attack wounds automatically, this special rule cannot be used.",
+   "url": "https://tow.whfb.app/special-rules/killing-blow"
+  },
+  "vanguard": {
+   "key": "vanguard",
+   "name": "Vanguard",
+   "text": "After deployment, units with this special rule may make a Vanguard move. A unit making a Vanguard move moves as described in the Basic Movement rules. It may manoeuvre normally but cannot march.\n\nIf both armies contain Vanguard units, a roll-off determines who moves first. The players then alternate moving their Vanguard units one at a time, starting with the player who won the roll-off. Units that make a Vanguard move cannot declare a charge during their first turn.",
+   "url": "https://tow.whfb.app/special-rules/vanguard"
+  },
+  "impact-hits": {
+   "key": "impact-hits",
+   "name": "Impact Hits (X)",
+   "text": "The number of Impact Hits caused varies from model to model, and will be shown in brackets after the name of this special rule (shown here as 'X'). Often, this is determined by the roll of a dice.\n\nResolving Impact Hits\n\nImpact Hits can only be made by a charging model that moved 3\" or more and that is in base contact with the enemy. Impact Hits are resolved against the charged unit when the combat is chosen during Step 1.1 of the Choose Combat & Fight sub-phase, before issuing challenges. They hit automatically and use the unmodified Strength of the model making them.",
+   "url": "https://tow.whfb.app/special-rules/impact-hits"
+  },
+  "random-attacks": {
+   "key": "random-attacks",
+   "name": "Random Attacks",
+   "text": "Models with this special rule do not have a normal Attacks characteristic. Instead, a dice roll is given (D3+1, for example). Each time a model with this special rule attacks in combat, roll the dice to determine the number of attacks it will make, then roll To Hit as normal. If a fighting rank contains more than one model with this special rule, roll separately for each, unless specified otherwise.",
+   "url": "https://tow.whfb.app/special-rules/random-attacks"
+  },
+  "shieldwall": {
+   "key": "shieldwall",
+   "name": "Shieldwall",
+   "text": "Once per game, during a turn in which it was charged, a unit with this special rule that is arrayed in a Close Order formation, and that is equipped with and chooses to use shields, may Give Ground rather than Fall Back in Good Order.",
+   "url": "https://tow.whfb.app/special-rules/shieldwall"
+  },
+  "drilled": {
+   "key": "drilled",
+   "name": "Drilled",
+   "text": "Unless it is fleeing, a Drilled unit may perform a free redress the ranks manoeuvre immediately before moving. Once this manoeuvre is complete, the unit moves as normal. In addition, a Drilled unit can march whilst within 8\" of an enemy unit without first having to make a Leadership test.\n\nNote that any character that joins a Drilled unit is considered to be Drilled as well.",
+   "url": "https://tow.whfb.app/special-rules/drilled"
+  },
+  "veteran": {
+   "key": "veteran",
+   "name": "Veteran",
+   "text": "If the majority of the models in a unit have this special rule, the unit may re-roll any failed Leadership test.\n\nNote that a Break test is not a Leadership test.",
+   "url": "https://tow.whfb.app/special-rules/veteran"
+  },
+  "fly": {
+   "key": "fly",
+   "name": "Fly (X)",
+   "text": "Except when following up or pursuing, a model with this special rule can choose to move by flying through the air, rather than moving across the ground as normal. When a model flies it uses a special ‘Fly Movement’ characteristic, shown in brackets after the name of this special rule (shown here as ‘X’). Models that choose to move by flying:\n\n• May move as normal (i.e., they may charge, march and manoeuvre as if moving on the ground), except that they are able to pass freely above other models, units and terrain features without any penalty, and they can march whilst within 8\" of an enemy unit without first having to make a Leadership test.\n• May end their movement in terrain, but will suffer its effects if they do. They cannot end their movement 'on top' of impassable terrain or another unit, or within 1\" of an enemy unit.\n\nModels that can Fly must begin and end all of their movement on the ground. A character with this special rule cannot join a unit without this special rule, and vice versa.",
+   "url": "https://tow.whfb.app/special-rules/fly"
+  },
+  "swiftstride": {
+   "key": "swiftstride",
+   "name": "Swiftstride",
+   "text": "A unit which consists entirely of models with this special rule increases its maximum possible charge range by 3\" and, before making a Charge, Flee or Pursuit roll, may choose to apply a +D6 modifier to the result.",
+   "url": "https://tow.whfb.app/special-rules/swiftstride"
+  },
+  "brimstone-gun": {
+   "key": "brimstone-gun",
+   "name": "Brimstone Gun",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/brimstone-gun"
+  },
+  "clattergun": {
+   "key": "clattergun",
+   "name": "Clattergun",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/clattergun"
+  },
+  "fire-and-flee": {
+   "key": "fire-and-flee",
+   "name": "Fire & Flee",
+   "text": "If the majority of the models in a unit armed with missile weapons have this special rule, the unit may declare that it will 'Fire & Flee' as a charge reaction:\n\nFire & Flee\n\nThe unit launches a volley of weapons fire before turning to flee from the enemy. If a unit with this special rule is armed with missile weapons and can draw a line of sight to the charging unit, it may declare that it will Fire & Flee. The unit will Stand & Shoot before turning tail and fleeing from the charge. However, due to the time spent shooting at the charging foe, when making its Flee roll the unit rolls two D6 and discards the lowest result. If both dice roll the same result, discard either.\n\nNote that, if the distance between this unit and the charging unit is less than the Movement characteristic of the charging unit, this unit must either Hold or Flee.",
+   "url": "https://tow.whfb.app/special-rules/fire-and-flee"
+  },
+  "regimental-unit": {
+   "key": "regimental-unit",
+   "name": "Regimental Unit",
+   "text": "A unit with this special rule can be accompanied by detachment.",
+   "url": "https://tow.whfb.app/special-rules/regimental-unit"
+  },
+  "brace-of-drakefire-pistols": {
+   "key": "brace-of-drakefire-pistols",
+   "name": "Brace of Drakefire Pistols",
+   "text": "Notes: A brace of drakefire pistols has two profiles, representing how the weapons are used in combat.",
+   "url": "https://tow.whfb.app/special-rules/brace-of-drakefire-pistols"
+  },
+  "drakegun": {
+   "key": "drakegun",
+   "name": "Drakegun",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/drakegun"
+  },
+  "cinderblast-bombs": {
+   "key": "cinderblast-bombs",
+   "name": "Cinderblast Bombs",
+   "text": "Notes: A unit hit by a cinderblast bomb suffers D6+1 hits (rather than the usual one).",
+   "url": "https://tow.whfb.app/special-rules/cinderblast-bombs"
+  },
+  "detachment-special-rules": {
+   "key": "detachment-special-rules",
+   "name": "Detachment Special Rules",
+   "text": "Detachments follow a number of special rules, representing the specialised way in which they function alongside their regimental units:\n\n• Regimental Deployment\n• Regimental Leadership\n• Regimental Psychology\n• Supporting Actions",
+   "url": "https://tow.whfb.app/special-rules/detachment-special-rules"
+  },
+  "trollhammer-torpedo": {
+   "key": "trollhammer-torpedo",
+   "name": "Trollhammer Torpedo",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/trollhammer-torpedo"
+  },
+  "rallying-cry": {
+   "key": "rallying-cry",
+   "name": "Rallying Cry",
+   "text": "During the Command sub-phase of their turn, if they are not engaged in combat, this character may nominate a single fleeing friendly unit that is within their Command range. The nominated unit immediately makes a Rally test. If this test is failed, the unit may attempt to rally again as normal during the Rally sub-phase.",
+   "url": "https://tow.whfb.app/special-rules/rallying-cry"
+  },
+  "ambushers": {
+   "key": "ambushers",
+   "name": "Ambushers",
+   "text": "A unit with this special rule may be held in reserve rather than be deployed at the start of the game. From the beginning of round two onwards, roll a D6 during each of your Start of Turn sub-phases for each unit of Ambushers in your army that is held in reserve. On a roll of 1-3, the unit is delayed until your next turn at least. On a roll of 4+, the unit arrives, entering the battle as reinforcements during the Compulsory Moves sub-phase. The unit may be placed on any edge of the battlefield, chosen by its controlling player, but cannot be placed within 8\" of an enemy model. If any Ambushers are still held in reserve by the start of round five, they arrive automatically.",
+   "url": "https://tow.whfb.app/special-rules/ambushers"
+  },
+  "blasting-charges": {
+   "key": "blasting-charges",
+   "name": "Blasting Charges",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/blasting-charges"
+  },
+  "steam-drill": {
+   "key": "steam-drill",
+   "name": "Steam Drill",
+   "text": "Notes: A unit of Miners held in reserve that includes a Prospector equipped with a steam drill may re-roll the D6 when rolling to determine if they arrive on the battlefield.",
+   "url": "https://tow.whfb.app/special-rules/steam-drill"
+  },
+  "move-through-cover": {
+   "key": "move-through-cover",
+   "name": "Move Through Cover",
+   "text": "Models with this special rule do not suffer any modifiers to their Movement characteristic for moving through difficult or dangerous terrain. In addition, a model with this special rule may re-roll any rolls of 1 when making Dangerous Terrain tests.",
+   "url": "https://tow.whfb.app/special-rules/move-through-cover"
+  },
+  "scouts": {
+   "key": "scouts",
+   "name": "Scouts",
+   "text": "Units with this special rule may be deployed after all other units from both armies. They can be deployed anywhere on the battlefield that is more than 12\" away from an enemy model. If deployed in this way, Scouts cannot declare a charge during their first turn.\n\nIf both armies contain Scouts, a roll-off should determine which player deploys Scouts first. The players then alternate deploying their scouting units one at a time, starting with the player who won the roll-off.",
+   "url": "https://tow.whfb.app/special-rules/scouts"
+  },
+  "gromril-great-axe": {
+   "key": "gromril-great-axe",
+   "name": "Gromril Great Axe",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/gromril-great-axe"
+  },
+  "armour-bane": {
+   "key": "armour-bane",
+   "name": "Armour Bane (X)",
+   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound, the Armour Piercing characteristic of its weapon is improved by the amount shown in brackets after the name of this special rule (shown here as 'X').\n\nFor example, if a natural 6 is rolled when rolling To Wound with a weapon that has an AP of ' - ' and the Armour Bane (1) special rule, its AP counts as being -1 when making an Armour Save roll against that wound.",
+   "url": "https://tow.whfb.app/special-rules/armour-bane"
+  },
+  "furious-charge": {
+   "key": "furious-charge",
+   "name": "Furious Charge",
+   "text": "During a turn in which it made a charge move of 3\" or more, a model with this special rule gains a +1 modifier to its Attacks characteristic.",
+   "url": "https://tow.whfb.app/special-rules/furious-charge"
+  }
+ },
+ "items": {
+  "masterruneofsmiting": {
+   "slug": "master-rune-of-smiting",
+   "name": "Master Rune of Smiting",
+   "type": "Magic Weapon",
+   "cost": 75,
+   "costOverride": null,
+   "text": "A weapon inscribed with the Master Rune of Smiting gains the Multiple Wounds (D6) special rule.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-smiting"
+  },
+  "masterruneofskalfblackhammer": {
+   "slug": "master-rune-of-skalf-blackhammer",
+   "name": "Master Rune of Skalf Blackhammer",
+   "type": "Magic Weapon",
+   "cost": 65,
+   "costOverride": null,
+   "text": "When making a roll To Wound with a weapon inscribed with the Master Rune of Skalf Blackhammer, a roll of 2+ is always a success, regardless of the target's Toughness.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-skalf-blackhammer"
+  },
+  "masterruneofalaricthemad": {
+   "slug": "master-rune-of-alaric-the-mad",
+   "name": "Master Rune of Alaric The Mad",
+   "type": "Magic Weapon",
+   "cost": 45,
+   "costOverride": null,
+   "text": "No armour save is permitted against wounds caused by a weapon inscribed with the Master Rune of Alaric the Mad (Ward and Regeneration saves can be attempted as normal).",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-alaric-the-mad"
+  },
+  "masterruneofdragonslaying": {
+   "slug": "master-rune-of-dragon-slaying",
+   "name": "Master Rune of Dragon Slaying",
+   "type": "Magic Weapon",
+   "cost": 35,
+   "costOverride": null,
+   "text": "When making a roll To Wound against an enemy whose troop type is behemoth with a weapon inscribed with the Master Rune of Dragon Slaying, a roll of 2+ is always a success, regardless of the target's Toughness.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-dragon-slaying"
+  },
+  "masterruneofflight": {
+   "slug": "master-rune-of-flight",
+   "name": "Master Rune of Flight",
+   "type": "Magic Weapon",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Hand weapon only. Once per turn, during the Shooting phase, a weapon inscribed with the Master Rune of Flight can be thrown with the following profile (which may be modified by additional runes):\n\nMaster Rune of Flight (Profile)",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-flight"
+  },
+  "masterruneofswiftness": {
+   "slug": "master-rune-of-swiftness",
+   "name": "Master Rune of Swiftness",
+   "type": "Magic Weapon",
+   "cost": 25,
+   "costOverride": null,
+   "text": "The wielder of a weapon inscribed with the Master Rune of Swiftness gains the Strike First special rule.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-swiftness"
+  },
+  "masterruneofbreaking": {
+   "slug": "master-rune-of-breaking",
+   "name": "Master Rune of Breaking",
+   "type": "Magic Weapon",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Any magic weapon carried by an enemy model that suffers one or more unsaved wounds from a weapon inscribed with the Master Rune of Breaking is destroyed and cannot be used for the remainder of the game.\n\nNote that even if their magic weapon is destroyed, the model is still considered to be armed with a hand weapon.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-breaking"
+  },
+  "runeofparrying": {
+   "slug": "rune-of-parrying",
+   "name": "Rune of Parrying",
+   "type": "Magic Weapon",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Any enemy model that directs its attacks against a model wielding a weapon inscribed with a Rune of Parrying during the Combat phase suffers a -1 modifier to its rolls To Hit.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-parrying"
+  },
+  "runeofbanishment": {
+   "slug": "rune-of-banishment",
+   "name": "Rune of Banishment",
+   "type": "Magic Weapon",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Enemy models with the Warp-spawned special rule cannot make any Ward saves against hits caused by a weapon inscribed with the Rune of Banishment.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-banishment"
+  },
+  "runeoffury": {
+   "slug": "rune-of-fury",
+   "name": "Rune of Fury*",
+   "type": "Magic Weapon",
+   "cost": 25,
+   "costOverride": null,
+   "text": "For each Rune of Fury inscribed upon a weapon, its wielder has a +1 modifier to their Attacks characteristic.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-fury"
+  },
+  "grudgerune": {
+   "slug": "grudge-rune",
+   "name": "Grudge Rune*",
+   "type": "Magic Weapon",
+   "cost": 20,
+   "costOverride": null,
+   "text": "For each Grudge Rune inscribed upon a weapon, its wielder may re-roll a single roll To Hit of a natural 1 made during the Combat phase.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/grudge-rune"
+  },
+  "runeofmight": {
+   "slug": "rune-of-might",
+   "name": "Rune of Might*",
+   "type": "Magic Weapon",
+   "cost": 20,
+   "costOverride": null,
+   "text": "For each Rune of Might inscribed upon a weapon, its wielder has a +1 modifier to their Strength characteristic.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-might"
+  },
+  "runeofcleaving": {
+   "slug": "rune-of-cleaving",
+   "name": "Rune of Cleaving*",
+   "type": "Magic Weapon",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Hand weapon only. For each Rune of Cleaving inscribed upon a weapon, its Armour Piercing characteristic is improved by 1.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-cleaving"
+  },
+  "runeofstriking": {
+   "slug": "rune-of-striking",
+   "name": "Rune of Striking*",
+   "type": "Magic Weapon",
+   "cost": 15,
+   "costOverride": null,
+   "text": "For each Rune of Striking inscribed upon a weapon, its wielder has a +1 modifier to their Weapon Skill characteristic.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-striking"
+  },
+  "runeoffire": {
+   "slug": "rune-of-fire",
+   "name": "Rune of Fire",
+   "type": "Magic Weapon",
+   "cost": 10,
+   "costOverride": null,
+   "text": "The wielder of a weapon inscribed with a Rune of Fire gains the Flaming Attacks special rule.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-fire"
+  },
+  "runeofspeed": {
+   "slug": "rune-of-speed",
+   "name": "Rune of Speed*",
+   "type": "Magic Weapon",
+   "cost": 5,
+   "costOverride": null,
+   "text": "Hand weapon only. For each Rune of Speed inscribed upon a weapon, its wielder has a +1 modifier to their Initiative characteristic.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-speed"
+  },
+  "masterruneofadamant": {
+   "slug": "master-rune-of-adamant",
+   "name": "Master Rune of Adamant",
+   "type": "Magic Armour",
+   "cost": 100,
+   "costOverride": null,
+   "text": "A model wearing armour inscribed with the Master Rune of Adamant has a Toughness characteristic of 10. This rune cannot be combined with any other Armour runes.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-adamant"
+  },
+  "masterruneofgromril": {
+   "slug": "master-rune-of-gromril",
+   "name": "Master Rune of Gromril",
+   "type": "Magic Armour",
+   "cost": 45,
+   "costOverride": null,
+   "text": "A model wearing armour inscribed with the Master Rune of Gromril has an armour value of 2+, which cannot be improved in any way.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-gromril"
+  },
+  "runeofiron": {
+   "slug": "rune-of-iron",
+   "name": "Rune of Iron",
+   "type": "Magic Armour",
+   "cost": 35,
+   "costOverride": null,
+   "text": "A model wearing armour inscribed with a Rune of Iron has +1 Wound on its profile.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-iron"
+  },
+  "runeoffortitude": {
+   "slug": "rune-of-fortitude",
+   "name": "Rune of Fortitude*",
+   "type": "Magic Armour",
+   "cost": 30,
+   "costOverride": null,
+   "text": "For each Rune of Fortitude inscribed upon their armour, a model has a +1 modifier to its Toughness characteristic (to a maximum of 10).\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-fortitude"
+  },
+  "runeofpreservation": {
+   "slug": "rune-of-preservation",
+   "name": "Rune of Preservation",
+   "type": "Magic Armour",
+   "cost": 25,
+   "costOverride": null,
+   "text": "A model wearing armour inscribed with a Rune of Preservation is immune to both the Killing Blow and Multiple Wounds (X) special rules. If the wearer suffers an unsaved wound from an attack with either of these special rules, they lose a single Wound.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-preservation"
+  },
+  "runeofshielding": {
+   "slug": "rune-of-shielding",
+   "name": "Rune of Shielding*",
+   "type": "Magic Armour",
+   "cost": 15,
+   "costOverride": null,
+   "text": "A model wearing armour inscribed with a single Rune of Shielding has a 6+ Ward save against any wounds suffered. For each additional Rune of Shielding, this Ward save is improved by 1.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-shielding"
+  },
+  "runeofstone": {
+   "slug": "rune-of-stone",
+   "name": "Rune of Stone*",
+   "type": "Magic Armour",
+   "cost": 5,
+   "costOverride": null,
+   "text": "Single use. For each Rune of Stone inscribed upon their armour, a model may re-roll a single failed Armour Save roll.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-stone"
+  },
+  "masterruneofcalm": {
+   "slug": "master-rune-of-calm",
+   "name": "Master Rune of Calm",
+   "type": "Talisman",
+   "cost": 50,
+   "costOverride": null,
+   "text": "The bearer of the Master Rune of Calm can cast the following Bound spell, with a Power Level of 2:\n\nType | Hex\nCasting Value | 8+/11+\nRange | Self\n\nIf this Bound spell is cast with a casting result of 8 or more, enemy Wizards that are within 18\" of this model when attempting to cast a spell must increase that spell's casting value by 2. If this Bound spell is cast with a casting result of 11 or more, enemy Wizards that are within 36\" of this model when attempting to cast a spell must increase that spell's casting value by 2. This spell lasts until your next Start of Turn sub-phase.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-calm"
+  },
+  "masterruneofbalance": {
+   "slug": "master-rune-of-balance",
+   "name": "Master Rune of Balance",
+   "type": "Talisman",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Anvil of Doom and Dwarf Runesmiths only. Once per turn, the bearer of the Master Rune of Balance may use it when attempting a Wizardly dispel. If they do so, roll an extra D6 when making the Dispel roll and discard the lowest result.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-balance"
+  },
+  "masterruneofspite": {
+   "slug": "master-rune-of-spite",
+   "name": "Master Rune of Spite",
+   "type": "Talisman",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Each time the bearer of the Master Rune of Spite loses a Wound to an enemy attack during the Combat phase, the unit that made the attack suffers a Strength 5 hit with an AP of -2.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-spite"
+  },
+  "runeofspellbreaking": {
+   "slug": "rune-of-spellbreaking",
+   "name": "Rune of Spellbreaking*",
+   "type": "Talisman",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Anvil of Doom and Dwarf Runesmiths only. Single use. The bearer of a Rune of Spellbreaking may use it instead of making a dispel attempt. If they do so, the spell is automatically dispelled with no Dispel roll required.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-spellbreaking"
+  },
+  "runeofwarding": {
+   "slug": "rune-of-warding",
+   "name": "Rune of Warding*",
+   "type": "Talisman",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Single use. Each Rune of Warding gives its bearer a 2+ Ward save against a single wound.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-warding"
+  },
+  "runeofluck": {
+   "slug": "rune-of-luck",
+   "name": "Rune of Luck*",
+   "type": "Talisman",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Single use. The bearer of a Rune of Luck may use it to re-roll a single failed roll To Hit or To Wound, or to re-roll a single failed Armour Save roll.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-luck"
+  },
+  "runeofthefurnace": {
+   "slug": "rune-of-the-furnace",
+   "name": "Rune of the Furnace",
+   "type": "Talisman",
+   "cost": 5,
+   "costOverride": null,
+   "text": "The bearer of a Rune of the Furnace has a 3+ Ward save against any wounds suffered that were caused by an attack that has the Flaming Attacks special rule.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-the-furnace"
+  },
+  "runeofpassage": {
+   "slug": "rune-of-passage",
+   "name": "Rune of Passage",
+   "type": "Talisman",
+   "cost": 5,
+   "costOverride": null,
+   "text": "The bearer of a Rune of Passage gains the Move through Cover special rule. Any unit joined by the bearer also gains the Move through Cover special rule. Should the bearer leave the unit for any reason, the unit loses this special rule.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-passage"
+  },
+  "masterruneofgrungni": {
+   "slug": "master-rune-of-grungni",
+   "name": "Master Rune of Grungni",
+   "type": "Magic Standard",
+   "cost": 80,
+   "costOverride": null,
+   "text": "Battle Standard Bearer only. A unit carrying a standard inscribed with the Master Rune of Grungni has a 5+ Ward save against any wounds suffered. In addition, whilst within 6\" of the model carrying this standard, friendly units have a 6+ Ward save against any wounds suffered during the Shooting phase.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-grungni"
+  },
+  "masterruneofstromniredbeard": {
+   "slug": "master-rune-of-stromni-redbeard",
+   "name": "Master Rune of Stromni Redbeard",
+   "type": "Magic Standard",
+   "cost": 75,
+   "costOverride": null,
+   "text": "When calculating its combat result, any friendly unit within the Command range of the model carrying the standard inscribed with the Master Rune of Stromni Redbeard may claim an additional bonus of +1 combat result point.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-stromni-redbeard"
+  },
+  "masterruneofhesitation": {
+   "slug": "master-rune-of-hesitation",
+   "name": "Master Rune of Hesitation",
+   "type": "Magic Standard",
+   "cost": 45,
+   "costOverride": null,
+   "text": "An enemy unit that charges the front arc of a unit carrying a standard inscribed with the Rune of Hesitation does not count as having charged for the purposes of choosing which weapon to use or using any special rules it may have.\n\nNote that the unit carrying this rune still counts as having been charged by the enemy unit.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-hesitation"
+  },
+  "runeofconfusion": {
+   "slug": "rune-of-confusion",
+   "name": "Rune of Confusion",
+   "type": "Magic Standard",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Any enemy unit that charges the front arc of a unit carrying a standard inscribed with the Rune of Confusion makes a disordered charge.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-confusion"
+  },
+  "runeoffear": {
+   "slug": "rune-of-fear",
+   "name": "Rune of Fear",
+   "type": "Magic Standard",
+   "cost": 30,
+   "costOverride": null,
+   "text": "A unit carrying a standard inscribed with the Rune of Fear gains the Fear special rule.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-fear"
+  },
+  "runeofbattle": {
+   "slug": "rune-of-battle",
+   "name": "Rune of Battle",
+   "type": "Magic Standard",
+   "cost": 25,
+   "costOverride": null,
+   "text": "When calculating its combat result, a unit carrying a standard inscribed with a Rune of Battle may claim an additional bonus of +1 combat result point.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-battle"
+  },
+  "strollazrune": {
+   "slug": "strollaz-rune",
+   "name": "Strollaz' Rune",
+   "type": "Magic Standard",
+   "cost": 25,
+   "costOverride": null,
+   "text": "A unit carrying a standard inscribed with Strollaz' Rune gains the Vanguard special rule.",
+   "url": "https://tow.whfb.app/magic-item/strollaz-rune"
+  },
+  "runeofcourage": {
+   "slug": "rune-of-courage",
+   "name": "Rune of Courage",
+   "type": "Magic Standard",
+   "cost": 15,
+   "costOverride": null,
+   "text": "A unit carrying a standard inscribed with the Rune of Courage automatically passes any Fear or Terror tests it is required to make.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-courage"
+  },
+  "masterruneofimmolation": {
+   "slug": "master-rune-of-immolation",
+   "name": "Master Rune of Immolation",
+   "type": "Unique",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Cannon only. Single use. If a cannon inscribed with the Master Rune of Immolation loses its last Wound to an enemy attack during the Combat phase, it may be exploded by its crew. Every enemy unit in base contact with this model suffers D6 Strength 5 hits with an AP of -2. The cannon is then removed from play as a casualty.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-immolation"
+  },
+  "masterruneofdisguise": {
+   "slug": "master-rune-of-disguise",
+   "name": "Master Rune of Disguise",
+   "type": "Unique",
+   "cost": 25,
+   "costOverride": null,
+   "text": "A war machine inscribed with the Master Rune of Disguise is always considered to be behind full cover.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-disguise"
+  },
+  "runeofskewering": {
+   "slug": "rune-of-skewering",
+   "name": "Rune of Skewering",
+   "type": "Unique",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Bolt throwers only. A bolt thrower inscribed with this rune has a +1 modifier to its Strength characteristic. In addition, no armour save is permitted against wounds caused by a bolt thrower inscribed with a Rune of Skewering (Ward and Regeneration saves can be attempted as normal).",
+   "url": "https://tow.whfb.app/magic-item/rune-of-skewering"
+  },
+  "runeofforging": {
+   "slug": "rune-of-forging",
+   "name": "Rune of Forging*",
+   "type": "Unique",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Single use. A war machine inscribed with a Rune of Forging may use it to re-roll a single misfire on the Artillery dice.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-forging"
+  },
+  "runeofburning": {
+   "slug": "rune-of-burning",
+   "name": "Rune of Burning",
+   "type": "Unique",
+   "cost": 10,
+   "costOverride": null,
+   "text": "A war machine inscribed with a Rune of Burning gains the Flaming Attacks special rule.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-burning"
+  },
+  "runeofreloading": {
+   "slug": "rune-of-reloading",
+   "name": "Rune of Reloading",
+   "type": "Unique",
+   "cost": 5,
+   "costOverride": null,
+   "text": "A war machine inscribed with a Rune of Reloading can shoot every turn, even if it misfired and malfunctioned during its previous turn.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-reloading"
+  },
+  "stalwartrune": {
+   "slug": "stalwart-rune",
+   "name": "Stalwart Rune",
+   "type": "Unique",
+   "cost": 5,
+   "costOverride": null,
+   "text": "When calculating its combat result, a war machine inscribed with a Stalwart Rune may claim a bonus of +1 combat result point.",
+   "url": "https://tow.whfb.app/magic-item/stalwart-rune"
+  },
+  "runeofthedishonoured": {
+   "slug": "rune-of-the-dishonoured",
+   "name": "Rune of the Dishonoured",
+   "type": "Ability",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Daemon Slayers and Dragon Slayers only. Once a model with this runic tattoo is reduced to their last Wound, they gain a 3+ Ward save against any further wounds suffered. However, at the end of the battle, a model with this runic tattoo that has been slain is worth no Victory Points. If it is still alive, the enemy player wins a bonus number of Victory Points equal to 100% of its points cost.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-the-dishonoured"
+  },
+  "runeofendlessbattle": {
+   "slug": "rune-of-endless-battle",
+   "name": "Rune of Endless Battle",
+   "type": "Ability",
+   "cost": 40,
+   "costOverride": null,
+   "text": "During the Combat phase of any turn in which a model with this runic tattoo charged, every attack it makes that causes an unsaved wound allows it to immediately make one additional attack.\n\nNote that any additional attacks that cause unsaved wounds and any unsaved wounds caused by the Impact Hits (X) special rule do not benefit from this special rule.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-endless-battle"
+  },
+  "runeofthereckless": {
+   "slug": "rune-of-the-reckless",
+   "name": "Rune of the Reckless",
+   "type": "Ability",
+   "cost": 35,
+   "costOverride": null,
+   "text": "A model with this runic tattoo gains the Frenzy special rule and, during the Combat phase, has a +1 modifier to their rolls To Hit. However, enemy models that target this model during the Combat phase also have a +1 modifier to their rolls To Hit.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-the-reckless"
+  },
+  "runeofthehateful": {
+   "slug": "rune-of-the-hateful",
+   "name": "Rune of the Hateful",
+   "type": "Ability",
+   "cost": 30,
+   "costOverride": null,
+   "text": "A model with this runic tattoo gains the Hatred (all enemies) special rule.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-the-hateful"
+  },
+  "runeofgrit": {
+   "slug": "rune-of-grit",
+   "name": "Rune of Grit",
+   "type": "Ability",
+   "cost": 25,
+   "costOverride": null,
+   "text": "A model with this runic tattoo has a +1 modifier to its Toughness characteristic.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-grit"
+  },
+  "runeofthedauntless": {
+   "slug": "rune-of-the-dauntless",
+   "name": "Rune of the Dauntless",
+   "type": "Ability",
+   "cost": 15,
+   "costOverride": null,
+   "text": "A model with this runic tattoo must always issue and accept challenges (if possible). During a challenge, this model may re-roll any failed rolls To Hit.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-the-dauntless"
+  },
+  "runeofwrath": {
+   "slug": "rune-of-wrath",
+   "name": "Rune of Wrath",
+   "type": "Ability",
+   "cost": 15,
+   "costOverride": null,
+   "text": "A model with this runic tattoo has a +1 modifier to its Attacks characteristic.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-wrath"
+  },
+  "warriorsrune": {
+   "slug": "warriors-rune",
+   "name": "Warrior's Rune",
+   "type": "Ability",
+   "cost": 10,
+   "costOverride": null,
+   "text": "A model with this runic tattoo has a +1 modifier to its Weapon Skill characteristic.",
+   "url": "https://tow.whfb.app/magic-item/warriors-rune"
+  },
+  "runeofblazingfury": {
+   "slug": "rune-of-blazing-fury",
+   "name": "Rune of Blazing Fury",
+   "type": "Ability",
+   "cost": 5,
+   "costOverride": null,
+   "text": "A model with this runic tattoo has the Flaming Attacks special rule.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-blazing-fury"
+  },
+  "masterruneofslaying": {
+   "slug": "master-rune-of-slaying",
+   "name": "Master Rune of Slaying",
+   "type": "Magic Weapon",
+   "cost": 50,
+   "costOverride": null,
+   "text": "When making a roll To Wound against an enemy whose troop type is behemoth with a weapon inscribed with this rune, a roll of 3+ is always a success regardless of the target's Toughness. In addition, a weapon inscribed with this rune gains the Multiple Wounds (D3) special rule.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-slaying"
+  },
+  "masterruneofpiercing": {
+   "slug": "master-rune-of-piercing",
+   "name": "Master Rune of Piercing",
+   "type": "Magic Weapon",
+   "cost": 40,
+   "costOverride": null,
+   "text": "A weapon inscribed with this rune has a +1 modifier to its Strength characteristic. In addition, a weapon inscribed with this rune shoots like a bolt thrower, using the Through & Through special rule.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-piercing"
+  },
+  "masterruneofburstingflame": {
+   "slug": "master-rune-of-bursting-flame",
+   "name": "Master Rune of Bursting Flame",
+   "type": "Magic Weapon",
+   "cost": 35,
+   "costOverride": null,
+   "text": "If the roll To Hit is successful, a weapon inscribed with this rune causes 2D3 hits to the target enemy unit, rather than the usual one hit.",
+   "url": "https://tow.whfb.app/magic-item/master-rune-of-bursting-flame"
+  },
+  "runeofconcussiveforce": {
+   "slug": "rune-of-concussive-force",
+   "name": "Rune of Concussive Force",
+   "type": "Magic Weapon",
+   "cost": 30,
+   "costOverride": null,
+   "text": "A unit hit with an attack made by a weapon inscribed with this rune gains the Stupidity special rule until your next Start of Turn sub-phase.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-concussive-force"
+  },
+  "runeofaccuracy": {
+   "slug": "rune-of-accuracy",
+   "name": "Rune of Accuracy",
+   "type": "Magic Weapon",
+   "cost": 20,
+   "costOverride": null,
+   "text": "A weapon inscribed with this rune does not suffer any negative To Hit modifiers.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-accuracy"
+  },
+  "runeofrapidfire": {
+   "slug": "rune-of-rapid-fire",
+   "name": "Rune of Rapid Fire",
+   "type": "Magic Weapon",
+   "cost": 15,
+   "costOverride": null,
+   "text": "A weapon inscribed with this rune gains the Multiple Shots (2) and Quick Shot special rules.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-rapid-fire"
+  },
+  "runeofmoltensteel": {
+   "slug": "rune-of-molten-steel",
+   "name": "Rune of Molten Steel",
+   "type": "Magic Weapon",
+   "cost": 10,
+   "costOverride": null,
+   "text": "A weapon inscribed with this rune gains the Flaming Attacks special rule.",
+   "url": "https://tow.whfb.app/magic-item/rune-of-molten-steel"
+  },
+  "enchantedrune": {
+   "slug": "enchanted-rune",
+   "name": "Enchanted Rune",
+   "type": "Magic Weapon",
+   "cost": 5,
+   "costOverride": null,
+   "text": "A weapon inscribed with this rune gains the Magical Attacks special rule.",
+   "url": "https://tow.whfb.app/magic-item/enchanted-rune"
+  },
+  "swordofreaving": {
+   "slug": "sword-of-reaving",
+   "name": "Sword of Reaving",
+   "type": "Magic Weapon",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Sword of Reaving (Profile)Notes: If, after making their attacks, the wielder of this weapon has failed to cause any wounds, they suffer D3 Strength 4 hits with an AP of -1.",
+   "url": "https://tow.whfb.app/magic-item/sword-of-reaving"
+  },
+  "cacklingblade": {
+   "slug": "cackling-blade",
+   "name": "Cackling Blade",
+   "type": "Magic Weapon",
+   "cost": 65,
+   "costOverride": null,
+   "text": "Cackling Blade (Profile)Notes: If a natural 6 is rolled for the Extra Attacks (+D6) special rule, the wielder of the Cackling Blade immediately loses a single Wound.",
+   "url": "https://tow.whfb.app/magic-item/cackling-blade"
+  },
+  "dragonblade": {
+   "slug": "dragonblade",
+   "name": "Dragonblade",
+   "type": "Magic Weapon",
+   "cost": 0,
+   "costOverride": null,
+   "text": "Dragonblade (Profile)Notes: Dragonblade is inscribed with a Rune of Fury and a Grudge Rune, as described in Forces of Fantasy.",
+   "url": "https://tow.whfb.app/magic-item/dragonblade"
+  },
+  "ogreblade": {
+   "slug": "ogre-blade",
+   "name": "Ogre Blade",
+   "type": "Magic Weapon",
+   "cost": 75,
+   "costOverride": null,
+   "text": "Ogre Blade (Profile)",
+   "url": "https://tow.whfb.app/magic-item/ogre-blade"
+  },
+  "swordofbattle": {
+   "slug": "sword-of-battle",
+   "name": "Sword of Battle",
+   "type": "Magic Weapon",
+   "cost": 60,
+   "costOverride": null,
+   "text": "Sword of Battle (Profile)",
+   "url": "https://tow.whfb.app/magic-item/sword-of-battle"
+  },
+  "flailofwrecks": {
+   "slug": "flail-of-wrecks",
+   "name": "Flail of Wrecks",
+   "type": "Magic Weapon",
+   "cost": 45,
+   "costOverride": null,
+   "text": "Flail of Wrecks (Profile)Notes: The Strength modifier and Armour Bane (1) special rule apply only against enemy models the wielder charged this turn. Should the wielder make any rolls To Wound of a natural 1 during the Combat phase, their Initiative is reduced by 1 (to a minimum of 1) for the remainder of the game.",
+   "url": "https://tow.whfb.app/magic-item/flail-of-wrecks"
+  },
+  "meteorhammer": {
+   "slug": "meteor-hammer",
+   "name": "Meteor Hammer",
+   "type": "Magic Weapon",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Meteor Hammer ProfileNotes: When making a roll To Wound with this weapon, a roll of a 3+ is always a success, regardless of the target's Toughness.",
+   "url": "https://tow.whfb.app/magic-item/meteor-hammer"
+  },
+  "hellforgedaxe": {
+   "slug": "hell-forged-axe",
+   "name": "Hell-forged Axe",
+   "type": "Magic Weapon",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Hell-forged Axe Profile",
+   "url": "https://tow.whfb.app/magic-item/hell-forged-axe"
+  },
+  "grimverdict": {
+   "slug": "grim-verdict",
+   "name": "Grim Verdict",
+   "type": "Magic Weapon",
+   "cost": 40,
+   "costOverride": null,
+   "text": "Grim Verdict (Profile)Notes: Should the wielder lose a round of combat, they suffer a single wound with no armour save permitted (Ward and Regeneration saves can be attempted as normal).",
+   "url": "https://tow.whfb.app/magic-item/grim-verdict"
+  },
+  "duellistsblades": {
+   "slug": "duellists-blades",
+   "name": "Duellist's Blades",
+   "type": "Magic Weapon",
+   "cost": 55,
+   "costOverride": null,
+   "text": "Duellist’s Blades (Profile)",
+   "url": "https://tow.whfb.app/magic-item/duellists-blades"
+  },
+  "huntersscorn": {
+   "slug": "hunters-scorn",
+   "name": "Hunter's Scorn",
+   "type": "Magic Weapon",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Hunter's Scorn (Profile)Notes: Should an enemy model with a Wounds characteristic of 2 or more suffer one or more unsaved wounds from this weapon, they and their unit suffer a - 1 modifier to their Initiative characteristic (to a minimum of 1) for the remainder of the game. However, if the wielder of Hunter's Scorn fails to wound their target, this effect is lost.",
+   "url": "https://tow.whfb.app/magic-item/hunters-scorn"
+  },
+  "swordofsorrow": {
+   "slug": "sword-of-sorrow",
+   "name": "Sword of Sorrow",
+   "type": "Magic Weapon",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Sword of Sorrow ProfileNotes: The Sword of Sorrow is a missile weapon; it cannot be used in combat. No Ward or Regeneration saves are permitted against wounds caused by the Sword of Sorrow.",
+   "url": "https://tow.whfb.app/magic-item/sword-of-sorrow"
+  },
+  "dragonslayingsword": {
+   "slug": "dragon-slaying-sword",
+   "name": "Dragon Slaying Sword",
+   "type": "Magic Weapon",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Dragon Slaying Sword (Profile)",
+   "url": "https://tow.whfb.app/magic-item/dragon-slaying-sword"
+  },
+  "headsmansaxe": {
+   "slug": "headsmans-axe",
+   "name": "Headsman's Axe",
+   "type": "Magic Weapon",
+   "cost": 45,
+   "costOverride": null,
+   "text": "Headsman’s Axe (Profile)",
+   "url": "https://tow.whfb.app/magic-item/headsmans-axe"
+  },
+  "spelleateraxe": {
+   "slug": "spelleater-axe",
+   "name": "Spelleater Axe",
+   "type": "Magic Weapon",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Spelleater Axe (Profile)",
+   "url": "https://tow.whfb.app/magic-item/spelleater-axe"
+  },
+  "giantblade": {
+   "slug": "giant-blade",
+   "name": "Giant Blade",
+   "type": "Magic Weapon",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Giant Blade (Profile)",
+   "url": "https://tow.whfb.app/magic-item/giant-blade"
+  },
+  "swordofswiftness": {
+   "slug": "sword-of-swiftness",
+   "name": "Sword of Swiftness",
+   "type": "Magic Weapon",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Sword of Swiftness (Profile)",
+   "url": "https://tow.whfb.app/magic-item/sword-of-swiftness"
+  },
+  "berserkerblade": {
+   "slug": "berserker-blade",
+   "name": "Berserker Blade",
+   "type": "Magic Weapon",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Berserker Blade (Profile)Notes: The wielder of the Berserker Blade is Impetuous.",
+   "url": "https://tow.whfb.app/magic-item/berserker-blade"
+  },
+  "swordofmight": {
+   "slug": "sword-of-might",
+   "name": "Sword of Might*",
+   "type": "Magic Weapon",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Sword of Might (Profile)*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/sword-of-might"
+  },
+  "bitingblade": {
+   "slug": "biting-blade",
+   "name": "Biting Blade",
+   "type": "Magic Weapon",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Biting Blade (Profile)",
+   "url": "https://tow.whfb.app/magic-item/biting-blade"
+  },
+  "swordofstriking": {
+   "slug": "sword-of-striking",
+   "name": "Sword of Striking*",
+   "type": "Magic Weapon",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Sword of Striking (Profile)Notes: During the Combat phase, the wielder of the Sword of Striking has a +1 modifier to their rolls To Hit.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/sword-of-striking"
+  },
+  "burningblade": {
+   "slug": "burning-blade",
+   "name": "Burning Blade*",
+   "type": "Magic Weapon",
+   "cost": 5,
+   "costOverride": null,
+   "text": "Burning Blade (Profile)*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/burning-blade"
+  },
+  "armourofdestiny": {
+   "slug": "armour-of-destiny",
+   "name": "Armour of Destiny",
+   "type": "Magic Armour",
+   "cost": 70,
+   "costOverride": null,
+   "text": "The Armour of Destiny is a suit of heavy armour. In addition, its wearer has a 4+ Ward save against any wounds suffered.",
+   "url": "https://tow.whfb.app/magic-item/armour-of-destiny"
+  },
+  "armourofdarkfaith": {
+   "slug": "armour-of-dark-faith",
+   "name": "Armour of Dark Faith",
+   "type": "Magic Armour",
+   "cost": 40,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry or cavalry only. The Armour of Dark Faith is a suit of light armour. In addition, the wearer may re-roll any failed armour saves. However, if the wearer of the Armour of Dark Faith loses a Wound, this effect is lost and it counts as light armour for the rest of the game.",
+   "url": "https://tow.whfb.app/magic-item/armour-of-dark-faith"
+  },
+  "bedazzlinghelm": {
+   "slug": "bedazzling-helm",
+   "name": "Bedazzling Helm",
+   "type": "Magic Armour",
+   "cost": 60,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry or cavalry only. May be worn with other armour. The wearer of the Bedazzling Helm improves their armour value by 1 (to a maximum of 2+). In addition, any enemy model that directs its attacks against the wearer during the Combat phase suffers a -1 modifier to its rolls To Hit.",
+   "url": "https://tow.whfb.app/magic-item/bedazzling-helm"
+  },
+  "scaleoffalsepromise": {
+   "slug": "scale-of-false-promise",
+   "name": "Scale of False Promise",
+   "type": "Magic Armour",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry or cavalry only. The Scale of False Promise is a suit of heavy armour. The wearer improves their Toughness and Wounds characteristics by 1, but becomes subject to the Stupidity special rule. If the wearer already suffers from Stupidity, they must apply a +1 modifier to the dice roll every time they make a Stupidity test.",
+   "url": "https://tow.whfb.app/magic-item/scale-of-false-promise"
+  },
+  "mantleofdriftingshadow": {
+   "slug": "mantle-of-drifting-shadow",
+   "name": "Mantle of Drifting Shadow",
+   "type": "Magic Armour",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry only. The Mantle of Drifting Shadow is a suit of light armour. The wearer cannot be targeted by any shooting or spells from more than 6\" away. In addition, they improve their Movement characteristic by 1, but gain the Loner special rule.",
+   "url": "https://tow.whfb.app/magic-item/mantle-of-drifting-shadow"
+  },
+  "armourofsilveredsteel": {
+   "slug": "armour-of-silvered-steel",
+   "name": "Armour of Silvered Steel",
+   "type": "Magic Armour",
+   "cost": 40,
+   "costOverride": null,
+   "text": "The Armour of Silvered Steel is a suit of armour that gives its wearer an armour value of 3+ which cannot be improved in any way.",
+   "url": "https://tow.whfb.app/magic-item/armour-of-silvered-steel"
+  },
+  "glitteringscales": {
+   "slug": "glittering-scales",
+   "name": "Glittering Scales",
+   "type": "Magic Armour",
+   "cost": 35,
+   "costOverride": null,
+   "text": "The Glittering Scales is a suit of light armour. In addition, once per turn, you may make your opponent re-roll a single roll To Hit made against the wearer.",
+   "url": "https://tow.whfb.app/magic-item/glittering-scales"
+  },
+  "levitatingshield": {
+   "slug": "levitating-shield",
+   "name": "Levitating Shield",
+   "type": "Magic Armour",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry only. The Levitating Shield is a shield. In addition, the bearer may use it alongside a weapon with the Requires Two Hands special rule during combat.",
+   "url": "https://tow.whfb.app/magic-item/levitating-shield"
+  },
+  "shieldofthewarriortrue": {
+   "slug": "shield-of-the-warrior-true",
+   "name": "Shield of the Warrior True",
+   "type": "Magic Armour",
+   "cost": 30,
+   "costOverride": null,
+   "text": "The Shield of the Warrior True is a shield. In addition, its bearer has a 5+ Ward save against any wounds suffered during the Shooting phase.",
+   "url": "https://tow.whfb.app/magic-item/shield-of-the-warrior-true"
+  },
+  "spellshield": {
+   "slug": "spellshield",
+   "name": "Spellshield*",
+   "type": "Magic Armour",
+   "cost": 25,
+   "costOverride": null,
+   "text": "The Spellshield is a shield. In addition, its bearer has a 5+ Ward save against any wounds suffered that were caused by a Magic Missile, a Magical Vortex, or an Assailment spell.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/spellshield"
+  },
+  "trailblazershauberk": {
+   "slug": "trailblazers-hauberk",
+   "name": "Trailblazer's Hauberk",
+   "type": "Magic Armour",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry only. The Trailblazer's Hauberk is a suit of heavy armour. In addition, its wearer gains the Move Through Cover and Scouts special rules.",
+   "url": "https://tow.whfb.app/magic-item/trailblazers-hauberk"
+  },
+  "armourofmeteoriciron": {
+   "slug": "armour-of-meteoric-iron",
+   "name": "Armour of Meteoric Iron",
+   "type": "Magic Armour",
+   "cost": 20,
+   "costOverride": null,
+   "text": "The Armour of Meteoric Iron gives its wearer an armour value of 5+, which cannot be improved in any way. However, nor can this armour value be reduced in any way either.",
+   "url": "https://tow.whfb.app/magic-item/armour-of-meteoric-iron"
+  },
+  "enchantedshield": {
+   "slug": "enchanted-shield",
+   "name": "Enchanted Shield*",
+   "type": "Magic Armour",
+   "cost": 10,
+   "costOverride": null,
+   "text": "The Enchanted Shield is a shield. In addition, its bearer has a 6+ Ward save against any wounds suffered that were caused by a non-magical enemy attack.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/enchanted-shield"
+  },
+  "charmedshield": {
+   "slug": "charmed-shield",
+   "name": "Charmed Shield*",
+   "type": "Magic Armour",
+   "cost": 5,
+   "costOverride": null,
+   "text": "The Charmed Shield is a shield. In addition, once per game the Charmed Shield gives its bearer a 5+ Ward save against a single wound. Once this Ward save has been used, the Charmed Shield is considered to be an ordinary, non magical shield.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/charmed-shield"
+  },
+  "amuletofspellattraction": {
+   "slug": "amulet-of-spell-attraction",
+   "name": "Amulet of Spell Attraction",
+   "type": "Talisman",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Once per turn, when a friendly unit within the bearer's Command range is targeted by a Magic Missile or Hex, the bearer may make a Leadership test. If the test is passed, the bearer may choose to redirect the spell onto themselves rather than the original target, even if they are out of range or would not normally be an eligible target. The spell is then resolved with the bearer of the Amulet as its target.",
+   "url": "https://tow.whfb.app/magic-item/amulet-of-spell-attraction"
+  },
+  "dawnstone": {
+   "slug": "dawnstone",
+   "name": "Dawnstone",
+   "type": "Talisman",
+   "cost": 35,
+   "costOverride": null,
+   "text": "The bearer of the Dawnstone may re-roll any Armour Save roll of a natural 1.",
+   "url": "https://tow.whfb.app/magic-item/dawnstone"
+  },
+  "periaptofsoulexchange": {
+   "slug": "periapt-of-soul-exchange",
+   "name": "Periapt of Soul Exchange",
+   "type": "Talisman",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of the Periapt of Soul Exchange may channel its power. If they do, D3 friendly models within the bearer's Command range are removed from play as casualties and the bearer recovers that many lost Wounds.",
+   "url": "https://tow.whfb.app/magic-item/periapt-of-soul-exchange"
+  },
+  "talismanofprotection": {
+   "slug": "talisman-of-protection",
+   "name": "Talisman of Protection",
+   "type": "Talisman",
+   "cost": 30,
+   "costOverride": null,
+   "text": "The Talisman of Protection gives its bearer a 5+ Ward save against any wounds suffered.",
+   "url": "https://tow.whfb.app/magic-item/talisman-of-protection"
+  },
+  "paymasterscoin": {
+   "slug": "paymasters-coin",
+   "name": "Paymaster's Coin*",
+   "type": "Talisman",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Single use. The bearer of a Paymaster's Coin can re-roll any failed rolls To Hit made during the Combat phase.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/paymasters-coin"
+  },
+  "obsidianlodestone": {
+   "slug": "obsidian-lodestone",
+   "name": "Obsidian Lodestone*",
+   "type": "Talisman",
+   "cost": 20,
+   "costOverride": null,
+   "text": "A model may purchase up to three Obsidian Lodestones. A model that bears a single Obsidian Lodestone has Magic Resistance (-1), a model that bears two has Magic Resistance (-2), and a model that bears three has Magic Resistance (-3).\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/obsidian-lodestone"
+  },
+  "luckstone": {
+   "slug": "luckstone",
+   "name": "Luckstone*",
+   "type": "Talisman",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Single use. The bearer of a Luckstone can re-roll a single failed Armour Save roll.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/luckstone"
+  },
+  "iconoffortitude": {
+   "slug": "icon-of-fortitude",
+   "name": "Icon of Fortitude",
+   "type": "Talisman",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry or cavalry only. The bearer is immune to the Multiple Wounds (X) special rule. If the bearer is wounded by an attack with this special rule, they suffer a single wound.",
+   "url": "https://tow.whfb.app/magic-item/icon-of-fortitude"
+  },
+  "ironhidetalisman": {
+   "slug": "ironhide-talisman",
+   "name": "Ironhide Talisman",
+   "type": "Talisman",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry only. Any enemy model that makes a successful roll To Hit against the bearer of the Ironhide Talisman during the Shooting phase or Combat phase must re-roll any rolls To Wound of a natural 6.\n\nNote that this magic item does not work against attacks that hit automatically.",
+   "url": "https://tow.whfb.app/magic-item/ironhide-talisman"
+  },
+  "ringofdoom": {
+   "slug": "ring-of-doom",
+   "name": "Ring of Doom",
+   "type": "Enchanted Item",
+   "cost": 25,
+   "costOverride": null,
+   "text": "The bearer of the Ring of Doom can cast the Doombolt spell from the Lore of Dark Magic as a Bound spell, with a Power Level of 2. However, each time the spell is successfully cast, your opponent rolls a D6. On a roll of 4+, the bearer reduces their Toughness characteristic by 1 (to a minimum of 1).",
+   "url": "https://tow.whfb.app/magic-item/ring-of-doom"
+  },
+  "daemonbloodedsteed": {
+   "slug": "daemon-blooded-steed",
+   "name": "Daemon-Blooded Steed",
+   "type": "Enchanted Item",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Models whose troop type is cavalry only. The bearer's mount improves its Movement, Strength and Attacks characteristics by 1 (to a maximum of 10), but gains the Impetuous special rule.",
+   "url": "https://tow.whfb.app/magic-item/daemon-blooded-steed"
+  },
+  "elixirofpower": {
+   "slug": "elixir-of-power",
+   "name": "Elixir of Power",
+   "type": "Enchanted Item",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of an Elixir of Power can consume it. Until their next Start of Turn sub-phase, the model has a +1 modifier to their Strength, Attacks and Initiative characteristics (to a maximum of 10). Once this effect ends, the bearer loses a single Wound. This Wound cannot be recovered by a Regeneration save.",
+   "url": "https://tow.whfb.app/magic-item/elixir-of-power"
+  },
+  "wizardinghat": {
+   "slug": "wizarding-hat",
+   "name": "Wizarding Hat",
+   "type": "Enchanted Item",
+   "cost": 45,
+   "costOverride": null,
+   "text": "The wearer is a Level 1 Wizard and knows one randomly generated spell from a Lore of Magic of your choosing. However, the whispers of the ghostly Wizard haunting the hat are often confusing. Therefore, the wearer also becomes subject to the Stupidity special rule.",
+   "url": "https://tow.whfb.app/magic-item/wizarding-hat"
+  },
+  "flyingcarpet": {
+   "slug": "flying-carpet",
+   "name": "Flying Carpet",
+   "type": "Enchanted Item",
+   "cost": 40,
+   "costOverride": null,
+   "text": "Models whose troop type is regular infantry or heavy infantry only. The bearer of the Flying Carpet gains the Fly (8) and Swiftstride special rules. However, the bearer cannot join a unit.",
+   "url": "https://tow.whfb.app/magic-item/flying-carpet"
+  },
+  "healingpotion": {
+   "slug": "healing-potion",
+   "name": "Healing Potion*",
+   "type": "Enchanted Item",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of a Healing Potion can consume it. The model immediately recovers D3 lost Wounds.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/healing-potion"
+  },
+  "rubyringofruin": {
+   "slug": "ruby-ring-of-ruin",
+   "name": "Ruby Ring of Ruin",
+   "type": "Enchanted Item",
+   "cost": 35,
+   "costOverride": null,
+   "text": "The wielder of the Ruby Ring of Ruin can cast the Fireball spell from the Lore of Battle Magic as a Bound spell, with a Power Level of 1.",
+   "url": "https://tow.whfb.app/magic-item/ruby-ring-of-ruin"
+  },
+  "potionofstrength": {
+   "slug": "potion-of-strength",
+   "name": "Potion of Strength*",
+   "type": "Enchanted Item",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of a Potion of Strength can consume it. Until the end of that turn, the model has a +D3 modifier to its Strength characteristic (to a maximum of 10).\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/potion-of-strength"
+  },
+  "potionoftoughness": {
+   "slug": "potion-of-toughness",
+   "name": "Potion of Toughness*",
+   "type": "Enchanted Item",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of a Potion of Toughness can consume it. Until the end of that turn, the model has a +D3 modifier to its Toughness characteristic (to a maximum of 10).\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/potion-of-toughness"
+  },
+  "potionofspeed": {
+   "slug": "potion-of-speed",
+   "name": "Potion of Speed*",
+   "type": "Enchanted Item",
+   "cost": 10,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of a Potion of Speed can consume it. Until the end of that turn, the model has a +D3 modifier to its Initiative characteristic (to a maximum of 10).\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/potion-of-speed"
+  },
+  "archlightningrod": {
+   "slug": "arch-lightning-rod",
+   "name": "Arch-Lightning Rod",
+   "type": "Enchanted Item",
+   "cost": 40,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, if they are not engaged in combat, the bearer of the Arch-Lightning Rod may attempt to use it by making a Leadership test (using their own, unmodified Leadership). If this test is passed, until your next Start of Turn sub-phase enemy units cannot use the Fly (X) special rule.",
+   "url": "https://tow.whfb.app/magic-item/arch-lightning-rod"
+  },
+  "potionoffoolhardiness": {
+   "slug": "potion-of-foolhardiness",
+   "name": "Potion of Foolhardiness*",
+   "type": "Enchanted Item",
+   "cost": 5,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of a Potion of Foolhardiness can consume it. Until the end of that turn, the model gains the Immune To Psychology special rule.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/potion-of-foolhardiness"
+  },
+  "potionoffervour": {
+   "slug": "potion-of-fervour",
+   "name": "Potion of Fervour",
+   "type": "Enchanted Item",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Single Use. During the Command sub-phase of their turn, the bearer of the Potion of Fervour can consume it. Until the end of that turn, the model has a +D3 modifier to its Attacks characteristic (to a maximum of 10).\n\nNote that a model can only consume a single potion (of any type) per Command phase.",
+   "url": "https://tow.whfb.app/magic-item/potion-of-fervour"
+  },
+  "becalmingorb": {
+   "slug": "becalming-orb",
+   "name": "Becalming Orb",
+   "type": "Enchanted Item",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Single Use. The bearer of the Becalming Orb may cast the following Bound spell, with a Power level of 1:\n\nType | Hex\nCasting Value | 8+\nRange | Self\n\nUntil your next Start of Turn sub-phase, enemy Wizards that are within 15\" of the caster when attempting to cast a spell must increase that spell's casting value by 2.",
+   "url": "https://tow.whfb.app/magic-item/becalming-orb"
+  },
+  "rodofmight": {
+   "slug": "rod-of-might",
+   "name": "Rod of Might",
+   "type": "Arcane Item",
+   "cost": 50,
+   "costOverride": null,
+   "text": "The bearer of the Rod of Might may apply a +1 modifier to any of their casting results. However, the bearer will suffer a miscast if a natural double 1 or 2 is rolled when making a Casting roll, rather than the usual natural double 1.",
+   "url": "https://tow.whfb.app/magic-item/rod-of-might"
+  },
+  "scrollofinvocation": {
+   "slug": "scroll-of-invocation",
+   "name": "Scroll of Invocation*",
+   "type": "Arcane Item",
+   "cost": 30,
+   "costOverride": null,
+   "text": "0-1 per Wizard. Single use. The bearer may use this scroll instead of making a Casting roll. If they do, the spell is cast as if the caster had rolled the minimum casting value of the spell. Dispel rolls may be attempted as normal.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/scroll-of-invocation"
+  },
+  "infernalfamiliar": {
+   "slug": "infernal-familiar",
+   "name": "Infernal Familiar",
+   "type": "Arcane Item",
+   "cost": 25,
+   "costOverride": null,
+   "text": "The owner of an Infernal Familiar may select either Doombolt or Winds of Chaos addition to the other spells they know. However, should the Wizard ever suffer a miscast whilst casting the selected spell, they cannot cast it again for the remainder of the game in addition to any other effects from the Miscast table.",
+   "url": "https://tow.whfb.app/magic-item/infernal-familiar"
+  },
+  "feedbackscroll": {
+   "slug": "feedback-scroll",
+   "name": "Feedback Scroll",
+   "type": "Arcane Item",
+   "cost": 60,
+   "costOverride": null,
+   "text": "Single use. The bearer may use this scroll instead of making a Wizardly dispel attempt. The spell is cast as normal. Once the spell has been resolved, roll two D6. For each roll of a 4+, the casting Wizard loses a single Wound.",
+   "url": "https://tow.whfb.app/magic-item/feedback-scroll"
+  },
+  "scrolloftransmogrification": {
+   "slug": "scroll-of-transmogrification",
+   "name": "Scroll of Transmogrification*",
+   "type": "Arcane Item",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Single use. The bearer may use this scroll instead of making a Wizardly dispel attempt. The spell is cast as normal. Once the spell has been resolved, the casting player must roll equal to or lower than the casting Wizard's Level of Wizardry on a single D6. Should they fail, the Wizard turns into a frog.\n\nWhilst transmogrified, the Wizard cannot cast or dispel any spells, cannot use any of their equipment (magical or mundane) and reduces all of their characteristics (excluding Wounds) to 1. During each Start of Turn sub-phase, a player may roll a D6 for each transmogrified Wizard in their army. On a roll of 4+, the Wizard returns to normal (but retains a love of water).\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/scroll-of-transmogrification"
+  },
+  "wandofjet": {
+   "slug": "wand-of-jet",
+   "name": "Wand of Jet",
+   "type": "Arcane Item",
+   "cost": 45,
+   "costOverride": null,
+   "text": "The bearer of the Wand of Jet may apply a +1 modifier to any of their Casting or Dispel rolls. However, should they roll any natural double when making a Casting or Dispel roll, the Wand of Jet is destroyed and it cannot be used again.\n\nNote that this is a modifier to the result of a roll – it does not negate a roll of a natural double 1.",
+   "url": "https://tow.whfb.app/magic-item/wand-of-jet"
+  },
+  "staffofquietude": {
+   "slug": "staff-of-quietude",
+   "name": "Staff of Quietude",
+   "type": "Arcane Item",
+   "cost": 35,
+   "costOverride": null,
+   "text": "During the Command sub-phase of their turn, the bearer of the Staff of Quietude can attempt to unleash its power by making a Leadership test. If this test is passed, all Remains in Play spells currently in play are dispelled, including spells cast by friendly models.",
+   "url": "https://tow.whfb.app/magic-item/staff-of-quietude"
+  },
+  "lorefamiliar": {
+   "slug": "lore-familiar",
+   "name": "Lore Familiar",
+   "type": "Arcane Item",
+   "cost": 30,
+   "costOverride": null,
+   "text": "The owner of a Lore Familiar does not randomly generate their spells. Instead, they may choose which spells they know from their chosen lore (including that lore's signature spell).",
+   "url": "https://tow.whfb.app/magic-item/lore-familiar"
+  },
+  "scrollofdisruption": {
+   "slug": "scroll-of-disruption",
+   "name": "Scroll of Disruption",
+   "type": "Arcane Item",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Once per turn, the bearer of the Scroll of Disruption may re-roll a Dispel roll.\n\n*Note all dice are re-rolled, including any bonus or discard dice granted by special rules or magic items.",
+   "url": "https://tow.whfb.app/magic-item/scroll-of-disruption"
+  },
+  "powerscroll": {
+   "slug": "power-scroll",
+   "name": "Power Scroll*",
+   "type": "Arcane Item",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Single use. A Wizard may use this scroll when attempting to cast a spell. If they do so, roll an extra D6 when making the Casting roll and discard the lowest result. However, if a double 1 is rolled on any two of the dice rolled, the spell is miscast.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/power-scroll"
+  },
+  "tomeofspellcraft": {
+   "slug": "tome-of-spellcraft",
+   "name": "Tome of Spellcraft",
+   "type": "Arcane Item",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Once per turn, the bearer of the Tome of Spellcraft may re-roll a Casting roll.\n\n*Note all dice are re-rolled, including any bonus or discard dice granted by special rules or magic items.",
+   "url": "https://tow.whfb.app/magic-item/tome-of-spellcraft"
+  },
+  "dispelscroll": {
+   "slug": "dispel-scroll",
+   "name": "Dispel Scroll*",
+   "type": "Arcane Item",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Single use. A Wizard may use this scroll when attempting a Wizardly dispel. If they do so, roll an extra D6 when making the Dispel roll and discard the lowest result. However, if a double 1 is rolled on any two of the dice rolled, the Wizard is outclassed in the art.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/dispel-scroll"
+  },
+  "arcanefamiliar": {
+   "slug": "arcane-familiar",
+   "name": "Arcane Familiar",
+   "type": "Arcane Item",
+   "cost": 15,
+   "costOverride": null,
+   "text": "The owner of an Arcane Familiar knows spells from two Lores of Magic, rather than the usual one. When determining the spells the Wizard knows, you must roll for each Lore separately. Duplicate spells are re-rolled as normal. The Wizard may discard one randomly generated spell as normal, replacing it with the signature spell of the same Lore of Magic.",
+   "url": "https://tow.whfb.app/magic-item/arcane-familiar"
+  },
+  "earthingrod": {
+   "slug": "earthing-rod",
+   "name": "Earthing Rod",
+   "type": "Arcane Item",
+   "cost": 5,
+   "costOverride": null,
+   "text": "Single use. Should they miscast a spell, a Wizard can use the Earthing Rod to re-roll the result rolled on the Miscast table.",
+   "url": "https://tow.whfb.app/magic-item/earthing-rod"
+  },
+  "thebannerofthedarkheart": {
+   "slug": "the-banner-of-the-dark-heart",
+   "name": "The Banner of the Dark Heart",
+   "type": "Magic Standard",
+   "cost": 50,
+   "costOverride": null,
+   "text": "When required to make a Fear, Panic or Terror test, a unit carrying this standard may roll an extra D6 and discard the highest result. However, a unit carrying this banner cannot benefit from the General's Inspiring Presence special rule.",
+   "url": "https://tow.whfb.app/magic-item/the-banner-of-the-dark-heart"
+  },
+  "bannerofironresolve": {
+   "slug": "banner-of-iron-resolve",
+   "name": "Banner of Iron Resolve",
+   "type": "Magic Standard",
+   "cost": 50,
+   "costOverride": null,
+   "text": "A unit carrying the Banner of Iron Resolve gains the Stubborn special rule.",
+   "url": "https://tow.whfb.app/magic-item/banner-of-iron-resolve"
+  },
+  "standardofthefellwarrior": {
+   "slug": "standard-of-the-fell-warrior",
+   "name": "Standard of the Fell Warrior",
+   "type": "Magic Standard",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Single use. During the Remaining Moves sub-phase, a unit carrying this standard may perform a free redress the ranks manoeuvre immediately before moving. Once this manoeuvre is complete, the unit moves as normal but cannot turn or perform a quick turn.",
+   "url": "https://tow.whfb.app/magic-item/standard-of-the-fell-warrior"
+  },
+  "razorstandard": {
+   "slug": "razor-standard",
+   "name": "Razor Standard",
+   "type": "Magic Standard",
+   "cost": 40,
+   "costOverride": null,
+   "text": "A unit carrying the Razor Standard gains the Armour Bane (2) special rule.",
+   "url": "https://tow.whfb.app/magic-item/razor-standard"
+  },
+  "rampagingbanner": {
+   "slug": "rampaging-banner",
+   "name": "Rampaging Banner",
+   "type": "Magic Standard",
+   "cost": 30,
+   "costOverride": null,
+   "text": "When a unit carrying the Rampaging Banner declares a charge, it may re-roll its Charge roll.",
+   "url": "https://tow.whfb.app/magic-item/rampaging-banner"
+  },
+  "theblazingbanner": {
+   "slug": "the-blazing-banner",
+   "name": "The Blazing Banner",
+   "type": "Magic Standard",
+   "cost": 25,
+   "costOverride": null,
+   "text": "A unit carrying the Blazing Banner gains the Flaming Attacks special rule.",
+   "url": "https://tow.whfb.app/magic-item/the-blazing-banner"
+  },
+  "warbanner": {
+   "slug": "war-banner",
+   "name": "War Banner",
+   "type": "Magic Standard",
+   "cost": 25,
+   "costOverride": null,
+   "text": "When calculating its combat result, a unit carrying the War Banner may claim an additional bonus of +1 combat result point.",
+   "url": "https://tow.whfb.app/magic-item/war-banner"
+  },
+  "bannerofthesteadfast": {
+   "slug": "banner-of-the-steadfast",
+   "name": "Banner of the Steadfast",
+   "type": "Magic Standard",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry only. Should a unit carrying the Banner of the Steadfast belong to the losing side of a Combat, it can Fall Back in Good Order even if the Unit Strength of the winning side is more than twice that of its own side.",
+   "url": "https://tow.whfb.app/magic-item/banner-of-the-steadfast"
+  },
+  "totemofwrath": {
+   "slug": "totem-of-wrath",
+   "name": "Totem of Wrath",
+   "type": "Magic Standard",
+   "cost": 50,
+   "costOverride": null,
+   "text": "During a turn in which it charged, models within a unit carrying the Totem of Wrath improve the Armour Piercing characteristic of their weapons by 1, and may re-roll any rolls To Wound of a natural 1.",
+   "url": "https://tow.whfb.app/magic-item/totem-of-wrath"
+  },
+  "bannerofswirlingwind": {
+   "slug": "banner-of-swirling-wind",
+   "name": "Banner of Swirling Wind",
+   "type": "Magic Standard",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Any enemy model that shoots at a unit carrying the Banner of Swirling Wind suffers an additional -1 To Hit modifier.",
+   "url": "https://tow.whfb.app/magic-item/banner-of-swirling-wind"
+  },
+  "monsterhunterstapestry": {
+   "slug": "monster-hunters-tapestry",
+   "name": "Monster Hunter's Tapestry",
+   "type": "Magic Standard",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Enemy units may not make Stomp Attacks against a unit carrying the Monster Hunter's Tapestry.",
+   "url": "https://tow.whfb.app/magic-item/monster-hunters-tapestry"
+  }
+ }
+}

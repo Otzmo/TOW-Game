@@ -1,0 +1,3751 @@
+{
+ "faction": "daemons-of-chaos",
+ "name": "Daemons of Chaos",
+ "source": "https://tow.whfb.app/army/daemons-of-chaos",
+ "fetchedAt": "2026-10-24T20:01:26.914Z",
+ "units": {
+  "beasts-of-nurgle": {
+   "slug": "beasts-of-nurgle",
+   "name": "Beasts of Nurgle",
+   "url": "https://tow.whfb.app/unit/beasts-of-nurgle",
+   "base": {
+    "width": 50,
+    "depth": 75
+   },
+   "unitSize": "2+",
+   "troopType": "Monstrous Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Beast of Nurgle",
+     "values": [
+      "5",
+      "3",
+      "0",
+      "4",
+      "5",
+      "4",
+      "2",
+      "D6+1",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons and writhing tentacles",
+   "specialRules": [
+    "attention-seeker",
+    "close-order",
+    "daemonic",
+    "daemon-of-nurgle",
+    "impetuous",
+    "infernal-favour",
+    "loner",
+    "poisoned-attacks",
+    "random-attacks",
+    "regeneration",
+    "slime-trail"
+   ],
+   "cost": 62,
+   "options": []
+  },
+  "blood-throne-of-khorne": {
+   "slug": "blood-throne-of-khorne",
+   "name": "Blood Throne of Khorne",
+   "url": "https://tow.whfb.app/unit/blood-throne-of-khorne",
+   "base": {
+    "width": 50,
+    "depth": 100
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Chariot",
+   "category": "Chariot",
+   "profile": [
+    {
+     "name": "Blood Throne",
+     "values": [
+      "7",
+      "5",
+      "-",
+      "5",
+      "5",
+      "4",
+      "2",
+      "3",
+      "-"
+     ]
+    },
+    {
+     "name": "Bloodletter Crew (x2)",
+     "values": [
+      "-",
+      "5",
+      "3",
+      "4",
+      "-",
+      "-",
+      "4",
+      "1",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "• Blood Throne: Brazen wheels and scything blades (counts as a hand weapon)\n• Bloodletter Crew: Hellblades",
+   "specialRules": [
+    "close-order",
+    "daemonic",
+    "daemon-of-khorne",
+    "first-charge",
+    "gorefeast",
+    "impact-hits",
+    "impetuous",
+    "totem-of-endless-bloodletting"
+   ],
+   "cost": null,
+   "options": []
+  },
+  "bloodcrushers-of-khorne": {
+   "slug": "bloodcrushers-of-khorne",
+   "name": "Bloodcrushers of Khorne",
+   "url": "https://tow.whfb.app/unit/bloodcrushers-of-khorne",
+   "base": {
+    "width": 50,
+    "depth": 75
+   },
+   "unitSize": "3+",
+   "troopType": "Monstrous Cavalry",
+   "category": "Cavalry",
+   "profile": [
+    {
+     "name": "Bloodletter",
+     "values": [
+      "-",
+      "5",
+      "3",
+      "4",
+      "4",
+      "3",
+      "4",
+      "1",
+      "7"
+     ]
+    },
+    {
+     "name": "Bloodreaper",
+     "values": [
+      "-",
+      "5",
+      "3",
+      "4",
+      "4",
+      "3",
+      "4",
+      "2",
+      "7"
+     ]
+    },
+    {
+     "name": "Juggernaut of Khorne",
+     "values": [
+      "7",
+      "4",
+      "-",
+      "5",
+      "-",
+      "-",
+      "2",
+      "2",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "• Bloodletters: Hellblades and calloused hides (counts as light armour)\n• Juggernauts of Khorne: Brass bound hooves and brazen hide (counts as barding)",
+   "specialRules": [
+    "armoured-hide",
+    "close-order",
+    "daemonic",
+    "daemon-of-khorne",
+    "impact-hits",
+    "impetuous",
+    "magic-resistance",
+    "swiftstride"
+   ],
+   "cost": 65,
+   "options": [
+    {
+     "label": "• Upgrade one model to a Bloodreaper (champion)",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 7,
+     "per": "unit"
+    }
+   ]
+  },
+  "bloodletters-of-khorne": {
+   "slug": "bloodletters-of-khorne",
+   "name": "Bloodletters of Khorne",
+   "url": "https://tow.whfb.app/unit/bloodletters-of-khorne",
+   "base": {
+    "width": 30,
+    "depth": 30
+   },
+   "unitSize": "8+",
+   "troopType": "Heavy Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Bloodletter",
+     "values": [
+      "5",
+      "5",
+      "3",
+      "4",
+      "3",
+      "1",
+      "4",
+      "1",
+      "7"
+     ]
+    },
+    {
+     "name": "Bloodreaper",
+     "values": [
+      "5",
+      "5",
+      "3",
+      "4",
+      "3",
+      "1",
+      "4",
+      "2",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "Hellblades and calloused hides (counts as light armour)",
+   "specialRules": [
+    "close-order",
+    "daemonic",
+    "daemon-of-khorne",
+    "impetuous",
+    "magic-resistance"
+   ],
+   "cost": 14,
+   "options": [
+    {
+     "label": "• Upgrade one model to a Bloodreaper (champion)",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 7,
+     "per": "unit"
+    }
+   ]
+  },
+  "bloodthirster": {
+   "slug": "bloodthirster",
+   "name": "Bloodthirster",
+   "url": "https://tow.whfb.app/unit/bloodthirster",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "Behemoth",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Bloodthirster",
+     "values": [
+      "8",
+      "10",
+      "5",
+      "6",
+      "6",
+      "6",
+      "7",
+      "6",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon and heavy armour",
+   "specialRules": [
+    "daemonic",
+    "daemonic-charge",
+    "daemon-of-khorne",
+    "fly",
+    "furious-charge",
+    "impact-hits",
+    "impetuous",
+    "infernal-favour",
+    "large-target",
+    "magic-resistance",
+    "terror"
+   ],
+   "cost": 355,
+   "options": [
+    {
+     "label": "• Bloodflail",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
+     "label": "• Great axe",
+     "cost": 35,
+     "per": "unit"
+    },
+    {
+     "label": "• Lash of Khorne",
+     "cost": 15,
+     "per": "unit"
+    }
+   ]
+  },
+  "blue-horrors-of-tzeentch": {
+   "slug": "blue-horrors-of-tzeentch",
+   "name": "Blue Horrors of Tzeentch",
+   "url": "https://tow.whfb.app/unit/blue-horrors-of-tzeentch",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "9+",
+   "troopType": "Regular Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Blue Horror",
+     "values": [
+      "4",
+      "2",
+      "3",
+      "3",
+      "3",
+      "1",
+      "3",
+      "1",
+      "7"
+     ]
+    },
+    {
+     "name": "Ectoplasmic Horror",
+     "values": [
+      "4",
+      "2",
+      "3",
+      "3",
+      "3",
+      "1",
+      "3",
+      "2",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons and flames of Tzeentch",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-tzeentch",
+    "move-through-cover",
+    "open-order-formation"
+   ],
+   "cost": 9,
+   "options": [
+    {
+     "label": "• Any unit may upgrade one model to an Ectoplasmic Horror (champion)",
+     "cost": 6,
+     "per": "unit"
+    }
+   ]
+  },
+  "brimstone-horrors-of-tzeentch": {
+   "slug": "brimstone-horrors-of-tzeentch",
+   "name": "Brimstone Horrors of Tzeentch",
+   "url": "https://tow.whfb.app/unit/brimstone-horrors-of-tzeentch",
+   "base": {
+    "width": 40,
+    "depth": 40
+   },
+   "unitSize": "2+",
+   "troopType": "Swarm",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Brimstone Horrors",
+     "values": [
+      "5",
+      "2",
+      "2",
+      "2",
+      "3",
+      "6",
+      "2",
+      "4",
+      "5"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-tzeentch",
+    "flaming-attacks",
+    "loner",
+    "skirmish-formation"
+   ],
+   "cost": 38,
+   "options": []
+  },
+  "burning-chariot-of-tzeentch": {
+   "slug": "burning-chariot-of-tzeentch",
+   "name": "Burning Chariot of Tzeentch",
+   "url": "https://tow.whfb.app/unit/burning-chariot-of-tzeentch",
+   "base": {
+    "width": 50,
+    "depth": 100
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Chariot",
+   "category": "Chariot",
+   "profile": [
+    {
+     "name": "Burning Chariot of Tzeentch",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "4",
+      "4",
+      "4",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Exalted Flamer",
+     "values": [
+      "-",
+      "2",
+      "5",
+      "4",
+      "-",
+      "-",
+      "4",
+      "2",
+      "7"
+     ]
+    },
+    {
+     "name": "Blue Horror Crew (x3)",
+     "values": [
+      "-",
+      "2",
+      "3",
+      "3",
+      "-",
+      "-",
+      "3",
+      "1",
+      "7"
+     ]
+    },
+    {
+     "name": "Screamer (x2)",
+     "values": [
+      "1",
+      "3",
+      "-",
+      "4",
+      "-",
+      "-",
+      "4",
+      "2",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "• Exalted Flamer: Hand weapon and warpflame\n• Blue Horror Crew: Hand weapons and flames of Tzeentch\n• Screamer: Lamprey's bite",
+   "specialRules": [
+    "close-order",
+    "daemonic",
+    "daemon-of-tzeentch",
+    "fly",
+    "impact-hits",
+    "lore-of-daemons",
+    "slashing-attack"
+   ],
+   "cost": 190,
+   "options": [
+    {
+     "label": "• Level 2 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 3 Wizard",
+     "cost": 60,
+     "per": "unit"
+    }
+   ]
+  },
+  "chaos-furies": {
+   "slug": "chaos-furies",
+   "name": "Chaos Furies",
+   "url": "https://tow.whfb.app/unit/chaos-furies",
+   "base": {
+    "width": 30,
+    "depth": 30
+   },
+   "unitSize": "5+",
+   "troopType": "Regular Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Chaos Fury",
+     "values": [
+      "4",
+      "3",
+      "0",
+      "4",
+      "3",
+      "1",
+      "4",
+      "1",
+      "5"
+     ]
+    }
+   ],
+   "equipment": "Daemonic talons",
+   "specialRules": [
+    "daemonic",
+    "fly",
+    "furious-charge",
+    "skirmish-formation",
+    "swiftstride",
+    "vanguard"
+   ],
+   "cost": 12,
+   "options": [
+    {
+     "label": "• Daemons of Khorne",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• Daemons of Nurgle",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• Daemons of Slaanesh",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• Daemons of Tzeentch",
+     "cost": 2,
+     "per": "unit"
+    }
+   ]
+  },
+  "chariot-of-tzeentch": {
+   "slug": "chariot-of-tzeentch",
+   "name": "Chariot of Tzeentch",
+   "url": "https://tow.whfb.app/unit/chariot-of-tzeentch",
+   "base": {
+    "width": 50,
+    "depth": 100
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Chariot",
+   "category": "Chariot",
+   "profile": [
+    {
+     "name": "Chariot of Tzeentch",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "4",
+      "4",
+      "4",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Screamer (x2)",
+     "values": [
+      "1",
+      "3",
+      "-",
+      "4",
+      "-",
+      "-",
+      "4",
+      "2",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "• Screamer: Lamprey's bite",
+   "specialRules": [
+    "close-order",
+    "daemonic",
+    "daemon-of-tzeentch",
+    "fly",
+    "impact-hits",
+    "slashing-attack"
+   ],
+   "cost": null,
+   "options": []
+  },
+  "daemon-prince-daemons-of-chaos": {
+   "slug": "daemon-prince-daemons-of-chaos",
+   "name": "Daemon Prince (Daemons of Chaos)",
+   "url": "https://tow.whfb.app/unit/daemon-prince-daemons-of-chaos",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "Monstrous Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Daemon Prince",
+     "values": [
+      "6",
+      "7",
+      "5",
+      "6",
+      "5",
+      "4",
+      "7",
+      "5",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon, ensorcelled weapon and light armour",
+   "specialRules": [
+    "chaos-armour-daemons-of-chaos",
+    "daemonic",
+    "infernal-favour",
+    "lore-of-daemons"
+   ],
+   "cost": 210,
+   "options": [
+    {
+     "label": "• May replace light armour with heavy armour",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• May have the Fly (9) special rule",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Daemon of Khorne",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Daemon of Nurgle",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Daemons of Slaanesh",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Daemons of Tzeentch",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 1",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 2",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 3",
+     "cost": 75,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 4",
+     "cost": 100,
+     "per": "unit"
+    }
+   ]
+  },
+  "daemonettes-of-slaanesh": {
+   "slug": "daemonettes-of-slaanesh",
+   "name": "Daemonettes of Slaanesh",
+   "url": "https://tow.whfb.app/unit/daemonettes-of-slaanesh",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "6+",
+   "troopType": "Regular Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Daemonette",
+     "values": [
+      "5",
+      "4",
+      "3",
+      "3",
+      "3",
+      "1",
+      "5",
+      "1",
+      "7"
+     ]
+    },
+    {
+     "name": "Alluress",
+     "values": [
+      "5",
+      "4",
+      "3",
+      "3",
+      "3",
+      "1",
+      "5",
+      "2",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "Piercing claws",
+   "specialRules": [
+    "close-order",
+    "daemonic",
+    "daemon-of-slaanesh"
+   ],
+   "cost": 11,
+   "options": [
+    {
+     "label": "• Upgrade one model to an Alluress (champion)",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 6,
+     "per": "unit"
+    }
+   ]
+  },
+  "daemonic-herald-of-khorne": {
+   "slug": "daemonic-herald-of-khorne",
+   "name": "Daemonic Herald of Khorne",
+   "url": "https://tow.whfb.app/unit/daemonic-herald-of-khorne",
+   "base": {
+    "width": 30,
+    "depth": 30
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Herald of Khorne",
+     "values": [
+      "5",
+      "7",
+      "4",
+      "5",
+      "4",
+      "2",
+      "6",
+      "3",
+      "8"
+     ]
+    }
+   ],
+   "equipment": "Hellblade and calloused hide (counts as light armour)",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-khorne",
+    "furious-charge",
+    "impetuous",
+    "infernal-favour",
+    "magic-resistance"
+   ],
+   "cost": 80,
+   "options": [
+    {
+     "label": "• Juggernaut of Khorne",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• Blood Throne of Khorne",
+     "cost": 160,
+     "per": "unit"
+    }
+   ]
+  },
+  "daemonic-herald-of-nurgle": {
+   "slug": "daemonic-herald-of-nurgle",
+   "name": "Daemonic Herald of Nurgle",
+   "url": "https://tow.whfb.app/unit/daemonic-herald-of-nurgle",
+   "base": {
+    "width": 30,
+    "depth": 30
+   },
+   "unitSize": "1",
+   "troopType": "Regular Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Herald of Nurgle",
+     "values": [
+      "4",
+      "5",
+      "5",
+      "5",
+      "5",
+      "2",
+      "4",
+      "3",
+      "8"
+     ]
+    }
+   ],
+   "equipment": "Plaguesword",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-nurgle",
+    "infernal-favour",
+    "lore-of-daemons",
+    "poisoned-attacks",
+    "regeneration"
+   ],
+   "cost": 95,
+   "options": [
+    {
+     "label": "• May take death's heads",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 1 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 2 Wizard",
+     "cost": 60,
+     "per": "unit"
+    },
+    {
+     "label": "• May be mounted on a Palanquin of Nurgle",
+     "cost": 40,
+     "per": "unit"
+    }
+   ]
+  },
+  "daemonic-herald-of-slaanesh": {
+   "slug": "daemonic-herald-of-slaanesh",
+   "name": "Daemonic Herald of Slaanesh",
+   "url": "https://tow.whfb.app/unit/daemonic-herald-of-slaanesh",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Regular Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Herald of Slaanesh",
+     "values": [
+      "6",
+      "6",
+      "4",
+      "4",
+      "3",
+      "2",
+      "6",
+      "3",
+      "8"
+     ]
+    }
+   ],
+   "equipment": "Piercing claws",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-slaanesh",
+    "infernal-favour",
+    "lore-of-daemons"
+   ],
+   "cost": 85,
+   "options": [
+    {
+     "label": "• Level 1 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 2 Wizard",
+     "cost": 60,
+     "per": "unit"
+    },
+    {
+     "label": "• Steed of Slaanesh",
+     "cost": 16,
+     "per": "unit"
+    },
+    {
+     "label": "• Seeker Chariot",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• Exalted Seeker Chariot",
+     "cost": 185,
+     "per": "unit"
+    }
+   ]
+  },
+  "daemonic-herald-of-tzeentch": {
+   "slug": "daemonic-herald-of-tzeentch",
+   "name": "Daemonic Herald of Tzeentch",
+   "url": "https://tow.whfb.app/unit/daemonic-herald-of-tzeentch",
+   "base": {
+    "width": 30,
+    "depth": 30
+   },
+   "unitSize": "1",
+   "troopType": "Regular Infantry",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Herald of Tzeentch",
+     "values": [
+      "4",
+      "3",
+      "4",
+      "3",
+      "3",
+      "2",
+      "3",
+      "2",
+      "8"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon and flames of Tzeentch",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-tzeentch",
+    "infernal-favour",
+    "lore-of-daemons"
+   ],
+   "cost": 90,
+   "options": [
+    {
+     "label": "• Level 2 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 3 Wizard",
+     "cost": 60,
+     "per": "unit"
+    },
+    {
+     "label": "• Disc of Tzeentch",
+     "cost": 20,
+     "per": "unit"
+    },
+    {
+     "label": "• Chariot of Tzeentch",
+     "cost": 90,
+     "per": "unit"
+    },
+    {
+     "label": "• Burning Chariot of Tzeentch",
+     "cost": 190,
+     "per": "unit"
+    }
+   ]
+  },
+  "disc-of-tzeentch": {
+   "slug": "disc-of-tzeentch",
+   "name": "Disc of Tzeentch",
+   "url": "https://tow.whfb.app/unit/disc-of-tzeentch",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "Light Cavalry",
+   "category": "Mount",
+   "profile": [
+    {
+     "name": "Disc of Tzeentch",
+     "values": [
+      "1",
+      "3",
+      "-",
+      "4",
+      "-",
+      "-",
+      "4",
+      "3",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "Tentacles (counts as a hand weapon)",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-tzeentch",
+    "fly",
+    "swiftstride"
+   ],
+   "cost": null,
+   "options": []
+  },
+  "exalted-seeker-chariot-of-slaanesh": {
+   "slug": "exalted-seeker-chariot-of-slaanesh",
+   "name": "Exalted Seeker Chariot of Slaanesh",
+   "url": "https://tow.whfb.app/unit/exalted-seeker-chariot-of-slaanesh",
+   "base": {
+    "width": 100,
+    "depth": 150
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Chariot",
+   "category": "Chariot",
+   "profile": [
+    {
+     "name": "Exalted Seeker Chariot",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "4",
+      "4",
+      "6",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Daemonette Crew (x3)",
+     "values": [
+      "-",
+      "4",
+      "3",
+      "3",
+      "-",
+      "-",
+      "5",
+      "1",
+      "7"
+     ]
+    },
+    {
+     "name": "Steed of Slaanesh (x4)",
+     "values": [
+      "9",
+      "3",
+      "-",
+      "3",
+      "-",
+      "-",
+      "5",
+      "1",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "• Daemonette Crew: Piercing claws\n• Steeds of Slaanesh: Claws and fangs (counts as hand weapons)",
+   "specialRules": [
+    "armour-bane",
+    "close-order",
+    "daemonic",
+    "daemon-of-slaanesh",
+    "first-charge",
+    "impact-hits",
+    "poisoned-attacks"
+   ],
+   "cost": null,
+   "options": []
+  },
+  "fiends-of-slaanesh": {
+   "slug": "fiends-of-slaanesh",
+   "name": "Fiends of Slaanesh",
+   "url": "https://tow.whfb.app/unit/fiends-of-slaanesh",
+   "base": {
+    "width": 50,
+    "depth": 75
+   },
+   "unitSize": "3+",
+   "troopType": "Monstrous Cavalry",
+   "category": "Cavalry",
+   "profile": [
+    {
+     "name": "Fiend of Slaanesh",
+     "values": [
+      "8",
+      "4",
+      "0",
+      "4",
+      "4",
+      "3",
+      "6",
+      "3",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "Piercing claws and venomous tail",
+   "specialRules": [
+    "close-order",
+    "daemonic",
+    "daemon-of-slaanesh",
+    "soporific-musk",
+    "swiftstride"
+   ],
+   "cost": 66,
+   "options": []
+  },
+  "flamers-of-tzeentch": {
+   "slug": "flamers-of-tzeentch",
+   "name": "Flamers of Tzeentch",
+   "url": "https://tow.whfb.app/unit/flamers-of-tzeentch",
+   "base": {
+    "width": 30,
+    "depth": 30
+   },
+   "unitSize": "3-6",
+   "troopType": "Regular Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Flamer",
+     "values": [
+      "6",
+      "2",
+      "4",
+      "4",
+      "4",
+      "2",
+      "4",
+      "2",
+      "7"
+     ]
+    },
+    {
+     "name": "Pyroclaster",
+     "values": [
+      "6",
+      "2",
+      "5",
+      "4",
+      "4",
+      "2",
+      "4",
+      "2",
+      "7"
+     ]
+    },
+    {
+     "name": "Exalted Flamer",
+     "values": [
+      "6",
+      "2",
+      "5",
+      "4",
+      "4",
+      "3",
+      "4",
+      "2",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons and warpflame",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-tzeentch",
+    "flaming-attacks",
+    "infernal-favour",
+    "lore-of-daemons",
+    "move-through-cover",
+    "skirmish-formation"
+   ],
+   "cost": 40,
+   "options": [
+    {
+     "label": "• Any unit may upgrade one model to a Pyroclaster (champion)",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• A Pyroclaster may be upgraded to an Exalted Flamer (champion)",
+     "cost": 40,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 2 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 3 Wizard",
+     "cost": 60,
+     "per": "unit"
+    }
+   ]
+  },
+  "flesh-hounds-of-khorne": {
+   "slug": "flesh-hounds-of-khorne",
+   "name": "Flesh Hounds of Khorne",
+   "url": "https://tow.whfb.app/unit/flesh-hounds-of-khorne",
+   "base": {
+    "width": 30,
+    "depth": 60
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy Cavalry",
+   "category": "Cavalry",
+   "profile": [
+    {
+     "name": "Flesh Hound",
+     "values": [
+      "8",
+      "5",
+      "0",
+      "4",
+      "4",
+      "2",
+      "4",
+      "2",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "Claws and fangs (counts as hand weapons) and calloused hides (counts as light armour)",
+   "specialRules": [
+    "armour-bane",
+    "close-order",
+    "counter-charge",
+    "daemonic",
+    "daemon-of-khorne",
+    "impetuous",
+    "magic-resistance"
+   ],
+   "cost": 32,
+   "options": [
+    {
+     "label": "• The Ambushers special rule",
+     "cost": 3,
+     "per": "model"
+    },
+    {
+     "label": "• The Vanguard special rule",
+     "cost": 2,
+     "per": "model"
+    }
+   ]
+  },
+  "great-unclean-one": {
+   "slug": "great-unclean-one",
+   "name": "Great Unclean One",
+   "url": "https://tow.whfb.app/unit/great-unclean-one",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "Behemoth",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Great Unclean One",
+     "values": [
+      "5",
+      "6",
+      "3",
+      "6",
+      "7",
+      "7",
+      "4",
+      "5",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-nurgle",
+    "infernal-favour",
+    "large-target",
+    "lore-of-daemons",
+    "poisoned-attacks",
+    "regeneration",
+    "stomp-attacks",
+    "terror"
+   ],
+   "cost": 330,
+   "options": [
+    {
+     "label": "• Additional hand weapon",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Bilesword",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Plagueflail",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 2 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 3 Wizard",
+     "cost": 60,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 4 Wizard",
+     "cost": 90,
+     "per": "unit"
+    }
+   ]
+  },
+  "hellflayer-of-slaanesh": {
+   "slug": "hellflayer-of-slaanesh",
+   "name": "Hellflayer of Slaanesh",
+   "url": "https://tow.whfb.app/unit/hellflayer-of-slaanesh",
+   "base": {
+    "width": 100,
+    "depth": 60
+   },
+   "unitSize": "1",
+   "troopType": "Light Chariot",
+   "category": "Chariot",
+   "profile": [
+    {
+     "name": "Hellflayer",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "4",
+      "4",
+      "4",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Exalted Alluress",
+     "values": [
+      "-",
+      "5",
+      "3",
+      "3",
+      "-",
+      "-",
+      "5",
+      "2",
+      "7"
+     ]
+    },
+    {
+     "name": "Daemonette Crew (x2)",
+     "values": [
+      "-",
+      "4",
+      "3",
+      "3",
+      "-",
+      "-",
+      "5",
+      "1",
+      "7"
+     ]
+    },
+    {
+     "name": "Steed of Slaanesh (x2)",
+     "values": [
+      "9",
+      "3",
+      "-",
+      "3",
+      "-",
+      "-",
+      "5",
+      "1",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "• Exalted Alluress: Piercing claws\n• Daemonette Crew: Piercing claws\n• Steeds of Slaanesh: Claws and fangs (counts as hand weapons)",
+   "specialRules": [
+    "armour-bane",
+    "close-order",
+    "counter-charge",
+    "daemonic",
+    "daemon-of-slaanesh",
+    "first-charge",
+    "impact-hits",
+    "poisoned-attacks",
+    "swiftstride"
+   ],
+   "cost": 145,
+   "options": []
+  },
+  "juggernaut-of-khorne": {
+   "slug": "juggernaut-of-khorne",
+   "name": "Juggernaut of Khorne",
+   "url": "https://tow.whfb.app/unit/juggernaut-of-khorne",
+   "base": {
+    "width": 50,
+    "depth": 75
+   },
+   "unitSize": "1",
+   "troopType": "Monstrous Cavalry",
+   "category": "Mount",
+   "profile": [
+    {
+     "name": "Juggernaut of Khorne",
+     "values": [
+      "7",
+      "4",
+      "-",
+      "5",
+      "(+1)",
+      "(+1)",
+      "2",
+      "2",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "Brass bound hooves and brazen hide (counts as barding)",
+   "specialRules": [
+    "armoured-hide",
+    "daemonic",
+    "daemon-of-khorne",
+    "first-charge",
+    "impact-hits",
+    "swiftstride"
+   ],
+   "cost": null,
+   "options": []
+  },
+  "keeper-of-secrets": {
+   "slug": "keeper-of-secrets",
+   "name": "Keeper of Secrets",
+   "url": "https://tow.whfb.app/unit/keeper-of-secrets",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "Behemoth",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Keeper of Secrets",
+     "values": [
+      "8",
+      "7",
+      "6",
+      "6",
+      "6",
+      "6",
+      "7",
+      "6",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Impaling claws",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-slaanesh",
+    "infernal-favour",
+    "large-target",
+    "lore-of-daemons",
+    "stomp-attacks",
+    "swiftstride",
+    "terror"
+   ],
+   "cost": 330,
+   "options": [
+    {
+     "label": "• Level 2 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 3 Wizard",
+     "cost": 60,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 4 Wizard",
+     "cost": 90,
+     "per": "unit"
+    }
+   ]
+  },
+  "lord-of-change": {
+   "slug": "lord-of-change",
+   "name": "Lord of Change",
+   "url": "https://tow.whfb.app/unit/lord-of-change",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "Behemoth",
+   "category": "Character",
+   "profile": [
+    {
+     "name": "Lord of Change",
+     "values": [
+      "6",
+      "6",
+      "6",
+      "6",
+      "6",
+      "6",
+      "6",
+      "4",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon and staff of Tzeentch (counts as great weapon)",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-tzeentch",
+    "flaming-attacks",
+    "fly",
+    "infernal-favour",
+    "large-target",
+    "lore-of-daemons",
+    "stomp-attacks",
+    "swiftstride",
+    "terror"
+   ],
+   "cost": 310,
+   "options": [
+    {
+     "label": "• May take a Tzeentchian Wand",
+     "cost": 20,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 3 Wizard",
+     "cost": 60,
+     "per": "unit"
+    },
+    {
+     "label": "• Level 4 Wizard",
+     "cost": 90,
+     "per": "unit"
+    }
+   ]
+  },
+  "nurglings": {
+   "slug": "nurglings",
+   "name": "Nurglings",
+   "url": "https://tow.whfb.app/unit/nurglings",
+   "base": {
+    "width": 40,
+    "depth": 40
+   },
+   "unitSize": "3+",
+   "troopType": "Swarm",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Nurglings",
+     "values": [
+      "4",
+      "2",
+      "0",
+      "2",
+      "3",
+      "7",
+      "2",
+      "D3+1",
+      "5"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-nurgle",
+    "loner",
+    "poisoned-attacks",
+    "random-attacks",
+    "regeneration",
+    "skirmish-formation"
+   ],
+   "cost": 45,
+   "options": []
+  },
+  "palanquin-of-nurgle": {
+   "slug": "palanquin-of-nurgle",
+   "name": "Palanquin of Nurgle",
+   "url": "https://tow.whfb.app/unit/palanquin-of-nurgle",
+   "base": {
+    "width": 50,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "Monstrous Cavalry",
+   "category": "Mount",
+   "profile": [
+    {
+     "name": "Palanquin of Nurgle",
+     "values": [
+      "4",
+      "3",
+      "-",
+      "3",
+      "-",
+      "(+4)",
+      "3",
+      "D6+1",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "Many grasping claws (counts as a hand weapon)",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-nurgle",
+    "poisoned-attacks",
+    "random-attacks"
+   ],
+   "cost": null,
+   "options": []
+  },
+  "pink-horrors-of-tzeentch": {
+   "slug": "pink-horrors-of-tzeentch",
+   "name": "Pink Horrors of Tzeentch",
+   "url": "https://tow.whfb.app/unit/pink-horrors-of-tzeentch",
+   "base": {
+    "width": 30,
+    "depth": 30
+   },
+   "unitSize": "9+",
+   "troopType": "Regular Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Pink Horror",
+     "values": [
+      "4",
+      "3",
+      "3",
+      "3",
+      "3",
+      "1",
+      "3",
+      "1",
+      "7"
+     ]
+    },
+    {
+     "name": "Iridescent Horror",
+     "values": [
+      "4",
+      "3",
+      "3",
+      "3",
+      "3",
+      "1",
+      "3",
+      "2",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons and flames of Tzeentch",
+   "specialRules": [
+    "close-order",
+    "daemonic",
+    "daemon-of-tzeentch",
+    "scintillating-sorcery"
+   ],
+   "cost": 12,
+   "options": [
+    {
+     "label": "• Upgrade one model to an Iridescent Horror (champion)",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 6,
+     "per": "unit"
+    }
+   ]
+  },
+  "plague-drones-of-nurgle": {
+   "slug": "plague-drones-of-nurgle",
+   "name": "Plague Drones of Nurgle",
+   "url": "https://tow.whfb.app/unit/plague-drones-of-nurgle",
+   "base": {
+    "width": 50,
+    "depth": 75
+   },
+   "unitSize": "3+",
+   "troopType": "Monstrous Cavalry",
+   "category": "Cavalry",
+   "profile": [
+    {
+     "name": "Plaguebearer",
+     "values": [
+      "-",
+      "3",
+      "3",
+      "4",
+      "5",
+      "3",
+      "2",
+      "1",
+      "7"
+     ]
+    },
+    {
+     "name": "Plagueridden",
+     "values": [
+      "-",
+      "3",
+      "3",
+      "4",
+      "5",
+      "3",
+      "2",
+      "2",
+      "7"
+     ]
+    },
+    {
+     "name": "Rot Fly",
+     "values": [
+      "1",
+      "3",
+      "-",
+      "5",
+      "-",
+      "-",
+      "2",
+      "3",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "• Plaguebearers: Plagueswords and death's heads\n• Rot Flies: Filth-encrusted claws (counts as hand weapons)",
+   "specialRules": [
+    "armour-bane",
+    "daemonic",
+    "daemon-of-nurgle",
+    "fly",
+    "poisoned-attacks",
+    "regeneration",
+    "skirmish-formation",
+    "swiftstride"
+   ],
+   "cost": 63,
+   "options": [
+    {
+     "label": "• Upgrade one model to a Plagueridden (champion)",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Plague Proboscis",
+     "cost": 2,
+     "per": "model"
+    },
+    {
+     "label": "• Venom sting",
+     "cost": 2,
+     "per": "model"
+    }
+   ]
+  },
+  "plaguebearers-of-nurgle": {
+   "slug": "plaguebearers-of-nurgle",
+   "name": "Plaguebearers of Nurgle",
+   "url": "https://tow.whfb.app/unit/plaguebearers-of-nurgle",
+   "base": {
+    "width": 30,
+    "depth": 30
+   },
+   "unitSize": "7+",
+   "troopType": "Regular Infantry",
+   "category": "Infantry",
+   "profile": [
+    {
+     "name": "Plaguebearer",
+     "values": [
+      "4",
+      "3",
+      "3",
+      "4",
+      "4",
+      "1",
+      "2",
+      "1",
+      "7"
+     ]
+    },
+    {
+     "name": "Plagueridden",
+     "values": [
+      "4",
+      "3",
+      "3",
+      "4",
+      "4",
+      "1",
+      "2",
+      "2",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "Plagueswords",
+   "specialRules": [
+    "close-order",
+    "daemonic",
+    "daemon-of-nurgle",
+    "poisoned-attacks",
+    "regeneration"
+   ],
+   "cost": 13,
+   "options": [
+    {
+     "label": "• Upgrade one model to a Plagueridden (champion)",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 6,
+     "per": "unit"
+    }
+   ]
+  },
+  "screamers-of-tzeentch": {
+   "slug": "screamers-of-tzeentch",
+   "name": "Screamers of Tzeentch",
+   "url": "https://tow.whfb.app/unit/screamers-of-tzeentch",
+   "base": {
+    "width": 40,
+    "depth": 60
+   },
+   "unitSize": "3+",
+   "troopType": "War Beast",
+   "category": "Cavalry",
+   "profile": [
+    {
+     "name": "Screamer",
+     "values": [
+      "1",
+      "3",
+      "0",
+      "4",
+      "4",
+      "2",
+      "4",
+      "2",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "Lamprey's bite",
+   "specialRules": [
+    "daemonic",
+    "daemon-of-tzeentch",
+    "fly",
+    "loner",
+    "skirmish-formation",
+    "slashing-attack"
+   ],
+   "cost": 44,
+   "options": []
+  },
+  "seeker-chariot-of-slaanesh": {
+   "slug": "seeker-chariot-of-slaanesh",
+   "name": "Seeker Chariot of Slaanesh",
+   "url": "https://tow.whfb.app/unit/seeker-chariot-of-slaanesh",
+   "base": {
+    "width": 50,
+    "depth": 100
+   },
+   "unitSize": "1-3",
+   "troopType": "Light Chariot",
+   "category": "Chariot",
+   "profile": [
+    {
+     "name": "Seeker Chariot",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "4",
+      "4",
+      "4",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Daemonette Crew (x2)",
+     "values": [
+      "-",
+      "4",
+      "3",
+      "3",
+      "-",
+      "-",
+      "5",
+      "1",
+      "7"
+     ]
+    },
+    {
+     "name": "Steed of Slaanesh (x2)",
+     "values": [
+      "9",
+      "3",
+      "-",
+      "3",
+      "-",
+      "-",
+      "5",
+      "1",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "• Daemonette Crew: Piercing claws\n• Steeds of Slaanesh: Claws and fangs (counts as hand weapons)",
+   "specialRules": [
+    "armour-bane",
+    "counter-charge",
+    "daemonic",
+    "daemon-of-slaanesh",
+    "first-charge",
+    "impact-hits",
+    "open-order-formation",
+    "poisoned-attacks",
+    "swiftstride"
+   ],
+   "cost": 100,
+   "options": []
+  },
+  "seekers-of-slaanesh": {
+   "slug": "seekers-of-slaanesh",
+   "name": "Seekers of Slaanesh",
+   "url": "https://tow.whfb.app/unit/seekers-of-slaanesh",
+   "base": {
+    "width": 30,
+    "depth": 60
+   },
+   "unitSize": "5+",
+   "troopType": "Light Cavalry",
+   "category": "Cavalry",
+   "profile": [
+    {
+     "name": "Seeker",
+     "values": [
+      "-",
+      "4",
+      "3",
+      "3",
+      "3",
+      "1",
+      "5",
+      "1",
+      "7"
+     ]
+    },
+    {
+     "name": "Heartseeker",
+     "values": [
+      "-",
+      "4",
+      "3",
+      "3",
+      "3",
+      "1",
+      "5",
+      "2",
+      "7"
+     ]
+    },
+    {
+     "name": "Steed of Slaanesh",
+     "values": [
+      "9",
+      "3",
+      "-",
+      "3",
+      "-",
+      "-",
+      "5",
+      "1",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "• Seekers: Piercing claws\n• Steeds of Slaanesh: Claws and fangs (counts as a hand weapon)",
+   "specialRules": [
+    "armour-bane",
+    "counter-charge",
+    "daemonic",
+    "daemon-of-slaanesh",
+    "fast-cavalry",
+    "open-order-formation",
+    "poisoned-attacks",
+    "skirmish-formation",
+    "swiftstride"
+   ],
+   "cost": 21,
+   "options": [
+    {
+     "label": "• Upgrade one model to a Heartseeker (champion)",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 6,
+     "per": "unit"
+    }
+   ]
+  },
+  "skull-cannon-of-khorne": {
+   "slug": "skull-cannon-of-khorne",
+   "name": "Skull Cannon of Khorne",
+   "url": "https://tow.whfb.app/unit/skull-cannon-of-khorne",
+   "base": {
+    "width": 50,
+    "depth": 100
+   },
+   "unitSize": "1",
+   "troopType": "Heavy Chariot",
+   "category": "Chariot",
+   "profile": [
+    {
+     "name": "Skull Cannon",
+     "values": [
+      "7",
+      "5",
+      "-",
+      "5",
+      "5",
+      "4",
+      "2",
+      "3",
+      "-"
+     ]
+    },
+    {
+     "name": "Bloodletter Crew (2x)",
+     "values": [
+      "-",
+      "5",
+      "3",
+      "4",
+      "-",
+      "-",
+      "4",
+      "1",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "• Skull Cannon: Brazen wheels and scything blades (counts as a hand weapon) and cannon of Khorne\n• Bloodletter Crew: Hellblades",
+   "specialRules": [
+    "brazen-wheels",
+    "close-order",
+    "daemonic",
+    "daemon-of-khorne",
+    "first-charge",
+    "impact-hits",
+    "impetuous",
+    "stomp-attacks"
+   ],
+   "cost": 185,
+   "options": []
+  },
+  "soul-grinder": {
+   "slug": "soul-grinder",
+   "name": "Soul Grinder",
+   "url": "https://tow.whfb.app/unit/soul-grinder",
+   "base": {
+    "width": 150,
+    "depth": 100
+   },
+   "unitSize": "1",
+   "troopType": "Behemoth",
+   "category": "Monster",
+   "profile": [
+    {
+     "name": "Soul Grinder",
+     "values": [
+      "8",
+      "3",
+      "3",
+      "6",
+      "6",
+      "6",
+      "3",
+      "4",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon, iron claw, harvester cannon and daemonic flesh (counts as heavy armour)",
+   "specialRules": [
+    "close-order",
+    "daemonic",
+    "furious-charge",
+    "large-target",
+    "reserve-move",
+    "stomp-attacks",
+    "terror"
+   ],
+   "cost": 255,
+   "options": [
+    {
+     "label": "• Daemon of Khorne",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• Daemon of Nurgle",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• Daemons of Slaanesh",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• Daemons of Tzeentch",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• Baleful torrent",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
+     "label": "• Warp gaze",
+     "cost": 30,
+     "per": "unit"
+    }
+   ]
+  },
+  "steed-of-slaanesh": {
+   "slug": "steed-of-slaanesh",
+   "name": "Steed of Slaanesh",
+   "url": "https://tow.whfb.app/unit/steed-of-slaanesh",
+   "base": {
+    "width": 30,
+    "depth": 60
+   },
+   "unitSize": "1",
+   "troopType": "Light Cavalry",
+   "category": "Mount",
+   "profile": [
+    {
+     "name": "Steed of Slaanesh",
+     "values": [
+      "9",
+      "3",
+      "-",
+      "3",
+      "-",
+      "-",
+      "5",
+      "1",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "Claws and fangs (counts as a hand weapon)",
+   "specialRules": [
+    "armour-bane",
+    "counter-charge",
+    "daemonic",
+    "daemon-of-slaanesh",
+    "fast-cavalry",
+    "poisoned-attacks",
+    "swiftstride"
+   ],
+   "cost": null,
+   "options": []
+  }
+ },
+ "rules": {
+  "daemonic-charge": {
+   "key": "daemonic-charge",
+   "name": "Daemonic Charge",
+   "text": "Impact Hits caused by this model have an Armour Piercing characteristic of -2.",
+   "url": "https://tow.whfb.app/special-rules/daemonic-charge"
+  },
+  "gorefeast": {
+   "key": "gorefeast",
+   "name": "Gorefeast",
+   "text": "For each Wound an enemy unit loses as a result of an Impact Hit caused by this model, roll a D6. For each roll of 6, this model immediately recovers a single lost Wound.",
+   "url": "https://tow.whfb.app/special-rules/gorefeast"
+  },
+  "totem-of-endless-bloodletting": {
+   "key": "totem-of-endless-bloodletting",
+   "name": "Totem of Endless Bloodletting",
+   "text": "Friendly Daemons of Khorne that are within this model's Command range and that made a Charge move this turn may re-roll any rolls To Hit of a natural 1 made during the Combat phase.",
+   "url": "https://tow.whfb.app/special-rules/totem-of-endless-bloodletting"
+  },
+  "brazen-wheels": {
+   "key": "brazen-wheels",
+   "name": "Brazen Wheels",
+   "text": "Stomp Attacks made by a Skull Cannon of Khorne have an Armour Piercing characteristic of -3. However, this rule cannot be used against models whose troop type is behemoth – they are simply too large to be caught beneath a Skull Cannon's wheels.",
+   "url": "https://tow.whfb.app/special-rules/brazen-wheels"
+  },
+  "attention-seeker": {
+   "key": "attention-seeker",
+   "name": "Attention Seeker",
+   "text": "Every model in a unit of Beasts of Nurgle can issue and accept challenges in the same manner as a character.",
+   "url": "https://tow.whfb.app/special-rules/attention-seeker"
+  },
+  "slime-trail": {
+   "key": "slime-trail",
+   "name": "Slime Trail",
+   "text": "Enemy units cannot claim any bonus combat result points for being engaged within this unit's flank or rear arc.",
+   "url": "https://tow.whfb.app/special-rules/slime-trail"
+  },
+  "scintillating-sorcery": {
+   "key": "scintillating-sorcery",
+   "name": "Scintillating Sorcery",
+   "text": "A unit of Pink Horrors knows one of the spells that corresponds to their Daemonic Alignment (chosen by their controlling player before armies are deployed). The unit may cast this spell as a Bound spell, with a Power Level equal to the unit's current Rank Bonus.",
+   "url": "https://tow.whfb.app/special-rules/scintillating-sorcery"
+  },
+  "slashing-attack": {
+   "key": "slashing-attack",
+   "name": "Slashing Attack",
+   "text": "A unit with this special rule may perform a 'Slashing Attack' against a single enemy unit that is not engaged in combat. To do so, this unit must move (by flying) over the unit it wishes to attack during the Remaining Moves sub-phase. Once this unit's movement is complete, the enemy unit suffers D3 Strength 4 hits, each with an AP of -, for each model in this unit that moved over it.",
+   "url": "https://tow.whfb.app/special-rules/slashing-attack"
+  },
+  "chaos-armour-daemons-of-chaos": {
+   "key": "chaos-armour-daemons-of-chaos",
+   "name": "Chaos Armour (Daemons of Chaos)",
+   "text": "This model has a 4+ Ward save against any wounds suffered. In addition, a Wizard with this special rule may wear armour without penalty.",
+   "url": "https://tow.whfb.app/special-rules/chaos-armour-daemons-of-chaos"
+  },
+  "plague-proboscis": {
+   "key": "plague-proboscis",
+   "name": "Plague Proboscis",
+   "text": "+1 Initiative\n\nNote that if this unit takes Plague Proboscises, the Initiative modifier applies only to the Rot Flies, not to their riders.",
+   "url": "https://tow.whfb.app/special-rules/plague-proboscis"
+  },
+  "soporific-musk": {
+   "key": "soporific-musk",
+   "name": "Soporific Musk",
+   "text": "Enemy models engaged in combat with a model with this special rule cannot use the Strike First special rule. Enemy models that do not have the Strike First special rule become subject to the Strike Last special rule instead.",
+   "url": "https://tow.whfb.app/special-rules/soporific-musk"
+  },
+  "daemonic": {
+   "key": "daemonic",
+   "name": "Daemonic",
+   "text": "Models with this special rule are 'Daemonic'. All Daemonic models have a 5+ Ward save against any wounds suffered that were caused by a non-magical enemy attack. In addition, all Daemonic models have the following universal special rules:\n\n• Daemonic Instability\n• Fear\n• Immune to Psychology\n• Magical Attacks\n• Unbreakable\n• Warp-spawned\n\nA character with this special rule cannot join a unit without this special rule, and vice versa.",
+   "url": "https://tow.whfb.app/special-rules/daemonic"
+  },
+  "daemonic-instability": {
+   "key": "daemonic-instability",
+   "name": "Daemonic Instability",
+   "text": "If a unit with this special rule loses a round of combat, it must make a Leadership test (before it Gives Ground) with a +1 modifier to the result for every combat result point by which it lost:\n\n• If this test is passed, all is well.\n• If this test is failed, the unit loses a number of Wounds equal to the amount by which it failed the test. If the unit contains any characters, allocate wounds to the unit until each model has been allocated one wound. Any remaining wounds are divided as equally as possible between the character(s) and the unit.\n• If this test is failed on a roll of a natural double 6, the unit is dragged back into the æther. The unit is immediately removed from play.",
+   "url": "https://tow.whfb.app/special-rules/daemonic-instability"
+  },
+  "daemonic-locus": {
+   "key": "daemonic-locus",
+   "name": "Daemonic Locus",
+   "text": "Friendly units with the same Daemonic Alignment as this model reduce the number of wounds suffered due to the Daemonic Instability special rule by 1 whilst within 12\" of this model. In addition, friendly units with the same Daemonic Alignment as this model that roll a natural double 6 when making a Leadership test for Daemonic Instability whilst within 12\" of this model are not immediately removed from play. Instead, they lose a number of Wounds equal to the amount by which they failed the test.",
+   "url": "https://tow.whfb.app/special-rules/daemonic-locus"
+  },
+  "infernal-favour": {
+   "key": "infernal-favour",
+   "name": "Infernal Favour (X)",
+   "text": "A unit with this special rule reduces the number of wounds suffered due to the Daemonic Instability special rule by the number shown in brackets (shown here as 'X').\n\nNote that this special rule is not cumulative. If two or more models in a unit have this special rule, use the highest value for the entire unit.",
+   "url": "https://tow.whfb.app/special-rules/infernal-favour"
+  },
+  "daemonic-alignment": {
+   "key": "daemonic-alignment",
+   "name": "Daemonic Alignment",
+   "text": "Many models in this army list have the Daemons of Khorne, Daemons of Nurgle, Daemons of Slaanesh or Daemons of Tzeentch special rule listed among their special rules. These special rules represent the Daemonic Alignment of that model, indicating to which of theRuinous Powers the Daemon is bound:\n\n• A model cannot have more than one Daemonic Alignment.\n• All models within a unit must have the same Daemonic Alignment.\n• A character with a Daemonic Alignment can only join a unit with the same Daemonic Alignment, or with no Daemonic Alignment.\n• A character with no Daemonic Alignment can join any unit as normal.",
+   "url": "https://tow.whfb.app/special-rules/daemonic-alignment"
+  },
+  "daemon-of-khorne": {
+   "key": "daemon-of-khorne",
+   "name": "Daemon of Khorne",
+   "text": "Daemons of Khorne have the Hatred (Daemons of Slaanesh) special rule. In addition, during a turn in which it made a charge move, a Daemon of Khorne (but not its mount) gains a +1 modifier to its Strength characteristic.",
+   "url": "https://tow.whfb.app/special-rules/daemon-of-khorne"
+  },
+  "daemon-of-nurgle": {
+   "key": "daemon-of-nurgle",
+   "name": "Daemon of Nurgle",
+   "text": "Daemons of Nurgle have the Hatred (Daemons of Tzeentch) special rule. In addition, any enemy model that directs its attacks against a Daemon of Nurgle during the Combat phase must re-roll any rolls To Hit of a natural 6.",
+   "url": "https://tow.whfb.app/special-rules/daemon-of-nurgle"
+  },
+  "daemon-of-slaanesh": {
+   "key": "daemon-of-slaanesh",
+   "name": "Daemon of Slaanesh",
+   "text": "Daemons of Slaanesh have the Hatred (Daemons of Khorne) special rule. In addition, Daemons of Slaanesh increase their maximum possible charge range by 1\" and have a +1 modifier to the result of any Charge or Pursuit roll they make.",
+   "url": "https://tow.whfb.app/special-rules/daemon-of-slaanesh"
+  },
+  "cleaving-blow": {
+   "key": "cleaving-blow",
+   "name": "Cleaving Blow",
+   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound for an attack made in combat, it has struck a 'Cleaving Blow'. Enemy models whose troop type is regular infantry, heavy infantry, light cavalry, heavy cavalry or war beasts are not permitted an armour or Regeneration save against a Cleaving Blow (Ward saves can be attempted as normal).\n\nNote that if an attack wounds automatically, this special rule cannot be used.",
+   "url": "https://tow.whfb.app/special-rules/cleaving-blow"
+  },
+  "daemon-of-tzeentch": {
+   "key": "daemon-of-tzeentch",
+   "name": "Daemon of Tzeentch",
+   "text": "Daemons of Tzeentch have the Hatred (Daemons of Nurgle) special rule. In addition, a Daemon of Tzeentch that is also a Wizard may apply a +1 modifier to any Casting roll they make.\n\nNote that this is a modifier to the result of a roll – it does not negate a roll of a natural double 1.",
+   "url": "https://tow.whfb.app/special-rules/daemon-of-tzeentch"
+  },
+  "close-order": {
+   "key": "close-order",
+   "name": "Close Order",
+   "text": "A unit consisting of models with this special rule may adopt a Close Order formation.",
+   "url": "https://tow.whfb.app/special-rules/close-order"
+  },
+  "impetuous": {
+   "key": "impetuous",
+   "name": "Impetuous",
+   "text": "If during the Declare Charges & Charge Reactions sub-phase of its turn, a unit that includes one or more Impetuous models is able to declare a charge, it must make a Leadership test. If this test is failed, the unit must declare a charge. If this test is passed, the unit may act as normal.",
+   "url": "https://tow.whfb.app/special-rules/impetuous"
+  },
+  "loner": {
+   "key": "loner",
+   "name": "Loner",
+   "text": "A character with this special rule cannot be your General and cannot join a unit without this special rule. A unit with this special rule cannot be joined by a character without this special rule.",
+   "url": "https://tow.whfb.app/special-rules/loner"
+  },
+  "poisoned-attacks": {
+   "key": "poisoned-attacks",
+   "name": "Poisoned Attacks",
+   "text": "If a model with Poisoned Attacks rolls a natural 6 when making a roll To Hit, it may apply a +2 modifier to that hit’s roll To Wound. Unless otherwise stated, a model with this special rule may use it when making both shooting and combat attacks. Any spells cast by the model are unaffected, as are any attacks made with magic weapons.\n\nNote that if an attack needs a To Hit roll of 7+, or hits automatically, this special rule cannot be used.",
+   "url": "https://tow.whfb.app/special-rules/poisoned-attacks"
+  },
+  "random-attacks": {
+   "key": "random-attacks",
+   "name": "Random Attacks",
+   "text": "Models with this special rule do not have a normal Attacks characteristic. Instead, a dice roll is given (D3+1, for example). Each time a model with this special rule attacks in combat, roll the dice to determine the number of attacks it will make, then roll To Hit as normal. If a fighting rank contains more than one model with this special rule, roll separately for each, unless specified otherwise.",
+   "url": "https://tow.whfb.app/special-rules/random-attacks"
+  },
+  "regeneration": {
+   "key": "regeneration",
+   "name": "Regeneration (X+)",
+   "text": "Immediately after a Wound is lost, but before models with zero Wounds remaining are removed from play, a model with this special rule may make a 'Regeneration save' roll by rolling a D6 and comparing the result to its 'Regeneration value', shown in brackets after the name of this special rule (shown here as 'X+'). If the Regeneration save roll equals or exceeds the model's Regeneration value, the lost Wound is recovered, but is still counted for the purposes of calculating the combat result. Rules that affect armour values do not affect Regeneration values unless stated otherwise.",
+   "url": "https://tow.whfb.app/special-rules/regeneration"
+  },
+  "first-charge": {
+   "key": "first-charge",
+   "name": "First Charge",
+   "text": "If this unit's first charge of the game is successful (i.e., if the unit makes contact with the charge target), the charge target becomes Disrupted until the end of the Combat phase of that turn.",
+   "url": "https://tow.whfb.app/special-rules/first-charge"
+  },
+  "impact-hits": {
+   "key": "impact-hits",
+   "name": "Impact Hits (X)",
+   "text": "The number of Impact Hits caused varies from model to model, and will be shown in brackets after the name of this special rule (shown here as 'X'). Often, this is determined by the roll of a dice.\n\nResolving Impact Hits\n\nImpact Hits can only be made by a charging model that moved 3\" or more and that is in base contact with the enemy. Impact Hits are resolved against the charged unit when the combat is chosen during Step 1.1 of the Choose Combat & Fight sub-phase, before issuing challenges. They hit automatically and use the unmodified Strength of the model making them.",
+   "url": "https://tow.whfb.app/special-rules/impact-hits"
+  },
+  "armoured-hide": {
+   "key": "armoured-hide",
+   "name": "Armoured Hide (X)",
+   "text": "The hide of some creatures forms natural armour and improves their armour value (and that of their rider). By how much armour value is improved varies from model to model, as shown in brackets after the name of this special rule (shown here as 'X').\n\nNote that a model that wears no armour is considered to have an armour value of 7+ for the purposes of rules that improve armour value.",
+   "url": "https://tow.whfb.app/special-rules/armoured-hide"
+  },
+  "magic-resistance": {
+   "key": "magic-resistance",
+   "name": "Magic Resistance (-X)",
+   "text": "The Casting roll of any enemy spell (including Bound spells) that targets a unit that includes one or more models with this special rule suffers a modifier, as shown in brackets after the name of this special rule (shown here as '-X').\n\nNote that this special rule is not cumulative. If two or more models in a unit have this special rule, use the highest modifier.",
+   "url": "https://tow.whfb.app/special-rules/magic-resistance"
+  },
+  "swiftstride": {
+   "key": "swiftstride",
+   "name": "Swiftstride",
+   "text": "A unit which consists entirely of models with this special rule increases its maximum possible charge range by 3\" and, before making a Charge, Flee or Pursuit roll, may choose to apply a +D6 modifier to the result.",
+   "url": "https://tow.whfb.app/special-rules/swiftstride"
+  },
+  "fly": {
+   "key": "fly",
+   "name": "Fly (X)",
+   "text": "Except when following up or pursuing, a model with this special rule can choose to move by flying through the air, rather than moving across the ground as normal. When a model flies it uses a special ‘Fly Movement’ characteristic, shown in brackets after the name of this special rule (shown here as ‘X’). Models that choose to move by flying:\n\n• May move as normal (i.e., they may charge, march and manoeuvre as if moving on the ground), except that they are able to pass freely above other models, units and terrain features without any penalty, and they can march whilst within 8\" of an enemy unit without first having to make a Leadership test.\n• May end their movement in terrain, but will suffer its effects if they do. They cannot end their movement 'on top' of impassable terrain or another unit, or within 1\" of an enemy unit.\n\nModels that can Fly must begin and end all of their movement on the ground. A character with this special rule cannot join a unit without this special rule, and vice versa.",
+   "url": "https://tow.whfb.app/special-rules/fly"
+  },
+  "furious-charge": {
+   "key": "furious-charge",
+   "name": "Furious Charge",
+   "text": "During a turn in which it made a charge move of 3\" or more, a model with this special rule gains a +1 modifier to its Attacks characteristic.",
+   "url": "https://tow.whfb.app/special-rules/furious-charge"
+  },
+  "large-target": {
+   "key": "large-target",
+   "name": "Large Target",
+   "text": "Large Targets do not benefit from partial or full cover. In addition, a unit can draw a line of sight to a Large Target over or through another unit, and vice versa, provided that unit is not also a Large Target. Finally, a unit that shoots at a Large Target can shoot with one additional rank. For example, a unit armed with crossbows can shoot with its first two ranks when shooting at a Large Target, or with its first three if also standing on a hill.",
+   "url": "https://tow.whfb.app/special-rules/large-target"
+  },
+  "terror": {
+   "key": "terror",
+   "name": "Terror",
+   "text": "Models with this special rule cause Terror. Models that cause Terror also cause Fear:\n\n• When a unit that causes Terror declares a charge, the charge target must immediately make a Leadership test. If this test is failed, it must Flee. If this test is passed, it can declare its charge reaction normally.\n• If the winning side of a combat includes one or more units that cause Terror, each unit that belongs to the losing side must apply a -1 modifier to its Leadership characteristic when making its Break test.\n\nNote that if a charged unit cannot choose to Flee, it does not make this Leadership test.\n\nModels with the Fear special rule Fear models that cause Terror. Models that cause Terror are immune to Terror. A unit that does not cause Terror does not become immune to Terror when joined by a character that does.",
+   "url": "https://tow.whfb.app/special-rules/terror"
+  },
+  "bloodflail": {
+   "key": "bloodflail",
+   "name": "Bloodflail",
+   "text": "Notes: A Bloodflail's Strength modifier applies only during the first round of combat.",
+   "url": "https://tow.whfb.app/special-rules/bloodflail"
+  },
+  "great-axe": {
+   "key": "great-axe",
+   "name": "Great Axe",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/great-axe"
+  },
+  "lash-of-khorne": {
+   "key": "lash-of-khorne",
+   "name": "Lash of Khorne",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/lash-of-khorne"
+  },
+  "move-through-cover": {
+   "key": "move-through-cover",
+   "name": "Move Through Cover",
+   "text": "Models with this special rule do not suffer any modifiers to their Movement characteristic for moving through difficult or dangerous terrain. In addition, a model with this special rule may re-roll any rolls of 1 when making Dangerous Terrain tests.",
+   "url": "https://tow.whfb.app/special-rules/move-through-cover"
+  },
+  "open-order-formation": {
+   "key": "open-order-formation",
+   "name": "Open Order Formation",
+   "text": "A unit arrayed in an Open Order formation closely resembles one in a Close Order formation; the key differences lie in how the unit moves and interacts with terrain. As with a unit in Close Order, a unit in Open Order consists of two or more models that are arranged in base contact with each other, edge-to-edge and front corner to front corner, as shown in Fig 182.1.\n\nAll models in such a unit must face the same direction. In addition, all models in the unit must be arranged in a formation that consists of one or more horizontal rows, called ranks, and a number of vertical rows, called files.\n\nAs far as possible, there must be the same number of models in each rank. Where this is not possible, it must be the rear rank that has fewer models.",
+   "url": "https://tow.whfb.app/special-rules/open-order-formation"
+  },
+  "flaming-attacks": {
+   "key": "flaming-attacks",
+   "name": "Flaming Attacks",
+   "text": "Any attack made or hits caused by a model with this special rule, or made using a weapon or spell with this special rule, is a 'Flaming' attack. In addition, a model with this special rule causes Fear in models whose troop type is war beasts or swarms.\n\nUnless otherwise stated, a model with this special rule makes Flaming attacks both when shooting and in combat (though any spells cast by the model are unaffected, as are any attacks made with magic weapons they might be wielding).",
+   "url": "https://tow.whfb.app/special-rules/flaming-attacks"
+  },
+  "skirmish-formation": {
+   "key": "skirmish-formation",
+   "name": "Skirmish Formation",
+   "text": "A unit of models in Skirmish formation (often referred to as 'Skirmishers' in the rules that follow) never consists of rigid ranks and files. Instead, it moves as a single loose group or rough line. This enables Skirmishers to move quickly and take advantage of terrain to shelter from the enemy.",
+   "url": "https://tow.whfb.app/special-rules/skirmish-formation"
+  },
+  "lore-of-daemons": {
+   "key": "lore-of-daemons",
+   "name": "Lore of Daemons",
+   "text": "A Daemon’s sorcerous powers – indeed its entire being – are fixed at the moment of creation. Daemons cannot grow, develop or learn as mortals can. Those Daemons steeped in the mysteries of magic were created with that knowledge and, though it rarely grows or diminishes, such power is a primal expression of the Dark Gods’ will.\n\nA Wizard with 'Lore of Daemons' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells that corresponds to their Daemonic Alignment listed below.",
+   "url": "https://tow.whfb.app/special-rules/lore-of-daemons"
+  },
+  "vanguard": {
+   "key": "vanguard",
+   "name": "Vanguard",
+   "text": "After deployment, units with this special rule may make a Vanguard move. A unit making a Vanguard move moves as described in the Basic Movement rules. It may manoeuvre normally but cannot march.\n\nIf both armies contain Vanguard units, a roll-off determines who moves first. The players then alternate moving their Vanguard units one at a time, starting with the player who won the roll-off. Units that make a Vanguard move cannot declare a charge during their first turn.",
+   "url": "https://tow.whfb.app/special-rules/vanguard"
+  },
+  "deaths-heads": {
+   "key": "deaths-heads",
+   "name": "Death's Heads",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/deaths-heads"
+  },
+  "armour-bane": {
+   "key": "armour-bane",
+   "name": "Armour Bane (X)",
+   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound, the Armour Piercing characteristic of its weapon is improved by the amount shown in brackets after the name of this special rule (shown here as 'X').\n\nFor example, if a natural 6 is rolled when rolling To Wound with a weapon that has an AP of ' - ' and the Armour Bane (1) special rule, its AP counts as being -1 when making an Armour Save roll against that wound.",
+   "url": "https://tow.whfb.app/special-rules/armour-bane"
+  },
+  "counter-charge": {
+   "key": "counter-charge",
+   "name": "Counter Charge",
+   "text": "This special rule can only be used by units that consist entirely of models with this special rule. When a unit with this special rule is charged in its front arc by an enemy unit whose troop type is cavalry, chariot or monster, it may declare a 'Counter Charge' charge reaction:\n\nCounter Charge\n\nThe unit surges forward to meet the enemy charge. Measure the distance between the two units. If the distance is less than the Movement characteristic of the charging unit, the charged unit has not enough time to meet the enemy charge and must either Hold or Flee instead. Otherwise, pivot the unit about its centre so that it is facing directly towards the centre of the charging enemy unit. After pivoting, the unit moves D3+1\" directly towards the enemy unit. Both units are considered to have charged during this turn.\n\nFleeing units and units already engaged in combat when charged cannot Counter Charge. A unit can only Counter Charge in response to one charge per turn, even if charged by multiple units. Once all charges have been declared, the inactive player can choose which charging unit to Counter Charge. The unit will then Hold against the other charging units.",
+   "url": "https://tow.whfb.app/special-rules/counter-charge"
+  },
+  "ambushers": {
+   "key": "ambushers",
+   "name": "Ambushers",
+   "text": "A unit with this special rule may be held in reserve rather than be deployed at the start of the game. From the beginning of round two onwards, roll a D6 during each of your Start of Turn sub-phases for each unit of Ambushers in your army that is held in reserve. On a roll of 1-3, the unit is delayed until your next turn at least. On a roll of 4+, the unit arrives, entering the battle as reinforcements during the Compulsory Moves sub-phase. The unit may be placed on any edge of the battlefield, chosen by its controlling player, but cannot be placed within 8\" of an enemy model. If any Ambushers are still held in reserve by the start of round five, they arrive automatically.",
+   "url": "https://tow.whfb.app/special-rules/ambushers"
+  },
+  "stomp-attacks": {
+   "key": "stomp-attacks",
+   "name": "Stomp Attacks (X)",
+   "text": "The number of Stomp Attacks caused varies from model to model, and will be shown in brackets after the name of this special rule (shown here as 'X'). Often, this is determined by the roll of a dice.\n\nResolving Stomp Attacks\n\nStomp Attacks can only be made by a model that is in base contact with the enemy. Stomp Attacks are attacks made in combat that must be made last, after all other attacks have been made, including attacks made at Initiative 1. They hit automatically and use the unmodified Strength of the model making them.",
+   "url": "https://tow.whfb.app/special-rules/stomp-attacks"
+  },
+  "bilesword": {
+   "key": "bilesword",
+   "name": "Bilesword",
+   "text": "Notes: Regeneration saves are not permitted against wounds caused by this weapon (armour and Ward saves can be attempted as normal).",
+   "url": "https://tow.whfb.app/special-rules/bilesword"
+  },
+  "plagueflail": {
+   "key": "plagueflail",
+   "name": "Plagueflail",
+   "text": "Notes: A Plagueflail's Strength modifier applies only during the first round of combat.",
+   "url": "https://tow.whfb.app/special-rules/plagueflail"
+  },
+  "tzeentchian-wand": {
+   "key": "tzeentchian-wand",
+   "name": "Tzeentchian Wand",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/tzeentchian-wand"
+  },
+  "venom-sting": {
+   "key": "venom-sting",
+   "name": "Venom Sting",
+   "text": "Notes: In combat, a Rot Fly makes one of its attacks each turn with this weapon.",
+   "url": "https://tow.whfb.app/special-rules/venom-sting"
+  },
+  "fast-cavalry": {
+   "key": "fast-cavalry",
+   "name": "Fast Cavalry",
+   "text": "If all of the models (including characters) within a unit arrayed in an Open Order formation have this special rule, the unit may perform its Quick Turn even if it marched.",
+   "url": "https://tow.whfb.app/special-rules/fast-cavalry"
+  },
+  "reserve-move": {
+   "key": "reserve-move",
+   "name": "Reserve Move",
+   "text": "Unless it charged, marched or fled during the Movement phase, a unit in which the majority of the models have this special rule may make a Reserve move at the end of the Shooting phase of its turn, after all shooting has been resolved. A unit making a Reserve move moves as described in the Basic Movement rules. It may manoeuvre normally, but cannot march.",
+   "url": "https://tow.whfb.app/special-rules/reserve-move"
+  },
+  "baleful-torrent": {
+   "key": "baleful-torrent",
+   "name": "Baleful Torrent",
+   "text": "Notes: This weapon shoots like a fire thrower, using the Column of Fire special rule. If a 'Misfire' is rolled on the Artillery dice, this model loses a single Wound (instead of rolling on a Misfire table).",
+   "url": "https://tow.whfb.app/special-rules/baleful-torrent"
+  },
+  "warp-gaze": {
+   "key": "warp-gaze",
+   "name": "Warp Gaze",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/warp-gaze"
+  }
+ },
+ "items": {
+  "aetherblade": {
+   "slug": "aether-blade",
+   "name": "Æther Blade",
+   "type": "Ability",
+   "cost": 55,
+   "costOverride": null,
+   "text": "No armour saves are permitted against wounds caused by this Daemon's hand weapon (Ward and Regeneration saves can be attempted as normal).",
+   "url": "https://tow.whfb.app/magic-item/aether-blade"
+  },
+  "manyarms": {
+   "slug": "many-arms",
+   "name": "Many Arms*",
+   "type": "Ability",
+   "cost": 55,
+   "costOverride": null,
+   "text": "This model has a +1 modifier to its Attacks characteristic.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/many-arms"
+  },
+  "wingedhorror": {
+   "slug": "winged-horror",
+   "name": "Winged Horror",
+   "type": "Ability",
+   "cost": 45,
+   "costOverride": null,
+   "text": "Daemonic Heralds whose troop type is regular infantry only. This model gains the Fly (8) and Swiftstride special rules.",
+   "url": "https://tow.whfb.app/magic-item/winged-horror"
+  },
+  "daemonicrobes": {
+   "slug": "daemonic-robes",
+   "name": "Daemonic Robes",
+   "type": "Ability",
+   "cost": 35,
+   "costOverride": null,
+   "text": "This model cannot be wounded by a roll To Wound of 2, regardless of the Strength of the attack.",
+   "url": "https://tow.whfb.app/magic-item/daemonic-robes"
+  },
+  "bannerofunholyvictory": {
+   "slug": "banner-of-unholy-victory",
+   "name": "Banner of Unholy Victory",
+   "type": "Magic Standard",
+   "cost": 60,
+   "costOverride": null,
+   "text": "When calculating its combat result, a unit carrying the Banner of Unholy Victory may claim an additional bonus of +D3 combat result points.",
+   "url": "https://tow.whfb.app/magic-item/banner-of-unholy-victory"
+  },
+  "totemofeternalwar": {
+   "slug": "totem-of-eternal-war",
+   "name": "Totem of Eternal War",
+   "type": "Magic Standard",
+   "cost": 45,
+   "costOverride": null,
+   "text": "Daemonic Locus only. Friendly Daemonic units reduce the number of wounds suffered due to the Daemonic Instability special rule by an additional D3 whilst within the Command range of this model.",
+   "url": "https://tow.whfb.app/magic-item/totem-of-eternal-war"
+  },
+  "standardofchaoticglory": {
+   "slug": "standard-of-chaotic-glory",
+   "name": "Standard of Chaotic Glory",
+   "type": "Magic Standard",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Daemonic Locus only. Friendly Daemonic units gain a +1 modifier to their Leadership characteristic whilst within this character's Command range (to a maximum of 10).",
+   "url": "https://tow.whfb.app/magic-item/standard-of-chaotic-glory"
+  },
+  "spelleater": {
+   "slug": "spell-eater",
+   "name": "Spell Eater",
+   "type": "Ability",
+   "cost": 50,
+   "costOverride": null,
+   "text": "This model may be nominated to attempt a Wizardly Dispel, as if it were a Wizard. For the purposes of Wizardly Dispel attempts, this model counts as a Level 2 Wizard.",
+   "url": "https://tow.whfb.app/magic-item/spell-eater"
+  },
+  "armourofkhorne": {
+   "slug": "armour-of-khorne",
+   "name": "Armour of Khorne",
+   "type": "Ability",
+   "cost": 40,
+   "costOverride": null,
+   "text": "The Armour of Khorne is a suit of heavy armour. In addition, its wearer has a 5+ Ward save against any wounds suffered.",
+   "url": "https://tow.whfb.app/magic-item/armour-of-khorne"
+  },
+  "axeofkhorne": {
+   "slug": "axe-of-khorne",
+   "name": "Axe of Khorne*",
+   "type": "Ability",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Axe of Khorne (Profile)*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/axe-of-khorne"
+  },
+  "mightofkhorne": {
+   "slug": "might-of-khorne",
+   "name": "Might of Khorne",
+   "type": "Ability",
+   "cost": 25,
+   "costOverride": null,
+   "text": "This model has a +1 modifier to its Strength characteristic.",
+   "url": "https://tow.whfb.app/magic-item/might-of-khorne"
+  },
+  "collarofkhorne": {
+   "slug": "collar-of-khorne",
+   "name": "Collar of Khorne*",
+   "type": "Ability",
+   "cost": 25,
+   "costOverride": null,
+   "text": "The wearer of a Collar of Khorne improves its Magic Resistance by 1. For example, a model with Magic Resistance (-2) wearing a Collar of Khorne would have Magic Resistance (-3).\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/collar-of-khorne"
+  },
+  "skulltotem": {
+   "slug": "skull-totem",
+   "name": "Skull Totem",
+   "type": "Magic Standard",
+   "cost": 50,
+   "costOverride": null,
+   "text": "A unit carrying the Skull Totem (but not its mounts) gains the Furious Charge special rule.",
+   "url": "https://tow.whfb.app/magic-item/skull-totem"
+  },
+  "greatstandardofsundering": {
+   "slug": "great-standard-of-sundering",
+   "name": "Great Standard of Sundering",
+   "type": "Magic Standard",
+   "cost": 45,
+   "costOverride": null,
+   "text": "Any enemy Wizard that can draw a line of sight to the model carrying the Great Standard of Sundering suffers a -1 modifier to any Casting roll it makes.",
+   "url": "https://tow.whfb.app/magic-item/great-standard-of-sundering"
+  },
+  "iconofendlesswar": {
+   "slug": "icon-of-endless-war",
+   "name": "Icon of Endless War",
+   "type": "Magic Standard",
+   "cost": 30,
+   "costOverride": null,
+   "text": "When a unit carrying the Banner of Rage declares a charge, it may re-roll its Charge roll.",
+   "url": "https://tow.whfb.app/magic-item/icon-of-endless-war"
+  },
+  "nurglinginfestation": {
+   "slug": "nurgling-infestation",
+   "name": "Nurgling Infestation",
+   "type": "Ability",
+   "cost": 45,
+   "costOverride": null,
+   "text": "Great Unclean One only. Whilst engaged in combat, this model may make an additional D6 attacks. These attacks are resolved at Initiative 2, with a Weapon Skill and Strength of 2, and with an AP of -. Additionally, when this model loses its last Wound, place a Nurgling Swarm of D3 models so that each model is within 3\" of this model before removing this model from play.\n\nNote that these Nurgling Swarms are not worth any Victory Points.",
+   "url": "https://tow.whfb.app/magic-item/nurgling-infestation"
+  },
+  "sloppitybilepiper": {
+   "slug": "sloppity-bilepiper",
+   "name": "Sloppity Bilepiper",
+   "type": "Ability",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Daemonic Heralds whose troop type is infantry only. Friendly units with the Daemons of Nurgle special rule that begin their movement within this model's Command range have a +1 modifier to their Movement characteristic.",
+   "url": "https://tow.whfb.app/magic-item/sloppity-bilepiper"
+  },
+  "spoilpoxscrivener": {
+   "slug": "spoilpox-scrivener",
+   "name": "Spoilpox Scrivener",
+   "type": "Ability",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Daemonic Heralds whose troop type is infantry only. Whilst within this model's Command range, friendly units with the Daemons of Nurgle special rule may re-roll any rolls To Hit of a natural 1.",
+   "url": "https://tow.whfb.app/magic-item/spoilpox-scrivener"
+  },
+  "streamofcontagion": {
+   "slug": "stream-of-contagion",
+   "name": "Stream of Contagion*",
+   "type": "Ability",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Stream of Contagion (Profile)*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/stream-of-contagion"
+  },
+  "trappingsofnurgle": {
+   "slug": "trappings-of-nurgle",
+   "name": "Trappings of Nurgle",
+   "type": "Ability",
+   "cost": 30,
+   "costOverride": null,
+   "text": "The Trappings of Nurgle is a suit of armour that gives its wearer an armour value of 4+ which cannot be improved in any way.",
+   "url": "https://tow.whfb.app/magic-item/trappings-of-nurgle"
+  },
+  "iconofeternalvirulence": {
+   "slug": "icon-of-eternal-virulence",
+   "name": "Icon of Eternal Virulence",
+   "type": "Magic Standard",
+   "cost": 50,
+   "costOverride": null,
+   "text": "When calculating its combat result, a unit carrying the Icon of Eternal Virulence may claim an additional bonus of +1 combat result point (to a maximum of +3) for each unsaved wound caused by a Poisoned Attack.",
+   "url": "https://tow.whfb.app/magic-item/icon-of-eternal-virulence"
+  },
+  "standardofseepingdecay": {
+   "slug": "standard-of-seeping-decay",
+   "name": "Standard of Seeping Decay",
+   "type": "Magic Standard",
+   "cost": 35,
+   "costOverride": null,
+   "text": "During the Combat phase, a unit carrying the Standard of Seeping Decay may re-roll any rolls To Wound of a natural 1.",
+   "url": "https://tow.whfb.app/magic-item/standard-of-seeping-decay"
+  },
+  "rottenicon": {
+   "slug": "rotten-icon",
+   "name": "Rotten Icon",
+   "type": "Magic Standard",
+   "cost": 10,
+   "costOverride": null,
+   "text": "Enemy units cannot claim any bonus combat result points for being engaged with the rear arc of a unit carrying the Rotten Icon.",
+   "url": "https://tow.whfb.app/magic-item/rotten-icon"
+  },
+  "infernalenrapturess": {
+   "slug": "infernal-enrapturess",
+   "name": "Infernal Enrapturess",
+   "type": "Ability",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Daemonic Heralds whose troop type is infantry only. Whilst within this character's Command range, friendly Daemons of Slaanesh that are also Wizards (not including this model) may apply a +1 modifier to any Casting roll they make. Whilst within this character's Command range, enemy Wizards suffer a -1 modifier to any Casting roll they make.",
+   "url": "https://tow.whfb.app/magic-item/infernal-enrapturess"
+  },
+  "allureofslaanesh": {
+   "slug": "allure-of-slaanesh",
+   "name": "Allure of Slaanesh",
+   "type": "Ability",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Enemy units must make a Leadership test before making any rolls To Hit against this model during the Combat phase. If this test is failed, only rolls of a natural 6 will hit.",
+   "url": "https://tow.whfb.app/magic-item/allure-of-slaanesh"
+  },
+  "sirensong": {
+   "slug": "siren-song",
+   "name": "Siren Song",
+   "type": "Ability",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Single use. At the start of your opponent's Declare Charges & Charge Reactions sub-phase, nominate a single enemy unit that is able to declare a charge against this model (or its unit). That enemy unit must make a Leadership test\nLeadership Tests. If this test is passed, the unit may act as normal. However, if this test is failed, it must declare a charge against this model (or its unit).",
+   "url": "https://tow.whfb.app/magic-item/siren-song"
+  },
+  "soporificmusk": {
+   "slug": "soporific-musk",
+   "name": "Soporific Musk*",
+   "type": "Ability",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Enemy models engaged in combat with this model cannot use the Strike First special rule. Enemy models that do not have the Strike First special rule become subject to the Strike Last special rule instead.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/soporific-musk"
+  },
+  "enrapturinggaze": {
+   "slug": "enrapturing-gaze",
+   "name": "Enrapturing Gaze*",
+   "type": "Ability",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Enemy models engaged in combat with this model cannot use the Inspiring Presence special rule of their General.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/enrapturing-gaze"
+  },
+  "bannerofacquiescence": {
+   "slug": "banner-of-acquiescence",
+   "name": "Banner of Acquiescence",
+   "type": "Magic Standard",
+   "cost": 55,
+   "costOverride": null,
+   "text": "A single enemy unit engaged in combat with the bearer of the Banner of Acquiescence suffers a -D3 modifier to its Weapon Skill and Initiative characteristics (to a minimum of 1).",
+   "url": "https://tow.whfb.app/magic-item/banner-of-acquiescence"
+  },
+  "rapturousstandard": {
+   "slug": "rapturous-standard",
+   "name": "Rapturous Standard",
+   "type": "Magic Standard",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Any enemy unit that charges the front arc of a unit carrying the Rapturous Standard makes a disordered charge.",
+   "url": "https://tow.whfb.app/magic-item/rapturous-standard"
+  },
+  "sirenstandard": {
+   "slug": "siren-standard",
+   "name": "Siren Standard",
+   "type": "Magic Standard",
+   "cost": 25,
+   "costOverride": null,
+   "text": "If an enemy unit charged by a unit carrying the Siren Standard wishes to Flee (or Fire & Flee) as a charge reaction, it must first make a Leadership test. If this test is passed, the unit may Flee (or Fire & Flee). However, if this test is failed, the unit must Hold.",
+   "url": "https://tow.whfb.app/magic-item/siren-standard"
+  },
+  "staffofchange": {
+   "slug": "staff-of-change",
+   "name": "Staff of Change",
+   "type": "Ability",
+   "cost": 65,
+   "costOverride": null,
+   "text": "Staff of Change (Profile)Notes: Any enemy model that suffers one or more unsaved wounds from the Staff of Change must immediately make a Toughness test. If this test is failed, the wounded model loses all of its remaining Wounds.",
+   "url": "https://tow.whfb.app/magic-item/staff-of-change"
+  },
+  "willoftzeentch": {
+   "slug": "will-of-tzeentch",
+   "name": "Will of Tzeentch",
+   "type": "Ability",
+   "cost": 55,
+   "costOverride": null,
+   "text": "Once per round, this model may re-roll a single D6. This may be a D6 rolled on its own, as part of a batch of dice, or as part of a multiple dice roll.",
+   "url": "https://tow.whfb.app/magic-item/will-of-tzeentch"
+  },
+  "powervortex": {
+   "slug": "power-vortex",
+   "name": "Power Vortex",
+   "type": "Ability",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Whilst within this Wizard's dispel range, enemy Wizards suffer a -1 modifier to their Casting rolls.",
+   "url": "https://tow.whfb.app/magic-item/power-vortex"
+  },
+  "iridescentcorona": {
+   "slug": "iridescent-corona",
+   "name": "Iridescent Corona*",
+   "type": "Ability",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Any enemy model that targets this model during the Shooting phase suffers an additional -1 To Hit modifier.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/iridescent-corona"
+  },
+  "twinheads": {
+   "slug": "twin-heads",
+   "name": "Twin Heads",
+   "type": "Ability",
+   "cost": 20,
+   "costOverride": null,
+   "text": "This model knows one more spell (chosen in the usual way) than is normal for their Level of Wizardry.\n\nNote that this does not increase the Wizard's Level.",
+   "url": "https://tow.whfb.app/magic-item/twin-heads"
+  },
+  "bannerofdiscord": {
+   "slug": "banner-of-discord",
+   "name": "Banner of Discord",
+   "type": "Magic Standard",
+   "cost": 60,
+   "costOverride": null,
+   "text": "A unit carrying the Banner of Discord gains the Magic Resistance (-3) special rule. In addition, friendly units within 6\" of the model carrying this standard gain the Magic Resistance (-1) special rule.",
+   "url": "https://tow.whfb.app/magic-item/banner-of-discord"
+  },
+  "bannerofchange": {
+   "slug": "banner-of-change",
+   "name": "Banner of Change",
+   "type": "Magic Standard",
+   "cost": 45,
+   "costOverride": null,
+   "text": "At the start of the Combat phase, a single enemy unit engaged in combat with this model suffers 3D6 Strength 2 hits, each with an AP of -.",
+   "url": "https://tow.whfb.app/magic-item/banner-of-change"
+  },
+  "iconofsorcery": {
+   "slug": "icon-of-sorcery",
+   "name": "Icon of Sorcery*",
+   "type": "Magic Standard",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Pink Horrors only. When a unit carrying the Icon of Sorcery casts a Bound spell, it does so with a power level equal to twice its Rank Bonus.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/icon-of-sorcery"
+  },
+  "swordofreaving": {
+   "slug": "sword-of-reaving",
+   "name": "Sword of Reaving",
+   "type": "Magic Weapon",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Sword of Reaving (Profile)Notes: If, after making their attacks, the wielder of this weapon has failed to cause any wounds, they suffer D3 Strength 4 hits with an AP of -1.",
+   "url": "https://tow.whfb.app/magic-item/sword-of-reaving"
+  },
+  "cacklingblade": {
+   "slug": "cackling-blade",
+   "name": "Cackling Blade",
+   "type": "Magic Weapon",
+   "cost": 65,
+   "costOverride": null,
+   "text": "Cackling Blade (Profile)Notes: If a natural 6 is rolled for the Extra Attacks (+D6) special rule, the wielder of the Cackling Blade immediately loses a single Wound.",
+   "url": "https://tow.whfb.app/magic-item/cackling-blade"
+  },
+  "dragonblade": {
+   "slug": "dragonblade",
+   "name": "Dragonblade",
+   "type": "Magic Weapon",
+   "cost": 0,
+   "costOverride": null,
+   "text": "Dragonblade (Profile)Notes: Dragonblade is inscribed with a Rune of Fury and a Grudge Rune, as described in Forces of Fantasy.",
+   "url": "https://tow.whfb.app/magic-item/dragonblade"
+  },
+  "runeoffury": {
+   "slug": "rune-of-fury",
+   "name": "Rune of Fury*",
+   "type": "Magic Weapon",
+   "cost": 25,
+   "costOverride": null,
+   "text": "For each Rune of Fury inscribed upon a weapon, its wielder has a +1 modifier to their Attacks characteristic.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/rune-of-fury"
+  },
+  "grudgerune": {
+   "slug": "grudge-rune",
+   "name": "Grudge Rune*",
+   "type": "Magic Weapon",
+   "cost": 20,
+   "costOverride": null,
+   "text": "For each Grudge Rune inscribed upon a weapon, its wielder may re-roll a single roll To Hit of a natural 1 made during the Combat phase.\n\n*Rule of Duplication",
+   "url": "https://tow.whfb.app/magic-item/grudge-rune"
+  },
+  "ogreblade": {
+   "slug": "ogre-blade",
+   "name": "Ogre Blade",
+   "type": "Magic Weapon",
+   "cost": 75,
+   "costOverride": null,
+   "text": "Ogre Blade (Profile)",
+   "url": "https://tow.whfb.app/magic-item/ogre-blade"
+  },
+  "swordofbattle": {
+   "slug": "sword-of-battle",
+   "name": "Sword of Battle",
+   "type": "Magic Weapon",
+   "cost": 60,
+   "costOverride": null,
+   "text": "Sword of Battle (Profile)",
+   "url": "https://tow.whfb.app/magic-item/sword-of-battle"
+  },
+  "flailofwrecks": {
+   "slug": "flail-of-wrecks",
+   "name": "Flail of Wrecks",
+   "type": "Magic Weapon",
+   "cost": 45,
+   "costOverride": null,
+   "text": "Flail of Wrecks (Profile)Notes: The Strength modifier and Armour Bane (1) special rule apply only against enemy models the wielder charged this turn. Should the wielder make any rolls To Wound of a natural 1 during the Combat phase, their Initiative is reduced by 1 (to a minimum of 1) for the remainder of the game.",
+   "url": "https://tow.whfb.app/magic-item/flail-of-wrecks"
+  },
+  "meteorhammer": {
+   "slug": "meteor-hammer",
+   "name": "Meteor Hammer",
+   "type": "Magic Weapon",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Meteor Hammer ProfileNotes: When making a roll To Wound with this weapon, a roll of a 3+ is always a success, regardless of the target's Toughness.",
+   "url": "https://tow.whfb.app/magic-item/meteor-hammer"
+  },
+  "hellforgedaxe": {
+   "slug": "hell-forged-axe",
+   "name": "Hell-forged Axe",
+   "type": "Magic Weapon",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Hell-forged Axe Profile",
+   "url": "https://tow.whfb.app/magic-item/hell-forged-axe"
+  },
+  "grimverdict": {
+   "slug": "grim-verdict",
+   "name": "Grim Verdict",
+   "type": "Magic Weapon",
+   "cost": 40,
+   "costOverride": null,
+   "text": "Grim Verdict (Profile)Notes: Should the wielder lose a round of combat, they suffer a single wound with no armour save permitted (Ward and Regeneration saves can be attempted as normal).",
+   "url": "https://tow.whfb.app/magic-item/grim-verdict"
+  },
+  "duellistsblades": {
+   "slug": "duellists-blades",
+   "name": "Duellist's Blades",
+   "type": "Magic Weapon",
+   "cost": 55,
+   "costOverride": null,
+   "text": "Duellist’s Blades (Profile)",
+   "url": "https://tow.whfb.app/magic-item/duellists-blades"
+  },
+  "huntersscorn": {
+   "slug": "hunters-scorn",
+   "name": "Hunter's Scorn",
+   "type": "Magic Weapon",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Hunter's Scorn (Profile)Notes: Should an enemy model with a Wounds characteristic of 2 or more suffer one or more unsaved wounds from this weapon, they and their unit suffer a - 1 modifier to their Initiative characteristic (to a minimum of 1) for the remainder of the game. However, if the wielder of Hunter's Scorn fails to wound their target, this effect is lost.",
+   "url": "https://tow.whfb.app/magic-item/hunters-scorn"
+  },
+  "swordofsorrow": {
+   "slug": "sword-of-sorrow",
+   "name": "Sword of Sorrow",
+   "type": "Magic Weapon",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Sword of Sorrow ProfileNotes: The Sword of Sorrow is a missile weapon; it cannot be used in combat. No Ward or Regeneration saves are permitted against wounds caused by the Sword of Sorrow.",
+   "url": "https://tow.whfb.app/magic-item/sword-of-sorrow"
+  },
+  "dragonslayingsword": {
+   "slug": "dragon-slaying-sword",
+   "name": "Dragon Slaying Sword",
+   "type": "Magic Weapon",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Dragon Slaying Sword (Profile)",
+   "url": "https://tow.whfb.app/magic-item/dragon-slaying-sword"
+  },
+  "headsmansaxe": {
+   "slug": "headsmans-axe",
+   "name": "Headsman's Axe",
+   "type": "Magic Weapon",
+   "cost": 45,
+   "costOverride": null,
+   "text": "Headsman’s Axe (Profile)",
+   "url": "https://tow.whfb.app/magic-item/headsmans-axe"
+  },
+  "spelleateraxe": {
+   "slug": "spelleater-axe",
+   "name": "Spelleater Axe",
+   "type": "Magic Weapon",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Spelleater Axe (Profile)",
+   "url": "https://tow.whfb.app/magic-item/spelleater-axe"
+  },
+  "giantblade": {
+   "slug": "giant-blade",
+   "name": "Giant Blade",
+   "type": "Magic Weapon",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Giant Blade (Profile)",
+   "url": "https://tow.whfb.app/magic-item/giant-blade"
+  },
+  "swordofswiftness": {
+   "slug": "sword-of-swiftness",
+   "name": "Sword of Swiftness",
+   "type": "Magic Weapon",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Sword of Swiftness (Profile)",
+   "url": "https://tow.whfb.app/magic-item/sword-of-swiftness"
+  },
+  "berserkerblade": {
+   "slug": "berserker-blade",
+   "name": "Berserker Blade",
+   "type": "Magic Weapon",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Berserker Blade (Profile)Notes: The wielder of the Berserker Blade is Impetuous.",
+   "url": "https://tow.whfb.app/magic-item/berserker-blade"
+  },
+  "swordofmight": {
+   "slug": "sword-of-might",
+   "name": "Sword of Might*",
+   "type": "Magic Weapon",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Sword of Might (Profile)*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/sword-of-might"
+  },
+  "bitingblade": {
+   "slug": "biting-blade",
+   "name": "Biting Blade",
+   "type": "Magic Weapon",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Biting Blade (Profile)",
+   "url": "https://tow.whfb.app/magic-item/biting-blade"
+  },
+  "swordofstriking": {
+   "slug": "sword-of-striking",
+   "name": "Sword of Striking*",
+   "type": "Magic Weapon",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Sword of Striking (Profile)Notes: During the Combat phase, the wielder of the Sword of Striking has a +1 modifier to their rolls To Hit.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/sword-of-striking"
+  },
+  "burningblade": {
+   "slug": "burning-blade",
+   "name": "Burning Blade*",
+   "type": "Magic Weapon",
+   "cost": 5,
+   "costOverride": null,
+   "text": "Burning Blade (Profile)*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/burning-blade"
+  },
+  "armourofdestiny": {
+   "slug": "armour-of-destiny",
+   "name": "Armour of Destiny",
+   "type": "Magic Armour",
+   "cost": 70,
+   "costOverride": null,
+   "text": "The Armour of Destiny is a suit of heavy armour. In addition, its wearer has a 4+ Ward save against any wounds suffered.",
+   "url": "https://tow.whfb.app/magic-item/armour-of-destiny"
+  },
+  "armourofdarkfaith": {
+   "slug": "armour-of-dark-faith",
+   "name": "Armour of Dark Faith",
+   "type": "Magic Armour",
+   "cost": 40,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry or cavalry only. The Armour of Dark Faith is a suit of light armour. In addition, the wearer may re-roll any failed armour saves. However, if the wearer of the Armour of Dark Faith loses a Wound, this effect is lost and it counts as light armour for the rest of the game.",
+   "url": "https://tow.whfb.app/magic-item/armour-of-dark-faith"
+  },
+  "bedazzlinghelm": {
+   "slug": "bedazzling-helm",
+   "name": "Bedazzling Helm",
+   "type": "Magic Armour",
+   "cost": 60,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry or cavalry only. May be worn with other armour. The wearer of the Bedazzling Helm improves their armour value by 1 (to a maximum of 2+). In addition, any enemy model that directs its attacks against the wearer during the Combat phase suffers a -1 modifier to its rolls To Hit.",
+   "url": "https://tow.whfb.app/magic-item/bedazzling-helm"
+  },
+  "scaleoffalsepromise": {
+   "slug": "scale-of-false-promise",
+   "name": "Scale of False Promise",
+   "type": "Magic Armour",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry or cavalry only. The Scale of False Promise is a suit of heavy armour. The wearer improves their Toughness and Wounds characteristics by 1, but becomes subject to the Stupidity special rule. If the wearer already suffers from Stupidity, they must apply a +1 modifier to the dice roll every time they make a Stupidity test.",
+   "url": "https://tow.whfb.app/magic-item/scale-of-false-promise"
+  },
+  "mantleofdriftingshadow": {
+   "slug": "mantle-of-drifting-shadow",
+   "name": "Mantle of Drifting Shadow",
+   "type": "Magic Armour",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry only. The Mantle of Drifting Shadow is a suit of light armour. The wearer cannot be targeted by any shooting or spells from more than 6\" away. In addition, they improve their Movement characteristic by 1, but gain the Loner special rule.",
+   "url": "https://tow.whfb.app/magic-item/mantle-of-drifting-shadow"
+  },
+  "armourofsilveredsteel": {
+   "slug": "armour-of-silvered-steel",
+   "name": "Armour of Silvered Steel",
+   "type": "Magic Armour",
+   "cost": 40,
+   "costOverride": null,
+   "text": "The Armour of Silvered Steel is a suit of armour that gives its wearer an armour value of 3+ which cannot be improved in any way.",
+   "url": "https://tow.whfb.app/magic-item/armour-of-silvered-steel"
+  },
+  "glitteringscales": {
+   "slug": "glittering-scales",
+   "name": "Glittering Scales",
+   "type": "Magic Armour",
+   "cost": 35,
+   "costOverride": null,
+   "text": "The Glittering Scales is a suit of light armour. In addition, once per turn, you may make your opponent re-roll a single roll To Hit made against the wearer.",
+   "url": "https://tow.whfb.app/magic-item/glittering-scales"
+  },
+  "levitatingshield": {
+   "slug": "levitating-shield",
+   "name": "Levitating Shield",
+   "type": "Magic Armour",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry only. The Levitating Shield is a shield. In addition, the bearer may use it alongside a weapon with the Requires Two Hands special rule during combat.",
+   "url": "https://tow.whfb.app/magic-item/levitating-shield"
+  },
+  "shieldofthewarriortrue": {
+   "slug": "shield-of-the-warrior-true",
+   "name": "Shield of the Warrior True",
+   "type": "Magic Armour",
+   "cost": 30,
+   "costOverride": null,
+   "text": "The Shield of the Warrior True is a shield. In addition, its bearer has a 5+ Ward save against any wounds suffered during the Shooting phase.",
+   "url": "https://tow.whfb.app/magic-item/shield-of-the-warrior-true"
+  },
+  "spellshield": {
+   "slug": "spellshield",
+   "name": "Spellshield*",
+   "type": "Magic Armour",
+   "cost": 25,
+   "costOverride": null,
+   "text": "The Spellshield is a shield. In addition, its bearer has a 5+ Ward save against any wounds suffered that were caused by a Magic Missile, a Magical Vortex, or an Assailment spell.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/spellshield"
+  },
+  "trailblazershauberk": {
+   "slug": "trailblazers-hauberk",
+   "name": "Trailblazer's Hauberk",
+   "type": "Magic Armour",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry only. The Trailblazer's Hauberk is a suit of heavy armour. In addition, its wearer gains the Move Through Cover and Scouts special rules.",
+   "url": "https://tow.whfb.app/magic-item/trailblazers-hauberk"
+  },
+  "armourofmeteoriciron": {
+   "slug": "armour-of-meteoric-iron",
+   "name": "Armour of Meteoric Iron",
+   "type": "Magic Armour",
+   "cost": 20,
+   "costOverride": null,
+   "text": "The Armour of Meteoric Iron gives its wearer an armour value of 5+, which cannot be improved in any way. However, nor can this armour value be reduced in any way either.",
+   "url": "https://tow.whfb.app/magic-item/armour-of-meteoric-iron"
+  },
+  "enchantedshield": {
+   "slug": "enchanted-shield",
+   "name": "Enchanted Shield*",
+   "type": "Magic Armour",
+   "cost": 10,
+   "costOverride": null,
+   "text": "The Enchanted Shield is a shield. In addition, its bearer has a 6+ Ward save against any wounds suffered that were caused by a non-magical enemy attack.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/enchanted-shield"
+  },
+  "charmedshield": {
+   "slug": "charmed-shield",
+   "name": "Charmed Shield*",
+   "type": "Magic Armour",
+   "cost": 5,
+   "costOverride": null,
+   "text": "The Charmed Shield is a shield. In addition, once per game the Charmed Shield gives its bearer a 5+ Ward save against a single wound. Once this Ward save has been used, the Charmed Shield is considered to be an ordinary, non magical shield.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/charmed-shield"
+  },
+  "amuletofspellattraction": {
+   "slug": "amulet-of-spell-attraction",
+   "name": "Amulet of Spell Attraction",
+   "type": "Talisman",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Once per turn, when a friendly unit within the bearer's Command range is targeted by a Magic Missile or Hex, the bearer may make a Leadership test. If the test is passed, the bearer may choose to redirect the spell onto themselves rather than the original target, even if they are out of range or would not normally be an eligible target. The spell is then resolved with the bearer of the Amulet as its target.",
+   "url": "https://tow.whfb.app/magic-item/amulet-of-spell-attraction"
+  },
+  "dawnstone": {
+   "slug": "dawnstone",
+   "name": "Dawnstone",
+   "type": "Talisman",
+   "cost": 35,
+   "costOverride": null,
+   "text": "The bearer of the Dawnstone may re-roll any Armour Save roll of a natural 1.",
+   "url": "https://tow.whfb.app/magic-item/dawnstone"
+  },
+  "periaptofsoulexchange": {
+   "slug": "periapt-of-soul-exchange",
+   "name": "Periapt of Soul Exchange",
+   "type": "Talisman",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of the Periapt of Soul Exchange may channel its power. If they do, D3 friendly models within the bearer's Command range are removed from play as casualties and the bearer recovers that many lost Wounds.",
+   "url": "https://tow.whfb.app/magic-item/periapt-of-soul-exchange"
+  },
+  "talismanofprotection": {
+   "slug": "talisman-of-protection",
+   "name": "Talisman of Protection",
+   "type": "Talisman",
+   "cost": 30,
+   "costOverride": null,
+   "text": "The Talisman of Protection gives its bearer a 5+ Ward save against any wounds suffered.",
+   "url": "https://tow.whfb.app/magic-item/talisman-of-protection"
+  },
+  "paymasterscoin": {
+   "slug": "paymasters-coin",
+   "name": "Paymaster's Coin*",
+   "type": "Talisman",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Single use. The bearer of a Paymaster's Coin can re-roll any failed rolls To Hit made during the Combat phase.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/paymasters-coin"
+  },
+  "obsidianlodestone": {
+   "slug": "obsidian-lodestone",
+   "name": "Obsidian Lodestone*",
+   "type": "Talisman",
+   "cost": 20,
+   "costOverride": null,
+   "text": "A model may purchase up to three Obsidian Lodestones. A model that bears a single Obsidian Lodestone has Magic Resistance (-1), a model that bears two has Magic Resistance (-2), and a model that bears three has Magic Resistance (-3).\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/obsidian-lodestone"
+  },
+  "luckstone": {
+   "slug": "luckstone",
+   "name": "Luckstone*",
+   "type": "Talisman",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Single use. The bearer of a Luckstone can re-roll a single failed Armour Save roll.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/luckstone"
+  },
+  "iconoffortitude": {
+   "slug": "icon-of-fortitude",
+   "name": "Icon of Fortitude",
+   "type": "Talisman",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry or cavalry only. The bearer is immune to the Multiple Wounds (X) special rule. If the bearer is wounded by an attack with this special rule, they suffer a single wound.",
+   "url": "https://tow.whfb.app/magic-item/icon-of-fortitude"
+  },
+  "ironhidetalisman": {
+   "slug": "ironhide-talisman",
+   "name": "Ironhide Talisman",
+   "type": "Talisman",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry only. Any enemy model that makes a successful roll To Hit against the bearer of the Ironhide Talisman during the Shooting phase or Combat phase must re-roll any rolls To Wound of a natural 6.\n\nNote that this magic item does not work against attacks that hit automatically.",
+   "url": "https://tow.whfb.app/magic-item/ironhide-talisman"
+  },
+  "ringofdoom": {
+   "slug": "ring-of-doom",
+   "name": "Ring of Doom",
+   "type": "Enchanted Item",
+   "cost": 25,
+   "costOverride": null,
+   "text": "The bearer of the Ring of Doom can cast the Doombolt spell from the Lore of Dark Magic as a Bound spell, with a Power Level of 2. However, each time the spell is successfully cast, your opponent rolls a D6. On a roll of 4+, the bearer reduces their Toughness characteristic by 1 (to a minimum of 1).",
+   "url": "https://tow.whfb.app/magic-item/ring-of-doom"
+  },
+  "daemonbloodedsteed": {
+   "slug": "daemon-blooded-steed",
+   "name": "Daemon-Blooded Steed",
+   "type": "Enchanted Item",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Models whose troop type is cavalry only. The bearer's mount improves its Movement, Strength and Attacks characteristics by 1 (to a maximum of 10), but gains the Impetuous special rule.",
+   "url": "https://tow.whfb.app/magic-item/daemon-blooded-steed"
+  },
+  "elixirofpower": {
+   "slug": "elixir-of-power",
+   "name": "Elixir of Power",
+   "type": "Enchanted Item",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of an Elixir of Power can consume it. Until their next Start of Turn sub-phase, the model has a +1 modifier to their Strength, Attacks and Initiative characteristics (to a maximum of 10). Once this effect ends, the bearer loses a single Wound. This Wound cannot be recovered by a Regeneration save.",
+   "url": "https://tow.whfb.app/magic-item/elixir-of-power"
+  },
+  "wizardinghat": {
+   "slug": "wizarding-hat",
+   "name": "Wizarding Hat",
+   "type": "Enchanted Item",
+   "cost": 45,
+   "costOverride": null,
+   "text": "The wearer is a Level 1 Wizard and knows one randomly generated spell from a Lore of Magic of your choosing. However, the whispers of the ghostly Wizard haunting the hat are often confusing. Therefore, the wearer also becomes subject to the Stupidity special rule.",
+   "url": "https://tow.whfb.app/magic-item/wizarding-hat"
+  },
+  "flyingcarpet": {
+   "slug": "flying-carpet",
+   "name": "Flying Carpet",
+   "type": "Enchanted Item",
+   "cost": 40,
+   "costOverride": null,
+   "text": "Models whose troop type is regular infantry or heavy infantry only. The bearer of the Flying Carpet gains the Fly (8) and Swiftstride special rules. However, the bearer cannot join a unit.",
+   "url": "https://tow.whfb.app/magic-item/flying-carpet"
+  },
+  "healingpotion": {
+   "slug": "healing-potion",
+   "name": "Healing Potion*",
+   "type": "Enchanted Item",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of a Healing Potion can consume it. The model immediately recovers D3 lost Wounds.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/healing-potion"
+  },
+  "rubyringofruin": {
+   "slug": "ruby-ring-of-ruin",
+   "name": "Ruby Ring of Ruin",
+   "type": "Enchanted Item",
+   "cost": 35,
+   "costOverride": null,
+   "text": "The wielder of the Ruby Ring of Ruin can cast the Fireball spell from the Lore of Battle Magic as a Bound spell, with a Power Level of 1.",
+   "url": "https://tow.whfb.app/magic-item/ruby-ring-of-ruin"
+  },
+  "potionofstrength": {
+   "slug": "potion-of-strength",
+   "name": "Potion of Strength*",
+   "type": "Enchanted Item",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of a Potion of Strength can consume it. Until the end of that turn, the model has a +D3 modifier to its Strength characteristic (to a maximum of 10).\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/potion-of-strength"
+  },
+  "potionoftoughness": {
+   "slug": "potion-of-toughness",
+   "name": "Potion of Toughness*",
+   "type": "Enchanted Item",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of a Potion of Toughness can consume it. Until the end of that turn, the model has a +D3 modifier to its Toughness characteristic (to a maximum of 10).\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/potion-of-toughness"
+  },
+  "potionofspeed": {
+   "slug": "potion-of-speed",
+   "name": "Potion of Speed*",
+   "type": "Enchanted Item",
+   "cost": 10,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of a Potion of Speed can consume it. Until the end of that turn, the model has a +D3 modifier to its Initiative characteristic (to a maximum of 10).\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/potion-of-speed"
+  },
+  "archlightningrod": {
+   "slug": "arch-lightning-rod",
+   "name": "Arch-Lightning Rod",
+   "type": "Enchanted Item",
+   "cost": 40,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, if they are not engaged in combat, the bearer of the Arch-Lightning Rod may attempt to use it by making a Leadership test (using their own, unmodified Leadership). If this test is passed, until your next Start of Turn sub-phase enemy units cannot use the Fly (X) special rule.",
+   "url": "https://tow.whfb.app/magic-item/arch-lightning-rod"
+  },
+  "potionoffoolhardiness": {
+   "slug": "potion-of-foolhardiness",
+   "name": "Potion of Foolhardiness*",
+   "type": "Enchanted Item",
+   "cost": 5,
+   "costOverride": null,
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of a Potion of Foolhardiness can consume it. Until the end of that turn, the model gains the Immune To Psychology special rule.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/potion-of-foolhardiness"
+  },
+  "potionoffervour": {
+   "slug": "potion-of-fervour",
+   "name": "Potion of Fervour",
+   "type": "Enchanted Item",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Single Use. During the Command sub-phase of their turn, the bearer of the Potion of Fervour can consume it. Until the end of that turn, the model has a +D3 modifier to its Attacks characteristic (to a maximum of 10).\n\nNote that a model can only consume a single potion (of any type) per Command phase.",
+   "url": "https://tow.whfb.app/magic-item/potion-of-fervour"
+  },
+  "becalmingorb": {
+   "slug": "becalming-orb",
+   "name": "Becalming Orb",
+   "type": "Enchanted Item",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Single Use. The bearer of the Becalming Orb may cast the following Bound spell, with a Power level of 1:\n\nType | Hex\nCasting Value | 8+\nRange | Self\n\nUntil your next Start of Turn sub-phase, enemy Wizards that are within 15\" of the caster when attempting to cast a spell must increase that spell's casting value by 2.",
+   "url": "https://tow.whfb.app/magic-item/becalming-orb"
+  },
+  "rodofmight": {
+   "slug": "rod-of-might",
+   "name": "Rod of Might",
+   "type": "Arcane Item",
+   "cost": 50,
+   "costOverride": null,
+   "text": "The bearer of the Rod of Might may apply a +1 modifier to any of their casting results. However, the bearer will suffer a miscast if a natural double 1 or 2 is rolled when making a Casting roll, rather than the usual natural double 1.",
+   "url": "https://tow.whfb.app/magic-item/rod-of-might"
+  },
+  "scrollofinvocation": {
+   "slug": "scroll-of-invocation",
+   "name": "Scroll of Invocation*",
+   "type": "Arcane Item",
+   "cost": 30,
+   "costOverride": null,
+   "text": "0-1 per Wizard. Single use. The bearer may use this scroll instead of making a Casting roll. If they do, the spell is cast as if the caster had rolled the minimum casting value of the spell. Dispel rolls may be attempted as normal.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/scroll-of-invocation"
+  },
+  "infernalfamiliar": {
+   "slug": "infernal-familiar",
+   "name": "Infernal Familiar",
+   "type": "Arcane Item",
+   "cost": 25,
+   "costOverride": null,
+   "text": "The owner of an Infernal Familiar may select either Doombolt or Winds of Chaos addition to the other spells they know. However, should the Wizard ever suffer a miscast whilst casting the selected spell, they cannot cast it again for the remainder of the game in addition to any other effects from the Miscast table.",
+   "url": "https://tow.whfb.app/magic-item/infernal-familiar"
+  },
+  "feedbackscroll": {
+   "slug": "feedback-scroll",
+   "name": "Feedback Scroll",
+   "type": "Arcane Item",
+   "cost": 60,
+   "costOverride": null,
+   "text": "Single use. The bearer may use this scroll instead of making a Wizardly dispel attempt. The spell is cast as normal. Once the spell has been resolved, roll two D6. For each roll of a 4+, the casting Wizard loses a single Wound.",
+   "url": "https://tow.whfb.app/magic-item/feedback-scroll"
+  },
+  "scrolloftransmogrification": {
+   "slug": "scroll-of-transmogrification",
+   "name": "Scroll of Transmogrification*",
+   "type": "Arcane Item",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Single use. The bearer may use this scroll instead of making a Wizardly dispel attempt. The spell is cast as normal. Once the spell has been resolved, the casting player must roll equal to or lower than the casting Wizard's Level of Wizardry on a single D6. Should they fail, the Wizard turns into a frog.\n\nWhilst transmogrified, the Wizard cannot cast or dispel any spells, cannot use any of their equipment (magical or mundane) and reduces all of their characteristics (excluding Wounds) to 1. During each Start of Turn sub-phase, a player may roll a D6 for each transmogrified Wizard in their army. On a roll of 4+, the Wizard returns to normal (but retains a love of water).\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/scroll-of-transmogrification"
+  },
+  "wandofjet": {
+   "slug": "wand-of-jet",
+   "name": "Wand of Jet",
+   "type": "Arcane Item",
+   "cost": 45,
+   "costOverride": null,
+   "text": "The bearer of the Wand of Jet may apply a +1 modifier to any of their Casting or Dispel rolls. However, should they roll any natural double when making a Casting or Dispel roll, the Wand of Jet is destroyed and it cannot be used again.\n\nNote that this is a modifier to the result of a roll – it does not negate a roll of a natural double 1.",
+   "url": "https://tow.whfb.app/magic-item/wand-of-jet"
+  },
+  "staffofquietude": {
+   "slug": "staff-of-quietude",
+   "name": "Staff of Quietude",
+   "type": "Arcane Item",
+   "cost": 35,
+   "costOverride": null,
+   "text": "During the Command sub-phase of their turn, the bearer of the Staff of Quietude can attempt to unleash its power by making a Leadership test. If this test is passed, all Remains in Play spells currently in play are dispelled, including spells cast by friendly models.",
+   "url": "https://tow.whfb.app/magic-item/staff-of-quietude"
+  },
+  "lorefamiliar": {
+   "slug": "lore-familiar",
+   "name": "Lore Familiar",
+   "type": "Arcane Item",
+   "cost": 30,
+   "costOverride": null,
+   "text": "The owner of a Lore Familiar does not randomly generate their spells. Instead, they may choose which spells they know from their chosen lore (including that lore's signature spell).",
+   "url": "https://tow.whfb.app/magic-item/lore-familiar"
+  },
+  "scrollofdisruption": {
+   "slug": "scroll-of-disruption",
+   "name": "Scroll of Disruption",
+   "type": "Arcane Item",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Once per turn, the bearer of the Scroll of Disruption may re-roll a Dispel roll.\n\n*Note all dice are re-rolled, including any bonus or discard dice granted by special rules or magic items.",
+   "url": "https://tow.whfb.app/magic-item/scroll-of-disruption"
+  },
+  "powerscroll": {
+   "slug": "power-scroll",
+   "name": "Power Scroll*",
+   "type": "Arcane Item",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Single use. A Wizard may use this scroll when attempting to cast a spell. If they do so, roll an extra D6 when making the Casting roll and discard the lowest result. However, if a double 1 is rolled on any two of the dice rolled, the spell is miscast.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/power-scroll"
+  },
+  "tomeofspellcraft": {
+   "slug": "tome-of-spellcraft",
+   "name": "Tome of Spellcraft",
+   "type": "Arcane Item",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Once per turn, the bearer of the Tome of Spellcraft may re-roll a Casting roll.\n\n*Note all dice are re-rolled, including any bonus or discard dice granted by special rules or magic items.",
+   "url": "https://tow.whfb.app/magic-item/tome-of-spellcraft"
+  },
+  "dispelscroll": {
+   "slug": "dispel-scroll",
+   "name": "Dispel Scroll*",
+   "type": "Arcane Item",
+   "cost": 20,
+   "costOverride": null,
+   "text": "Single use. A Wizard may use this scroll when attempting a Wizardly dispel. If they do so, roll an extra D6 when making the Dispel roll and discard the lowest result. However, if a double 1 is rolled on any two of the dice rolled, the Wizard is outclassed in the art.\n\n*Extremely Common",
+   "url": "https://tow.whfb.app/magic-item/dispel-scroll"
+  },
+  "arcanefamiliar": {
+   "slug": "arcane-familiar",
+   "name": "Arcane Familiar",
+   "type": "Arcane Item",
+   "cost": 15,
+   "costOverride": null,
+   "text": "The owner of an Arcane Familiar knows spells from two Lores of Magic, rather than the usual one. When determining the spells the Wizard knows, you must roll for each Lore separately. Duplicate spells are re-rolled as normal. The Wizard may discard one randomly generated spell as normal, replacing it with the signature spell of the same Lore of Magic.",
+   "url": "https://tow.whfb.app/magic-item/arcane-familiar"
+  },
+  "earthingrod": {
+   "slug": "earthing-rod",
+   "name": "Earthing Rod",
+   "type": "Arcane Item",
+   "cost": 5,
+   "costOverride": null,
+   "text": "Single use. Should they miscast a spell, a Wizard can use the Earthing Rod to re-roll the result rolled on the Miscast table.",
+   "url": "https://tow.whfb.app/magic-item/earthing-rod"
+  },
+  "thebannerofthedarkheart": {
+   "slug": "the-banner-of-the-dark-heart",
+   "name": "The Banner of the Dark Heart",
+   "type": "Magic Standard",
+   "cost": 50,
+   "costOverride": null,
+   "text": "When required to make a Fear, Panic or Terror test, a unit carrying this standard may roll an extra D6 and discard the highest result. However, a unit carrying this banner cannot benefit from the General's Inspiring Presence special rule.",
+   "url": "https://tow.whfb.app/magic-item/the-banner-of-the-dark-heart"
+  },
+  "bannerofironresolve": {
+   "slug": "banner-of-iron-resolve",
+   "name": "Banner of Iron Resolve",
+   "type": "Magic Standard",
+   "cost": 50,
+   "costOverride": null,
+   "text": "A unit carrying the Banner of Iron Resolve gains the Stubborn special rule.",
+   "url": "https://tow.whfb.app/magic-item/banner-of-iron-resolve"
+  },
+  "standardofthefellwarrior": {
+   "slug": "standard-of-the-fell-warrior",
+   "name": "Standard of the Fell Warrior",
+   "type": "Magic Standard",
+   "cost": 15,
+   "costOverride": null,
+   "text": "Single use. During the Remaining Moves sub-phase, a unit carrying this standard may perform a free redress the ranks manoeuvre immediately before moving. Once this manoeuvre is complete, the unit moves as normal but cannot turn or perform a quick turn.",
+   "url": "https://tow.whfb.app/magic-item/standard-of-the-fell-warrior"
+  },
+  "razorstandard": {
+   "slug": "razor-standard",
+   "name": "Razor Standard",
+   "type": "Magic Standard",
+   "cost": 40,
+   "costOverride": null,
+   "text": "A unit carrying the Razor Standard gains the Armour Bane (2) special rule.",
+   "url": "https://tow.whfb.app/magic-item/razor-standard"
+  },
+  "rampagingbanner": {
+   "slug": "rampaging-banner",
+   "name": "Rampaging Banner",
+   "type": "Magic Standard",
+   "cost": 30,
+   "costOverride": null,
+   "text": "When a unit carrying the Rampaging Banner declares a charge, it may re-roll its Charge roll.",
+   "url": "https://tow.whfb.app/magic-item/rampaging-banner"
+  },
+  "theblazingbanner": {
+   "slug": "the-blazing-banner",
+   "name": "The Blazing Banner",
+   "type": "Magic Standard",
+   "cost": 25,
+   "costOverride": null,
+   "text": "A unit carrying the Blazing Banner gains the Flaming Attacks special rule.",
+   "url": "https://tow.whfb.app/magic-item/the-blazing-banner"
+  },
+  "warbanner": {
+   "slug": "war-banner",
+   "name": "War Banner",
+   "type": "Magic Standard",
+   "cost": 25,
+   "costOverride": null,
+   "text": "When calculating its combat result, a unit carrying the War Banner may claim an additional bonus of +1 combat result point.",
+   "url": "https://tow.whfb.app/magic-item/war-banner"
+  },
+  "bannerofthesteadfast": {
+   "slug": "banner-of-the-steadfast",
+   "name": "Banner of the Steadfast",
+   "type": "Magic Standard",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Models whose troop type is infantry only. Should a unit carrying the Banner of the Steadfast belong to the losing side of a Combat, it can Fall Back in Good Order even if the Unit Strength of the winning side is more than twice that of its own side.",
+   "url": "https://tow.whfb.app/magic-item/banner-of-the-steadfast"
+  },
+  "totemofwrath": {
+   "slug": "totem-of-wrath",
+   "name": "Totem of Wrath",
+   "type": "Magic Standard",
+   "cost": 50,
+   "costOverride": null,
+   "text": "During a turn in which it charged, models within a unit carrying the Totem of Wrath improve the Armour Piercing characteristic of their weapons by 1, and may re-roll any rolls To Wound of a natural 1.",
+   "url": "https://tow.whfb.app/magic-item/totem-of-wrath"
+  },
+  "bannerofswirlingwind": {
+   "slug": "banner-of-swirling-wind",
+   "name": "Banner of Swirling Wind",
+   "type": "Magic Standard",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Any enemy model that shoots at a unit carrying the Banner of Swirling Wind suffers an additional -1 To Hit modifier.",
+   "url": "https://tow.whfb.app/magic-item/banner-of-swirling-wind"
+  },
+  "monsterhunterstapestry": {
+   "slug": "monster-hunters-tapestry",
+   "name": "Monster Hunter's Tapestry",
+   "type": "Magic Standard",
+   "cost": 25,
+   "costOverride": null,
+   "text": "Enemy units may not make Stomp Attacks against a unit carrying the Monster Hunter's Tapestry.",
+   "url": "https://tow.whfb.app/magic-item/monster-hunters-tapestry"
+  }
+ }
+}

@@ -1,0 +1,97 @@
+[
+ {
+  "slug": "beastmen-brayherds",
+  "name": "Beastmen Brayherds",
+  "units": 33
+ },
+ {
+  "slug": "chaos-dwarfs",
+  "name": "Chaos Dwarfs",
+  "units": 22
+ },
+ {
+  "slug": "daemons-of-chaos",
+  "name": "Daemons of Chaos",
+  "units": 37
+ },
+ {
+  "slug": "dark-elves",
+  "name": "Dark Elves",
+  "units": 32
+ },
+ {
+  "slug": "dwarfen-mountain-holds",
+  "name": "Dwarfen Mountain Holds",
+  "units": 37
+ },
+ {
+  "slug": "empire-of-man",
+  "name": "Empire of Man",
+  "units": 47
+ },
+ {
+  "slug": "grand-cathay",
+  "name": "Grand Cathay",
+  "units": 21
+ },
+ {
+  "slug": "high-elf-realms",
+  "name": "High Elf Realms",
+  "units": 45
+ },
+ {
+  "slug": "kingdom-of-bretonnia",
+  "name": "Kingdom of Bretonnia",
+  "units": 31
+ },
+ {
+  "slug": "lizardmen",
+  "name": "Lizardmen",
+  "units": 24
+ },
+ {
+  "slug": "ogre-kingdoms",
+  "name": "Ogre Kingdoms",
+  "units": 23
+ },
+ {
+  "slug": "orc-and-goblin-tribes",
+  "name": "Orc & Goblin Tribes",
+  "units": 50
+ },
+ {
+  "slug": "realms-of-men",
+  "name": "Realms of Men",
+  "units": 11
+ },
+ {
+  "slug": "regiments-of-renown",
+  "name": "Regiments of Renown",
+  "units": 1
+ },
+ {
+  "slug": "skaven",
+  "name": "Skaven",
+  "units": 26
+ },
+ {
+  "slug": "tomb-kings-of-khemri",
+  "name": "Tomb Kings of Khemri",
+  "units": 38
+ },
+ {
+  "slug": "vampire-counts",
+  "name": "Vampire Counts",
+  "units": 33
+ },
+ {
+  "slug": "warriors-of-chaos",
+  "name": "Warriors of Chaos",
+  "units": 39
+ },
+ {
+  "slug": "wood-elf-realms",
+  "name": "Wood Elf Realms",
+  "units": 38
+ }
+]
