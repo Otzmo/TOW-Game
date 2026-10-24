@@ -76,6 +76,9 @@ export class ImportDialog {
   private confirm(): void {
     if (!this.pending) return;
     this.store.replacePlayerUnits(this.owner, this.pending.units);
+    // Armee für die Anzeige links merken (Fraktion und Listenname)
+    const armies = { ...this.store.state.meta.armies, [this.owner]: { faction: this.pending.factionName, list: this.pending.listName } };
+    this.store.setMeta({ armies });
     this.dialog.close();
     this.onDeployed(this.owner);
   }

@@ -93,6 +93,10 @@ export interface GameMeta {
   phase?: 'setup' | 'strategy' | 'movement' | 'shooting' | 'combat';
   /** Unterphase (0–3), siehe PHASES in phases.ts */
   sub?: number;
+  /** Missionspunkte, von Hand eingetragen */
+  missionVp?: Partial<Record<PlayerId, number>>;
+  /** Geladene Armee je Spieler (Fraktion und Listenname) */
+  armies?: Partial<Record<PlayerId, { faction: string; list: string }>>;
 }
 
 /**

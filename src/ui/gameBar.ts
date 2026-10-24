@@ -6,8 +6,9 @@ import { armyPoints, victoryPoints } from '../model/score';
 import { isSkirmish, unitLayout, type Store } from '../model/store';
 import type { GameMeta, LogKind, PlayerId } from '../model/types';
 
+import { missionByKey } from '../model/battlefield';
+
 type Step = Pick<GameMeta, 'phase' | 'sub' | 'active' | 'round'>;
-import { onSheetChange, toggleSheet } from './sheets';
 
 const $ = (id: string) => document.getElementById(id)!;
 
@@ -30,16 +31,15 @@ export class GameBar {
     $('g-confirm-no').onclick = () => { $('g-confirm').hidden = true; };
     $('g-undo').onclick = () => history.undo();
     $('g-redo').onclick = () => history.redo();
-    $('g-score-toggle').onclick = () => toggleSheet('score');
-    onSheetChange((name) => {
-      $('g-score-toggle').classList.toggle('on', name === 'score');
-      if (name === 'score') this.render();
-    });
-    $('sheet-score').onchange = (e) => {
+    $('score-panel').onchange = (e) => {
       const box = e.target as HTMLInputElement;
-      if (!box.dataset.break) return;
-      const breakBonus = { ...this.store.state.meta.breakBonus, [box.dataset.break]: box.checked };
-      this.store.setMeta({ breakBonus });
+      if (box.dataset.break) {
+        const breakBonus = { ...this.store.state.meta.breakBonus, [box.dataset.break]: box.checked };
+        this.store.setMeta({ breakBonus });
+      } else if (box.dataset.mission) {
+        const missionVp = { ...this.store.state.meta.missionVp, [box.dataset.mission]: Math.max(0, Math.round(Number(box.value) || 0)) };
+        this.store.setMeta({ missionVp });
+      }
     };
     store.subscribe(() => {
       ($('g-undo') as HTMLButtonElement).disabled = !history.canUndo();
@@ -133,7 +133,7 @@ export class GameBar {
 
   private render(): void {
     const { state } = this.store;
-    const { round, active, breakBonus } = state.meta;
+    const { round, active } = state.meta;
     const phase = currentPhase(state.meta);
     const sub = currentSub(state.meta);
     const info = phaseInfo(phase);
@@ -169,19 +169,48 @@ export class GameBar {
     rep.textContent = `↺ ${info.repeat ?? ''}`;
     rep.disabled = notMine;
 
+    // Nach der Aufstellung: Armee laden, Gelände und Battlefield ausblenden (siehe CSS)
+    document.body.classList.toggle('battle', phase !== 'setup');
+    this.renderPlayers();
+    this.renderScore();
+  }
+
+  /** Beide Spieler mit Angreifer/Verteidiger und geladener Armee */
+  private renderPlayers(): void {
+    const { meta } = this.store.state;
+    const defender = meta.setup?.defender;
+    $('g-players').innerHTML = (['p1', 'p2'] as const).map((p) => {
+      const role = !defender ? '' : p === defender ? 'defender' : 'attacker';
+      const army = meta.armies?.[p];
+      return `<div class="g-player"><b><span class="dot ${p}"></span>${playerName(p)}${this.me === p ? ' (you)' : ''}
+          ${role ? `<span class="role ${role}">${role === 'defender' ? 'Defender' : 'Attacker'}</span>` : ''}</b>
+        <span class="army" title="${escapeHtml(army ? `${army.faction} · ${army.list}` : '')}">${army ? escapeHtml(army.faction) + (army.list ? ` · ${escapeHtml(army.list)}` : '') : 'no army loaded'}</span></div>`;
+    }).join('');
+  }
+
+  /** Siegpunkte rechts: Killpoints je Einheit und Missionspunkte (von Hand) */
+  private renderScore(): void {
+    const { state } = this.store;
+    const panel = $('score-panel');
+    // Nicht neu zeichnen, während dort eine Zahl eingegeben wird
+    if (panel.contains(document.activeElement) && (document.activeElement as HTMLElement).tagName === 'INPUT') return;
+    const { breakBonus, missionVp, setup } = state.meta;
     const score = { p1: victoryPoints(state, 'p1'), p2: victoryPoints(state, 'p2') };
-    $('g-score-toggle').innerHTML = `Victory Points <b>${score.p1.total}</b> : <b>${score.p2.total}</b>`;
-    if ($('sheet-score').hidden) return;
-    $('sheet-score').innerHTML = '<h3>Victory Points</h3>' + (['p1', 'p2'] as const).map((p) => {
-      const lines = score[p].lines.map((l) =>
+    const missions = [missionByKey(setup?.missionTurn), missionByKey(setup?.missionGame)].filter(Boolean).map((m) => m!.name);
+    panel.innerHTML = `<h3>Victory Points</h3>` + (['p1', 'p2'] as const).map((p) => {
+      const kills = score[p].lines.filter((l) => l.label !== 'Mission points');
+      const killTotal = kills.reduce((s, l) => s + l.vp, 0);
+      const lines = kills.map((l) =>
         `<li><span>${escapeHtml(l.label)}</span><b>${l.vp}</b></li>`).join('') || '<li class="empty">none yet</li>';
       return `<section>
         <h3><span class="dot ${p}"></span>${playerName(p)} <span class="vp">${score[p].total} VP</span></h3>
-        <p class="meta">Army ${armyPoints(state, p)} pts</p>
+        <p class="meta">Army ${armyPoints(state, p)} pts · Kill points ${killTotal} · Mission points ${missionVp?.[p] ?? 0}</p>
         <ul>${lines}</ul>
         <label><input type="checkbox" data-break="${p}" ${breakBonus[p] ? 'checked' : ''}>
           ${playerName(other(p))}'s army is broken (+500)</label>
+        <label>Mission points${missions.length ? ` (${escapeHtml(missions.join(' + '))})` : ''}
+          <input type="number" min="0" step="25" data-mission="${p}" value="${missionVp?.[p] ?? 0}"></label>
       </section>`;
-    }).join('') + '<p class="meta note">Score as if the game ended now (without mission Victory Points).</p>';
+    }).join('') + '<p class="meta note">Score as if the game ended now. Select a unit to see its details.</p>';
   }
 }

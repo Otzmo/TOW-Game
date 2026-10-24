@@ -102,19 +102,14 @@ async function start(): Promise<void> {
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
   // Ganzen Tisch zeigen, auch nach jedem Armeeimport
-  // Freier Bereich zwischen Hilfsmittel-Spalte links und Einheitenleiste unten (Maße aus dem CSS)
+  // Freier Bereich zwischen der Spalte links und der Spalte rechts; unten liegt nichts
   board.viewArea = () => {
-    const css = getComputedStyle(document.documentElement);
-    const px = (name: string) => {
-      const v = css.getPropertyValue(name).trim();
-      return v.endsWith('vh') ? (parseFloat(v) * window.innerHeight) / 100 : parseFloat(v) || 0;
-    };
-    const margin = 30; // Platz für die Zoll-Leisten
+    const margin = 26; // Platz für die Zoll-Leisten
     return {
-      left: px('--side') + margin,
+      left: document.getElementById('sidebar')!.getBoundingClientRect().right + margin,
       top: margin,
-      right: app.screen.width - px('--right') - margin,
-      bottom: app.screen.height - px('--bottom') - 12 - margin,
+      right: document.getElementById('dicebar')!.getBoundingClientRect().left - margin,
+      bottom: app.screen.height - margin,
     };
   };
   const showTable = () => board.fitView();
@@ -136,6 +131,7 @@ async function start(): Promise<void> {
     for (const owner of ['p1', 'p2'] as const) {
       const result = await importBbList(list, owner, state.table);
       store.replacePlayerUnits(owner, result.units);
+      store.setMeta({ armies: { ...store.state.meta.armies, [owner]: { faction: result.factionName, list: result.listName } } });
     }
     history.clear();
     showTable();

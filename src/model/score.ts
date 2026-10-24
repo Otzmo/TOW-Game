@@ -61,6 +61,8 @@ export function unitVictoryPoints(u: UnitState): ScoreLine[] {
 export function victoryPoints(state: GameState, scorer: PlayerId): { total: number; lines: ScoreLine[] } {
   const lines = Object.values(state.units).filter((u) => u.owner !== scorer).flatMap(unitVictoryPoints);
   if (state.meta.breakBonus[scorer]) lines.push({ label: 'Enemy army broken', vp: BREAK_BONUS });
+  const mission = state.meta.missionVp?.[scorer] ?? 0;
+  if (mission) lines.push({ label: 'Mission points', vp: mission });
   return { total: lines.reduce((s, l) => s + l.vp, 0), lines };
 }
 

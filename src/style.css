@@ -183,7 +183,6 @@ body.placing canvas { cursor: crosshair; }
 .pick { display: flex; flex-direction: column; gap: 6px; }
 .pick button { display: flex; align-items: center; gap: 8px; text-align: left; }
 .swatch-sm { width: 14px; height: 14px; border-radius: 3px; flex: none; border: 1px solid rgba(255, 255, 255, .3); }
-.help-list { margin: 0; padding-left: 18px; font-size: 13px; display: flex; flex-direction: column; gap: 6px; }
 
 /* Siegpunkte */
 #sheet-score section + section { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
@@ -281,8 +280,6 @@ body.sheet-open .bottom-panel { display: none; }
 /* Auswahllisten nebeneinander */
 .pick { flex-direction: row; flex-wrap: wrap; }
 .pick button { flex: 0 0 auto; }
-.help-list { columns: 2 320px; column-gap: 28px; display: block; }
-.help-list li { break-inside: avoid; margin-bottom: 6px; }
 
 /* Tastenkürzel in mehreren Spalten */
 #keys-list { columns: 3 300px; column-gap: 28px; }
@@ -415,3 +412,81 @@ body.sheet-open .bottom-panel { display: none; }
 .setup-cols summary { cursor: pointer; }
 .row-btns { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
 @media (max-width: 900px) { .setup-cols { grid-template-columns: 1fr; } }
+
+/* ==== Layout: Tisch so groß wie möglich; links Ablauf und Werkzeuge, rechts alles andere, unten nichts ====
+   Die Breiten wachsen mit der Bildschirmbreite; rechts oben liegen Siegpunkte, Einheit, Objekt,
+   Fenster und Aufforderungen übereinander, darunter Würfel, Magie und Würfelprotokoll. */
+:root {
+  --side: clamp(168px, 12vw, 250px);
+  --right: clamp(290px, 23vw, 470px);
+  --info-h: 60vh;
+  --bottom: 0px;
+}
+#sidebar { width: var(--side); }
+
+.info-panel, .bottom-panel, .sheet {
+  position: fixed; top: 0; right: 0; left: auto; bottom: auto; width: var(--right); height: var(--info-h);
+  max-height: none; margin: 0; overflow-y: auto; border-radius: 0; border: 0; border-left: 1px solid var(--line);
+  border-bottom: 1px solid var(--line); background: var(--panel); padding: 12px 14px;
+}
+.info-panel { z-index: 1; }
+.bottom-panel { z-index: 2; }
+.sheet { z-index: 3; }
+.sheet.wide-sheet { width: var(--right); }
+#obj-panel { height: var(--info-h); }
+#dicebar { top: var(--info-h); width: var(--right); border-top: 0; }
+
+/* Einheitenleiste als eine Spalte untereinander */
+.bottom-panel header { flex-wrap: wrap; }
+.bottom-panel header .meta { flex-basis: 100%; order: 3; white-space: normal; }
+.bottom-panel .cols { flex-direction: column; overflow: visible; gap: 0; }
+.bottom-panel .col, .bottom-panel .col.wide-col { flex: none; min-width: 0; overflow: visible; padding: 0; }
+.bottom-panel .col + .col { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); margin-top: 10px; padding-top: 4px; }
+#obj-panel .cols { flex-direction: column; align-items: stretch; }
+
+/* Fenster: alles einspaltig */
+.setup-cols { grid-template-columns: 1fr; gap: 12px; }
+#keys-list { columns: 1; }
+#sheet-log:not([hidden]) { display: flex; }
+.pick { flex-direction: row; flex-wrap: wrap; }
+
+/* Siegpunkte (Killpoints + Missionspunkte) */
+#score-panel h3:first-child { margin-top: 0; }
+#score-panel section + section { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+#score-panel section h3 { display: flex; align-items: center; margin: 0; font-size: 14px; text-transform: none; letter-spacing: 0; color: var(--text); }
+#score-panel .vp { margin-left: auto; color: var(--accent); font-variant-numeric: tabular-nums; font-size: 18px; }
+#score-panel ul { list-style: none; margin: 6px 0 8px; padding: 0; font-size: 13px; }
+#score-panel li { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; border-bottom: 1px dashed var(--line); }
+#score-panel li b { font-variant-numeric: tabular-nums; }
+#score-panel li.empty { color: var(--muted); border: 0; }
+#score-panel label { display: flex; gap: 8px; align-items: center; font-size: 13px; margin-top: 4px; }
+#score-panel input[type="number"] {
+  width: 80px; font: inherit; text-align: right; color: var(--text); background: #15171a;
+  border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; margin-left: auto;
+}
+#score-panel .note { margin: 10px 0 0; }
+
+/* Aufforderungen und Hinweise rechts */
+#prompt-card {
+  top: 0; right: 0; left: auto; width: var(--right); max-width: none; margin: 0; border-radius: 0 0 0 14px;
+  max-height: var(--info-h); overflow-y: auto; z-index: 8;
+}
+#prompt-wait { left: auto; right: 12px; transform: none; top: calc(var(--info-h) - 44px); max-width: calc(var(--right) - 24px); z-index: 7; }
+#phase-notice {
+  top: auto; bottom: calc(100vh - var(--info-h)); right: 0; left: auto; width: var(--right); max-width: none; margin: 0;
+  border-radius: 10px 0 0 10px; flex-wrap: wrap; z-index: 7;
+}
+#sync-error { left: auto; right: 0; bottom: 0; width: var(--right); max-width: none; margin: 0; border-radius: 10px 0 0 0; flex-wrap: wrap; }
+#tool-hint { left: calc(var(--side) + (100% - var(--side) - var(--right)) / 2); }
+
+/* Spieler: Angreifer/Verteidiger und Armee */
+#g-players { display: flex; flex-direction: column; gap: 4px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+.g-player { display: flex; flex-direction: column; font-size: 12px; line-height: 1.3; }
+.g-player b { display: flex; align-items: center; font-size: 13px; }
+.g-player .role { margin-left: auto; font-size: 11px; font-weight: 700; padding: 0 6px; border-radius: 4px; background: #2a2e32; color: var(--muted); }
+.g-player .role.attacker { background: #7a2a1e; color: #fde3da; }
+.g-player .role.defender { background: #1e4a7a; color: #dbe9fb; }
+.g-player .army { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Nach der Aufstellung: Armee laden, Gelände und Battlefield ausblenden */
+body.battle [data-import], body.battle #toolbox [data-sheet="battlefield"], body.battle #toolbox [data-sheet="terrain"] { display: none; }

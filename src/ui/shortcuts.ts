@@ -66,7 +66,6 @@ export class Shortcuts {
         match: (e) => e.key === 'Escape', whileTyping: true, run: (e) => this.escape(e) },
       { group: 'General', keys: [['?'], ['F1']], desc: 'Show these shortcuts',
         match: (e) => char('?')(e) || e.key === 'F1', run: () => toggleSheet('keys') },
-      { group: 'General', keys: [['H']], desc: 'Controls help', match: letter('h'), run: () => toggleSheet('help') },
 
       // Werkzeuge
       { group: 'Tools', keys: [['V']], desc: 'Select and drag', match: letter('v'), run: () => tools.setTool('select') },
@@ -86,14 +85,19 @@ export class Shortcuts {
       { group: 'Game', keys: [['Enter']], desc: 'In the dice column: roll',
         match: (e) => e.key === 'Enter' && plain(e) && !!targetEl(e)?.closest('#dicebar'),
         whileTyping: true, run: () => ($('d-roll') as HTMLButtonElement).click() },
-      { group: 'Game', keys: [['Z']], desc: 'Magic: cast a spell', match: letter('z'), run: () => toggleSheet('magic') },
+      { group: 'Game', keys: [['Z']], desc: 'Magic (right): enter the spell', match: letter('z'), run: () => {
+        (document.getElementById('m-spell') as HTMLInputElement).focus();
+      } },
       { group: 'Game', keys: [['J']], desc: 'Declare charge (then click the target)', match: letter('j'), run: () => actions.declareCharge() },
       { group: 'Game', keys: [['P']], desc: 'Log', match: letter('p'), run: () => toggleSheet('log') },
       { group: 'Game', keys: [['C']], desc: 'Write a chat message', match: letter('c'), run: () => {
         openSheet('log');
         ($('chat-input') as HTMLInputElement).focus();
       } },
-      { group: 'Game', keys: [['S']], desc: 'Victory Points', match: letter('s'), run: () => toggleSheet('score') },
+      { group: 'Game', keys: [['S']], desc: 'Victory Points (right): close sheet and selection', match: letter('s'), run: () => {
+        openSheet(null);
+        board.select(null);
+      } },
       { group: 'Game', keys: [['N']], desc: 'Next sub-phase', match: letter('n'), run: () => gameBar.requestNext() },
       { group: 'Game', keys: [['Shift', 'N']], desc: 'End phase (after the Combat phase: end turn)', match: letter('n', true), run: () => gameBar.requestEndPhase() },
       { group: 'Game', keys: [['U']], desc: 'Shooting/Combat: next unit or next combat', match: letter('u'), run: () => gameBar.repeat() },

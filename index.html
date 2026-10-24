@@ -8,9 +8,10 @@
 <body>
   <div id="app"></div>
 
-  <!-- Linke kurze Tischkante: alle Hilfsmittel -->
+  <!-- Linke kurze Tischkante: Spielablauf und Werkzeuge -->
   <aside id="sidebar">
     <div id="gamebar">
+      <div id="g-players"></div>
       <span id="g-round"></span>
       <ol id="g-phases"></ol>
       <ol id="g-subs"></ol>
@@ -19,7 +20,6 @@
       <button id="g-phase-end">End phase »</button>
       <button id="g-undo" title="Undo (Ctrl+Z)" disabled>↶ Undo</button>
       <button id="g-redo" title="Redo (Ctrl+Y)" disabled>↷ Redo</button>
-      <button id="g-score-toggle">Victory Points</button>
       <div id="g-confirm" hidden>
         <span id="g-confirm-text"></span>
         <button id="g-confirm-yes" class="primary">Continue anyway</button>
@@ -49,17 +49,17 @@
       <button data-sheet="markers">Markers ▸</button>
       <button data-sheet="templates">Templates ▸</button>
       <hr>
-      <button data-sheet="magic" title="Cast a spell (Z)">Magic</button>
       <button data-sheet="log">Log <span id="log-badge" hidden></span></button>
       <hr>
       <button id="save-game">Save</button>
       <button id="load-game">Load</button>
       <input type="file" id="load-file" accept=".json,application/json" hidden>
-      <button data-sheet="help">Help</button>
       <button data-sheet="keys" title="All keyboard shortcuts (?)">Shortcuts</button>
     </nav>
   </aside>
-  <!-- Rechte kurze Tischkante: Würfel und Würfelprotokoll -->
+  <!-- Rechte Seite oben: Siegpunkte als Grundanzeige; Einheit, Objekt, Fenster und Aufforderungen liegen darüber -->
+  <aside id="score-panel" class="info-panel"></aside>
+  <!-- Rechte Seite unten: Würfel, Magie und Würfelprotokoll -->
   <aside id="dicebar">
     <h3>Dice</h3>
     <div class="dice-form">
@@ -77,6 +77,14 @@
         data-quick="1d3">D3</button><button data-quick="3d6">3D6</button>
     </div>
     <div id="d-result"></div>
+    <h3>Magic</h3>
+    <div class="dice-form">
+      <label>Wizard <select id="m-wizard"></select></label>
+      <label>Casting value <select id="m-value"></select></label>
+      <label class="full">Spell <input id="m-spell" type="text" maxlength="60" placeholder="e.g. Blue Fire"></label>
+    </div>
+    <button id="m-cast" class="primary wide">Casting roll</button>
+    <p class="meta" id="m-result"></p>
     <h3>Dice log</h3>
     <ol id="dice-log"></ol>
   </aside>
@@ -101,7 +109,6 @@
   </div>
 
   <!-- Seitenfenster neben den Werkzeugen; immer nur eins offen -->
-  <aside class="sheet" id="sheet-score" hidden></aside>
   <aside class="sheet" id="sheet-terrain" hidden><h3>Place terrain</h3><div class="pick" data-kind="terrain"></div>
     <p class="meta">Choose, then click on the table. Selected terrain: rotate at the circle, resize at the square. All terrain is area terrain and blocks line of sight.</p></aside>
   <aside class="sheet" id="sheet-markers" hidden><h3>Place markers</h3><div class="pick" data-kind="marker"></div>
@@ -123,35 +130,12 @@
       <section id="setup-step"></section>
     </div>
   </aside>
-  <aside class="sheet" id="sheet-magic" hidden>
-    <h3>Cast a spell</h3>
-    <div class="dice-form">
-      <label>Wizard <select id="m-wizard"></select></label>
-      <label>Casting value <select id="m-value"></select></label>
-      <label class="full">Spell <input id="m-spell" type="text" maxlength="60" placeholder="e.g. Blue Fire"></label>
-    </div>
-    <button id="m-cast" class="primary wide">Casting roll</button>
-    <p class="meta" id="m-result"></p>
-  </aside>
   <aside class="sheet" id="sheet-log" hidden>
     <h3>Log &amp; Chat</h3>
     <ol id="log-list"></ol>
     <form id="chat-form"><input id="chat-input" type="text" maxlength="300" placeholder="Message …" autocomplete="off"><button>Send</button></form>
   </aside>
   <aside class="sheet wide-sheet" id="sheet-keys" hidden><h3>Keyboard shortcuts</h3><div id="keys-list"></div></aside>
-  <aside class="sheet" id="sheet-help" hidden>
-    <h3>Controls</h3>
-    <ul class="help-list">
-      <li><b>Drag a unit</b>: move it. If its front ends within 1″ of an enemy edge, it is aligned to it for the charge.</li>
-      <li><b>Drag the gold corners</b>: wheel. <b>White circle</b>: pivot around the centre. <b>Shift</b>: 15° steps.</li>
-      <li><b>Skirmishers</b>: drag a model to move it alone, Shift + drag moves the whole unit.</li>
-      <li>Drag a <b>character</b> onto a friendly unit to join it.</li>
-      <li><b>Measure / Line of Sight</b>: choose the tool and drag on the table. <b>Esc</b> returns to Select.</li>
-      <li><b>Mouse wheel</b>: zoom. <b>Drag empty table</b>: pan the view (when zoomed in).</li>
-      <li><b>Setup</b>: follow the steps in <b>Battlefield ▸</b>, then <b>Start Battle</b>.</li>
-      <li>All keyboard shortcuts: <b>Shortcuts</b> on the left, or <b>?</b> / <b>F1</b>.</li>
-    </ul>
-  </aside>
 
   <div id="lobby">
     <div class="card">
