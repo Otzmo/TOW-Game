@@ -2,7 +2,7 @@
  "faction": "beastmen-brayherds",
  "name": "Beastmen Brayherds",
  "source": "https://tow.whfb.app/army/beastmen-brayherds",
- "fetchedAt": "2026-10-24T20:00:44.766Z",
+ "fetchedAt": "2026-10-25T06:54:11.641Z",
  "units": {
   "beastlord": {
    "slug": "beastlord",
@@ -41,6 +41,9 @@
     "primal-fury",
     "warband"
    ],
+   "ruleLabels": {
+    "brayhorn": "Brayhorn (General only)"
+   },
    "cost": 115,
    "options": [
     {
@@ -135,6 +138,7 @@
     "primal-fury",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 13,
    "options": [
     {
@@ -199,6 +203,7 @@
     "primal-fury",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 65,
    "options": [
     {
@@ -278,6 +283,9 @@
     "swiftstride",
     "warband"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": 17,
    "options": [
     {
@@ -366,6 +374,10 @@
     "timmm-berrr",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (D6)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 200,
    "options": [
     {
@@ -414,6 +426,9 @@
     "open-order-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)"
+   },
    "cost": 6,
    "options": [
     {
@@ -476,6 +491,9 @@
     "primal-fury",
     "warband"
    ],
+   "ruleLabels": {
+    "brayhorn": "Brayhorn (General only)"
+   },
    "cost": 70,
    "options": [
     {
@@ -552,6 +570,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": 155,
    "options": [
     {
@@ -605,6 +627,9 @@
     "terror",
     "timmm-berrr"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 205,
    "options": []
   },
@@ -650,6 +675,10 @@
     "slaughterers-call",
     "warband"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 210,
    "options": [
     {
@@ -719,6 +748,11 @@
     "terror",
     "the-quickening-storm"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2)",
+    "armoured-hide": "Armoured Hide (2)",
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": 225,
    "options": [
     {
@@ -790,6 +824,11 @@
     "stomp-attacks",
     "the-quickening-storm"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "armoured-hide": "Armoured Hide (2)",
+    "stomp-attacks": "Stomp Attacks (2)"
+   },
    "cost": 59,
    "options": [
     {
@@ -860,6 +899,10 @@
     "terror",
     "timmm-berrr"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 245,
    "options": []
   },
@@ -903,6 +946,9 @@
     "the-sons-of-ghorros",
     "warband"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 155,
    "options": []
   },
@@ -960,6 +1006,7 @@
     "skirmish-formation",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 7,
    "options": [
     {
@@ -1041,6 +1088,10 @@
     "slaughterers-call",
     "warband"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 130,
    "options": [
     {
@@ -1105,6 +1156,7 @@
     "primal-fury",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 150,
    "options": [
     {
@@ -1164,6 +1216,9 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)"
+   },
    "cost": 11,
    "options": []
   },
@@ -1195,6 +1250,7 @@
    "specialRules": [
     "herdstones"
    ],
+   "ruleLabels": {},
    "cost": 100,
    "options": []
   },
@@ -1237,6 +1293,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 185,
    "options": []
   },
@@ -1277,6 +1337,7 @@
     "primal-fury",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 245,
    "options": []
   },
@@ -1335,6 +1396,9 @@
     "primal-fury",
     "warband"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 44,
    "options": [
     {
@@ -1411,6 +1475,10 @@
     "large-target",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "impact-hits": "Impact Hits (D3)"
+   },
    "cost": 160,
    "options": [
     {
@@ -1495,6 +1563,10 @@
     "primal-fury",
     "warband"
    ],
+   "ruleLabels": {
+    "bestial-charge": "Bestial Charge (Gors only)",
+    "furious-charge": "Furious Charge (Gors only)"
+   },
    "cost": 7,
    "options": [
     {
@@ -1575,6 +1647,9 @@
     "swiftstride",
     "warband"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)"
+   },
    "cost": 6,
    "options": [
     {
@@ -1675,6 +1750,11 @@
     "primal-fury",
     "razor-tusks"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1 Razorgor only)",
+    "foe-render": "Foe Render (Razorgor only)",
+    "impact-hits": "Impact Hits (D6+2)"
+   },
    "cost": 120,
    "options": []
   },
@@ -1717,6 +1797,10 @@
     "razor-tusks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (D3)"
+   },
    "cost": 52,
    "options": []
   },
@@ -1799,6 +1883,9 @@
     "razor-tusks",
     "warband"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D6+1)"
+   },
    "cost": 85,
    "options": []
   },
@@ -1854,6 +1941,7 @@
     "skirmish-formation",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 5,
    "options": [
     {
@@ -1930,6 +2018,7 @@
     "swiftstride",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 7,
    "options": []
   },
@@ -1970,6 +2059,9 @@
     "primal-fury",
     "warband"
    ],
+   "ruleLabels": {
+    "brayhorn": "Brayhorn (General only)"
+   },
    "cost": 55,
    "options": [
     {
@@ -2053,6 +2145,9 @@
     "swiftstride",
     "warband"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": 75,
    "options": [
     {
@@ -2152,6 +2247,9 @@
     "stubborn",
     "warband"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)"
+   },
    "cost": 16,
    "options": [
     {

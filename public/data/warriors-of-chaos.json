@@ -2,7 +2,7 @@
  "faction": "warriors-of-chaos",
  "name": "Warriors of Chaos",
  "source": "https://tow.whfb.app/army/warriors-of-chaos",
- "fetchedAt": "2026-10-24T05:49:11.943Z",
+ "fetchedAt": "2026-10-25T06:53:52.435Z",
  "units": {
   "aspiring-champion": {
    "slug": "aspiring-champion",
@@ -39,6 +39,9 @@
     "mark-of-chaos-undivided",
     "rallying-cry"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (5+)"
+   },
    "cost": 70,
    "options": [
     {
@@ -148,6 +151,9 @@
     "mark-of-chaos-undivided",
     "rallying-cry"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (5+)"
+   },
    "cost": 90,
    "options": [
     {
@@ -280,6 +286,9 @@
     "impact-hits",
     "mark-of-chaos-undivided"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D6+1)"
+   },
    "cost": 110,
    "options": [
     {
@@ -355,6 +364,7 @@
     "unseen-threat",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 6,
    "options": [
     {
@@ -407,6 +417,10 @@
     "terror",
     "two-headed-dragon"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": null,
    "options": []
   },
@@ -475,6 +489,9 @@
     "mark-of-chaos-undivided",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (6+)"
+   },
    "cost": 27,
    "options": [
     {
@@ -554,6 +571,9 @@
     "mark-of-chaos-undivided",
     "rallying-cry"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (5+)"
+   },
    "cost": 195,
    "options": [
     {
@@ -687,6 +707,7 @@
     "shieldwall",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 6,
    "options": [
     {
@@ -806,6 +827,10 @@
     "mark-of-chaos-undivided",
     "ogre-charge"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 31,
    "options": [
     {
@@ -893,6 +918,10 @@
     "stomp-attacks",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": 50,
    "options": [
     {
@@ -950,6 +979,7 @@
     "first-charge",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -990,6 +1020,10 @@
     "regeneration",
     "stupidity"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 39,
    "options": [
     {
@@ -1039,6 +1073,7 @@
     "move-through-cover",
     "vanguard"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": [
     {
@@ -1087,6 +1122,9 @@
     "open-order-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)"
+   },
    "cost": 6,
    "options": [
     {
@@ -1160,6 +1198,9 @@
     "furious-charge",
     "mark-of-chaos-undivided"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (6+)"
+   },
    "cost": 13,
    "options": [
     {
@@ -1256,6 +1297,12 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2, claws and fangs only)",
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (D3)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 170,
    "options": [
     {
@@ -1344,6 +1391,9 @@
     "impact-hits",
     "mark-of-chaos-undivided"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D6+1, Chariot only)"
+   },
    "cost": 140,
    "options": [
     {
@@ -1434,6 +1484,9 @@
     "stubborn",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (6+)"
+   },
    "cost": 36,
    "options": [
     {
@@ -1538,6 +1591,9 @@
     "mark-of-chaos-undivided",
     "stubborn"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (6+)"
+   },
    "cost": 17,
    "options": [
     {
@@ -1641,6 +1697,7 @@
     "sacrifice",
     "thralls-of-chaos"
    ],
+   "ruleLabels": {},
    "cost": 55,
    "options": [
     {
@@ -1702,6 +1759,12 @@
     "unstable",
     "warp-spawned"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (4+)",
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (D3+1)",
+    "fly": "Fly (9)"
+   },
    "cost": 215,
    "options": [
     {
@@ -1793,6 +1856,11 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Daemonic Mount only)",
+    "marks-of-chaos": "Mark of Chaos (as rider)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": null,
    "options": []
   },
@@ -1831,6 +1899,9 @@
     "mark-of-chaos-undivided",
     "rallying-cry"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (5+)"
+   },
    "cost": 125,
    "options": [
     {
@@ -1950,6 +2021,9 @@
     "lore-of-chaos",
     "mark-of-chaos-undivided"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (5+)"
+   },
    "cost": 90,
    "options": [
     {
@@ -2029,6 +2103,9 @@
     "random-attacks",
     "stubborn"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (5+)"
+   },
    "cost": 19,
    "options": []
   },
@@ -2072,6 +2149,10 @@
     "peerless-raider",
     "rallying-cry"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (5+)",
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 235,
    "options": []
   },
@@ -2117,6 +2198,12 @@
     "terror",
     "two-headed-dragon"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "fly": "Fly (10)",
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": 465,
    "options": []
   },
@@ -2161,6 +2248,10 @@
     "timmm-berrr",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": 145,
    "options": [
     {
@@ -2245,6 +2336,11 @@
     "killing-blow",
     "mark-of-chaos-undivided"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Gorebeast only)",
+    "impact-hits": "Impact Hits (D6+2)",
+    "killing-blow": "Killing Blow (Gorebeast only)"
+   },
    "cost": 135,
    "options": [
     {
@@ -2325,6 +2421,11 @@
     "unbreakable",
     "warp-spawned"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (D6)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 215,
    "options": []
   },
@@ -2365,6 +2466,10 @@
     "terror",
     "wilful-beast"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": null,
    "options": [
     {
@@ -2438,6 +2543,7 @@
     "swiftstride",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 12,
    "options": [
     {
@@ -2558,6 +2664,7 @@
     "skirmish-formation",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 8,
    "options": [
     {
@@ -2633,6 +2740,9 @@
     "rallying-cry",
     "warband"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (6+)"
+   },
    "cost": 65,
    "options": [
     {
@@ -2756,6 +2866,7 @@
     "swiftstride",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 18,
    "options": [
     {
@@ -2883,6 +2994,9 @@
     "swiftstride",
     "warped-form"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 45,
    "options": [
     {
@@ -2927,6 +3041,9 @@
     "lore-of-chaos",
     "mark-of-chaos-undivided"
    ],
+   "ruleLabels": {
+    "chaos-armour-warriors-of-chaos": "Chaos Armour (5+)"
+   },
    "cost": 195,
    "options": [
     {
@@ -3009,6 +3126,7 @@
     "fast-cavalry",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -3056,6 +3174,12 @@
     "terror",
     "warpfire-aura"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "magic-resistance": "Magic Resistance (-2)",
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": 375,
    "options": [
     {

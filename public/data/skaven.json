@@ -2,7 +2,7 @@
  "faction": "skaven",
  "name": "Skaven",
  "source": "https://tow.whfb.app/army/skaven",
- "fetchedAt": "2026-10-24T20:05:43.405Z",
+ "fetchedAt": "2026-10-25T06:57:44.859Z",
  "units": {
   "clanrats": {
    "slug": "clanrats",
@@ -52,6 +52,7 @@
     "scurry-away",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 4,
    "options": [
     {
@@ -148,6 +149,11 @@
     "stomp-attacks",
     "zzzzap"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3+1)",
+    "random-attacks": "Random Attacks (Rats only)",
+    "stomp-attacks": "Stomp Attacks (2)"
+   },
    "cost": 145,
    "options": []
   },
@@ -186,6 +192,7 @@
     "scurry-away",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 3,
    "options": [
     {
@@ -237,6 +244,9 @@
     "warband",
     "warpstone-weapons"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 185,
    "options": [
     {
@@ -302,6 +312,7 @@
     "scurry-away",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 14,
    "options": [
     {
@@ -374,6 +385,11 @@
     "too-horrible-to-die",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)",
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": 210,
    "options": []
   },
@@ -418,6 +434,7 @@
     "verminous-valour",
     "warpstone-weapons"
    ],
+   "ruleLabels": {},
    "cost": 90,
    "options": []
   },
@@ -457,6 +474,7 @@
     "scurry-away",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": [
     {
@@ -519,6 +537,7 @@
     "scurry-away",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 7,
    "options": [
     {
@@ -579,6 +598,7 @@
     "scurry-away",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": [
     {
@@ -628,6 +648,7 @@
     "stubborn",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 13,
    "options": []
   },
@@ -685,6 +706,11 @@
     "scurrying-masses",
     "stomp-attacks"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3+1)",
+    "magic-resistance": "Magic Resistance (-1)",
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": null,
    "options": []
   },
@@ -737,6 +763,7 @@
     "scurry-away",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 7,
    "options": []
   },
@@ -778,6 +805,7 @@
     "warband",
     "warpstone-weapons"
    ],
+   "ruleLabels": {},
    "cost": 60,
    "options": [
     {
@@ -854,6 +882,7 @@
     "skirmish-formation",
     "stubborn"
    ],
+   "ruleLabels": {},
    "cost": 110,
    "options": []
   },
@@ -890,6 +919,7 @@
     "skirmish-formation",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 10,
    "options": []
   },
@@ -931,6 +961,9 @@
     "scurry-away",
     "warband"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2)"
+   },
    "cost": 48,
    "options": [
     {
@@ -980,6 +1013,7 @@
     "unbreakable",
     "vanguard"
    ],
+   "ruleLabels": {},
    "cost": 36,
    "options": []
   },
@@ -1037,6 +1071,11 @@
     "terror",
     "tolling-the-bell"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2, Rat Ogre only)",
+    "impact-hits": "Impact Hits (D6+1)",
+    "magic-resistance": "Magic Resistance (-3)"
+   },
    "cost": null,
    "options": []
   },
@@ -1074,6 +1113,7 @@
     "warband",
     "warpstone-weapons"
    ],
+   "ruleLabels": {},
    "cost": 45,
    "options": [
     {
@@ -1137,6 +1177,7 @@
     "warband",
     "warpstone-weapons"
    ],
+   "ruleLabels": {},
    "cost": 90,
    "options": [
     {
@@ -1215,6 +1256,7 @@
     "warband",
     "warpstone-weapons"
    ],
+   "ruleLabels": {},
    "cost": 10,
    "options": [
     {
@@ -1275,6 +1317,7 @@
     "warband",
     "warpstone-weapons"
    ],
+   "ruleLabels": {},
    "cost": 35,
    "options": [
     {
@@ -1344,6 +1387,7 @@
    "specialRules": [
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 110,
    "options": []
   },
@@ -1380,6 +1424,7 @@
     "scurry-away",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 19,
    "options": []
   },
@@ -1419,6 +1464,7 @@
     "weapon-team-leadership",
     "targeting-weapon-teams"
    ],
+   "ruleLabels": {},
    "cost": 15,
    "options": [
     {

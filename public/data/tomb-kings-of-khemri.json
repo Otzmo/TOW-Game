@@ -2,7 +2,7 @@
  "faction": "tomb-kings-of-khemri",
  "name": "Tomb Kings of Khemri",
  "source": "https://tow.whfb.app/army/tomb-kings-of-khemri",
- "fetchedAt": "2026-10-24T20:06:00.861Z",
+ "fetchedAt": "2026-10-25T06:57:56.861Z",
  "units": {
   "arch-necrotect": {
    "slug": "arch-necrotect",
@@ -41,6 +41,9 @@
     "regeneration",
     "stone-shaper"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 90,
    "options": []
   },
@@ -78,6 +81,7 @@
     "swiftstride",
     "vanguard"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -116,6 +120,10 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 27,
    "options": []
   },
@@ -170,6 +178,10 @@
     "unbound-spirits",
     "vortex-of-souls"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (2)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 135,
    "options": []
   },
@@ -211,6 +223,10 @@
     "regeneration",
     "from-beneath-the-sands"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 140,
    "options": [
     {
@@ -290,6 +306,13 @@
     "stomp-attacks",
     "terror"
    ],
+   "ruleLabels": {
+    "cleaving-blow": "Cleaving Blow (Tomb Guard Crew only)",
+    "indomitable": "Indomitable (2)",
+    "khopesh": "Khopesh (Tomb Guard Crew only)",
+    "regeneration": "Regeneration (6+)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 175,
    "options": [
     {
@@ -347,6 +370,10 @@
     "regeneration",
     "from-beneath-the-sands"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 55,
    "options": [
     {
@@ -406,6 +433,11 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "indomitable": "Indomitable (2)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": null,
    "options": []
   },
@@ -448,6 +480,11 @@
     "timmm-berrr",
     "unstoppable-assault"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (2)",
+    "regeneration": "Regeneration (6+)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 160,
    "options": []
   },
@@ -519,6 +556,14 @@
     "regeneration",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "cleaving-blow": "Cleaving Blow (Riders only)",
+    "impact-hits": "Impact Hits (1)",
+    "indomitable": "Indomitable (1)",
+    "poisoned-attacks": "Poisoned Attacks (Necroserpent only)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 54,
    "options": []
   },
@@ -562,6 +607,12 @@
     "regeneration",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "impact-hits": "Impact Hits (1)",
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 38,
    "options": []
   },
@@ -605,6 +656,12 @@
     "terror",
     "soul-reaper"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "indomitable": "Indomitable (2)",
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (D3+2)"
+   },
    "cost": 195,
    "options": [
     {
@@ -650,6 +707,9 @@
     "nehekharan-undead",
     "regeneration"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 55,
    "options": []
   },
@@ -692,6 +752,10 @@
     "settras-champion",
     "sworn-protector"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (2)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 120,
    "options": []
   },
@@ -735,6 +799,11 @@
     "usirians-reaper",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "indomitable": "Indomitable (2)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 130,
    "options": []
   },
@@ -776,6 +845,10 @@
     "regeneration",
     "sworn-protector"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 60,
    "options": [
     {
@@ -874,6 +947,10 @@
     "regeneration",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 105,
    "options": [
     {
@@ -918,6 +995,10 @@
     "regeneration",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 49,
    "options": [
     {
@@ -997,6 +1078,11 @@
     "settra-does-not-kneel",
     "settra-the-great"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (2D3)",
+    "indomitable": "Indomitable (3)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 445,
    "options": []
   },
@@ -1033,6 +1119,7 @@
     "swiftstride",
     "vanguard"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -1085,6 +1172,9 @@
     "open-order-formation",
     "regeneration"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 5,
    "options": [
     {
@@ -1190,6 +1280,9 @@
     "swiftstride",
     "vanguard"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 12,
    "options": [
     {
@@ -1264,6 +1357,9 @@
     "reserve-move",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3)"
+   },
    "cost": null,
    "options": []
   },
@@ -1348,6 +1444,10 @@
     "reserve-move",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 41,
    "options": [
     {
@@ -1433,6 +1533,9 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 11,
    "options": [
     {
@@ -1526,6 +1629,9 @@
     "swiftstride",
     "vanguard"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 11,
    "options": [
     {
@@ -1626,6 +1732,9 @@
     "regimental-unit",
     "steadfast-discipline"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 5,
    "options": [
     {
@@ -1686,6 +1795,9 @@
     "skirmish-formation",
     "vanguard"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 4,
    "options": [
     {
@@ -1754,6 +1866,9 @@
     "regeneration",
     "regimental-unit"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 4,
    "options": [
     {
@@ -1839,6 +1954,10 @@
     "regeneration",
     "regimental-unit"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 10,
    "options": [
     {
@@ -1955,6 +2074,12 @@
     "reserve-move",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "cleaving-blow": "Cleaving Blow (Tomb Guard Crew only)",
+    "impact-hits": "Impact Hits (D3+1)",
+    "indomitable": "Indomitable (2)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 49,
    "options": [
     {
@@ -2012,6 +2137,10 @@
     "nehekharan-undead",
     "regeneration"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (2)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 160,
    "options": [
     {
@@ -2109,6 +2238,10 @@
     "nehekharan-undead",
     "regeneration"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (2)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 90,
    "options": [
     {
@@ -2196,6 +2329,12 @@
     "swiftstride",
     "vanguard"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "magic-resistance": "Magic Resistance (-1)",
+    "regeneration": "Regeneration (6+)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 70,
    "options": [
     {
@@ -2240,6 +2379,9 @@
     "regeneration",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 37,
    "options": [
     {
@@ -2299,6 +2441,10 @@
     "nehekharan-undead",
     "regeneration"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 49,
    "options": [
     {
@@ -2363,6 +2509,11 @@
     "nehekharan-undead",
     "regeneration"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "magic-resistance": "Magic Resistance (-2)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 56,
    "options": [
     {
@@ -2412,6 +2563,12 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "indomitable": "Indomitable (2)",
+    "regeneration": "Regeneration (6+)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 180,
    "options": [
     {

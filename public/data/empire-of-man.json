@@ -2,7 +2,7 @@
  "faction": "empire-of-man",
  "name": "Empire of Man",
  "source": "https://tow.whfb.app/army/empire-of-man",
- "fetchedAt": "2026-10-24T20:02:44.553Z",
+ "fetchedAt": "2026-10-25T06:55:33.956Z",
  "units": {
   "barded-warhorse": {
    "slug": "barded-warhorse",
@@ -37,6 +37,7 @@
     "first-charge",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -72,6 +73,7 @@
     "hold-the-line",
     "rallying-cry"
    ],
+   "ruleLabels": {},
    "cost": 45,
    "options": [
     {
@@ -191,6 +193,7 @@
     "swiftstride",
     "veteran"
    ],
+   "ruleLabels": {},
    "cost": 75,
    "options": [
     {
@@ -269,6 +272,7 @@
     "fear",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -335,6 +339,7 @@
     "fear",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": 58,
    "options": [
     {
@@ -418,6 +423,7 @@
     "skirmish-formation",
     "vanguard"
    ],
+   "ruleLabels": {},
    "cost": 7,
    "options": [
     {
@@ -469,6 +475,7 @@
     "clouds-of-soot-and-smoke",
     "master-of-ballistics"
    ],
+   "ruleLabels": {},
    "cost": 45,
    "options": [
     {
@@ -556,6 +563,7 @@
     "regimental-unit",
     "stubborn"
    ],
+   "ruleLabels": {},
    "cost": 11,
    "options": [
     {
@@ -647,6 +655,7 @@
     "first-charge",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": 20,
    "options": [
     {
@@ -755,6 +764,7 @@
     "swiftstride",
     "vanguard"
    ],
+   "ruleLabels": {},
    "cost": 18,
    "options": [
     {
@@ -853,6 +863,10 @@
     "terror",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D6+1)",
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": 265,
    "options": [
     {
@@ -936,6 +950,10 @@
     "stable-firing-platform",
     "stomp-attacks"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D6+1, War Wagon only)",
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": 140,
    "options": []
   },
@@ -971,6 +989,7 @@
     "fast-cavalry",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -1026,6 +1045,9 @@
     "hatred",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (all enemies)"
+   },
    "cost": 13,
    "options": [
     {
@@ -1091,6 +1113,7 @@
     "open-order-formation",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 6,
    "options": [
     {
@@ -1135,6 +1158,7 @@
     "strategic-mastery",
     "stubborn"
    ],
+   "ruleLabels": {},
    "cost": 190,
    "options": []
   },
@@ -1170,6 +1194,7 @@
     "hold-the-line",
     "rallying-cry"
    ],
+   "ruleLabels": {},
    "cost": 90,
    "options": [
     {
@@ -1294,6 +1319,7 @@
     "swiftstride",
     "veteran"
    ],
+   "ruleLabels": {},
    "cost": 145,
    "options": [
     {
@@ -1383,6 +1409,7 @@
    "specialRules": [
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 125,
    "options": [
     {
@@ -1428,6 +1455,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": null,
    "options": []
   },
@@ -1487,6 +1518,10 @@
     "swiftstride",
     "veteran"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Warriors of Chaos, Beastmen Brayherds & Daemonic models)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 185,
    "options": []
   },
@@ -1528,6 +1563,9 @@
     "unbreakable",
     "zealot"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (all enemies)"
+   },
    "cost": 65,
    "options": [
     {
@@ -1587,6 +1625,7 @@
    "specialRules": [
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 120,
    "options": []
   },
@@ -1635,6 +1674,7 @@
    "specialRules": [
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 125,
    "options": []
   },
@@ -1671,6 +1711,9 @@
     "magic-resistance",
     "prayers-of-ulric"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 110,
    "options": [
     {
@@ -1741,6 +1784,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": null,
    "options": [
     {
@@ -1801,6 +1848,10 @@
     "motley-crew",
     "ogre-charge"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 29,
    "options": [
     {
@@ -1900,6 +1951,7 @@
     "swiftstride",
     "veteran"
    ],
+   "ruleLabels": {},
    "cost": 28,
    "options": [
     {
@@ -1972,6 +2024,9 @@
     "magic-resistance",
     "prayers-of-sigmar"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 110,
    "options": [
     {
@@ -2043,6 +2098,9 @@
     "magical-attacks",
     "magic-resistance"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 60,
    "options": [
     {
@@ -2107,6 +2165,7 @@
    "specialRules": [
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 95,
    "options": [
     {
@@ -2163,6 +2222,7 @@
     "detachment-special-rules",
     "nuln-state-troops"
    ],
+   "ruleLabels": {},
    "cost": 8,
    "options": [
     {
@@ -2245,6 +2305,7 @@
     "nuln-state-troops",
     "regimental-unit"
    ],
+   "ruleLabels": {},
    "cost": 6,
    "options": [
     {
@@ -2317,6 +2378,7 @@
     "horde",
     "nuln-state-troops"
    ],
+   "ruleLabels": {},
    "cost": 6,
    "options": [
     {
@@ -2375,6 +2437,7 @@
     "regimental-unit",
     "veteran"
    ],
+   "ruleLabels": {},
    "cost": 8,
    "options": [
     {
@@ -2468,6 +2531,7 @@
     "swiftstride",
     "vanguard"
    ],
+   "ruleLabels": {},
    "cost": 19,
    "options": [
     {
@@ -2531,6 +2595,9 @@
     "fly",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)"
+   },
    "cost": null,
    "options": []
   },
@@ -2599,6 +2666,7 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": 15,
    "options": [
     {
@@ -2666,6 +2734,9 @@
     "magic-resistance",
     "prayers-of-sigmar"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 60,
    "options": [
     {
@@ -2733,6 +2804,9 @@
     "magic-resistance",
     "prayers-of-ulric"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 60,
    "options": [
     {
@@ -2814,6 +2888,7 @@
     "detachment-special-rules",
     "regimental-unit"
    ],
+   "ruleLabels": {},
    "cost": 7,
    "options": [
     {
@@ -2911,6 +2986,7 @@
     "horde",
     "regimental-unit"
    ],
+   "ruleLabels": {},
    "cost": 5,
    "options": [
     {
@@ -2994,6 +3070,7 @@
     "stubborn",
     "veteran"
    ],
+   "ruleLabels": {},
    "cost": 13,
    "options": [
     {
@@ -3067,6 +3144,7 @@
     "regimental-unit",
     "veteran"
    ],
+   "ruleLabels": {},
    "cost": 7,
    "options": [
     {
@@ -3160,6 +3238,10 @@
     "terror",
     "witch-bane"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D6+1)",
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 135,
    "options": []
   },
@@ -3196,6 +3278,7 @@
     "killing-blow",
     "suffer-not"
    ],
+   "ruleLabels": {},
    "cost": 55,
    "options": [
     {
@@ -3272,6 +3355,9 @@
     "magical-attacks",
     "magic-resistance"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 130,
    "options": [
     {

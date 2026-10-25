@@ -2,7 +2,7 @@
  "faction": "chaos-dwarfs",
  "name": "Chaos Dwarfs",
  "source": "https://tow.whfb.app/army/chaos-dwarfs",
- "fetchedAt": "2026-10-24T20:01:10.946Z",
+ "fetchedAt": "2026-10-25T06:54:29.891Z",
  "units": {
   "bale-taurus": {
    "slug": "bale-taurus",
@@ -43,6 +43,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": null,
    "options": []
   },
@@ -101,6 +105,10 @@
     "stubborn",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "impact-hits": "Impact Hits (D3)"
+   },
    "cost": 56,
    "options": [
     {
@@ -171,6 +179,11 @@
     "stubborn",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "armoured-hide": "Armoured Hide (1)",
+    "impact-hits": "Impact Hits (D3+1)"
+   },
    "cost": 145,
    "options": [
     {
@@ -232,6 +245,7 @@
     "sorcerers-curse",
     "stubborn"
    ],
+   "ruleLabels": {},
    "cost": 85,
    "options": [
     {
@@ -312,6 +326,7 @@
     "blackshard-armour",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 120,
    "options": [
     {
@@ -383,6 +398,7 @@
     "blackshard-armour",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 165,
    "options": [
     {
@@ -436,6 +452,7 @@
     "fire-and-flee",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -478,6 +495,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": null,
    "options": []
   },
@@ -527,6 +548,7 @@
     "levies",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 45,
    "options": []
   },
@@ -579,6 +601,7 @@
     "levies",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 3,
    "options": [
     {
@@ -642,6 +665,7 @@
     "levies",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 45,
    "options": [
     {
@@ -742,6 +766,7 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": 12,
    "options": [
     {
@@ -816,6 +841,7 @@
     "resolute",
     "stubborn"
    ],
+   "ruleLabels": {},
    "cost": 125,
    "options": [
     {
@@ -905,6 +931,7 @@
     "shieldwall",
     "stubborn"
    ],
+   "ruleLabels": {},
    "cost": 11,
    "options": [
     {
@@ -1013,6 +1040,7 @@
     "stubborn",
     "veteran"
    ],
+   "ruleLabels": {},
    "cost": 19,
    "options": [
     {
@@ -1087,6 +1115,7 @@
     "resolute",
     "stubborn"
    ],
+   "ruleLabels": {},
    "cost": 60,
    "options": [
     {
@@ -1180,6 +1209,10 @@
     "stomp-attacks",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D6+1)",
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": 275,
    "options": [
     {
@@ -1248,6 +1281,9 @@
     "unstable",
     "warp-spawned"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 41,
    "options": [
     {
@@ -1297,6 +1333,12 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2)",
+    "fly": "Fly (9)",
+    "magic-resistance": "Magic Resistance (-3)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": null,
    "options": [
     {
@@ -1357,6 +1399,7 @@
     "blackshard-armour",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 125,
    "options": [
     {
@@ -1421,6 +1464,7 @@
     "move-through-cover",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 6,
    "options": [
     {
@@ -1477,6 +1521,7 @@
     "sorcerers-curse",
     "stubborn"
    ],
+   "ruleLabels": {},
    "cost": 195,
    "options": [
     {

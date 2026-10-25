@@ -2,7 +2,7 @@
  "faction": "kingdom-of-bretonnia",
  "name": "Kingdom of Bretonnia",
  "source": "https://tow.whfb.app/army/kingdom-of-bretonnia",
- "fetchedAt": "2026-10-24T20:04:00.257Z",
+ "fetchedAt": "2026-10-25T06:56:29.100Z",
  "units": {
   "barded-pegasus": {
    "slug": "barded-pegasus",
@@ -38,6 +38,9 @@
     "fly",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)"
+   },
    "cost": null,
    "options": []
   },
@@ -74,6 +77,7 @@
     "rallying-cry",
     "the-knights-vow"
    ],
+   "ruleLabels": {},
    "cost": 100,
    "options": [
     {
@@ -180,6 +184,11 @@
     "retinue-of-the-saints",
     "stubborn"
    ],
+   "ruleLabels": {
+    "blessings-of-the-lady": "Blessings of the Lady (Grail Reliquae)",
+    "hatred": "Hatred (all enemies)",
+    "retinue-of-the-saints": "Retinue of the Saints (Grail Reliquae)"
+   },
    "cost": 6,
    "options": [
     {
@@ -235,6 +244,7 @@
     "levies",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 100,
    "options": []
   },
@@ -288,6 +298,7 @@
     "open-order-formation",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 4,
    "options": [
     {
@@ -386,6 +397,7 @@
     "first-charge",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -425,6 +437,9 @@
     "magic-resistance",
     "shield-of-the-lady"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 60,
    "options": [
     {
@@ -482,6 +497,7 @@
     "rallying-cry",
     "the-grail-vow"
    ],
+   "ruleLabels": {},
    "cost": 175,
    "options": [
     {
@@ -573,6 +589,7 @@
     "peasantry",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 100,
    "options": []
   },
@@ -643,6 +660,7 @@
     "swiftstride",
     "the-grail-vow"
    ],
+   "ruleLabels": {},
    "cost": 38,
    "options": [
     {
@@ -699,6 +717,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": null,
    "options": [
     {
@@ -774,6 +796,7 @@
     "swiftstride",
     "the-knights-vow"
    ],
+   "ruleLabels": {},
    "cost": 19,
    "options": [
     {
@@ -841,6 +864,7 @@
     "furious-charge",
     "the-knights-vow"
    ],
+   "ruleLabels": {},
    "cost": 11,
    "options": [
     {
@@ -922,6 +946,12 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2, Ariandir only)",
+    "armoured-hide": "Armoured Hide (1)",
+    "magic-resistance": "Magic Resistance (-2)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": 225,
    "options": []
   },
@@ -989,6 +1019,7 @@
     "shieldwall",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 4,
    "options": [
     {
@@ -1084,6 +1115,7 @@
     "swiftstride",
     "the-knights-vow"
    ],
+   "ruleLabels": {},
    "cost": 24,
    "options": [
     {
@@ -1169,6 +1201,7 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": 13,
    "options": [
     {
@@ -1236,6 +1269,9 @@
     "magic-resistance",
     "untutored-arcanist"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 45,
    "options": [
     {
@@ -1288,6 +1324,7 @@
     "rallying-cry",
     "the-knights-vow"
    ],
+   "ruleLabels": {},
    "cost": 60,
    "options": [
     {
@@ -1384,6 +1421,7 @@
     "levies",
     "peasantry"
    ],
+   "ruleLabels": {},
    "cost": 5,
    "options": [
     {
@@ -1490,6 +1528,10 @@
     "swiftstride",
     "the-knights-vow"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "furious-charge": "Furious Charge (Riders only)"
+   },
    "cost": 59,
    "options": [
     {
@@ -1545,6 +1587,9 @@
     "magic-resistance",
     "shield-of-the-lady"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 135,
    "options": [
     {
@@ -1639,6 +1684,7 @@
     "swiftstride",
     "the-questing-vow"
    ],
+   "ruleLabels": {},
    "cost": 26,
    "options": [
     {
@@ -1694,6 +1740,11 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Royal Pegasus only)",
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (2)"
+   },
    "cost": null,
    "options": []
   },
@@ -1731,6 +1782,7 @@
     "peasantry",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 45,
    "options": [
     {
@@ -1794,6 +1846,7 @@
     "the-wyrm-slayer",
     "the-exiles-vow"
    ],
+   "ruleLabels": {},
    "cost": 165,
    "options": []
   },
@@ -1846,6 +1899,7 @@
     "skirmish-formation",
     "vanguard"
    ],
+   "ruleLabels": {},
    "cost": 7,
    "options": [
     {
@@ -1930,6 +1984,7 @@
     "unbreakable",
     "unstable"
    ],
+   "ruleLabels": {},
    "cost": 275,
    "options": []
   },
@@ -1970,6 +2025,11 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2, Unicorn only)",
+    "armoured-hide": "Armoured Hide (1)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": null,
    "options": []
   },
@@ -2005,6 +2065,7 @@
     "fast-cavalry",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -2072,6 +2133,7 @@
     "veteran",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 5,
    "options": [
     {

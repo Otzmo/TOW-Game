@@ -2,7 +2,7 @@
  "faction": "dwarfen-mountain-holds",
  "name": "Dwarfen Mountain Holds",
  "source": "https://tow.whfb.app/army/dwarfen-mountain-holds",
- "fetchedAt": "2026-10-24T20:02:13.879Z",
+ "fetchedAt": "2026-10-25T06:55:12.008Z",
  "units": {
   "anvil-of-doom": {
    "slug": "anvil-of-doom",
@@ -57,6 +57,10 @@
     "strike-the-runes",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-3)"
+   },
    "cost": 235,
    "options": []
   },
@@ -108,6 +112,10 @@
     "skirmish-formation",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 55,
    "options": []
   },
@@ -168,6 +176,11 @@
     "slayer",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "blessings-of-grimnir": "Blessings of Grimnir (Shrine Keeper only)",
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 18,
    "options": [
     {
@@ -236,6 +249,10 @@
     "stand-back-chief",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 85,
    "options": []
   },
@@ -287,6 +304,10 @@
     "skirmish-formation",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 95,
    "options": []
   },
@@ -331,6 +352,10 @@
     "unbreakable",
     "vanguard"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 130,
    "options": [
     {
@@ -390,6 +415,11 @@
     "vanguard",
     "whirlwind-of-death"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "impact-hits": "Impact Hits (D3+1)",
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 50,
    "options": []
   },
@@ -434,6 +464,10 @@
     "unbreakable",
     "vanguard"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 70,
    "options": [
     {
@@ -511,6 +545,11 @@
     "open-order-formation",
     "resolute"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "impact-hits": "Impact Hits (D3)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 65,
    "options": [
     {
@@ -574,6 +613,10 @@
     "resolute",
     "shieldwall"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 8,
    "options": [
     {
@@ -652,6 +695,10 @@
     "stand-back-chief",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 50,
    "options": [
     {
@@ -714,6 +761,10 @@
     "resolute",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 70,
    "options": [
     {
@@ -786,6 +837,10 @@
     "skirmish-formation",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 120,
    "options": []
   },
@@ -838,6 +893,10 @@
     "skirmish-formation",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 120,
    "options": []
   },
@@ -889,6 +948,10 @@
     "skirmish-formation",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 95,
    "options": []
   },
@@ -929,6 +992,12 @@
     "magic-resistance",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (8)",
+    "hatred": "Hatred (Orcs & Goblins)",
+    "impact-hits": "Impact Hits (D3+1)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 95,
    "options": [
     {
@@ -983,6 +1052,12 @@
     "swiftstride",
     "vanguard"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "hatred": "Hatred (Orcs & Goblins)",
+    "impact-hits": "Impact Hits (D3)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 60,
    "options": [
     {
@@ -1051,6 +1126,10 @@
     "stoic-defenders",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 16,
    "options": [
     {
@@ -1134,6 +1213,10 @@
     "resolute",
     "shieldwall"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 8,
    "options": [
     {
@@ -1247,6 +1330,10 @@
     "shieldwall",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 15,
    "options": [
     {
@@ -1338,6 +1425,10 @@
     "runes-of-warding",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 15,
    "options": [
     {
@@ -1416,6 +1507,10 @@
     "resolute",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 125,
    "options": [
     {
@@ -1507,6 +1602,10 @@
     "venerable",
     "veteran"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 12,
    "options": []
   },
@@ -1560,6 +1659,10 @@
     "resolute",
     "vanguard"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 12,
    "options": [
     {
@@ -1647,6 +1750,10 @@
     "skirmish-formation",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 115,
    "options": []
   },
@@ -1699,6 +1806,10 @@
     "magic-resistance",
     "resolute"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 9,
    "options": [
     {
@@ -1790,6 +1901,10 @@
     "scouts",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 11,
    "options": [
     {
@@ -1890,6 +2005,10 @@
     "resolute",
     "shieldwall"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 10,
    "options": [
     {
@@ -1968,6 +2087,11 @@
     "rune-lore",
     "stubborn"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 120,
    "options": [
     {
@@ -2031,6 +2155,11 @@
     "rune-lore",
     "stubborn"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 65,
    "options": [
     {
@@ -2095,6 +2224,12 @@
     "swiftstride",
     "vanguard"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "hatred": "Hatred (Orcs & Goblins)",
+    "impact-hits": "Impact Hits (D3)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 60,
    "options": []
   },
@@ -2132,6 +2267,9 @@
     "hatred",
     "resolute"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)"
+   },
    "cost": null,
    "options": []
   },
@@ -2191,6 +2329,11 @@
     "slayer",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "fight-me": "\"Fight Me!\" (Giant Slayers only)",
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 12,
    "options": [
     {
@@ -2259,6 +2402,10 @@
     "resolute",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 60,
    "options": [
     {
@@ -2335,6 +2482,10 @@
     "resolute",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 250,
    "options": []
   },
@@ -2387,6 +2538,10 @@
     "magic-resistance",
     "resolute"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 10,
    "options": [
     {
@@ -2466,6 +2621,10 @@
     "slayer",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 315,
    "options": []
   }

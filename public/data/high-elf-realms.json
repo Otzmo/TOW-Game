@@ -2,7 +2,7 @@
  "faction": "high-elf-realms",
  "name": "High Elf Realms",
  "source": "https://tow.whfb.app/army/high-elf-realms",
- "fetchedAt": "2026-10-24T20:03:33.941Z",
+ "fetchedAt": "2026-10-25T06:56:09.294Z",
  "units": {
   "archmage": {
    "slug": "archmage",
@@ -39,6 +39,7 @@
     "lore-of-saphery",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 155,
    "options": [
     {
@@ -127,6 +128,7 @@
     "ithilmar-armour-ithilmar-barding",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -196,6 +198,10 @@
     "stubborn",
     "valour-of-ages"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Chracian Lions only)",
+    "impact-hits": "Impact Hits (D6, Chieftain's Chariot only)"
+   },
    "cost": 105,
    "options": []
   },
@@ -236,6 +242,7 @@
     "stubborn",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 105,
    "options": [
     {
@@ -304,6 +311,7 @@
     "valour-of-ages",
     "vanguard"
    ],
+   "ruleLabels": {},
    "cost": 12,
    "options": [
     {
@@ -406,6 +414,10 @@
     "terror",
     "valour-of-ages"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": 275,
    "options": [
     {
@@ -485,6 +497,7 @@
     "swiftstride",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 37,
    "options": [
     {
@@ -551,6 +564,7 @@
     "skirmish-formation",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 70,
    "options": []
   },
@@ -617,6 +631,7 @@
     "swiftstride",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 16,
    "options": [
     {
@@ -704,6 +719,7 @@
     "elven-reflexes",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 9,
    "options": [
     {
@@ -782,6 +798,7 @@
     "regimental-unit",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 8,
    "options": [
     {
@@ -843,6 +860,7 @@
     "fast-cavalry",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -886,6 +904,10 @@
     "swiftstride",
     "wake-of-fire"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (2)"
+   },
    "cost": 170,
    "options": []
   },
@@ -929,6 +951,10 @@
     "swiftstride",
     "wake-of-fire"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (2)"
+   },
    "cost": null,
    "options": []
   },
@@ -969,6 +995,10 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (2)"
+   },
    "cost": 205,
    "options": []
   },
@@ -1009,6 +1039,10 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (2)"
+   },
    "cost": null,
    "options": []
   },
@@ -1047,6 +1081,10 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": 60,
    "options": []
   },
@@ -1085,6 +1123,10 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": null,
    "options": []
   },
@@ -1124,6 +1166,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": null,
    "options": []
   },
@@ -1164,6 +1210,7 @@
     "ithilmar-weapons",
     "strike-first"
    ],
+   "ruleLabels": {},
    "cost": 65,
    "options": [
     {
@@ -1215,6 +1262,7 @@
     "precision-strikes",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 170,
    "options": []
   },
@@ -1254,6 +1302,7 @@
     "stubborn",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 175,
    "options": [
     {
@@ -1329,6 +1378,9 @@
     "stubborn",
     "valour-of-ages"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D6)"
+   },
    "cost": 125,
    "options": []
   },
@@ -1383,6 +1435,7 @@
     "stubborn",
     "veteran"
    ],
+   "ruleLabels": {},
    "cost": 17,
    "options": [
     {
@@ -1451,6 +1504,7 @@
     "naval-discipline",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 10,
    "options": [
     {
@@ -1545,6 +1599,11 @@
     "swiftstride",
     "valour-of-ages"
    ],
+   "ruleLabels": {
+    "elven-reflexes": "Elven Reflexes (Crew only)",
+    "fly": "Fly (10)",
+    "impact-hits": "Impact Hits (D3+1)"
+   },
    "cost": 90,
    "options": [
     {
@@ -1589,6 +1648,7 @@
     "lore-of-saphery",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 80,
    "options": [
     {
@@ -1670,6 +1730,10 @@
     "stomp-attacks",
     "terror"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3)",
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": 200,
    "options": []
   },
@@ -1709,6 +1773,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": null,
    "options": []
   },
@@ -1745,6 +1813,7 @@
     "strike-first",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 70,
    "options": [
     {
@@ -1900,6 +1969,7 @@
     "veteran",
     "witness-to-destiny"
    ],
+   "ruleLabels": {},
    "cost": 16,
    "options": [
     {
@@ -1957,6 +2027,7 @@
     "strike-first",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 130,
    "options": [
     {
@@ -2106,6 +2177,7 @@
     "strike-first",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 90,
    "options": [
     {
@@ -2198,6 +2270,7 @@
     "veteran",
     "warriors-of-nagarythe"
    ],
+   "ruleLabels": {},
    "cost": 14,
    "options": [
     {
@@ -2286,6 +2359,7 @@
     "open-order-formation",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 9,
    "options": [
     {
@@ -2394,6 +2468,7 @@
     "swiftstride",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 23,
    "options": [
     {
@@ -2471,6 +2546,7 @@
     "skirmish-formation",
     "strike-first"
    ],
+   "ruleLabels": {},
    "cost": 15,
    "options": [
     {
@@ -2526,6 +2602,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (D6+1)"
+   },
    "cost": null,
    "options": []
   },
@@ -2563,6 +2643,7 @@
     "lore-of-saphery",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 85,
    "options": [
     {
@@ -2619,6 +2700,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": null,
    "options": []
   },
@@ -2674,6 +2759,9 @@
     "valour-of-ages",
     "warriors-of-the-white-tower"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 14,
    "options": []
   },
@@ -2741,6 +2829,9 @@
     "swiftstride",
     "valour-of-ages"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D6)"
+   },
    "cost": 75,
    "options": []
   },
@@ -2781,6 +2872,11 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2, Unicorn only)",
+    "armoured-hide": "Armoured Hide (1)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": null,
    "options": []
   },
@@ -2820,6 +2916,7 @@
     "swiftstride",
     "vanguard"
    ],
+   "ruleLabels": {},
    "cost": 18,
    "options": []
   },
@@ -2876,6 +2973,7 @@
     "stubborn",
     "valour-of-ages"
    ],
+   "ruleLabels": {},
    "cost": 14,
    "options": [
     {

@@ -2,7 +2,7 @@
  "faction": "vampire-counts",
  "name": "Vampire Counts",
  "source": "https://tow.whfb.app/army/vampire-counts",
- "fetchedAt": "2026-10-24T20:06:24.976Z",
+ "fetchedAt": "2026-10-25T06:58:15.706Z",
  "units": {
   "abyssal-terror": {
    "slug": "abyssal-terror",
@@ -41,6 +41,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": null,
    "options": []
   },
@@ -78,6 +82,10 @@
     "regeneration",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "fly": "Fly (7)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 39,
    "options": []
   },
@@ -148,6 +156,11 @@
     "spectral-coach",
     "terror"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D6+2)",
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 205,
    "options": []
   },
@@ -215,6 +228,10 @@
     "regeneration",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "cleaving-blow": "Cleaving Blow (Riders only)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 24,
    "options": [
     {
@@ -313,6 +330,10 @@
     "regeneration",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 39,
    "options": [
     {
@@ -377,6 +398,10 @@
     "regeneration",
     "terror"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 50,
    "options": []
   },
@@ -447,6 +472,12 @@
     "random-attacks",
     "regeneration"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3+1)",
+    "indomitable": "Indomitable (1)",
+    "random-attacks": "Random Attacks (The Restless Dead only)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 115,
    "options": [
     {
@@ -540,6 +571,12 @@
     "regeneration",
     "scrying-pool"
    ],
+   "ruleLabels": {
+    "fly": "Fly (8)",
+    "impact-hits": "Impact Hits (D6+1)",
+    "random-attacks": "Random Attacks (Spirit Horde only)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": null,
    "options": []
   },
@@ -594,6 +631,9 @@
     "reserve-move",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 9,
    "options": [
     {
@@ -653,6 +693,11 @@
     "regeneration",
     "stomp-attacks"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (6+)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": 46,
    "options": [
     {
@@ -713,6 +758,9 @@
     "swiftstride",
     "vanguard"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 8,
    "options": [
     {
@@ -757,6 +805,10 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 15,
    "options": []
   },
@@ -809,6 +861,10 @@
     "necromantic-undead",
     "regeneration"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 11,
    "options": [
     {
@@ -911,6 +967,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (8)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 31,
    "options": [
     {
@@ -956,6 +1016,10 @@
     "necromantic-undead",
     "regeneration"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 130,
    "options": [
     {
@@ -1055,6 +1119,12 @@
     "regeneration",
     "wailing-dirge"
    ],
+   "ruleLabels": {
+    "fly": "Fly (8)",
+    "impact-hits": "Impact Hits (D6+1)",
+    "random-attacks": "Random Attacks (Spirit Horde only)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": null,
    "options": []
   },
@@ -1094,6 +1164,10 @@
     "necromantic-undead",
     "regeneration"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 60,
    "options": [
     {
@@ -1147,6 +1221,7 @@
     "necromantic-undead",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -1183,6 +1258,7 @@
     "necromantic-undead",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -1234,6 +1310,9 @@
     "necromantic-undead",
     "regeneration"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 5,
    "options": [
     {
@@ -1295,6 +1374,9 @@
     "regeneration",
     "reserve-move"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 49,
    "options": []
   },
@@ -1337,6 +1419,11 @@
     "regeneration",
     "the-hunger"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (all enemies)",
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 145,
    "options": [
     {
@@ -1397,6 +1484,12 @@
     "terror",
     "wailing-dirge"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": 205,
    "options": []
   },
@@ -1441,6 +1534,12 @@
     "terror",
     "wailing-dirge"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": null,
    "options": []
   },
@@ -1481,6 +1580,10 @@
     "terror",
     "wailing-dirge"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 90,
    "options": []
   },
@@ -1520,6 +1623,10 @@
     "necromantic-undead",
     "regeneration"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (2)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 160,
    "options": [
     {
@@ -1621,6 +1728,10 @@
     "necromantic-undead",
     "regeneration"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 75,
    "options": [
     {
@@ -1723,6 +1834,12 @@
     "regeneration",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2)",
+    "fly": "Fly (9)",
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 61,
    "options": [
     {
@@ -1773,6 +1890,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 140,
    "options": []
   },
@@ -1810,6 +1931,10 @@
     "necromantic-undead",
     "regeneration"
    ],
+   "ruleLabels": {
+    "indomitable": "Indomitable (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 85,
    "options": [
     {
@@ -1873,6 +1998,9 @@
     "regeneration",
     "wight-banner"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 40,
    "options": [
     {
@@ -1940,6 +2068,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": null,
    "options": []
   },
@@ -1978,6 +2110,9 @@
     "regeneration",
     "the-newly-dead"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 3,
    "options": [
     {

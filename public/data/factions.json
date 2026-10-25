@@ -90,6 +90,11 @@
   "units": 39
  },
  {
+  "slug": "weapons",
+  "name": "weapons.json",
+  "units": 0
+ },
+ {
   "slug": "wood-elf-realms",
   "name": "Wood Elf Realms",
   "units": 38

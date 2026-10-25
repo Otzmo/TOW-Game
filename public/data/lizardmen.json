@@ -2,7 +2,7 @@
  "faction": "lizardmen",
  "name": "Lizardmen",
  "source": "https://tow.whfb.app/army/lizardmen",
- "fetchedAt": "2026-10-24T20:04:21.651Z",
+ "fetchedAt": "2026-10-25T06:56:45.349Z",
  "units": {
   "ancient-stegadon": {
    "slug": "ancient-stegadon",
@@ -58,6 +58,11 @@
     "stubborn",
     "terror"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3+1)",
+    "poisoned-attacks": "Poisoned Attacks (javelins only)",
+    "stomp-attacks": "Stomp Attacks (D3+2)"
+   },
    "cost": 230,
    "options": [
     {
@@ -126,6 +131,11 @@
     "stubborn",
     "terror"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3)",
+    "poisoned-attacks": "Poisoned Attacks (javelins only)",
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": 160,
    "options": [
     {
@@ -177,6 +187,9 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (2)"
+   },
    "cost": null,
    "options": []
   },
@@ -229,6 +242,7 @@
     "scouts",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 11,
    "options": [
     {
@@ -273,6 +287,10 @@
     "stupidity",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Cold One only)",
+    "armoured-hide": "Armoured Hide (1)"
+   },
    "cost": null,
    "options": []
   },
@@ -342,6 +360,10 @@
     "stupidity",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Cold One only)",
+    "armoured-hide": "Armoured Hide (1)"
+   },
    "cost": 34,
    "options": [
     {
@@ -409,6 +431,7 @@
     "unbreakable",
     "vanguard"
    ],
+   "ruleLabels": {},
    "cost": 40,
    "options": []
   },
@@ -461,6 +484,7 @@
     "fear",
     "skirmish-screen"
    ],
+   "ruleLabels": {},
    "cost": 49,
    "options": [
     {
@@ -519,6 +543,7 @@
     "fear",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -560,6 +585,12 @@
     "swiftstride",
     "toad-rage"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "cleaving-blow": "Cleaving Blow (Ripperdactyl only)",
+    "fly": "Fly (9)",
+    "furious-charge": "Furious Charge (Ripperdactyl only)"
+   },
    "cost": null,
    "options": []
   },
@@ -631,6 +662,12 @@
     "swiftstride",
     "toad-rage"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "cleaving-blow": "Cleaving Blow (Ripperdactyl only)",
+    "fly": "Fly (9)",
+    "furious-charge": "Furious Charge (Ripperdactyl only)"
+   },
    "cost": 40,
    "options": [
     {
@@ -689,6 +726,7 @@
     "fear",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -726,6 +764,7 @@
     "obsidian-blades",
     "rallying-cry"
    ],
+   "ruleLabels": {},
    "cost": 140,
    "options": [
     {
@@ -799,6 +838,7 @@
     "obsidian-blades",
     "rallying-cry"
    ],
+   "ruleLabels": {},
    "cost": 90,
    "options": [
     {
@@ -885,6 +925,7 @@
     "cold-blooded",
     "obsidian-blades"
    ],
+   "ruleLabels": {},
    "cost": 14,
    "options": [
     {
@@ -947,6 +988,7 @@
     "cold-blooded",
     "poisoned-attacks"
    ],
+   "ruleLabels": {},
    "cost": 45,
    "options": [
     {
@@ -1025,6 +1067,7 @@
     "cold-blooded",
     "lore-of-lustria"
    ],
+   "ruleLabels": {},
    "cost": 60,
    "options": [
     {
@@ -1087,6 +1130,9 @@
     "poisoned-attacks",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "poisoned-attacks": "Poisoned Attacks (javelins only)"
+   },
    "cost": 5,
    "options": [
     {
@@ -1152,6 +1198,9 @@
     "large-target",
     "lore-of-lustria"
    ],
+   "ruleLabels": {
+    "fly": "Fly (8)"
+   },
    "cost": 285,
    "options": []
   },
@@ -1209,6 +1258,11 @@
     "stubborn",
     "terror"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3+1)",
+    "poisoned-attacks": "Poisoned Attacks (javelins only)",
+    "stomp-attacks": "Stomp Attacks (D3+2)"
+   },
    "cost": 215,
    "options": [
     {
@@ -1268,6 +1322,7 @@
     "shieldwall",
     "stubborn"
    ],
+   "ruleLabels": {},
    "cost": 16,
    "options": [
     {
@@ -1322,6 +1377,10 @@
     "fly",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "fly": "Fly (10)"
+   },
    "cost": null,
    "options": []
   },
@@ -1391,6 +1450,11 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "fly": "Fly (10)",
+    "poisoned-attacks": "Poisoned Attacks (javelins only)"
+   },
    "cost": 32,
    "options": [
     {
@@ -1460,6 +1524,9 @@
     "stubborn",
     "terror"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (2)"
+   },
    "cost": 200,
    "options": []
   }

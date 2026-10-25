@@ -2,7 +2,7 @@
  "faction": "regiments-of-renown",
  "name": "Regiments of Renown",
  "source": "https://tow.whfb.app/army/regiments-of-renown",
- "fetchedAt": "2026-10-24T20:05:40.581Z",
+ "fetchedAt": "2026-10-25T06:57:42.090Z",
  "units": {
   "prince-ulthers-dragon-company": {
    "slug": "prince-ulthers-dragon-company",
@@ -69,6 +69,10 @@
     "resolute",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Orcs & Goblins)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 115,
    "options": [
     {

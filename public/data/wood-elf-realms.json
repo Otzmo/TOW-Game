@@ -2,7 +2,7 @@
  "faction": "wood-elf-realms",
  "name": "Wood Elf Realms",
  "source": "https://tow.whfb.app/army/wood-elf-realms",
- "fetchedAt": "2026-10-24T20:06:42.818Z",
+ "fetchedAt": "2026-10-25T06:58:28.987Z",
  "units": {
   "araloth-lord-of-talsyn": {
    "slug": "araloth-lord-of-talsyn",
@@ -42,6 +42,7 @@
     "strike-first",
     "stubborn"
    ],
+   "ruleLabels": {},
    "cost": 150,
    "options": []
   },
@@ -81,6 +82,9 @@
     "run-with-the-pack",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)"
+   },
    "cost": 20,
    "options": []
   },
@@ -119,6 +123,7 @@
     "run-with-the-pack",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 11,
    "options": []
   },
@@ -162,6 +167,10 @@
     "regeneration",
     "tree-spirit"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 80,
    "options": [
     {
@@ -215,6 +224,7 @@
     "skirmish-formation",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 8,
    "options": []
   },
@@ -269,6 +279,7 @@
     "scouts",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 13,
    "options": [
     {
@@ -369,6 +380,10 @@
     "stubborn",
     "tree-spirit"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 13,
    "options": [
     {
@@ -410,6 +425,7 @@
     "fast-cavalry",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -462,6 +478,7 @@
     "move-through-cover",
     "stubborn"
    ],
+   "ruleLabels": {},
    "cost": 12,
    "options": [
     {
@@ -530,6 +547,9 @@
     "run-with-the-pack",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)"
+   },
    "cost": 6,
    "options": []
   },
@@ -569,6 +589,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": null,
    "options": []
   },
@@ -609,6 +633,7 @@
     "rallying-cry",
     "strike-first"
    ],
+   "ruleLabels": {},
    "cost": 70,
    "options": [
     {
@@ -725,6 +750,7 @@
     "move-through-cover",
     "open-order-formation"
    ],
+   "ruleLabels": {},
    "cost": 10,
    "options": [
     {
@@ -816,6 +842,7 @@
     "rallying-cry",
     "strike-first"
    ],
+   "ruleLabels": {},
    "cost": 135,
    "options": [
     {
@@ -954,6 +981,7 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": 17,
    "options": [
     {
@@ -1048,6 +1076,10 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": 60,
    "options": []
   },
@@ -1086,6 +1118,10 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": null,
    "options": []
   },
@@ -1127,6 +1163,11 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (2)",
+    "impact-hits": "Impact Hits (1)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": null,
    "options": []
   },
@@ -1182,6 +1223,7 @@
     "stubborn",
     "veteran"
    ],
+   "ruleLabels": {},
    "cost": 18,
    "options": [
     {
@@ -1230,6 +1272,10 @@
     "terror",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-2)",
+    "stomp-attacks": "Stomp Attacks (D3+2)"
+   },
    "cost": 405,
    "options": []
   },
@@ -1271,6 +1317,7 @@
     "talismanic-tattoos",
     "troubadour-of-loec"
    ],
+   "ruleLabels": {},
    "cost": 85,
    "options": [
     {
@@ -1357,6 +1404,7 @@
     "poisoned-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": 22,
    "options": [
     {
@@ -1410,6 +1458,7 @@
     "magical-attacks",
     "move-through-cover"
    ],
+   "ruleLabels": {},
    "cost": 80,
    "options": [
     {
@@ -1478,6 +1527,7 @@
     "magical-attacks",
     "move-through-cover"
    ],
+   "ruleLabels": {},
    "cost": 155,
    "options": [
     {
@@ -1547,6 +1597,7 @@
     "run-with-the-pack",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 11,
    "options": []
   },
@@ -1606,6 +1657,11 @@
     "tree-spirit",
     "tree-whack"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2)",
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": 51,
    "options": [
     {
@@ -1659,6 +1715,11 @@
     "tree-spirit",
     "tree-whack"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 215,
    "options": []
   },
@@ -1706,6 +1767,10 @@
     "tree-spirit",
     "tree-whack"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 265,
    "options": [
     {
@@ -1757,6 +1822,11 @@
     "stomp-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2, Unicorn only)",
+    "armoured-hide": "Armoured Hide (1)",
+    "stomp-attacks": "Stomp Attacks (1)"
+   },
    "cost": null,
    "options": []
   },
@@ -1815,6 +1885,7 @@
     "strike-first",
     "talismanic-tattoos"
    ],
+   "ruleLabels": {},
    "cost": 16,
    "options": [
     {
@@ -1883,6 +1954,7 @@
     "strike-first",
     "stubborn"
    ],
+   "ruleLabels": {},
    "cost": 125,
    "options": [
     {
@@ -1937,6 +2009,9 @@
     "fly",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)"
+   },
    "cost": null,
    "options": []
   },
@@ -2006,6 +2081,9 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)"
+   },
    "cost": 41,
    "options": [
     {
@@ -2078,6 +2156,7 @@
     "move-through-cover",
     "scouts"
    ],
+   "ruleLabels": {},
    "cost": 85,
    "options": [
     {
@@ -2174,6 +2253,7 @@
     "scouts",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 16,
    "options": [
     {
@@ -2291,6 +2371,9 @@
     "swiftstride",
     "talismanic-tattoos"
    ],
+   "ruleLabels": {
+    "furious-charge": "Furious Charge (Riders only)"
+   },
    "cost": 26,
    "options": [
     {
@@ -2364,6 +2447,7 @@
     "immune-to-psychology",
     "move-through-cover"
    ],
+   "ruleLabels": {},
    "cost": 14,
    "options": [
     {
@@ -2402,6 +2486,7 @@
    "profile": [],
    "equipment": "",
    "specialRules": [],
+   "ruleLabels": {},
    "cost": 11,
    "options": [
     {

@@ -2,7 +2,7 @@
  "faction": "dark-elves",
  "name": "Dark Elves",
  "source": "https://tow.whfb.app/army/dark-elves",
- "fetchedAt": "2026-10-24T20:01:54.918Z",
+ "fetchedAt": "2026-10-25T06:54:59.072Z",
  "units": {
   "black-ark-corsairs": {
    "slug": "black-ark-corsairs",
@@ -53,6 +53,9 @@
     "open-order-formation",
     "sea-dragon-cloak"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 11,
    "options": [
     {
@@ -119,6 +122,11 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "hatred": "Hatred (High Elves)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": null,
    "options": []
   },
@@ -173,6 +181,9 @@
     "martial-prowess",
     "stubborn"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 15,
    "options": [
     {
@@ -236,6 +247,10 @@
     "poisoned-attacks",
     "stony-stare"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 85,
    "options": []
   },
@@ -309,6 +324,11 @@
     "stony-stare",
     "terror"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)",
+    "impact-hits": "Impact Hits (D6+1)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 175,
    "options": []
   },
@@ -368,6 +388,11 @@
     "poisoned-attacks",
     "terror"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)",
+    "impact-hits": "Impact Hits (D6+1)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": null,
    "options": []
   },
@@ -407,6 +432,10 @@
     "stupidity",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Cold One only)",
+    "armoured-hide": "Armoured Hide (1)"
+   },
    "cost": null,
    "options": []
   },
@@ -476,6 +505,11 @@
     "impact-hits",
     "stupidity"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Cold One only)",
+    "hatred": "Hatred (High Elves)",
+    "impact-hits": "Impact Hits (D6+1)"
+   },
    "cost": 125,
    "options": []
   },
@@ -546,6 +580,11 @@
     "stupidity",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Cold One only)",
+    "armoured-hide": "Armoured Hide (1)",
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 31,
    "options": []
   },
@@ -583,6 +622,9 @@
     "murderous",
     "strike-first"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 130,
    "options": [
     {
@@ -701,6 +743,9 @@
     "murderous",
     "strike-first"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 70,
    "options": [
     {
@@ -825,6 +870,9 @@
     "scouts",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 15,
    "options": [
     {
@@ -912,6 +960,9 @@
     "hatred",
     "martial-prowess"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 8,
    "options": [
     {
@@ -976,6 +1027,10 @@
     "fly",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Dark Pegasus only)",
+    "fly": "Fly (10)"
+   },
    "cost": null,
    "options": []
   },
@@ -1043,6 +1098,9 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 16,
    "options": [
     {
@@ -1114,6 +1172,7 @@
     "fast-cavalry",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -1154,6 +1213,9 @@
     "poisoned-attacks",
     "strike-first"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (all enemies)"
+   },
    "cost": 70,
    "options": [
     {
@@ -1244,6 +1306,10 @@
     "poisoned-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)",
+    "poisoned-attacks": "Poisoned Attacks (Riders only)"
+   },
    "cost": 22,
    "options": [
     {
@@ -1302,6 +1368,9 @@
     "murderous",
     "veteran"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 15,
    "options": [
     {
@@ -1361,6 +1430,9 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)"
+   },
    "cost": 11,
    "options": []
   },
@@ -1396,6 +1468,9 @@
     "murderous",
     "strike-first"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 75,
    "options": [
     {
@@ -1471,6 +1546,9 @@
     "murderous",
     "strike-first"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (all enemies)"
+   },
    "cost": 80,
    "options": [
     {
@@ -1551,6 +1629,9 @@
     "stomp-attacks",
     "terror"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": 195,
    "options": []
   },
@@ -1591,6 +1672,10 @@
     "terror",
     "wilful-beast"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": null,
    "options": [
     {
@@ -1647,6 +1732,9 @@
     "hatred",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 80,
    "options": []
   },
@@ -1698,6 +1786,9 @@
     "hatred",
     "martial-prowess"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 11,
    "options": [
     {
@@ -1791,6 +1882,10 @@
     "sea-dragon-cloak",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)",
+    "impact-hits": "Impact Hits (D6)"
+   },
    "cost": 85,
    "options": []
   },
@@ -1845,6 +1940,9 @@
     "murderous",
     "open-order-formation"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 17,
    "options": [
     {
@@ -1900,6 +1998,9 @@
     "lore-of-naggaroth",
     "murderous"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 75,
    "options": [
     {
@@ -1960,6 +2061,9 @@
     "lore-of-naggaroth",
     "murderous"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 150,
    "options": [
     {
@@ -2041,6 +2145,11 @@
     "stomp-attacks",
     "terror"
    ],
+   "ruleLabels": {
+    "extra-attacks": "Extra Attacks (+remaining Wounds)",
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 200,
    "options": []
   },
@@ -2096,6 +2205,9 @@
     "murderous",
     "poisoned-attacks"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)"
+   },
    "cost": 11,
    "options": [
     {

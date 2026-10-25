@@ -2,7 +2,7 @@
  "faction": "orc-and-goblin-tribes",
  "name": "Orc & Goblin Tribes",
  "source": "https://tow.whfb.app/army/orc-and-goblin-tribes",
- "fetchedAt": "2026-10-24T20:04:56.903Z",
+ "fetchedAt": "2026-10-25T06:57:10.580Z",
  "units": {
   "arachnarok-spider": {
    "slug": "arachnarok-spider",
@@ -58,6 +58,9 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": 310,
    "options": [
     {
@@ -118,6 +121,10 @@
     "motley-crew",
     "ogre-charge"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 31,
    "options": [
     {
@@ -194,6 +201,7 @@
     "rallying-cry",
     "waaagh"
    ],
+   "ruleLabels": {},
    "cost": 75,
    "options": [
     {
@@ -298,6 +306,10 @@
     "impact-hits",
     "tusker-charge"
    ],
+   "ruleLabels": {
+    "furious-charge": "Furious Charge (Black Orc Crew only)",
+    "impact-hits": "Impact Hits (D6+1)"
+   },
    "cost": 130,
    "options": [
     {
@@ -368,6 +380,7 @@
     "motley-crew",
     "quell-impetuosity"
    ],
+   "ruleLabels": {},
    "cost": 12,
    "options": [
     {
@@ -449,6 +462,7 @@
     "rallying-cry",
     "waaagh"
    ],
+   "ruleLabels": {},
    "cost": 135,
    "options": [
     {
@@ -532,6 +546,9 @@
     "timmm-berrr",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (D6+1)"
+   },
    "cost": 300,
    "options": []
   },
@@ -572,6 +589,10 @@
     "regeneration",
     "stupidity"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 39,
    "options": [
     {
@@ -633,6 +654,7 @@
     "fear-of-elves",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 95,
    "options": [
     {
@@ -671,6 +693,7 @@
     "immune-to-psychology",
     "release-the-fanatics"
    ],
+   "ruleLabels": {},
    "cost": 25,
    "options": []
   },
@@ -713,6 +736,9 @@
     "timmm-berrr",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": 200,
    "options": []
   },
@@ -751,6 +777,11 @@
     "loner",
     "random-movement"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "hatred": "Hatred (Dwarfs)",
+    "impact-hits": "Impact Hits (D3)"
+   },
    "cost": null,
    "options": []
   },
@@ -788,6 +819,7 @@
     "fire-and-flee",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -826,6 +858,9 @@
     "poisoned-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)"
+   },
    "cost": null,
    "options": []
   },
@@ -863,6 +898,7 @@
     "rallying-cry",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 35,
    "options": [
     {
@@ -953,6 +989,7 @@
     "fear-of-elves",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 45,
    "options": [
     {
@@ -1011,6 +1048,7 @@
     "impetuous",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 3,
    "options": [
     {
@@ -1088,6 +1126,7 @@
     "lore-of-mork",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 60,
    "options": [
     {
@@ -1140,6 +1179,7 @@
     "lore-of-mork",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 135,
    "options": [
     {
@@ -1210,6 +1250,7 @@
     "fear-of-elves",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 75,
    "options": [
     {
@@ -1285,6 +1326,7 @@
     "swiftstride",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 12,
    "options": [
     {
@@ -1353,6 +1395,7 @@
     "rallying-cry",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 60,
    "options": [
     {
@@ -1461,6 +1504,9 @@
     "swiftstride",
     "warband"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3+1)"
+   },
    "cost": 53,
    "options": [
     {
@@ -1542,6 +1588,7 @@
     "swiftstride",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 10,
    "options": [
     {
@@ -1642,6 +1689,10 @@
     "swiftstride",
     "warband"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Chompa only)",
+    "armoured-hide": "Armoured Hide (1)"
+   },
    "cost": 105,
    "options": []
   },
@@ -1686,6 +1737,11 @@
     "stomp-attacks",
     "timmm-berrr"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Dwarfs)",
+    "impact-hits": "Impact Hits (D6)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 95,
    "options": []
   },
@@ -1724,6 +1780,9 @@
     "skulking-menace",
     "strike-first"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2)"
+   },
    "cost": null,
    "options": []
   },
@@ -1761,6 +1820,9 @@
     "rallying-cry",
     "warband"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Dwarfs)"
+   },
    "cost": 30,
    "options": [
     {
@@ -1844,6 +1906,9 @@
     "horde",
     "warband"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Dwarfs)"
+   },
    "cost": 3,
    "options": [
     {
@@ -1917,6 +1982,9 @@
     "lore-of-mork",
     "warband"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Dwarfs)"
+   },
    "cost": 55,
    "options": [
     {
@@ -1960,6 +2028,9 @@
     "lore-of-mork",
     "warband"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Dwarfs)"
+   },
    "cost": 130,
    "options": [
     {
@@ -2022,6 +2093,9 @@
     "squigs-go-wild",
     "warband"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Dwarfs)"
+   },
    "cost": null,
    "options": [
     {
@@ -2097,6 +2171,10 @@
     "skirmish-formation",
     "warband"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Dwarfs)",
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 12,
    "options": [
     {
@@ -2150,6 +2228,9 @@
     "rallying-cry",
     "warband"
    ],
+   "ruleLabels": {
+    "hatred": "Hatred (Dwarfs)"
+   },
    "cost": 55,
    "options": [
     {
@@ -2220,6 +2301,7 @@
     "syphoned-strength",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 195,
    "options": []
   },
@@ -2260,6 +2342,7 @@
     "waaagh",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 55,
    "options": [
     {
@@ -2377,6 +2460,10 @@
     "tusker-charge",
     "warband"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "furious-charge": "Furious Charge (Riders only)"
+   },
    "cost": 15,
    "options": []
   },
@@ -2446,6 +2533,9 @@
     "tusker-charge",
     "warband"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D6+1)"
+   },
    "cost": 90,
    "options": []
   },
@@ -2481,6 +2571,7 @@
     "bully",
     "choppas"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -2534,6 +2625,7 @@
     "impetuous",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 5,
    "options": [
     {
@@ -2640,6 +2732,7 @@
     "waaagh",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 110,
    "options": [
     {
@@ -2729,6 +2822,7 @@
     "mob-rule",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 65,
    "options": [
     {
@@ -2788,6 +2882,7 @@
     "mob-rule",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 140,
    "options": [
     {
@@ -2854,6 +2949,10 @@
     "regeneration",
     "stupidity"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 47,
    "options": [
     {
@@ -2905,6 +3004,7 @@
     "unbreakable",
     "vanguard"
    ],
+   "ruleLabels": {},
    "cost": 35,
    "options": []
   },
@@ -2958,6 +3058,10 @@
     "open-order-formation",
     "random-movement"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (3, Pump Wagon Impact Hits only)",
+    "impact-hits": "Impact Hits (D3+1)"
+   },
    "cost": 35,
    "options": []
   },
@@ -3000,6 +3104,12 @@
     "regeneration",
     "stupidity"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "armoured-hide": "Armoured Hide (1)",
+    "magic-resistance": "Magic Resistance (-1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 43,
    "options": [
     {
@@ -3057,6 +3167,10 @@
     "timmm-berrr",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": 235,
    "options": [
     {
@@ -3100,6 +3214,9 @@
     "swiftstride",
     "tusker-charge"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)"
+   },
    "cost": null,
    "options": []
   },
@@ -3139,6 +3256,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": null,
    "options": []
   }

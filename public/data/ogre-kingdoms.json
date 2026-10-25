@@ -2,7 +2,7 @@
  "faction": "ogre-kingdoms",
  "name": "Ogre Kingdoms",
  "source": "https://tow.whfb.app/army/ogre-kingdoms",
- "fetchedAt": "2026-10-24T20:04:40.136Z",
+ "fetchedAt": "2026-10-25T06:56:58.299Z",
  "units": {
   "bruiser": {
    "slug": "bruiser",
@@ -39,6 +39,10 @@
     "impact-hits",
     "ogre-charge"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (2)"
+   },
    "cost": 110,
    "options": [
     {
@@ -118,6 +122,10 @@
     "lore-of-the-great-maw",
     "ogre-charge"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (2)"
+   },
    "cost": 105,
    "options": [
     {
@@ -173,6 +181,10 @@
     "impact-hits",
     "ogre-charge"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 110,
    "options": [
     {
@@ -226,6 +238,9 @@
     "timmm-berrr",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (D6)"
+   },
    "cost": 200,
    "options": []
   },
@@ -276,6 +291,7 @@
     "horde",
     "largely-insignificant"
    ],
+   "ruleLabels": {},
    "cost": 2,
    "options": [
     {
@@ -349,6 +365,10 @@
     "impact-hits",
     "large-target"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2, Rhinox only)",
+    "impact-hits": "Impact Hits (D6+1)"
+   },
    "cost": 140,
    "options": []
   },
@@ -401,6 +421,7 @@
     "skirmish-formation",
     "traps-and-snares"
    ],
+   "ruleLabels": {},
    "cost": 5,
    "options": [
     {
@@ -448,6 +469,9 @@
     "swiftstride",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 90,
    "options": [
     {
@@ -499,6 +523,10 @@
     "ogre-charge",
     "running-with-the-pack"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 115,
    "options": [
     {
@@ -616,6 +644,10 @@
     "impact-hits",
     "large-target"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2, Rhinox only)",
+    "impact-hits": "Impact Hits (D6+1)"
+   },
    "cost": 185,
    "options": []
   },
@@ -667,6 +699,9 @@
     "impact-hits",
     "ogre-charge"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 39,
    "options": [
     {
@@ -744,6 +779,9 @@
     "impact-hits",
     "ogre-charge"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 41,
    "options": [
     {
@@ -812,6 +850,9 @@
     "motley-crew",
     "ogre-charge"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 54,
    "options": [
     {
@@ -950,6 +991,10 @@
     "mournfang-charge",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "impact-hits": "Impact Hits (D3)"
+   },
    "cost": 64,
    "options": [
     {
@@ -1038,6 +1083,10 @@
     "impact-hits",
     "ogre-charge"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (1)"
+   },
    "cost": 31,
    "options": [
     {
@@ -1110,6 +1159,9 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)"
+   },
    "cost": 17,
    "options": [
     {
@@ -1164,6 +1216,10 @@
     "lore-of-the-great-maw",
     "ogre-charge"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (2)"
+   },
    "cost": 230,
    "options": [
     {
@@ -1222,6 +1278,10 @@
     "terror",
     "thunderous-charge"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2, Stonehorn only)",
+    "impact-hits": "Impact Hits (D6+1)"
+   },
    "cost": null,
    "options": []
   },
@@ -1293,6 +1353,10 @@
     "terror",
     "thunderous-charge"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2, Stonehorn only)",
+    "impact-hits": "Impact Hits (D6+1)"
+   },
    "cost": 245,
    "options": [
     {
@@ -1345,6 +1409,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3)",
+    "stomp-attacks": "Stomp Attacks (3)"
+   },
    "cost": null,
    "options": []
   },
@@ -1415,6 +1483,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3)",
+    "stomp-attacks": "Stomp Attacks (3)"
+   },
    "cost": 215,
    "options": [
     {
@@ -1464,6 +1536,10 @@
     "impact-hits",
     "ogre-charge"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "impact-hits": "Impact Hits (2)"
+   },
    "cost": 185,
    "options": [
     {
@@ -1560,6 +1636,9 @@
     "open-order-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)"
+   },
    "cost": 46,
    "options": [
     {

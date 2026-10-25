@@ -2,7 +2,7 @@
  "faction": "grand-cathay",
  "name": "Grand Cathay",
  "source": "https://tow.whfb.app/army/grand-cathay",
- "fetchedAt": "2026-10-24T20:03:12.731Z",
+ "fetchedAt": "2026-10-25T06:55:54.899Z",
  "units": {
   "astromancer": {
    "slug": "astromancer",
@@ -37,6 +37,9 @@
     "magic-resistance",
     "mastery-of-the-elemental-winds"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 65,
    "options": [
     {
@@ -106,6 +109,7 @@
    "specialRules": [
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 130,
    "options": [
     {
@@ -147,6 +151,7 @@
     "counter-charge",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": 16,
    "options": []
   },
@@ -188,6 +193,9 @@
     "timmm-berrr",
     "unbreakable"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": 230,
    "options": [
     {
@@ -250,6 +258,7 @@
     "counter-charge",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": 16,
    "options": []
   },
@@ -284,6 +293,7 @@
    "specialRules": [
     "open-order-formation"
    ],
+   "ruleLabels": {},
    "cost": 16,
    "options": [
     {
@@ -343,6 +353,7 @@
    "specialRules": [
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 130,
    "options": [
     {
@@ -384,6 +395,7 @@
     "harmony-of-stone-and-steel",
     "will-of-the-dragons"
    ],
+   "ruleLabels": {},
    "cost": 45,
    "options": [
     {
@@ -435,6 +447,7 @@
     "harmony-of-stone-and-steel",
     "will-of-the-dragons"
    ],
+   "ruleLabels": {},
    "cost": 80,
    "options": [
     {
@@ -500,6 +513,7 @@
     "open-order-formation",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 12,
    "options": [
     {
@@ -578,6 +592,7 @@
     "swiftstride",
     "will-of-the-dragons"
    ],
+   "ruleLabels": {},
    "cost": 20,
    "options": [
     {
@@ -661,6 +676,7 @@
     "regimental-unit",
     "will-of-the-dragons"
    ],
+   "ruleLabels": {},
    "cost": 8,
    "options": [
     {
@@ -733,6 +749,7 @@
     "harmony-of-stone-and-steel",
     "will-of-the-dragons"
    ],
+   "ruleLabels": {},
    "cost": 65,
    "options": [
     {
@@ -813,6 +830,17 @@
     "will-of-the-dragons",
     "wrath-of-the-storm"
    ],
+   "ruleLabels": {
+    "celestial-forged-armour-x": "Celestial Forged Armour (5+)",
+    "hatred": "Hatred (Warriors of Chaos & Daemonic models)",
+    "fly": "Fly (9) (Dragon Form only)",
+    "large-target": "Large Target (Dragon Form only)",
+    "magic-resistance": "Magic Resistance (-1)",
+    "rallying-cry": "Rallying Cry (Human Form only)",
+    "stomp-attacks": "Stomp Attacks (D6) (Dragon Form only)",
+    "swiftstride": "Swiftstride (Dragon Form only)",
+    "terror": "Terror (Dragon Form only)"
+   },
    "cost": 485,
    "options": []
   },
@@ -848,6 +876,7 @@
     "enough-for-everyone",
     "mercenary-crew"
    ],
+   "ruleLabels": {},
    "cost": 35,
    "options": [
     {
@@ -904,6 +933,7 @@
     "horde",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 4,
    "options": [
     {
@@ -996,6 +1026,12 @@
     "swiftstride",
     "will-of-the-dragons"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (2)",
+    "celestial-forged-armour-x": "Celestial Forged Armour (5+)",
+    "fly": "Fly (9)",
+    "impact-hits": "Impact Hits (D3+1)"
+   },
    "cost": 145,
    "options": [
     {
@@ -1088,6 +1124,12 @@
     "swiftstride",
     "will-of-the-dragons"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (2)",
+    "celestial-forged-armour-x": "Celestial Forged Armour (5+)",
+    "fly": "Fly (9)",
+    "impact-hits": "Impact Hits (D3+1)"
+   },
    "cost": 220,
    "options": [
     {
@@ -1202,6 +1244,10 @@
     "reserve-move",
     "scouts"
    ],
+   "ruleLabels": {
+    "fly": "Fly (8)",
+    "impact-hits": "Impact Hits (D3+1, Sky Lantern only)"
+   },
    "cost": 135,
    "options": [
     {
@@ -1259,6 +1305,7 @@
     "harmony-of-stone-and-steel",
     "will-of-the-dragons"
    ],
+   "ruleLabels": {},
    "cost": 40,
    "options": [
     {
@@ -1306,6 +1353,9 @@
     "magic-resistance",
     "mastery-of-the-elemental-winds"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 125,
    "options": [
     {

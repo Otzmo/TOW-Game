@@ -2,7 +2,7 @@
  "faction": "daemons-of-chaos",
  "name": "Daemons of Chaos",
  "source": "https://tow.whfb.app/army/daemons-of-chaos",
- "fetchedAt": "2026-10-24T20:01:26.914Z",
+ "fetchedAt": "2026-10-25T06:54:40.193Z",
  "units": {
   "beasts-of-nurgle": {
    "slug": "beasts-of-nurgle",
@@ -45,6 +45,10 @@
     "regeneration",
     "slime-trail"
    ],
+   "ruleLabels": {
+    "infernal-favour": "Infernal Favour (1)",
+    "regeneration": "Regeneration (5+)"
+   },
    "cost": 62,
    "options": []
   },
@@ -100,6 +104,9 @@
     "impetuous",
     "totem-of-endless-bloodletting"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D6+1)"
+   },
    "cost": null,
    "options": []
   },
@@ -169,6 +176,11 @@
     "magic-resistance",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "impact-hits": "Impact Hits (2)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 65,
    "options": [
     {
@@ -237,6 +249,9 @@
     "impetuous",
     "magic-resistance"
    ],
+   "ruleLabels": {
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 14,
    "options": [
     {
@@ -297,6 +312,12 @@
     "magic-resistance",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)",
+    "impact-hits": "Impact Hits (D3)",
+    "infernal-favour": "Infernal Favour (2)",
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 355,
    "options": [
     {
@@ -364,6 +385,7 @@
     "move-through-cover",
     "open-order-formation"
    ],
+   "ruleLabels": {},
    "cost": 9,
    "options": [
     {
@@ -408,6 +430,7 @@
     "loner",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 38,
    "options": []
   },
@@ -490,6 +513,11 @@
     "lore-of-daemons",
     "slashing-attack"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "impact-hits": "Impact Hits (D6+1)",
+    "slashing-attack": "Slashing Attack (Screamers only)"
+   },
    "cost": 190,
    "options": [
     {
@@ -540,6 +568,9 @@
     "swiftstride",
     "vanguard"
    ],
+   "ruleLabels": {
+    "fly": "Fly (8)"
+   },
    "cost": 12,
    "options": [
     {
@@ -614,6 +645,11 @@
     "impact-hits",
     "slashing-attack"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "impact-hits": "Impact Hits (D6+1)",
+    "slashing-attack": "Slashing Attack (Screamers only)"
+   },
    "cost": null,
    "options": []
   },
@@ -651,6 +687,9 @@
     "infernal-favour",
     "lore-of-daemons"
    ],
+   "ruleLabels": {
+    "infernal-favour": "Infernal Favour (2)"
+   },
    "cost": 210,
    "options": [
     {
@@ -752,6 +791,7 @@
     "daemonic",
     "daemon-of-slaanesh"
    ],
+   "ruleLabels": {},
    "cost": 11,
    "options": [
     {
@@ -807,6 +847,10 @@
     "infernal-favour",
     "magic-resistance"
    ],
+   "ruleLabels": {
+    "infernal-favour": "Infernal Favour (1)",
+    "magic-resistance": "Magic Resistance (-1)"
+   },
    "cost": 80,
    "options": [
     {
@@ -857,6 +901,10 @@
     "poisoned-attacks",
     "regeneration"
    ],
+   "ruleLabels": {
+    "infernal-favour": "Infernal Favour (1)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 95,
    "options": [
     {
@@ -915,6 +963,9 @@
     "infernal-favour",
     "lore-of-daemons"
    ],
+   "ruleLabels": {
+    "infernal-favour": "Infernal Favour (1)"
+   },
    "cost": 85,
    "options": [
     {
@@ -978,6 +1029,9 @@
     "infernal-favour",
     "lore-of-daemons"
    ],
+   "ruleLabels": {
+    "infernal-favour": "Infernal Favour (1)"
+   },
    "cost": 90,
    "options": [
     {
@@ -1041,6 +1095,9 @@
     "fly",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "fly": "Fly (10)"
+   },
    "cost": null,
    "options": []
   },
@@ -1109,6 +1166,11 @@
     "impact-hits",
     "poisoned-attacks"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Steed of Slaanesh only)",
+    "impact-hits": "Impact Hits (D6+1)",
+    "poisoned-attacks": "Poisoned Attacks (Steed of Slaanesh only)"
+   },
    "cost": null,
    "options": []
   },
@@ -1147,6 +1209,7 @@
     "soporific-musk",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": 66,
    "options": []
   },
@@ -1215,6 +1278,10 @@
     "move-through-cover",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "infernal-favour": "Infernal Favour (1, Exalted Flamer only)",
+    "lore-of-daemons": "Lore of Daemons (Exalted Flamer only)"
+   },
    "cost": 40,
    "options": [
     {
@@ -1276,6 +1343,10 @@
     "impetuous",
     "magic-resistance"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
+    "magic-resistance": "Magic Resistance (-2)"
+   },
    "cost": 32,
    "options": [
     {
@@ -1329,6 +1400,11 @@
     "stomp-attacks",
     "terror"
    ],
+   "ruleLabels": {
+    "infernal-favour": "Infernal Favour (2)",
+    "regeneration": "Regeneration (5+)",
+    "stomp-attacks": "Stomp Attacks (D3+1)"
+   },
    "cost": 330,
    "options": [
     {
@@ -1444,6 +1520,11 @@
     "poisoned-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Steed of Slaanesh only)",
+    "impact-hits": "Impact Hits (2D6+1)",
+    "poisoned-attacks": "Poisoned Attacks (Steed of Slaanesh only)"
+   },
    "cost": 145,
    "options": []
   },
@@ -1483,6 +1564,10 @@
     "impact-hits",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (1)",
+    "impact-hits": "Impact Hits (2)"
+   },
    "cost": null,
    "options": []
   },
@@ -1524,6 +1609,10 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "infernal-favour": "Infernal Favour (2)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 330,
    "options": [
     {
@@ -1583,6 +1672,11 @@
     "swiftstride",
     "terror"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)",
+    "infernal-favour": "Infernal Favour (2)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 310,
    "options": [
     {
@@ -1639,6 +1733,9 @@
     "regeneration",
     "skirmish-formation"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 45,
    "options": []
   },
@@ -1676,6 +1773,7 @@
     "poisoned-attacks",
     "random-attacks"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -1727,6 +1825,7 @@
     "daemon-of-tzeentch",
     "scintillating-sorcery"
    ],
+   "ruleLabels": {},
    "cost": 12,
    "options": [
     {
@@ -1812,6 +1911,11 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (2, Rot Fly only)",
+    "fly": "Fly (9)",
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 63,
    "options": [
     {
@@ -1890,6 +1994,9 @@
     "poisoned-attacks",
     "regeneration"
    ],
+   "ruleLabels": {
+    "regeneration": "Regeneration (6+)"
+   },
    "cost": 13,
    "options": [
     {
@@ -1945,6 +2052,9 @@
     "skirmish-formation",
     "slashing-attack"
    ],
+   "ruleLabels": {
+    "fly": "Fly (9)"
+   },
    "cost": 44,
    "options": []
   },
@@ -2015,6 +2125,11 @@
     "poisoned-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Steed of Slaanesh only)",
+    "impact-hits": "Impact Hits (D3+1)",
+    "poisoned-attacks": "Poisoned Attacks (Steed of Slaanesh only)"
+   },
    "cost": 100,
    "options": []
   },
@@ -2085,6 +2200,10 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Steed of Slaanesh only)",
+    "poisoned-attacks": "Poisoned Attacks (Steed of Slaanesh only)"
+   },
    "cost": 21,
    "options": [
     {
@@ -2156,6 +2275,10 @@
     "impetuous",
     "stomp-attacks"
    ],
+   "ruleLabels": {
+    "impact-hits": "Impact Hits (D3+1)",
+    "stomp-attacks": "Stomp Attacks (D3)"
+   },
    "cost": 185,
    "options": []
   },
@@ -2196,6 +2319,9 @@
     "stomp-attacks",
     "terror"
    ],
+   "ruleLabels": {
+    "stomp-attacks": "Stomp Attacks (D6+1)"
+   },
    "cost": 255,
    "options": [
     {
@@ -2267,6 +2393,10 @@
     "poisoned-attacks",
     "swiftstride"
    ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1, Steed of Slaanesh only)",
+    "poisoned-attacks": "Poisoned Attacks (Steed of Slaanesh only)"
+   },
    "cost": null,
    "options": []
   }

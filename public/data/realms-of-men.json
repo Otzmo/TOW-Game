@@ -2,7 +2,7 @@
  "faction": "realms-of-men",
  "name": "Realms of Men",
  "source": "https://tow.whfb.app/army/realms-of-men",
- "fetchedAt": "2026-10-24T20:05:29.884Z",
+ "fetchedAt": "2026-10-25T06:57:33.546Z",
  "units": {
   "barded-warhorse": {
    "slug": "barded-warhorse",
@@ -37,6 +37,7 @@
     "first-charge",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   },
@@ -86,6 +87,7 @@
     "levies",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 90,
    "options": []
   },
@@ -135,6 +137,7 @@
     "levies",
     "skirmish-formation"
    ],
+   "ruleLabels": {},
    "cost": 125,
    "options": []
   },
@@ -214,6 +217,7 @@
     "first-charge",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": 18,
    "options": [
     {
@@ -316,6 +320,7 @@
     "skirmish-formation",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": 11,
    "options": [
     {
@@ -418,6 +423,7 @@
     "veteran",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 35,
    "options": [
     {
@@ -520,6 +526,7 @@
     "veteran",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 75,
    "options": [
     {
@@ -638,6 +645,7 @@
     "regimental-unit",
     "warband"
    ],
+   "ruleLabels": {},
    "cost": 4,
    "options": [
     {
@@ -769,6 +777,7 @@
     "swiftstride",
     "veteran"
    ],
+   "ruleLabels": {},
    "cost": 22,
    "options": [
     {
@@ -863,6 +872,7 @@
     "warband",
     "veteran"
    ],
+   "ruleLabels": {},
    "cost": 5,
    "options": [
     {
@@ -960,6 +970,7 @@
     "first-charge",
     "swiftstride"
    ],
+   "ruleLabels": {},
    "cost": null,
    "options": []
   }
