@@ -84,28 +84,31 @@ export interface UnitSaves {
   /** z. B. 4 für 4+; null ohne Rüstung */
   armour: number | null;
   parts: string[];
-  /** Bester Ward save und woher er kommt (Wert null, wenn er in den Daten fehlt) */
-  ward: { value: number | null; from: string } | null;
+  /** Bester Ward save und woher er kommt */
+  ward: { value: number; from: string } | null;
   /** Bester Regenerationswurf und woher er kommt */
-  regen: { value: number | null; from: string } | null;
+  regen: { value: number; from: string } | null;
 }
 
-/** Wert aus "Chaos Armour (5+)" bzw. "… a 5+ Ward save …" */
+/** Wert aus "Chaos Armour (5+)", "… a 5+ Ward save …" oder "… Regeneration (5+) …" */
 function saveValue(r: RuleRef, kind: RegExp): number | null {
   const inName = /\((\d)\+\)/.exec(r.name);
   if (inName) return Number(inName[1]);
-  const inText = new RegExp(`(\\d)\\+\\s*(?:${kind.source})`, 'i').exec(r.text);
-  return inText ? Number(inText[1]) : null;
+  const before = new RegExp(`(\\d)\\+\\s*(?:${kind.source})`, 'i').exec(r.text);
+  if (before) return Number(before[1]);
+  const after = new RegExp(`(?:${kind.source})\\s*\\((\\d)\\+\\)`, 'i').exec(r.text);
+  return after ? Number(after[1]) : null;
 }
 
-/** Bester Wurf einer Art aus Regeln und Gegenständen (niedrigster Wert gewinnt) */
-function bestSave(sources: RuleRef[], kind: RegExp): { value: number | null; from: string } | null {
-  let best: { value: number | null; from: string } | null = null;
+/** Bester Wurf einer Art aus Regeln und Gegenständen (niedrigster Wert gewinnt); ohne erkennbaren Wert: keiner */
+function bestSave(sources: RuleRef[], kind: RegExp): { value: number; from: string } | null {
+  let best: { value: number; from: string } | null = null;
   for (const r of sources) {
     if (!kind.test(r.name) && !kind.test(r.text)) continue;
     const value = saveValue(r, kind);
+    if (value === null) continue;
     const name = r.name.replace(/\s*\([^)]*\)\s*$/, '');
-    if (!best || (value !== null && (best.value === null || value < best.value))) best = { value, from: name };
+    if (!best || value < best.value) best = { value, from: name };
   }
   return best;
 }
@@ -131,8 +134,8 @@ export function unitSaves(info: UnitInfo): UnitSaves {
   const armour = base !== null ? Math.max(2, base - bonus) : bonus ? 7 - bonus : null;
   const sources = [...visibleRules(info), ...info.items];
   // Regeneration zuerst, damit ihr Text ("… unlike a Ward save …") nicht als Ward save zählt
-  const regen = bestSave(sources, /regeneration/);
-  const ward = bestSave(sources.filter((r) => !/regeneration/i.test(r.name)), /ward save|\bward\b/);
+  const regen = bestSave(sources, /regeneration/i);
+  const ward = bestSave(sources.filter((r) => !/regeneration/i.test(r.name)), /ward save|\bward\b/i);
   return { armour, parts, ward, regen };
 }
 
