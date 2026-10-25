@@ -36,6 +36,8 @@ export class UnitPanel {
   /** Aufgeklappter Begriff ("Abschnitt:Name") und die Erklärungen der zuletzt gezeichneten Begriffe */
   private infoOpen: string | null = null;
   private infoRefs = new Map<string, RuleRef>();
+  /** Begriffe, die beim Zeichnen oben schon als Link erscheinen (Schlüssel wie ruleKey) */
+  private linked = new Set<string>();
   /** Phasenregeln: Umformieren zählt als Bewegung */
   canMove: (unitId: string) => boolean = () => true;
   private lastAction = new Map<string, string>();
@@ -188,16 +190,22 @@ export class UnitPanel {
     $('p-profile').innerHTML = this.profileHtml(u);
     // Was oben schon erklärt ist (Waffen, Rettungswürfe, Optionen), steht unten nicht noch einmal
     const shown = new Set<string>();
+    this.linked = shown;
     $('p-weapons').innerHTML = this.weaponsHtml(u, shown);
     $('p-saves').innerHTML = this.savesHtml(u, shown);
-    const options = visibleOptions(info).map((o) => {
+    // Auch Mehrzahl zählt: "Great weapons" ist oben "Great Weapon", "Shields" ist "Shield"
+    const isShown = (name: string) => {
+      const k = ruleKey(name);
+      return shown.has(k) || shown.has(k.replace(/e?s$/, '')) || shown.has(`${k}s`);
+    };
+    const options = visibleOptions(info).filter((o) => !isShown(o)).map((o) => {
       const explained = optionInfo(o, info);
       if (explained) shown.add(ruleKey(explained.name));
       return explained ? ruleHtml({ ...explained, name: o, note: 'Option' }) : `<p class="opt-plain">${escapeHtml(o)} <span class="note">Option</span></p>`;
     });
     $('p-options').innerHTML = options.join('');
-    $('p-items').innerHTML = info.items.filter((i) => !shown.has(ruleKey(i.name))).map(ruleHtml).join('');
-    $('p-rules').innerHTML = visibleRules(info).filter((r) => !shown.has(ruleKey(r.name))).map(ruleHtml).join('');
+    $('p-items').innerHTML = info.items.filter((i) => !isShown(i.name)).map(ruleHtml).join('');
+    $('p-rules').innerHTML = visibleRules(info).filter((r) => !isShown(r.name)).map(ruleHtml).join('');
     $('p-source').innerHTML = info.url
       ? `Source: <a href="${escapeHtml(info.url)}" target="_blank" rel="noopener">tow.whfb.app ↗</a>`
       : '';
@@ -239,6 +247,8 @@ export class UnitPanel {
    */
   private infoLink(section: string, label: string, ref: RuleRef | null): string {
     if (!ref?.text) return escapeHtml(label);
+    // Was oben als Link steht, wird unten nicht wiederholt
+    this.linked.add(ruleKey(label));
     const key = `${section}:${label}`;
     this.infoRefs.set(key, { ...ref, name: label });
     return `<button class="link rule-link${this.infoOpen === key ? ' on' : ''}" data-info="${escapeHtml(key)}">${escapeHtml(label)}</button>`;
