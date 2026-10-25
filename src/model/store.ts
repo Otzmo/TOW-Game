@@ -225,12 +225,11 @@ function closeLayout(u: UnitState, units: Record<string, UnitState>): UnitLayout
     slots.push({ key: `m${m++}`, x: left + i * bw, y: top, w: bw, d: bd, label: k >= 0 ? u.info.command[k] : undefined });
   }
 
-  // Restliche Glieder, unvollständiges letztes Glied mittig
+  // Restliche Glieder, unvollständiges letztes Glied linksbündig
   let rest = u.models - front.length;
   for (let row = 1; rest > 0; row++) {
     const inRow = Math.min(cols, rest);
-    const offset = ((cols - inRow) * bw) / 2;
-    for (let i = 0; i < inRow; i++) slots.push({ key: `m${m++}`, x: left + offset + i * bw, y: top + row * bd, w: bw, d: bd });
+    for (let i = 0; i < inRow; i++) slots.push({ key: `m${m++}`, x: left + i * bw, y: top + row * bd, w: bw, d: bd });
     rest -= inRow;
   }
 
