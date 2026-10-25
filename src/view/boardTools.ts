@@ -2,6 +2,7 @@ import { Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
 import type { History } from '../model/history';
 import { newObject, OBJECT_TYPES, objectPolygon, segmentHitsPolygon } from '../model/objects';
 import { CENTRE_CIRCLE, circleBlocksDeployment, deploymentZones, TABLE_H, TABLE_W } from '../model/battlefield';
+import { currentPhase } from '../model/phases';
 import type { Store } from '../model/store';
 import type { BoardObject, Point } from '../model/types';
 import { ObjectView } from './objectView';
@@ -79,6 +80,7 @@ export class BoardTools {
     this.selectedId = id;
     if (prev) this.syncObject(prev);
     if (id) this.syncObject(id);
+    this.drawZones();
     this.host.onSelectObject(id);
   }
 
@@ -276,22 +278,19 @@ export class BoardTools {
       const name = `${role} zone`;
       label(name, c, colors.edge);
     }
-    // Mittelkreis: frei von Gelände; bei Close Encounter auch frei von Aufstellung
-    const r = (CENTRE_CIRCLE / 2) * PPI;
-    g.circle((TABLE_W / 2) * PPI, (TABLE_H / 2) * PPI, r)
-      .stroke({ width: 1.5, color: 0xffffff, alpha: circleBlocksDeployment(setup) ? 0.6 : 0.2 });
-    if (circleBlocksDeployment(setup)) label('No deployment', { x: TABLE_W / 2, y: TABLE_H / 2 - CENTRE_CIRCLE / 2 + 1.5 }, 0xffffff);
+    // Mittelkreis nur, wenn er die Aufstellung sperrt (Close Encounter), und nur in der Aufstellung
+    if (circleBlocksDeployment(setup) && currentPhase(this.store.state.meta) === 'setup') {
+      g.circle((TABLE_W / 2) * PPI, (TABLE_H / 2) * PPI, (CENTRE_CIRCLE / 2) * PPI).stroke({ width: 1.5, color: 0xffffff, alpha: 0.6 });
+      label('No deployment', { x: TABLE_W / 2, y: TABLE_H / 2 - CENTRE_CIRCLE / 2 + 1.5 }, 0xffffff);
+    }
     // Domination: Tischviertel
     if (setup?.missionTurn === 'domination') {
       g.moveTo((TABLE_W / 2) * PPI, 0).lineTo((TABLE_W / 2) * PPI, TABLE_H * PPI)
         .moveTo(0, (TABLE_H / 2) * PPI).lineTo(TABLE_W * PPI, (TABLE_H / 2) * PPI)
         .stroke({ width: 1.5, color: 0xe0b44c, alpha: 0.45 });
     }
-    // Strategic Locations: 6″ Kontrollradius um jedes Missionsziel
-    if (setup?.missionTurn === 'locations') {
-      for (const o of Object.values(this.store.state.objects)) {
-        if (o.type === 'objective') g.circle(o.x * PPI, o.y * PPI, 6 * PPI).stroke({ width: 1, color: 0xe0b44c, alpha: 0.45 });
-      }
-    }
+    // 6″ Kontrollradius nur um das angeklickte Missionsziel
+    const sel = this.selectedId ? this.store.state.objects[this.selectedId] : undefined;
+    if (sel?.type === 'objective') g.circle(sel.x * PPI, sel.y * PPI, 6 * PPI).stroke({ width: 1.5, color: 0xe0b44c, alpha: 0.8 });
   }
 }

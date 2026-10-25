@@ -68,7 +68,8 @@ async function start(): Promise<void> {
   });
   const board: Board = new Board(app, store, history, {
     onSelect: (id) => panel.show(id),
-    onSelectObject: (id) => objectPanel.show(id),
+    // Missionsziele: kein Fenster, nur der 6″-Kreis auf dem Tisch
+    onSelectObject: (id) => objectPanel.show(id && store.state.objects[id]?.type === 'objective' ? null : id),
     onAction: (id, text) => {
       panel.setLastAction(id, text);
       const name = store.state.units[id]?.info.name ?? '';
