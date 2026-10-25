@@ -29,6 +29,8 @@ export interface PanelActions {
 /** Seitenpanel mit allen Angaben zur ausgewählten Einheit. */
 export class UnitPanel {
   private unitId: string | null = null;
+  /** Aufgeklappte Waffen-Sonderregel unter der Waffentabelle */
+  private weaponRuleOpen: string | null = null;
   /** Phasenregeln: Umformieren zählt als Bewegung */
   canMove: (unitId: string) => boolean = () => true;
   private lastAction = new Map<string, string>();
@@ -36,6 +38,13 @@ export class UnitPanel {
   constructor(private store: Store, private history: History, actions: PanelActions) {
     // Waffenprofile kommen aus einer eigenen Datei; sobald sie da ist, neu zeichnen
     void loadWeapons().then(() => this.render());
+    // Waffen-Sonderregel anklicken: Text unter der Tabelle zeigen, erneut klicken schließt ihn
+    $('p-weapons').onclick = (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-wrule]');
+      if (!btn) return;
+      this.weaponRuleOpen = this.weaponRuleOpen === btn.dataset.wrule ? null : btn.dataset.wrule!;
+      this.render();
+    };
     $('p-close').onclick = () => actions.close();
     $('p-rank').onclick = () => this.arrangeInRanks();
     ($('p-ranges') as HTMLInputElement).onchange = (e) => actions.showRanges((e.target as HTMLInputElement).checked);
@@ -79,6 +88,7 @@ export class UnitPanel {
   }
 
   show(unitId: string | null): void {
+    if (unitId !== this.unitId) this.weaponRuleOpen = null;
     this.unitId = unitId;
     this.render();
   }
@@ -218,18 +228,23 @@ export class UnitPanel {
     const weapons = unitWeapons(u.info);
     const magic = u.info.items.filter((i) => /weapon/i.test(i.note ?? ''));
     if (!weapons.length && !magic.length) return '<p class="meta">No weapons found.</p>';
+    // Sonderregeln direkt in der Tabelle anklickbar; der Text erscheint darunter (siehe showWeaponRule)
+    const ruleLink = (name: string) => weaponRule(name)?.text
+      ? `<button class="link rule-link${this.weaponRuleOpen === name ? ' on' : ''}" data-wrule="${escapeHtml(name)}">${escapeHtml(name)}</button>`
+      : escapeHtml(name);
     const rows = weapons.flatMap((w) => w.profiles.map((p) => `<tr>
         <td><a href="${escapeHtml(w.url)}" target="_blank" rel="noopener">${escapeHtml(p.name)}</a></td>
         <td>${escapeHtml(p.range)}</td><td>${escapeHtml(p.strength)}</td><td>${escapeHtml(p.ap)}</td>
-        <td class="w-rules">${escapeHtml(p.rules.join(', ') || '–')}${p.notes ? `<br><span class="meta">${escapeHtml(p.notes)}</span>` : ''}</td></tr>`));
-    // Jede Waffen-Sonderregel einmal zum Aufklappen
-    const ruleNames = [...new Set(weapons.flatMap((w) => w.profiles.flatMap((p) => p.rules)))];
-    const rules = ruleNames.map((n) => weaponRule(n)).filter((r) => r && r.text)
-      .map((r) => ruleHtml({ name: r!.name, text: r!.text, url: r!.url } as RuleRef)).join('');
+        <td class="w-rules">${p.rules.map(ruleLink).join(', ') || '–'}${p.notes ? `<br><span class="meta">${escapeHtml(p.notes)}</span>` : ''}</td></tr>`));
+    const open = this.weaponRuleOpen ? weaponRule(this.weaponRuleOpen) : null;
+    const openHtml = open?.text
+      ? `<div class="w-rule-text"><b>${escapeHtml(open.name)}</b><p>${escapeHtml(open.text)}</p>
+          <a href="${escapeHtml(open.url)}" target="_blank" rel="noopener">Full text ↗</a></div>`
+      : '';
     return (rows.length ? `<table class="profile weapons">
         <thead><tr><th></th><th>Range</th><th>S</th><th>AP</th><th>Special rules</th></tr></thead>
         <tbody>${rows.join('')}</tbody></table>` : '') +
-      `<div class="compact">${rules}${magic.map(ruleHtml).join('')}</div>`;
+      openHtml + (magic.length ? `<div class="compact">${magic.map(ruleHtml).join('')}</div>` : '');
   }
 
   /** Rüstungswurf aus der Ausrüstung und alles, was Rüstung, Rettung oder Regeneration verbessert */
