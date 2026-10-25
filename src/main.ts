@@ -8,7 +8,6 @@ import { defaultTerrain } from './model/objects';
 import { Store } from './model/store';
 import type { GameState, LogEntry } from './model/types';
 import type { Seat } from './net/room';
-import { ActionControls } from './ui/actionControls';
 import { DiceLog, DicePanel } from './ui/dice';
 import { PromptCenter } from './ui/prompts';
 import { SetupPanel } from './ui/setupPanel';
@@ -83,8 +82,8 @@ async function start(): Promise<void> {
   panel.canMove = (id) => gate.allow(id);
   const gameBar = new GameBar(store, history, (kind, text) => addLog({ kind, text }));
   const toolbox = new Toolbox(store, history, board.tools, (text) => addLog({ kind: 'action', text }));
-  // Abläufe mit dem Gegner: Angriffe, Rüstungswürfe, Bannen, Tests
-  const prompts = new PromptCenter(store, history, {
+  // Offene Aufforderungen aus älteren Spielständen anzeigen und abschließen (neue entstehen nicht mehr)
+  new PromptCenter(store, history, {
     seat: () => seat,
     log: (entry) => addLog(entry),
     allowMove: (id) => gate.grant(id),
@@ -94,13 +93,12 @@ async function start(): Promise<void> {
   gameBar.setupBlocker = () => setup.blocker();
   setup.onNext = () => gameBar.requestNext();
   gameBar.refresh();
-  const actions = new ActionControls(store, board, prompts, () => seat);
   new DicePanel((entry) => addLog(entry));
   new DiceLog(store);
   new SyncWarning();
   // Spalten links/rechts ein- und ausblenden; danach den Tisch neu einpassen
   const views = new ViewToggles(() => showTable());
-  new Shortcuts({ board, panel, gameBar, toolbox, history, actions, views });
+  new Shortcuts({ board, panel, gameBar, toolbox, history, views });
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
   // Ganzen Tisch zeigen, auch nach jedem Armeeimport

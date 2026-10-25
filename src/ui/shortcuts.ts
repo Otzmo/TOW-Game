@@ -1,7 +1,6 @@
 import type { History } from '../model/history';
 import type { UnitStatus } from '../model/types';
 import type { Board } from '../view/board';
-import type { ActionControls } from './actionControls';
 import type { GameBar } from './gameBar';
 import type { UnitPanel } from './panel';
 import { openedSheet, openSheet, toggleSheet } from './sheets';
@@ -16,7 +15,6 @@ export interface ShortcutTargets {
   gameBar: GameBar;
   toolbox: Toolbox;
   history: History;
-  actions: ActionControls;
   views: ViewToggles;
 }
 

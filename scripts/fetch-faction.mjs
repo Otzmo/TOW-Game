@@ -4,6 +4,7 @@
 // Aufruf:  node scripts/fetch-faction.mjs warriors-of-chaos
 
 import { mkdir, writeFile } from 'node:fs/promises';
+import { pathToFileURL } from 'node:url';
 
 const BASE = 'https://tow.whfb.app';
 const DELAY_MS = 250; // höflicher Abstand zwischen Anfragen
@@ -13,15 +14,9 @@ const ITEM_CATEGORIES = [
   'extremely-common-magic-items',
 ];
 
-const faction = process.argv[2];
-if (!faction) {
-  console.error('Bitte Fraktion angeben, z. B.: node scripts/fetch-faction.mjs warriors-of-chaos');
-  process.exit(1);
-}
-
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function page(path) {
+export async function page(path) {
   await sleep(DELAY_MS);
   const res = await fetch(BASE + path);
   if (!res.ok) return null;
@@ -33,7 +28,7 @@ async function page(path) {
 }
 
 /** Contentful-Rich-Text in lesbaren Klartext umwandeln. */
-function richText(node) {
+export function richText(node) {
   if (!node) return '';
   if (typeof node === 'string') return node;
   switch (node.nodeType) {
@@ -59,7 +54,7 @@ function richText(node) {
   }
 }
 const inner = (node) => (node.content ?? []).map(richText).join('');
-const clean = (s) => s.replace(/\n{3,}/g, '\n\n').trim();
+export const clean = (s) => s.replace(/\n{3,}/g, '\n\n').trim();
 
 /** Alle verlinkten Einträge (Regeln, Gegenstände …) aus einem Rich-Text-Baum sammeln. */
 function linkedEntries(node, out = []) {
@@ -123,7 +118,7 @@ function ruleFromTarget(target, label) {
   };
 }
 
-async function main() {
+async function main(faction) {
   console.log(`Lade Armeeseite ${faction} …`);
   const army = await page(`/army/${faction}`);
   if (!army) throw new Error(`Fraktion "${faction}" nicht gefunden.`);
@@ -225,7 +220,15 @@ async function main() {
   console.log(`\nFertig: ${file} · ${Object.keys(data.units).length} Einheiten · ${Object.keys(data.rules).length} Regeln · ${Object.keys(data.items).length} Gegenstände`);
 }
 
-main().catch((e) => {
-  console.error(e.message);
-  process.exit(1);
-});
+// Nur bei direktem Aufruf laden; als Modul liefert die Datei Hilfsfunktionen (z. B. für fetch-weapons.mjs)
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const faction = process.argv[2];
+  if (!faction) {
+    console.error('Bitte Fraktion angeben, z. B.: node scripts/fetch-faction.mjs warriors-of-chaos');
+    process.exit(1);
+  }
+  main(faction).catch((e) => {
+    console.error(e.message);
+    process.exit(1);
+  });
+}

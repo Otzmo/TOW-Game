@@ -3,6 +3,7 @@ import {
   canSkirmish, isJoined, isNonUnitChange, isSkirmish, joinedCharacters, SKIRMISH_GAP, spreadPositions, unitLayout,
 } from '../model/store';
 import type { History } from '../model/history';
+import { loadWeapons, unitSaves, unitWeapons, weaponRule } from '../model/gear';
 import { hasStandard, unitVictoryPoints, wounds } from '../model/score';
 import type { RuleRef, UnitState, UnitStatus } from '../model/types';
 import { PLAYER_COLORS } from '../view/theme';
@@ -33,6 +34,8 @@ export class UnitPanel {
   private lastAction = new Map<string, string>();
 
   constructor(private store: Store, private history: History, actions: PanelActions) {
+    // Waffenprofile kommen aus einer eigenen Datei; sobald sie da ist, neu zeichnen
+    void loadWeapons().then(() => this.render());
     $('p-close').onclick = () => actions.close();
     $('p-rank').onclick = () => this.arrangeInRanks();
     ($('p-ranges') as HTMLInputElement).onchange = (e) => actions.showRanges((e.target as HTMLInputElement).checked);
@@ -170,9 +173,9 @@ export class UnitPanel {
     $('p-profile').innerHTML = info.profile
       .map((r) => `<tr><td>${escapeHtml(r.name)}</td>${r.values.map((v) => `<td>${escapeHtml(v)}</td>`).join('')}</tr>`)
       .join('');
-    $('p-equip').textContent = info.equipment || '–';
-    $('p-options').textContent = info.options.join(' · ') || '–';
-    $('p-items-head').parentElement!.hidden = info.items.length === 0;
+    $('p-weapons').innerHTML = this.weaponsHtml(u);
+    $('p-saves').innerHTML = this.savesHtml(u);
+    $('p-options').textContent = info.options.length ? `Options: ${info.options.join(' · ')}` : '';
     $('p-items').innerHTML = info.items.map(ruleHtml).join('');
     $('p-rules').innerHTML = info.rules.map(ruleHtml).join('') || '<p>–</p>';
     $('p-source').innerHTML = info.url
@@ -210,6 +213,34 @@ export class UnitPanel {
   }
 
   /** Anschluss-Status: Charakter in Einheit, Charaktere einer Einheit oder Hinweis zum Anschließen. */
+  /** Waffen mit Profil (Range, S, AP) und ihren Sonderregeln; magische Waffen mit ihrem Text */
+  private weaponsHtml(u: UnitState): string {
+    const weapons = unitWeapons(u.info);
+    const magic = u.info.items.filter((i) => /weapon/i.test(i.note ?? ''));
+    if (!weapons.length && !magic.length) return '<p class="meta">No weapons found.</p>';
+    const rows = weapons.flatMap((w) => w.profiles.map((p) => `<tr>
+        <td><a href="${escapeHtml(w.url)}" target="_blank" rel="noopener">${escapeHtml(p.name)}</a></td>
+        <td>${escapeHtml(p.range)}</td><td>${escapeHtml(p.strength)}</td><td>${escapeHtml(p.ap)}</td>
+        <td class="w-rules">${escapeHtml(p.rules.join(', ') || '–')}${p.notes ? `<br><span class="meta">${escapeHtml(p.notes)}</span>` : ''}</td></tr>`));
+    // Jede Waffen-Sonderregel einmal zum Aufklappen
+    const ruleNames = [...new Set(weapons.flatMap((w) => w.profiles.flatMap((p) => p.rules)))];
+    const rules = ruleNames.map((n) => weaponRule(n)).filter((r) => r && r.text)
+      .map((r) => ruleHtml({ name: r!.name, text: r!.text, url: r!.url } as RuleRef)).join('');
+    return (rows.length ? `<table class="profile weapons">
+        <thead><tr><th></th><th>Range</th><th>S</th><th>AP</th><th>Special rules</th></tr></thead>
+        <tbody>${rows.join('')}</tbody></table>` : '') +
+      `<div class="compact">${rules}${magic.map(ruleHtml).join('')}</div>`;
+  }
+
+  /** Rüstungswurf aus der Ausrüstung und alles, was Rüstung, Rettung oder Regeneration verbessert */
+  private savesHtml(u: UnitState): string {
+    const s = unitSaves(u.info);
+    const armour = s.armour !== null
+      ? `<p><b>Armour Save ${s.armour}+</b> <span class="meta">(${escapeHtml(s.parts.join(', '))})</span></p>`
+      : '<p class="meta">No armour in the equipment.</p>';
+    return armour + (s.related.length ? `<div class="compact">${s.related.map(ruleHtml).join('')}</div>` : '');
+  }
+
   private joinHtml(id: string): string {
     const units = this.store.state.units;
     const u = units[id];

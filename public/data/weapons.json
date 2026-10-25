@@ -1,0 +1,5069 @@
+{
+ "fetchedAt": "2026-10-25T06:44:13.606Z",
+ "weapons": {
+  "blessed-triptych": {
+   "slug": "blessed-triptych",
+   "name": "Blessed Triptych",
+   "profiles": [],
+   "text": "Often when members of Bretonnia's monastic orders march to war, they will carry with them some sacred triptych taken from their holy sanctum. In the presence of such relics, humble peasants find great courage.",
+   "url": "https://tow.whfb.app/weapons-of-war/blessed-triptych"
+  },
+  "bloodflail": {
+   "slug": "bloodflail",
+   "name": "Bloodflail",
+   "profiles": [
+    {
+     "name": "Bloodflail",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/bloodflail"
+  },
+  "blowpipe": {
+   "slug": "blowpipe",
+   "name": "Blowpipe",
+   "profiles": [
+    {
+     "name": "Blowpipe",
+     "range": "12\"",
+     "strength": "3",
+     "ap": "-",
+     "rules": [
+      "Multiple Shots (2)",
+      "Poisoned Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/blowpipe"
+  },
+  "blunderbuss": {
+   "slug": "blunderbuss",
+   "name": "Blunderbuss",
+   "profiles": [
+    {
+     "name": "Blunderbuss",
+     "range": "12\"",
+     "strength": "3",
+     "ap": "-1",
+     "rules": [
+      "Multiple Shots (D3)",
+      "Volley Fire"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/blunderbuss"
+  },
+  "braystaff": {
+   "slug": "braystaff",
+   "name": "Braystaff",
+   "profiles": [],
+   "text": "As a crude badge of office, Bray-Shamans often carry a heavy staff hung with bones, shells and skulls, with pieces of stone and metal embedded into its length.",
+   "url": "https://tow.whfb.app/weapons-of-war/braystaff"
+  },
+  "dark-fire-of-chaos": {
+   "slug": "dark-fire-of-chaos",
+   "name": "Dark Fire of Chaos",
+   "profiles": [
+    {
+     "name": "Dark Fire of Chaos",
+     "range": "N/A",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Breath Weapon",
+      "Flaming Attacks",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/dark-fire-of-chaos"
+  },
+  "dragon-fire": {
+   "slug": "dragon-fire",
+   "name": "Dragon Fire",
+   "profiles": [
+    {
+     "name": "Dragon Fire",
+     "range": "N/A",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Breath Weapon",
+      "Flaming Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/dragon-fire"
+  },
+  "dread-halberd": {
+   "slug": "dread-halberd",
+   "name": "Dread Halberd",
+   "profiles": [
+    {
+     "name": "Dread Halberd",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Fight in Extra Rank",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/dread-halberd"
+  },
+  "fanatic-ball-and-chain": {
+   "slug": "fanatic-ball-and-chain",
+   "name": "Fanatic Ball & Chain",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/fanatic-ball-and-chain"
+  },
+  "furnace-hammer": {
+   "slug": "furnace-hammer",
+   "name": "Furnace Hammer",
+   "profiles": [
+    {
+     "name": "Furnace Hammer",
+     "range": "Combat",
+     "strength": "*",
+     "ap": "-2",
+     "rules": [
+      "Flaming Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/furnace-hammer"
+  },
+  "great-hammer": {
+   "slug": "great-hammer",
+   "name": "Great Hammer",
+   "profiles": [
+    {
+     "name": "Great Hammer",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (2)",
+      "Magical Attacks",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/great-hammer"
+  },
+  "great-throwing-spears": {
+   "slug": "great-throwing-spears",
+   "name": "Great Throwing Spears",
+   "profiles": [
+    {
+     "name": "Great Throwing Spears",
+     "range": "12\"",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Move & Shoot",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/great-throwing-spears"
+  },
+  "grisly-totem": {
+   "slug": "grisly-totem",
+   "name": "Grisly Totem",
+   "profiles": [],
+   "text": "Adorned with gruesome trophies, Kralmaw's staff evokes a sense of dread in those unfortunate enough to lay eyes upon it.",
+   "url": "https://tow.whfb.app/weapons-of-war/grisly-totem"
+  },
+  "iron-talons": {
+   "slug": "iron-talons",
+   "name": "Iron Talons",
+   "profiles": [
+    {
+     "name": "Iron Talons Profile",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/iron-talons"
+  },
+  "lashing-talons": {
+   "slug": "lashing-talons",
+   "name": "Lashing Talons",
+   "profiles": [
+    {
+     "name": "Lashing Talons",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/lashing-talons"
+  },
+  "long-spear": {
+   "slug": "long-spear",
+   "name": "Long Spear",
+   "profiles": [
+    {
+     "name": "Long Spear Profile",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Fight in Extra Rank",
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/long-spear"
+  },
+  "ritual-blade": {
+   "slug": "ritual-blade",
+   "name": "Ritual Blade",
+   "profiles": [
+    {
+     "name": "Ritual Blade",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-3",
+     "rules": [
+      "Requires Two Hands",
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/ritual-blade"
+  },
+  "sacrificial-dagger": {
+   "slug": "sacrificial-dagger",
+   "name": "Sacrificial Dagger",
+   "profiles": [
+    {
+     "name": "Sacrificial Dagger Profile",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/sacrificial-dagger"
+  },
+  "spear-of-loec": {
+   "slug": "spear-of-loec",
+   "name": "Spear of Loec",
+   "profiles": [
+    {
+     "name": "Spear of Loec",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (2)",
+      "Killing Blow"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/spear-of-loec"
+  },
+  "spectral-scythe-cairn-wraith": {
+   "slug": "spectral-scythe-cairn-wraith",
+   "name": "Spectral Scythe (Cairn Wraith)",
+   "profiles": [
+    {
+     "name": "Spectral Scythe (Cairn Wraith)",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "N/A",
+     "rules": [
+      "Magical Attacks",
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/spectral-scythe-cairn-wraith"
+  },
+  "steam-cannon": {
+   "slug": "steam-cannon",
+   "name": "Steam Cannon",
+   "profiles": [
+    {
+     "name": "Steam Cannon",
+     "range": "24\"",
+     "strength": "8",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (2)",
+      "Cannon Fire",
+      "Cumbersome",
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Steam Tanks are armed with a steam-powered cannon that can send a spinning ball of iron whirling into the foe's ranks with all the power of a traditional black powder cannon.",
+   "url": "https://tow.whfb.app/weapons-of-war/steam-cannon"
+  },
+  "steam-cannonade": {
+   "slug": "steam-cannonade",
+   "name": "Steam Cannonade",
+   "profiles": [
+    {
+     "name": "Steam Cannonade",
+     "range": "18\"",
+     "strength": "5",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Cannonade",
+      "Cumbersome"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Powered by the channelled pressure of the Iron Daemon's furnace, a steam cannonade is a twin barrelled organ gun used to blast a lethal storm of red-hot shrapnel and curse-laden shot into the ranks of the enemy.",
+   "url": "https://tow.whfb.app/weapons-of-war/steam-cannonade"
+  },
+  "swamp-breath": {
+   "slug": "swamp-breath",
+   "name": "Swamp Breath",
+   "profiles": [
+    {
+     "name": "Swamp Breath",
+     "range": "N/A",
+     "strength": "3",
+     "ap": "-2",
+     "rules": [
+      "Breath Weapon"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/swamp-breath"
+  },
+  "swarming-mass": {
+   "slug": "swarming-mass",
+   "name": "Swarming Mass",
+   "profiles": [
+    {
+     "name": "Swarming Mass",
+     "range": "N/A",
+     "strength": "2",
+     "ap": "-",
+     "rules": [
+      "Breath Weapon"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "As the swarm of scarabs in which Apophas' accursed soul resides rises up from the dust of the desert, his gleaming skull opens its fleshless jaw wide, unleashing an all consuming cloud of flesh eating beetles upon his enemies.",
+   "url": "https://tow.whfb.app/weapons-of-war/swarming-mass"
+  },
+  "warplock-musket": {
+   "slug": "warplock-musket",
+   "name": "Warplock Musket",
+   "profiles": [
+    {
+     "name": "Warplock Musket",
+     "range": "24\"",
+     "strength": "5",
+     "ap": "-2",
+     "rules": [
+      "Magical Attacks",
+      "Ponderous"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/warplock-musket"
+  },
+  "weapon-profiles": {
+   "slug": "weapon-profiles",
+   "name": "Weapon Profiles",
+   "profiles": [
+    {
+     "name": "Flail",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/weapon-profiles"
+  },
+  "wolf-hammer": {
+   "slug": "wolf-hammer",
+   "name": "Wolf Hammer",
+   "profiles": [
+    {
+     "name": "Wolf Hammer",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-2",
+     "rules": [
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/wolf-hammer"
+  },
+  "bombard": {
+   "slug": "bombard",
+   "name": "Bombard",
+   "profiles": [
+    {
+     "name": "Bombard",
+     "range": "48\"",
+     "strength": "8",
+     "ap": "-3",
+     "rules": [
+      "Armour Bane (2)",
+      "Cannon Fire",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (D3+1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/bombard"
+  },
+  "bonegrinder-giants-club": {
+   "slug": "bonegrinder-giants-club",
+   "name": "Bonegrinder Giant's Club",
+   "profiles": [
+    {
+     "name": "Bonegrinder Giant's Club",
+     "range": "Combat",
+     "strength": "*",
+     "ap": "*",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/bonegrinder-giants-club"
+  },
+  "brace-of-drakefire-pistols": {
+   "slug": "brace-of-drakefire-pistols",
+   "name": "Brace of Drakefire Pistols",
+   "profiles": [
+    {
+     "name": "Brace of Drakefire Pistols Ranged",
+     "range": "12\"",
+     "strength": "5",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (2)",
+      "Dwarf Crafted",
+      "Flaming Attacks",
+      "Multiple Shots (2)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    },
+    {
+     "name": "Brace of Drakefire Pistols Combat",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Extra Attacks (+1)",
+      "Flaming Attacks",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/brace-of-drakefire-pistols"
+  },
+  "combat-weapons": {
+   "slug": "combat-weapons",
+   "name": "Combat Weapons",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/combat-weapons"
+  },
+  "crane-gun": {
+   "slug": "crane-gun",
+   "name": "Crane Gun",
+   "profiles": [
+    {
+     "name": "Crane Gun Profile",
+     "range": "36\"",
+     "strength": "6",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (2)",
+      "Cumbersome",
+      "Move or Shoot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/crane-gun"
+  },
+  "crown-of-horns-grand-cathay": {
+   "slug": "crown-of-horns-grand-cathay",
+   "name": "Crown of Horns (Grand Cathay)",
+   "profiles": [
+    {
+     "name": "Crown of Horns (Grand Cathay) Profile",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/crown-of-horns-grand-cathay"
+  },
+  "fiery-breath-lizardmen": {
+   "slug": "fiery-breath-lizardmen",
+   "name": "Fiery Breath (Lizardmen)",
+   "profiles": [
+    {
+     "name": "Fiery Breath (Lizardmen)",
+     "range": "N/A",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Breath Weapon",
+      "Flaming Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/fiery-breath-lizardmen"
+  },
+  "filth-encrusted-claws": {
+   "slug": "filth-encrusted-claws",
+   "name": "Filth-Encrusted Claws",
+   "profiles": [
+    {
+     "name": "Filth-Encrusted Claws",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Poisoned Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/filth-encrusted-claws"
+  },
+  "flaming-breath-ogre-kingdoms": {
+   "slug": "flaming-breath-ogre-kingdoms",
+   "name": "Flaming Breath (Ogre Kingdoms)",
+   "profiles": [
+    {
+     "name": "Flaming Breath (Ogre Kingdoms)",
+     "range": "N/A",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Breath Weapon",
+      "Flaming Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/flaming-breath-ogre-kingdoms"
+  },
+  "fumes-of-contagion": {
+   "slug": "fumes-of-contagion",
+   "name": "Fumes of Contagion",
+   "profiles": [
+    {
+     "name": "Fumes of Contagion",
+     "range": "N/A",
+     "strength": "2",
+     "ap": "N/A",
+     "rules": [
+      "Breath Weapon",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/fumes-of-contagion"
+  },
+  "great-axe": {
+   "slug": "great-axe",
+   "name": "Great Axe",
+   "profiles": [
+    {
+     "name": "Great Axe",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-3",
+     "rules": [
+      "Armour Bane (2)",
+      "Monster Slayer",
+      "Requires Two Hands",
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/great-axe"
+  },
+  "greatbow": {
+   "slug": "greatbow",
+   "name": "Greatbow",
+   "profiles": [
+    {
+     "name": "Greatbow",
+     "range": "30\"",
+     "strength": "6",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (2)",
+      "Multiple Wounds (2)",
+      "Volley Fire"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/greatbow"
+  },
+  "handmaidens-spear": {
+   "slug": "handmaidens-spear",
+   "name": "Handmaiden's Spear",
+   "profiles": [
+    {
+     "name": "Handmaiden’s Spear",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/handmaidens-spear"
+  },
+  "har-ganeth-greatsword": {
+   "slug": "har-ganeth-greatsword",
+   "name": "Har Ganeth Greatsword",
+   "profiles": [
+    {
+     "name": "Har Ganeth Greatsword",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-1",
+     "rules": [
+      "Cleaving Blow",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/har-ganeth-greatsword"
+  },
+  "huge-gob": {
+   "slug": "huge-gob",
+   "name": "Huge Gob",
+   "profiles": [
+    {
+     "name": "Huge Gob",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/huge-gob"
+  },
+  "light-cannon": {
+   "slug": "light-cannon",
+   "name": "Light Cannon",
+   "profiles": [
+    {
+     "name": "Light Cannon",
+     "range": "18\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (2)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/light-cannon"
+  },
+  "massive-gob": {
+   "slug": "massive-gob",
+   "name": "Massive Gob",
+   "profiles": [
+    {
+     "name": "Massive Gob",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Killing Blow"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/massive-gob"
+  },
+  "polearm": {
+   "slug": "polearm",
+   "name": "Polearm",
+   "profiles": [
+    {
+     "name": "Polearm Single-Handed",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Fight in Extra Rank"
+     ],
+     "notes": ""
+    },
+    {
+     "name": "Polearm Double-Handed",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/polearm"
+  },
+  "rivet-gun": {
+   "slug": "rivet-gun",
+   "name": "Rivet Gun",
+   "profiles": [
+    {
+     "name": "Rivet Gun",
+     "range": "10\"",
+     "strength": "3",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/rivet-gun"
+  },
+  "serpentine-tail": {
+   "slug": "serpentine-tail",
+   "name": "Serpentine Tail",
+   "profiles": [
+    {
+     "name": "Serpentine Tail",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-2",
+     "rules": [
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/serpentine-tail"
+  },
+  "slythey-tongue": {
+   "slug": "slythey-tongue",
+   "name": "Slythey Tongue",
+   "profiles": [
+    {
+     "name": "Slythey Tongue",
+     "range": "12\"",
+     "strength": "5",
+     "ap": "-1",
+     "rules": [
+      "Move & Shoot",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/slythey-tongue"
+  },
+  "steam-gun-empire": {
+   "slug": "steam-gun-empire",
+   "name": "Steam Gun (Empire)",
+   "profiles": [
+    {
+     "name": "Steam Gun (Empire)",
+     "range": "N/A",
+     "strength": "2",
+     "ap": "N/A",
+     "rules": [
+      "Breath Weapon"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Steam Tanks are also fitted with a turret-mounted steam gun as standard. Connected to the boiler, this weapon can engulf nearby enemies in great gouts of scalding steam.",
+   "url": "https://tow.whfb.app/weapons-of-war/steam-gun-empire"
+  },
+  "trampling-hooves": {
+   "slug": "trampling-hooves",
+   "name": "Trampling Hooves",
+   "profiles": [
+    {
+     "name": "Trampling Hooves",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Flaming Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/trampling-hooves"
+  },
+  "tricksters-blades": {
+   "slug": "tricksters-blades",
+   "name": "Trickster's Blades",
+   "profiles": [
+    {
+     "name": "Trickster’s Blades",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Extra Attacks (+D3)",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/tricksters-blades"
+  },
+  "twisted-antlers": {
+   "slug": "twisted-antlers",
+   "name": "Twisted Antlers",
+   "profiles": [
+    {
+     "name": "Twisted Antlers Profile",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/twisted-antlers"
+  },
+  "warplock-pistol": {
+   "slug": "warplock-pistol",
+   "name": "Warplock Pistol",
+   "profiles": [
+    {
+     "name": "Warplock Pistol",
+     "range": "12\"",
+     "strength": "4",
+     "ap": "-2",
+     "rules": [
+      "Magical Attacks",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/warplock-pistol"
+  },
+  "briny-breath": {
+   "slug": "briny-breath",
+   "name": "Briny Breath",
+   "profiles": [
+    {
+     "name": "Briny Breath",
+     "range": "N/A",
+     "strength": "2",
+     "ap": "-2",
+     "rules": [
+      "Breath Weapon"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/briny-breath"
+  },
+  "burning-braziers": {
+   "slug": "burning-braziers",
+   "name": "Burning Braziers",
+   "profiles": [],
+   "text": "Wrought iron braziers full of smouldering coals not only ward against the morning's chill, they also allow the bowmen to rain burning arrows down upon the foe.",
+   "url": "https://tow.whfb.app/weapons-of-war/burning-braziers"
+  },
+  "drakegun": {
+   "slug": "drakegun",
+   "name": "Drakegun",
+   "profiles": [
+    {
+     "name": "Drakegun",
+     "range": "18\"",
+     "strength": "5",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (2)",
+      "Dwarf Crafted",
+      "Flaming Attacks",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/drakegun"
+  },
+  "eagle-eye-bolt-thrower": {
+   "slug": "eagle-eye-bolt-thrower",
+   "name": "Eagle-eye Bolt Thrower",
+   "profiles": [
+    {
+     "name": "Eagle-eye Bolt Thrower",
+     "range": "24\"",
+     "strength": "5",
+     "ap": "-3",
+     "rules": [
+      "Cumbersome",
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/eagle-eye-bolt-thrower"
+  },
+  "flaming-breath-warriors-of-chaos": {
+   "slug": "flaming-breath-warriors-of-chaos",
+   "name": "Flaming Breath (Warriors of Chaos)",
+   "profiles": [
+    {
+     "name": "Flaming Breath (Warriors of Chaos)",
+     "range": "N/A",
+     "strength": "4",
+     "ap": "-",
+     "rules": [
+      "Breath Weapon",
+      "Flaming Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/flaming-breath-warriors-of-chaos"
+  },
+  "goring-horns": {
+   "slug": "goring-horns",
+   "name": "Goring Horns",
+   "profiles": [
+    {
+     "name": "Goring Horns",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-3",
+     "rules": [
+      "Flaming Attacks",
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/goring-horns"
+  },
+  "gromril-great-axe": {
+   "slug": "gromril-great-axe",
+   "name": "Gromril Great Axe",
+   "profiles": [
+    {
+     "name": "Gromril Great Axe",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-3",
+     "rules": [
+      "Requires Two Hands",
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/gromril-great-axe"
+  },
+  "horns-of-stone": {
+   "slug": "horns-of-stone",
+   "name": "Horns of Stone",
+   "profiles": [
+    {
+     "name": "Horns of Stone",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/horns-of-stone"
+  },
+  "lash-and-buckler": {
+   "slug": "lash-and-buckler",
+   "name": "Lash & Buckler",
+   "profiles": [
+    {
+     "name": "Lash & Buckler",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Fight in Extra Rank",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/lash-and-buckler"
+  },
+  "lash-of-khorne": {
+   "slug": "lash-of-khorne",
+   "name": "Lash of Khorne",
+   "profiles": [
+    {
+     "name": "Lash of Khorne",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/lash-of-khorne"
+  },
+  "long-rifle": {
+   "slug": "long-rifle",
+   "name": "Long Rifle",
+   "profiles": [
+    {
+     "name": "Long Rifle",
+     "range": "36\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Cumbersome"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/long-rifle"
+  },
+  "more-than-one-combat-weapon": {
+   "slug": "more-than-one-combat-weapon",
+   "name": "More Than One Combat Weapon",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/more-than-one-combat-weapon"
+  },
+  "oaken-fists": {
+   "slug": "oaken-fists",
+   "name": "Oaken Fists",
+   "profiles": [
+    {
+     "name": "Oaken Fists",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/oaken-fists"
+  },
+  "petrifying-gaze": {
+   "slug": "petrifying-gaze",
+   "name": "Petrifying Gaze",
+   "profiles": [
+    {
+     "name": "Petrifying Gaze",
+     "range": "18\"",
+     "strength": "2",
+     "ap": "N/A",
+     "rules": [
+      "Magical Attacks",
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/petrifying-gaze"
+  },
+  "plague-censer": {
+   "slug": "plague-censer",
+   "name": "Plague Censer",
+   "profiles": [
+    {
+     "name": "Plague Censer",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-1",
+     "rules": [
+      "Poisoned Attacks",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/plague-censer"
+  },
+  "razor-barbs": {
+   "slug": "razor-barbs",
+   "name": "Razor Barbs",
+   "profiles": [
+    {
+     "name": "Razor Barbs",
+     "range": "18\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Move & Shoot",
+      "Multiple Shots (D3)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/razor-barbs"
+  },
+  "serrated-maw": {
+   "slug": "serrated-maw",
+   "name": "Serrated Maw",
+   "profiles": [
+    {
+     "name": "Serrated Maw",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Armour Bane (2)",
+      "Multiple Wounds (2)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/serrated-maw"
+  },
+  "sky-lantern-bombs": {
+   "slug": "sky-lantern-bombs",
+   "name": "Sky Lantern Bombs",
+   "profiles": [],
+   "text": "Fitted with racks of elaborately carved and lacquered wood strung with complex rigging and laden with clay pots, a Sky Lantern can rain devastation upon the enemy as it passes overhead.",
+   "url": "https://tow.whfb.app/weapons-of-war/sky-lantern-bombs"
+  },
+  "slashing-talons-warriors-of-chaos": {
+   "slug": "slashing-talons-warriors-of-chaos",
+   "name": "Slashing Talons (Warriors of Chaos)",
+   "profiles": [
+    {
+     "name": "Slashing Talons",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/slashing-talons-warriors-of-chaos"
+  },
+  "spectral-scythe-black-coach": {
+   "slug": "spectral-scythe-black-coach",
+   "name": "Spectral Scythe (Black Coach)",
+   "profiles": [
+    {
+     "name": "Spectral Scythe (Black Coach)",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "N/A",
+     "rules": [
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/spectral-scythe-black-coach"
+  },
+  "troll-vomit": {
+   "slug": "troll-vomit",
+   "name": "Troll Vomit",
+   "profiles": [
+    {
+     "name": "Troll Vomit",
+     "range": "Combat",
+     "strength": "3",
+     "ap": "-2",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/troll-vomit"
+  },
+  "writhing-tail": {
+   "slug": "writhing-tail",
+   "name": "Writhing Tail",
+   "profiles": [
+    {
+     "name": "Writhing Tail",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Extra Attacks (+D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/writhing-tail"
+  },
+  "acidic-vomit": {
+   "slug": "acidic-vomit",
+   "name": "Acidic Vomit",
+   "profiles": [
+    {
+     "name": "Acidic Vomit",
+     "range": "N/A",
+     "strength": "3",
+     "ap": "-1",
+     "rules": [
+      "Breath Weapon"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/acidic-vomit"
+  },
+  "bow-of-avelorn": {
+   "slug": "bow-of-avelorn",
+   "name": "Bow of Avelorn",
+   "profiles": [
+    {
+     "name": "Bow of Avelorn",
+     "range": "30\"",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Armour Bane (1)",
+      "Magical Attacks",
+      "Volley Fire"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "High Elves are famed archers and in every province of Ulthuan, the gleaming ranks of citizen militia are equipped with splendid longbows as a matter of course. Yet, it is the artisans of Avelorn that craft the finest bows in all of Ulthuan.",
+   "url": "https://tow.whfb.app/weapons-of-war/bow-of-avelorn"
+  },
+  "brass-bound-hooves": {
+   "slug": "brass-bound-hooves",
+   "name": "Brass Bound Hooves",
+   "profiles": [
+    {
+     "name": "Brass Bound Hooves",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/brass-bound-hooves"
+  },
+  "breath-of-desiccation": {
+   "slug": "breath-of-desiccation",
+   "name": "Breath of Desiccation",
+   "profiles": [
+    {
+     "name": "Breath of Desiccation",
+     "range": "N/A",
+     "strength": "3",
+     "ap": "-2",
+     "rules": [
+      "Breath Weapon",
+      "Magical Attacks",
+      "Multiple Wounds (2)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/breath-of-desiccation"
+  },
+  "cinderblast-bombs": {
+   "slug": "cinderblast-bombs",
+   "name": "Cinderblast Bombs",
+   "profiles": [
+    {
+     "name": "Cinderblast Bombs",
+     "range": "8\"",
+     "strength": "5",
+     "ap": "-1",
+     "rules": [
+      "Flaming Attacks",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/cinderblast-bombs"
+  },
+  "defensive-stakes": {
+   "slug": "defensive-stakes",
+   "name": "Defensive Stakes",
+   "profiles": [],
+   "text": "Rough-hewn stakes hammered into the soft earth provide simple but effective defences against a charging enemy.",
+   "url": "https://tow.whfb.app/weapons-of-war/defensive-stakes"
+  },
+  "doom-flayer": {
+   "slug": "doom-flayer",
+   "name": "Doom-Flayer",
+   "profiles": [
+    {
+     "name": "Doom-Flayer",
+     "range": "Combat",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Counter Charge",
+      "Extra Attacks (+D6)",
+      "Impact Hits (D6+1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A Doom-flayer is a motorised ball of whirling blades which, when propelled at speed into the ranks of the enemy, is capable of wreaking horrific damage upon even the most heavily armoured warriors.",
+   "url": "https://tow.whfb.app/weapons-of-war/doom-flayer"
+  },
+  "fiend-tail": {
+   "slug": "fiend-tail",
+   "name": "Fiend Tail",
+   "profiles": [
+    {
+     "name": "Fiend Tail",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Extra Attacks (+D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/fiend-tail"
+  },
+  "fireleech-bolas": {
+   "slug": "fireleech-bolas",
+   "name": "Fireleech Bolas",
+   "profiles": [
+    {
+     "name": "Fireleech Bolas",
+     "range": "6\"",
+     "strength": "S+1",
+     "ap": "-",
+     "rules": [
+      "Flaming Attacks",
+      "Move & Shoot",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/fireleech-bolas"
+  },
+  "gnashing-maws": {
+   "slug": "gnashing-maws",
+   "name": "Gnashing Maws",
+   "profiles": [
+    {
+     "name": "Gnashing Maws",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/gnashing-maws"
+  },
+  "goblin-hewer": {
+   "slug": "goblin-hewer",
+   "name": "Goblin-Hewer",
+   "profiles": [
+    {
+     "name": "Goblin-Hewer",
+     "range": "36\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Cumbersome",
+      "Move or Shoot",
+      "Whirling Doom"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/goblin-hewer"
+  },
+  "great-tusks": {
+   "slug": "great-tusks",
+   "name": "Great Tusks",
+   "profiles": [
+    {
+     "name": "Great Tusks",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (2)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/great-tusks"
+  },
+  "hand-weapon": {
+   "slug": "hand-weapon",
+   "name": "Hand Weapon",
+   "profiles": [
+    {
+     "name": "Hand Weapon",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/hand-weapon"
+  },
+  "helblaster-volley-gun": {
+   "slug": "helblaster-volley-gun",
+   "name": "Helblaster Volley Gun",
+   "profiles": [
+    {
+     "name": "Helblaster Volley Gun",
+     "range": "24\"",
+     "strength": "5",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (2)",
+      "Cumbersome",
+      "Helblaster",
+      "Move or Shoot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/helblaster-volley-gun"
+  },
+  "iron-hail-gun": {
+   "slug": "iron-hail-gun",
+   "name": "Iron Hail Gun",
+   "profiles": [
+    {
+     "name": "Iron Hail Gun Profile",
+     "range": "12\"",
+     "strength": "3",
+     "ap": "-1",
+     "rules": [
+      "Move & Shoot",
+      "Multiple Shots (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/iron-hail-gun"
+  },
+  "mace-tail": {
+   "slug": "mace-tail",
+   "name": "Mace Tail",
+   "profiles": [
+    {
+     "name": "Mace Tail",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-2",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/mace-tail"
+  },
+  "pestilential-breath": {
+   "slug": "pestilential-breath",
+   "name": "Pestilential Breath",
+   "profiles": [
+    {
+     "name": "Pestilential Breath",
+     "range": "N/A",
+     "strength": "2",
+     "ap": "-3",
+     "rules": [
+      "Breath Weapon"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/pestilential-breath"
+  },
+  "ravager-harpoon": {
+   "slug": "ravager-harpoon",
+   "name": "Ravager Harpoon",
+   "profiles": [
+    {
+     "name": "Ravager Harpoon",
+     "range": "24\"",
+     "strength": "6",
+     "ap": "-3",
+     "rules": [
+      "Cumbersome",
+      "Multiple Wounds (D3)",
+      "Ponderous"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/ravager-harpoon"
+  },
+  "repeating-rifle": {
+   "slug": "repeating-rifle",
+   "name": "Repeating Rifle",
+   "profiles": [
+    {
+     "name": "Repeating Rifle",
+     "range": "24\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Multiple Shots (3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/repeating-rifle"
+  },
+  "strangleroots": {
+   "slug": "strangleroots",
+   "name": "Strangleroots",
+   "profiles": [
+    {
+     "name": "Strangleroots",
+     "range": "12\"",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Multiple Shots (D6+1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/strangleroots"
+  },
+  "wicked-claws": {
+   "slug": "wicked-claws",
+   "name": "Wicked Claws",
+   "profiles": [
+    {
+     "name": "Wicked Claws",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/wicked-claws"
+  },
+  "ball-and-chain": {
+   "slug": "ball-and-chain",
+   "name": "Ball & Chain",
+   "profiles": [
+    {
+     "name": "Ball & Chain",
+     "range": "Combat",
+     "strength": "S+3",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Requires Two Hands",
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/ball-and-chain"
+  },
+  "cannon-of-khorne": {
+   "slug": "cannon-of-khorne",
+   "name": "Cannon of Khorne",
+   "profiles": [
+    {
+     "name": "Cannon of Khorne Solid Shot",
+     "range": "36\"",
+     "strength": "8",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (2)",
+      "Cannon Fire",
+      "Cumbersome",
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    },
+    {
+     "name": "Cannon of Khorne Scatter Shot",
+     "range": "N/A",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Breath Weapon"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/cannon-of-khorne"
+  },
+  "ceremonial-halberd": {
+   "slug": "ceremonial-halberd",
+   "name": "Ceremonial Halberd",
+   "profiles": [
+    {
+     "name": "Ceremonial Halberd",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Fight in Extra Rank",
+      "Magical Attacks",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "The favoured weapon of the Phoenix Guard is the halberd. The silent guardians of Asuryan's shrine wield their long, heavy bladed weapons with a skill and precision unmatched by the clumsy warriors of other races.",
+   "url": "https://tow.whfb.app/weapons-of-war/ceremonial-halberd"
+  },
+  "chill-breath": {
+   "slug": "chill-breath",
+   "name": "Chill Breath",
+   "profiles": [
+    {
+     "name": "Chill Breath",
+     "range": "N/A",
+     "strength": "2",
+     "ap": "-1",
+     "rules": [
+      "Breath Weapon",
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/chill-breath"
+  },
+  "doomfire": {
+   "slug": "doomfire",
+   "name": "Doomfire",
+   "profiles": [
+    {
+     "name": "Doomfire",
+     "range": "12-60\"",
+     "strength": "5(10)",
+     "ap": "-2(-5)",
+     "rules": [
+      "Bombardment",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/doomfire"
+  },
+  "envenomed-sting": {
+   "slug": "envenomed-sting",
+   "name": "Envenomed Sting",
+   "profiles": [
+    {
+     "name": "Envenomed Sting",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Poisoned Attacks",
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/envenomed-sting"
+  },
+  "field-trebuchet": {
+   "slug": "field-trebuchet",
+   "name": "Field Trebuchet",
+   "profiles": [
+    {
+     "name": "Field Trebuchet",
+     "range": "12-72\"",
+     "strength": "5(10)",
+     "ap": "-1(-4)",
+     "rules": [
+      "Bombardment",
+      "Cumbersome",
+      "Immovable Object",
+      "Move or Shoot",
+      "Multiple Wounds (D3+1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/field-trebuchet"
+  },
+  "filth-encrusted-talons": {
+   "slug": "filth-encrusted-talons",
+   "name": "Filth-Encrusted Talons",
+   "profiles": [
+    {
+     "name": "Filth-Encrusted Talons",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Poisoned Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/filth-encrusted-talons"
+  },
+  "helstorm-rocket-battery": {
+   "slug": "helstorm-rocket-battery",
+   "name": "Helstorm Rocket Battery",
+   "profiles": [
+    {
+     "name": "Helstorm Rocket Battery",
+     "range": "12-48\"",
+     "strength": "4",
+     "ap": "-2",
+     "rules": [
+      "Cumbersome",
+      "Helstorm",
+      "Move or Shoot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/helstorm-rocket-battery"
+  },
+  "hurl-attack": {
+   "slug": "hurl-attack",
+   "name": "Hurl Attack",
+   "profiles": [
+    {
+     "name": "Hurl Attack",
+     "range": "12-36\"",
+     "strength": "4(8)",
+     "ap": "-1(-3)",
+     "rules": [
+      "Bombardment",
+      "Cumbersome",
+      "Multiple Wounds (D3+1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/hurl-attack"
+  },
+  "mighty-antlers": {
+   "slug": "mighty-antlers",
+   "name": "Mighty Antlers",
+   "profiles": [
+    {
+     "name": "Mighty Antlers",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/mighty-antlers"
+  },
+  "noxious-breath": {
+   "slug": "noxious-breath",
+   "name": "Noxious Breath",
+   "profiles": [
+    {
+     "name": "Noxious Breath",
+     "range": "N/A",
+     "strength": "4",
+     "ap": "N/A",
+     "rules": [
+      "Breath Weapon"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/noxious-breath"
+  },
+  "poisoned-wind-mortar": {
+   "slug": "poisoned-wind-mortar",
+   "name": "Poisoned Wind Mortar",
+   "profiles": [
+    {
+     "name": "Poisoned Wind Mortar",
+     "range": "6-24\"",
+     "strength": "2(4)",
+     "ap": "-",
+     "rules": [
+      "Bombardment",
+      "Cumbersome",
+      "Move or Shoot",
+      "Poisoned Wind"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "This muzzle-loaded weapon lobs the infamous Poisoned Wind globes of Clan Skryre a much greater distance than the feeble arms of any mere Skaven could.",
+   "url": "https://tow.whfb.app/weapons-of-war/poisoned-wind-mortar"
+  },
+  "sky-lantern-crane-gun": {
+   "slug": "sky-lantern-crane-gun",
+   "name": "Sky Lantern Crane Gun",
+   "profiles": [
+    {
+     "name": "Sky Lantern Crane Gun Profile",
+     "range": "36\"",
+     "strength": "6",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (2)",
+      "Cumbersome"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/sky-lantern-crane-gun"
+  },
+  "slashing-talons-lizardmen": {
+   "slug": "slashing-talons-lizardmen",
+   "name": "Slashing Talons (Lizardmen)",
+   "profiles": [
+    {
+     "name": "Slashing Talons (Lizardmen)",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-3",
+     "rules": [
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/slashing-talons-lizardmen"
+  },
+  "sorcerous-exhalation": {
+   "slug": "sorcerous-exhalation",
+   "name": "Sorcerous Exhalation",
+   "profiles": [
+    {
+     "name": "Sorcerous Exhalation",
+     "range": "N/A",
+     "strength": "4",
+     "ap": "-2",
+     "rules": [
+      "Breath Weapon",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/sorcerous-exhalation"
+  },
+  "trollhammer-torpedo": {
+   "slug": "trollhammer-torpedo",
+   "name": "Trollhammer Torpedo",
+   "profiles": [
+    {
+     "name": "Trollhammer Torpedo",
+     "range": "24\"",
+     "strength": "5",
+     "ap": "-3",
+     "rules": [
+      "Cumbersome",
+      "Flaming Attacks",
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/trollhammer-torpedo"
+  },
+  "two-hand-weapons-additional-hand-weapon": {
+   "slug": "two-hand-weapons-additional-hand-weapon",
+   "name": "Two Hand Weapons/Additional Hand Weapon",
+   "profiles": [
+    {
+     "name": "Two Hand Weapons/Additional Hand Weapon",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Extra Attacks (+1)",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Not content with a single hand weapon, some warriors carry two – one in each hand – the better to rain blows down upon their foes.",
+   "url": "https://tow.whfb.app/weapons-of-war/two-hand-weapons-additional-hand-weapon"
+  },
+  "venomous-tail": {
+   "slug": "venomous-tail",
+   "name": "Venomous Tail",
+   "profiles": [
+    {
+     "name": "Venomous Tail",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Poisoned Attacks",
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/venomous-tail"
+  },
+  "asrai-spear": {
+   "slug": "asrai-spear",
+   "name": "Asrai Spear",
+   "profiles": [
+    {
+     "name": "Asrai Spear",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Fight in Extra Rank"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/asrai-spear"
+  },
+  "bilesword": {
+   "slug": "bilesword",
+   "name": "Bilesword",
+   "profiles": [
+    {
+     "name": "Bilesword",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/bilesword"
+  },
+  "blasting-charges": {
+   "slug": "blasting-charges",
+   "name": "Blasting Charges",
+   "profiles": [
+    {
+     "name": "Blasting Charges",
+     "range": "6\"",
+     "strength": "3",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Flaming Attacks",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/blasting-charges"
+  },
+  "chracian-great-blade": {
+   "slug": "chracian-great-blade",
+   "name": "Chracian Great Blade",
+   "profiles": [
+    {
+     "name": "Chracian Great Blade",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-3",
+     "rules": [
+      "Requires Two Hands",
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "White Lions proudly bear the traditional woodsman's axe into battle, many of which are ancient heirlooms. Handed down across centuries untold they never lose their keen edge, and can fell a tree or cleave a foe in half with but a single blow.",
+   "url": "https://tow.whfb.app/weapons-of-war/chracian-great-blade"
+  },
+  "cleaver-limbs": {
+   "slug": "cleaver-limbs",
+   "name": "Cleaver-limbs",
+   "profiles": [
+    {
+     "name": "Cleaver-limbs",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Killing Blow",
+      "Monster Slayer"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/cleaver-limbs"
+  },
+  "demolition-rockets": {
+   "slug": "demolition-rockets",
+   "name": "Demolition Rockets",
+   "profiles": [
+    {
+     "name": "Demolition Rockets",
+     "range": "12-48\"",
+     "strength": "3(6)",
+     "ap": "-(-3)",
+     "rules": [
+      "Armour Bane (1)",
+      "Bombardment",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (D6)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/demolition-rockets"
+  },
+  "fiery-roar": {
+   "slug": "fiery-roar",
+   "name": "Fiery Roar",
+   "profiles": [
+    {
+     "name": "Fiery Roar",
+     "range": "N/A",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Breath Weapon",
+      "Flaming Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/fiery-roar"
+  },
+  "flail": {
+   "slug": "flail",
+   "name": "Flail",
+   "profiles": [
+    {
+     "name": "Flail",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A flail is a cumbersome, heavy weapon used with both hands. It consists of heavy weights, often spiked, attached to a pole or handle by heavy chains. A flail drains the user's stamina quickly, but is incredibly destructive nonetheless, its impact smashing shields and splintering bones.",
+   "url": "https://tow.whfb.app/weapons-of-war/flail"
+  },
+  "great-blade": {
+   "slug": "great-blade",
+   "name": "Great Blade",
+   "profiles": [
+    {
+     "name": "Scything Blow Profile",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Extra Attacks (+2D3)",
+      "Strike Last"
+     ],
+     "notes": ""
+    },
+    {
+     "name": "Deadly Strike Profile",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-4",
+     "rules": [
+      "Killing Blow",
+      "Monster Slayer",
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/great-blade"
+  },
+  "great-horns": {
+   "slug": "great-horns",
+   "name": "Great Horns",
+   "profiles": [
+    {
+     "name": "Great Horns",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-3",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/great-horns"
+  },
+  "grenade-launching-blunderbuss": {
+   "slug": "grenade-launching-blunderbuss",
+   "name": "Grenade Launching Blunderbuss",
+   "profiles": [
+    {
+     "name": "Grenade Launching Blunderbuss",
+     "range": "24\"",
+     "strength": "4",
+     "ap": "-2",
+     "rules": [
+      "Cumbersome",
+      "Ponderous"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "This unusual weapon fires a small explosive charge that unleashes a burst of shrapnel capable of tearing through the thickest suit of armour.",
+   "url": "https://tow.whfb.app/weapons-of-war/grenade-launching-blunderbuss"
+  },
+  "hooked-halberd": {
+   "slug": "hooked-halberd",
+   "name": "Hooked Halberd",
+   "profiles": [
+    {
+     "name": "Hooked Halberd",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (2)",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/hooked-halberd"
+  },
+  "leadbelcher-gun": {
+   "slug": "leadbelcher-gun",
+   "name": "Leadbelcher Gun",
+   "profiles": [
+    {
+     "name": "Leadbelcher Gun Solid Shot",
+     "range": "24\"",
+     "strength": "5",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Cumbersome",
+      "Multiple Wounds (2)"
+     ],
+     "notes": ""
+    },
+    {
+     "name": "Leadbelcher Gun Scatter Shot",
+     "range": "18\"",
+     "strength": "3",
+     "ap": "-",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/leadbelcher-gun"
+  },
+  "rancid-maw": {
+   "slug": "rancid-maw",
+   "name": "Rancid Maw",
+   "profiles": [
+    {
+     "name": "Rancid Maw",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Multiple Wounds (2)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/rancid-maw"
+  },
+  "ratling-gun": {
+   "slug": "ratling-gun",
+   "name": "Ratling Gun",
+   "profiles": [
+    {
+     "name": "Ratling Gun",
+     "range": "18\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Multi-Barrelled",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A relatively modern invention, the multi-barrelled Ratling Gun spews a tremendous amount of lead shot, capable of quickly reducing enemy ranks to a bloody pulp and a red mist.",
+   "url": "https://tow.whfb.app/weapons-of-war/ratling-gun"
+  },
+  "serrated-maws": {
+   "slug": "serrated-maws",
+   "name": "Serrated Maws",
+   "profiles": [
+    {
+     "name": "Serrated Maws",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Armour Bane (1)",
+      "Multiple Wounds (2)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/serrated-maws"
+  },
+  "venom-surge": {
+   "slug": "venom-surge",
+   "name": "Venom Surge",
+   "profiles": [
+    {
+     "name": "Venom Surge",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Multiple Wounds (D6)",
+      "Poisoned Attacks",
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/venom-surge"
+  },
+  "cathayan-lance": {
+   "slug": "cathayan-lance",
+   "name": "Cathayan Lance",
+   "profiles": [
+    {
+     "name": "Cathayan Lance Profile",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Fight in Extra Rank"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Cathayan cavalry use long, heavy spears similar to lances, but light enough that the weapons of multiple ranks can be brought to bear in the press of melee.",
+   "url": "https://tow.whfb.app/weapons-of-war/cathayan-lance"
+  },
+  "decapitating-claws": {
+   "slug": "decapitating-claws",
+   "name": "Decapitating Claws",
+   "profiles": [
+    {
+     "name": "Decapitating Claws",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Killing Blow",
+      "Monster Slayer"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/decapitating-claws"
+  },
+  "fiery-breath-dark-elves": {
+   "slug": "fiery-breath-dark-elves",
+   "name": "Fiery Breath (Dark Elves)",
+   "profiles": [
+    {
+     "name": "Fiery Breath (Dark Elves)",
+     "range": "N/A",
+     "strength": "*",
+     "ap": "-1",
+     "rules": [
+      "Breath Weapon",
+      "Flaming Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/fiery-breath-dark-elves"
+  },
+  "giant-bow": {
+   "slug": "giant-bow",
+   "name": "Giant Bow",
+   "profiles": [
+    {
+     "name": "Giant Bow",
+     "range": "36\"",
+     "strength": "5",
+     "ap": "-2",
+     "rules": [
+      "Multiple Wounds (D3)",
+      "Poisoned Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/giant-bow"
+  },
+  "grand-cannon": {
+   "slug": "grand-cannon",
+   "name": "Grand Cannon",
+   "profiles": [
+    {
+     "name": "Grand Cannon Profile",
+     "range": "48\"",
+     "strength": "10",
+     "ap": "-3",
+     "rules": [
+      "Armour Bane (3)",
+      "Cannon Fire",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (D3+1)",
+      "Thunderous Impact"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/grand-cannon"
+  },
+  "great-weapon": {
+   "slug": "great-weapon",
+   "name": "Great Weapon",
+   "profiles": [
+    {
+     "name": "Great Weapon",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Requires Two Hands",
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Great weapons are especially large and heavy weapons wielded with both hands. This includes great hammers, great axes, two-handed swords and so forth. A blow from a great weapon can cut a foe in half and shatter the thickest armour.",
+   "url": "https://tow.whfb.app/weapons-of-war/great-weapon"
+  },
+  "grimfrost-weapon": {
+   "slug": "grimfrost-weapon",
+   "name": "Grimfrost Weapon",
+   "profiles": [
+    {
+     "name": "Grimfrost Weapon",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/grimfrost-weapon"
+  },
+  "hochland-long-rifle": {
+   "slug": "hochland-long-rifle",
+   "name": "Hochland Long Rifle",
+   "profiles": [
+    {
+     "name": "Hochland Long Rifle",
+     "range": "36\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Cumbersome",
+      "Ponderous"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "The long-barrelled hunting rifles for which Hochland is famed are often fitted with cunning telescopic scopes designed to aid with accurate aiming over tremendous distances.",
+   "url": "https://tow.whfb.app/weapons-of-war/hochland-long-rifle"
+  },
+  "infernal-incendiaries": {
+   "slug": "infernal-incendiaries",
+   "name": "Infernal Incendiaries",
+   "profiles": [
+    {
+     "name": "Infernal Incendiaries",
+     "range": "12-48\"",
+     "strength": "3(3)",
+     "ap": "-(-)",
+     "rules": [
+      "Bombardment",
+      "Cumbersome",
+      "Flaming Attacks",
+      "Move or Shoot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/infernal-incendiaries"
+  },
+  "man-catcher": {
+   "slug": "man-catcher",
+   "name": "Man-Catcher",
+   "profiles": [
+    {
+     "name": "Man-Catcher",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Killing Blow",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/man-catcher"
+  },
+  "plagueflail": {
+   "slug": "plagueflail",
+   "name": "Plagueflail",
+   "profiles": [
+    {
+     "name": "Plagueflail",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-3",
+     "rules": [
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/plagueflail"
+  },
+  "poisonous-tail": {
+   "slug": "poisonous-tail",
+   "name": "Poisonous Tail",
+   "profiles": [
+    {
+     "name": "Poisonous Tail",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Poisoned Attacks",
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/poisonous-tail"
+  },
+  "rangers-glaive": {
+   "slug": "rangers-glaive",
+   "name": "Ranger's Glaive",
+   "profiles": [
+    {
+     "name": "Ranger’s Glaive",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-2",
+     "rules": [
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/rangers-glaive"
+  },
+  "spidersilk-lobber": {
+   "slug": "spidersilk-lobber",
+   "name": "Spidersilk Lobber",
+   "profiles": [
+    {
+     "name": "Spidersilk Lobber",
+     "range": "12-48\"",
+     "strength": "2(4)",
+     "ap": "-(-1)",
+     "rules": [
+      "Bombardment",
+      "Cumbersome"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/spidersilk-lobber"
+  },
+  "steam-drill": {
+   "slug": "steam-drill",
+   "name": "Steam Drill",
+   "profiles": [
+    {
+     "name": "Steam Drill",
+     "range": "Combat",
+     "strength": "S+3",
+     "ap": "-3",
+     "rules": [
+      "Furious Charge",
+      "Requires Two Hands",
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/steam-drill"
+  },
+  "sword-of-hoeth": {
+   "slug": "sword-of-hoeth",
+   "name": "Sword of Hoeth",
+   "profiles": [
+    {
+     "name": "Sword of Hoeth",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-2",
+     "rules": [
+      "Magical Attacks",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "The elegant blade of a sword of Hoeth is as long as an Elf is tall, yet balanced to seem as light as a feather. So keen is its edge, and so enduring its enchantments, that the sharpness of the blade is never dulled, no matter how many helms are cloven by its strikes.",
+   "url": "https://tow.whfb.app/weapons-of-war/sword-of-hoeth"
+  },
+  "warpfire-thrower": {
+   "slug": "warpfire-thrower",
+   "name": "Warpfire Thrower",
+   "profiles": [
+    {
+     "name": "Warpfire Thrower",
+     "range": "6\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Column of Fire",
+      "Cumbersome",
+      "Flaming Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A Warpfire Thrower unleashes a hellish torrent of powdered warpstone and highly flammable chemicals that can turn an entire formation into a twitching pile of steaming goo.",
+   "url": "https://tow.whfb.app/weapons-of-war/warpfire-thrower"
+  },
+  "blackbriar-javelin": {
+   "slug": "blackbriar-javelin",
+   "name": "Blackbriar Javelin",
+   "profiles": [
+    {
+     "name": "Blackbriar Javelin",
+     "range": "12\"",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Move & Shoot",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/blackbriar-javelin"
+  },
+  "cavernous-maw": {
+   "slug": "cavernous-maw",
+   "name": "Cavernous Maw",
+   "profiles": [
+    {
+     "name": "Cavernous Maw",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Killing Blow"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/cavernous-maw"
+  },
+  "celestial-blade": {
+   "slug": "celestial-blade",
+   "name": "Celestial Blade",
+   "profiles": [
+    {
+     "name": "Celestial Blade Profile",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Forged by the finest blade masters in Cathay, a Celestial blade is made from meteoric iron mined from the slopes of Mount Kunlan, and few swords are as sharp or well-balanced.",
+   "url": "https://tow.whfb.app/weapons-of-war/celestial-blade"
+  },
+  "colossal-fang-filled-gob": {
+   "slug": "colossal-fang-filled-gob",
+   "name": "Colossal Fang-filled Gob",
+   "profiles": [
+    {
+     "name": "Colossal Fang-filled Gob",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Killing Blow"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/colossal-fang-filled-gob"
+  },
+  "dreadquake-mortar": {
+   "slug": "dreadquake-mortar",
+   "name": "Dreadquake Mortar",
+   "profiles": [
+    {
+     "name": "Dreadquake Mortar",
+     "range": "12-72\"",
+     "strength": "3(6)",
+     "ap": "-(-3)",
+     "rules": [
+      "Bombardment",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (D6)",
+      "Quake",
+      "Slow Reload"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/dreadquake-mortar"
+  },
+  "dreadquake-mortar-renegade": {
+   "slug": "dreadquake-mortar-renegade",
+   "name": "Dreadquake Mortar (Renegade)",
+   "profiles": [
+    {
+     "name": "Dreadquake Mortar (Renegade)",
+     "range": "12-72\"",
+     "strength": "4(8)",
+     "ap": "-1(-3)",
+     "rules": [
+      "Bombardment",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (D3+1)",
+      "Quake"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/dreadquake-mortar-renegade"
+  },
+  "fire-rain-rocket": {
+   "slug": "fire-rain-rocket",
+   "name": "Fire Rain Rocket",
+   "profiles": [
+    {
+     "name": "Bastion Rockets Profile",
+     "range": "12-48\"",
+     "strength": "4(5)",
+     "ap": "-1(-3)",
+     "rules": [
+      "Armour Bane (1)",
+      "Bombardment",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (D6)"
+     ],
+     "notes": ""
+    },
+    {
+     "name": "Rocket Battery Profile",
+     "range": "12-48\"",
+     "strength": "3(4)",
+     "ap": "-1(-1)",
+     "rules": [
+      "Armour Bane (1)",
+      "Bombardment",
+      "Cumbersome",
+      "Flaming Attacks",
+      "Move or Shoot",
+      "Wailing Spirits"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/fire-rain-rocket"
+  },
+  "giant-blowpipes": {
+   "slug": "giant-blowpipes",
+   "name": "Giant Blowpipes",
+   "profiles": [
+    {
+     "name": "Giant Blowpipes",
+     "range": "18\"",
+     "strength": "3",
+     "ap": "-",
+     "rules": [
+      "Cumbersome",
+      "Multiple Shots (2D6)",
+      "Poisoned Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/giant-blowpipes"
+  },
+  "halberd": {
+   "slug": "halberd",
+   "name": "Halberd",
+   "profiles": [
+    {
+     "name": "Halberd",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1(-2)",
+     "rules": [
+      "Armour Bane (1)",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "The halberd is a heavy bladed weapon, mounted on a sturdy shaft. The steel blade has a point like a spear and a heavy cutting edge like an axe which, in the hands of a trained soldier, can cut through armour with alarming ease. It is held in both hands and used to chop as well as thrust.",
+   "url": "https://tow.whfb.app/weapons-of-war/halberd"
+  },
+  "monstrous-tusks": {
+   "slug": "monstrous-tusks",
+   "name": "Monstrous Tusks",
+   "profiles": [
+    {
+     "name": "Monstrous Tusks",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/monstrous-tusks"
+  },
+  "paired-great-khopeshes": {
+   "slug": "paired-great-khopeshes",
+   "name": "Paired Great Khopeshes",
+   "profiles": [
+    {
+     "name": "Paired Great Khopeshes",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Killing Blow",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/paired-great-khopeshes"
+  },
+  "pigeon-bombs": {
+   "slug": "pigeon-bombs",
+   "name": "Pigeon Bombs",
+   "profiles": [],
+   "text": "Many Engineers experiment with the idea that homing pigeons can be trained to deliver bombs to the enemy, but most such research ends with a feathery blast and a burning loft.",
+   "url": "https://tow.whfb.app/weapons-of-war/pigeon-bombs"
+  },
+  "steam-gun-dwarfs": {
+   "slug": "steam-gun-dwarfs",
+   "name": "Steam Gun (Dwarfs)",
+   "profiles": [
+    {
+     "name": "Steam Gun (Dwarfs)",
+     "range": "N/A",
+     "strength": "3",
+     "ap": "-1",
+     "rules": [
+      "Breath Weapon"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/steam-gun-dwarfs"
+  },
+  "warp-grinder": {
+   "slug": "warp-grinder",
+   "name": "Warp Grinder",
+   "profiles": [
+    {
+     "name": "Warp Grinder",
+     "range": "Combat",
+     "strength": "5",
+     "ap": "-3",
+     "rules": [
+      "Ambushers",
+      "Killing Blow",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A Warp Grinder is a powerful tunnelling device, capable of rapidly boring through the earth and leaving a wide tunnel in its wake, through which the Skaven scurry to ambush their enemies.",
+   "url": "https://tow.whfb.app/weapons-of-war/warp-grinder"
+  },
+  "writhing-tentacles-daemons-of-chaos": {
+   "slug": "writhing-tentacles-daemons-of-chaos",
+   "name": "Writhing Tentacles (Daemons of Chaos)",
+   "profiles": [
+    {
+     "name": "Writhing Tentacles (Daemons of Chaos)",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/writhing-tentacles-daemons-of-chaos"
+  },
+  "giants-club": {
+   "slug": "giants-club",
+   "name": "Giant's Club",
+   "profiles": [
+    {
+     "name": "Giant's Club",
+     "range": "Combat",
+     "strength": "*",
+     "ap": "*",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/giants-club"
+  },
+  "blood-of-hashut": {
+   "slug": "blood-of-hashut",
+   "name": "Blood of Hashut",
+   "profiles": [],
+   "text": "This powerful alchemical substance is saturated with daemonic magic that bursts into molten flame upon contact with metal.",
+   "url": "https://tow.whfb.app/weapons-of-war/blood-of-hashut"
+  },
+  "brimstone-gun": {
+   "slug": "brimstone-gun",
+   "name": "Brimstone Gun",
+   "profiles": [
+    {
+     "name": "Brimstone Gun",
+     "range": "18\"",
+     "strength": "5",
+     "ap": "-2",
+     "rules": [
+      "Dwarf Crafted",
+      "Flaming Attacks",
+      "Multiple Shots (D3+1)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/brimstone-gun"
+  },
+  "cannon-of-the-sky-titans": {
+   "slug": "cannon-of-the-sky-titans",
+   "name": "Cannon of the Sky-Titans",
+   "profiles": [
+    {
+     "name": "Cannon of the Sky-Titans Solid Shot",
+     "range": "36\"",
+     "strength": "10",
+     "ap": "-3",
+     "rules": [
+      "Armour Bane (2)",
+      "Cannon Fire",
+      "Cumbersome",
+      "Multiple Wounds (D3+1)"
+     ],
+     "notes": ""
+    },
+    {
+     "name": "Cannon of the Sky-Titans Scatter Shot",
+     "range": "N/A",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Breath Weapon"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A cannon of the Sky-titans, despite being wielded crudely by Ogres, is actually a very robust and sophisticated weapon. It can fire whole clutches of cannonballs at once, allowing it to do a tremendous amount of damage, although its range is limited.",
+   "url": "https://tow.whfb.app/weapons-of-war/cannon-of-the-sky-titans"
+  },
+  "cleaving-blades": {
+   "slug": "cleaving-blades",
+   "name": "Cleaving Blades",
+   "profiles": [
+    {
+     "name": "Cleaving Blades",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Killing Blow"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/cleaving-blades"
+  },
+  "doom-diver": {
+   "slug": "doom-diver",
+   "name": "Doom Diver",
+   "profiles": [],
+   "text": "Thanks to their large wings and aerodynamic headgear, a Doom Diver can steer their erratic flight with remarkable accuracy. Sadly, this ability to control their flight is unlikely to soften their landing. When shooting a Doom Diver catapult, follow the Bombardment special rule as usual.",
+   "url": "https://tow.whfb.app/weapons-of-war/doom-diver"
+  },
+  "dragon-fire-pistol": {
+   "slug": "dragon-fire-pistol",
+   "name": "Dragon Fire Pistol",
+   "profiles": [
+    {
+     "name": "Dragon Fire Pistol Profile",
+     "range": "12\"",
+     "strength": "5",
+     "ap": "-1",
+     "rules": [
+      "Flaming Attacks",
+      "Multiple Shots (2)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A smaller version of the weapons wielded by dragon fire gunners, a dragon fire pistol is capable of expelling a deadly gout of flame over a short distance.",
+   "url": "https://tow.whfb.app/weapons-of-war/dragon-fire-pistol"
+  },
+  "hunting-spear": {
+   "slug": "hunting-spear",
+   "name": "Hunting Spear",
+   "profiles": [
+    {
+     "name": "Hunting Spear",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/hunting-spear"
+  },
+  "morning-star": {
+   "slug": "morning-star",
+   "name": "Morning Star",
+   "profiles": [
+    {
+     "name": "Morning Star",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A morning star is a single-handed weapon that consists of one or more spiked balls on a chain. Like the larger flail which it resembles, it is a tiring weapon and its advantage lies in the initial flurry of combat.",
+   "url": "https://tow.whfb.app/weapons-of-war/morning-star"
+  },
+  "thunderous-bludgeon": {
+   "slug": "thunderous-bludgeon",
+   "name": "Thunderous Bludgeon",
+   "profiles": [
+    {
+     "name": "Thunderous Bludgeon",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-3",
+     "rules": [
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/thunderous-bludgeon"
+  },
+  "warplock-jezzail": {
+   "slug": "warplock-jezzail",
+   "name": "Warplock Jezzail",
+   "profiles": [
+    {
+     "name": "Warplock Jezzail",
+     "range": "36\"",
+     "strength": "6",
+     "ap": "-3",
+     "rules": [
+      "Cumbersome",
+      "Magical Attacks",
+      "Move or Shoot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/warplock-jezzail"
+  },
+  "writhing-tentacles-dark-elves": {
+   "slug": "writhing-tentacles-dark-elves",
+   "name": "Writhing Tentacles (Dark Elves)",
+   "profiles": [
+    {
+     "name": "Writhing Tentacles (Dark Elves)",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Poisoned Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/writhing-tentacles-dark-elves"
+  },
+  "clattergun": {
+   "slug": "clattergun",
+   "name": "Clattergun",
+   "profiles": [
+    {
+     "name": "Clattergun",
+     "range": "24\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Dwarf Crafted",
+      "Move & Shoot",
+      "Multiple Shots (D6)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/clattergun"
+  },
+  "darkforged-weapon": {
+   "slug": "darkforged-weapon",
+   "name": "Darkforged Weapon",
+   "profiles": [],
+   "text": "These weapons vary in style and shape, as do the abilities granted them by the twisted runes inscribed upon them.",
+   "url": "https://tow.whfb.app/weapons-of-war/darkforged-weapon"
+  },
+  "decapitating-strike": {
+   "slug": "decapitating-strike",
+   "name": "Decapitating Strike",
+   "profiles": [
+    {
+     "name": "Decapitating Strike",
+     "range": "Combat",
+     "strength": "S+5",
+     "ap": "-4",
+     "rules": [
+      "Killing Blow",
+      "Monster Slayer",
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/decapitating-strike"
+  },
+  "gunpowder-bombs": {
+   "slug": "gunpowder-bombs",
+   "name": "Gunpowder Bombs",
+   "profiles": [
+    {
+     "name": "Gunpowder Bombs Profile",
+     "range": "9\"",
+     "strength": "3",
+     "ap": "-",
+     "rules": [
+      "Armour Bane (1)",
+      "Move & Shoot",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Cathayan gunpowder is the wonder of the eastern world and is used in numerous weapons of the empire, including explosive grenades carried by the soldiers of Nan-Gau.",
+   "url": "https://tow.whfb.app/weapons-of-war/gunpowder-bombs"
+  },
+  "poisoned-wind-globes": {
+   "slug": "poisoned-wind-globes",
+   "name": "Poisoned Wind Globes",
+   "profiles": [
+    {
+     "name": "Poisoned Wind Globes",
+     "range": "9\"",
+     "strength": "2",
+     "ap": "-",
+     "rules": [
+      "Move & Shoot",
+      "Poisoned Wind",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/poisoned-wind-globes"
+  },
+  "scraplauncher-catapult": {
+   "slug": "scraplauncher-catapult",
+   "name": "Scraplauncher Catapult",
+   "profiles": [
+    {
+     "name": "Scraplauncher Catapult",
+     "range": "12-48\"",
+     "strength": "3(4)",
+     "ap": "-(-2)",
+     "rules": [
+      "Bombardment",
+      "Cumbersome",
+      "Multiple Wounds (2)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Despite its appearance, a Scraplauncher catapult is a devastating engine of destruction that launches bundles of broken weapons and shards of scrap-metal into the tightly packed ranks of the enemy.",
+   "url": "https://tow.whfb.app/weapons-of-war/scraplauncher-catapult"
+  },
+  "soporific-breath": {
+   "slug": "soporific-breath",
+   "name": "Soporific Breath",
+   "profiles": [
+    {
+     "name": "Soporific Breath",
+     "range": "N/A",
+     "strength": "2",
+     "ap": "N/A",
+     "rules": [
+      "Breath Weapon"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/soporific-breath"
+  },
+  "venom-sting": {
+   "slug": "venom-sting",
+   "name": "Venom Sting",
+   "profiles": [
+    {
+     "name": "Venom Sting",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/venom-sting"
+  },
+  "venomous-talons": {
+   "slug": "venomous-talons",
+   "name": "Venomous Talons",
+   "profiles": [
+    {
+     "name": "Venomous Talons",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Poisoned Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/venomous-talons"
+  },
+  "whip": {
+   "slug": "whip",
+   "name": "Whip",
+   "profiles": [
+    {
+     "name": "Whip",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Fight In Extra Rank",
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Consisting of one or more long lengths of braided leather fitted to a stout handle, in the hands of a skilled user a whip can cause terrible injuries. When sharpened blades and hooked spikes are added, it can inflict truly devastating, often fatal, injuries.",
+   "url": "https://tow.whfb.app/weapons-of-war/whip"
+  },
+  "asrai-longbow": {
+   "slug": "asrai-longbow",
+   "name": "Asrai Longbow",
+   "profiles": [
+    {
+     "name": "Asrai Longbow",
+     "range": "32\"",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Armour Bane (1)",
+      "Volley Fire"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "To carry one of the famed longbows of Athel Loren is to possess the finest weapon a hunter could possibly wield. If the eye is true, there is no quarry such a weapon cannot slay.",
+   "url": "https://tow.whfb.app/weapons-of-war/asrai-longbow"
+  },
+  "chaintrap": {
+   "slug": "chaintrap",
+   "name": "Chaintrap",
+   "profiles": [
+    {
+     "name": "Chaintrap",
+     "range": "12\"",
+     "strength": "S+1",
+     "ap": "-",
+     "rules": [
+      "Killing Blow"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/chaintrap"
+  },
+  "dragon-fire-bombs": {
+   "slug": "dragon-fire-bombs",
+   "name": "Dragon Fire Bombs",
+   "profiles": [
+    {
+     "name": "Dragon Fire Bombs Profile",
+     "range": "9\"",
+     "strength": "3",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Flaming Attacks",
+      "Move & Shoot",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Far more devastating than gunpowder bombs, dragon fire bombs unleash a torrent of all consuming alchemical fire upon the foe.",
+   "url": "https://tow.whfb.app/weapons-of-war/dragon-fire-bombs"
+  },
+  "fireglaive": {
+   "slug": "fireglaive",
+   "name": "Fireglaive",
+   "profiles": [
+    {
+     "name": "Fireglaive Ranged",
+     "range": "18\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    },
+    {
+     "name": "Fireglaive Combat",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A Fireglaive is a compact, heavily constructed repeating handgun that incorporates a single-edged chopping blade, allowing a skilled fighter to wield it in combat much like a halberd.",
+   "url": "https://tow.whfb.app/weapons-of-war/fireglaive"
+  },
+  "impaling-claws": {
+   "slug": "impaling-claws",
+   "name": "Impaling Claws",
+   "profiles": [
+    {
+     "name": "Impaling Claws",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Killing Blow",
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/impaling-claws"
+  },
+  "screaming-skull-catapult": {
+   "slug": "screaming-skull-catapult",
+   "name": "Screaming Skull Catapult",
+   "profiles": [
+    {
+     "name": "Screaming Skull Catapult",
+     "range": "12-60\"",
+     "strength": "4(8)",
+     "ap": "-1(-3)",
+     "rules": [
+      "Bombardment",
+      "Cumbersome",
+      "Flaming Attacks",
+      "Magical Attacks",
+      "Move or Shoot",
+      "Multiple Wounds (D3+1)",
+      "Screaming Skulls"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/screaming-skull-catapult"
+  },
+  "spears": {
+   "slug": "spears",
+   "name": "Spears",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/spears"
+  },
+  "things-catcher": {
+   "slug": "things-catcher",
+   "name": "Things-Catcher",
+   "profiles": [
+    {
+     "name": "Things-catcher",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Fight in Extra Rank",
+      "Killing Blow",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/things-catcher"
+  },
+  "venom-spray": {
+   "slug": "venom-spray",
+   "name": "Venom Spray",
+   "profiles": [
+    {
+     "name": "Venom Spray",
+     "range": "N/A",
+     "strength": "3",
+     "ap": "-1",
+     "rules": [
+      "Breath Weapon"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/venom-spray"
+  },
+  "billowing-death": {
+   "slug": "billowing-death",
+   "name": "Billowing Death",
+   "profiles": [
+    {
+     "name": "Billowing Death",
+     "range": "N/A",
+     "strength": "2",
+     "ap": "N/A",
+     "rules": [
+      "Breath Weapon",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/billowing-death"
+  },
+  "blood-vulture": {
+   "slug": "blood-vulture",
+   "name": "Blood Vulture",
+   "profiles": [
+    {
+     "name": "Blood Vulture",
+     "range": "36\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Ignores Cover",
+      "Move & Shoot",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/blood-vulture"
+  },
+  "enchanted-arrows": {
+   "slug": "enchanted-arrows",
+   "name": "Enchanted Arrows",
+   "profiles": [],
+   "text": "Regardless of rank or station, all Wood Elves craft their own arrows; something so crucial to survival should never be left to another's hand. Many Wood Elves craft enchanted arrows, and it is common that entire kinbands of warriors will carry with them arrows of a specific type. Such arrows can be made in many different ways, the methods by which they are made varying from kindred to kindred, yet throughout Athel Loren, certain types of arrow are favoured. Some models in the Wood Elf Realms army have the option to purchase enchanted arrows.",
+   "url": "https://tow.whfb.app/weapons-of-war/enchanted-arrows"
+  },
+  "hailshot-blunderbuss": {
+   "slug": "hailshot-blunderbuss",
+   "name": "Hailshot Blunderbuss",
+   "profiles": [
+    {
+     "name": "Hailshot Blunderbuss",
+     "range": "12\"",
+     "strength": "3",
+     "ap": "-1",
+     "rules": [
+      "Multiple Shots (D3)",
+      "Volley Fire"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A Hailshot blunderbuss is a broad-barrelled weapon that fires a concentrated but short-ranged burst of shot. When fired in massed ranks, these weapons produce a deadly storm, capable of obliterating enemy formations.",
+   "url": "https://tow.whfb.app/weapons-of-war/hailshot-blunderbuss"
+  },
+  "lance": {
+   "slug": "lance",
+   "name": "Lance",
+   "profiles": [
+    {
+     "name": "Lance",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A lance is a long, heavy spear, wielded to devastating effect by charging cavalry. Couched under the arm of its wielder, the brutal point of a lance is driven into the foe with the full weight and momentum of the charge. Such a devastating weapon can make short work of even the toughest of enemies, which is just as well because few lances survive the first shock of impact!",
+   "url": "https://tow.whfb.app/weapons-of-war/lance"
+  },
+  "tzeentchian-wand": {
+   "slug": "tzeentchian-wand",
+   "name": "Tzeentchian Wand",
+   "profiles": [
+    {
+     "name": "Tzeentchian Wand",
+     "range": "18\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Flaming Attacks",
+      "Multiple Shots (D3+1)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/tzeentchian-wand"
+  },
+  "arcane-bodkins": {
+   "slug": "arcane-bodkins",
+   "name": "Arcane Bodkins",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/arcane-bodkins"
+  },
+  "cavalry-spear": {
+   "slug": "cavalry-spear",
+   "name": "Cavalry Spear",
+   "profiles": [
+    {
+     "name": "Cavalry Spear",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Fight In Extra Rank"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Lighter than a lance, what cavalry spears lack in terms of shuddering impact on the charge they more than make up for in terms of versatility, enabling their wielders to bring their numbers to bear against the enemy.",
+   "url": "https://tow.whfb.app/weapons-of-war/cavalry-spear"
+  },
+  "distensible-jaw": {
+   "slug": "distensible-jaw",
+   "name": "Distensible Jaw",
+   "profiles": [
+    {
+     "name": "Distensible Jaw",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Killing Blow"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/distensible-jaw"
+  },
+  "naptha-bombs": {
+   "slug": "naptha-bombs",
+   "name": "Naptha Bombs",
+   "profiles": [
+    {
+     "name": "Naptha Bombs",
+     "range": "6\"",
+     "strength": "3",
+     "ap": "-",
+     "rules": [
+      "Flaming Attacks",
+      "Ponderous",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Containing sorcerous concoctions of sulphurous chemicals and the distilled essence of sundered fire-Daemons, Naptha bombs are unstable explosive flasks which shatter when thrown, unleashing a mass of seething flame.",
+   "url": "https://tow.whfb.app/weapons-of-war/naptha-bombs"
+  },
+  "warpflame": {
+   "slug": "warpflame",
+   "name": "Warpflame",
+   "profiles": [
+    {
+     "name": "Warpflame",
+     "range": "18\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Flaming Attacks",
+      "Move & Shoot",
+      "Multiple Shots (D3)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/warpflame"
+  },
+  "warpstone-claws": {
+   "slug": "warpstone-claws",
+   "name": "Warpstone Claws",
+   "profiles": [
+    {
+     "name": "Warpstone Claws",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/warpstone-claws"
+  },
+  "ensorcelled-weapon": {
+   "slug": "ensorcelled-weapon",
+   "name": "Ensorcelled Weapon",
+   "profiles": [
+    {
+     "name": "Ensorcelled Weapon",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/ensorcelled-weapon"
+  },
+  "hagbane-tips": {
+   "slug": "hagbane-tips",
+   "name": "Hagbane Tips",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/hagbane-tips"
+  },
+  "harpoon-launcher": {
+   "slug": "harpoon-launcher",
+   "name": "Harpoon Launcher",
+   "profiles": [
+    {
+     "name": "Harpoon Launcher",
+     "range": "36\"",
+     "strength": "6",
+     "ap": "-2",
+     "rules": [
+      "Multiple Wounds (D3)",
+      "Ponderous"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A harpoon launcher is a huge crossbow that fires a long and heavy barbed bolt. Many Ogres attach long coils of rope to these bolts, tethering prey so that it cannot escape.",
+   "url": "https://tow.whfb.app/weapons-of-war/harpoon-launcher"
+  },
+  "throwing-spear": {
+   "slug": "throwing-spear",
+   "name": "Throwing Spear",
+   "profiles": [
+    {
+     "name": "Throwing Spear",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Fight In Extra Rank"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Short, heavy throwing spears are weapons favoured by hunters, be they on foot or mounted. In battle, they can be hurled over the heads of the front rank by those behind as their wielders charge, often to devastating effect, cutting down many foes before sword blades meet",
+   "url": "https://tow.whfb.app/weapons-of-war/throwing-spear"
+  },
+  "warp-lightning-cannon": {
+   "slug": "warp-lightning-cannon",
+   "name": "Warp Lightning Cannon",
+   "profiles": [
+    {
+     "name": "Warp Lightning Cannon",
+     "range": "8D6\"",
+     "strength": "*",
+     "ap": "-3",
+     "rules": [
+      "Cumbersome",
+      "Lightning Strike",
+      "Move or Shoot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/warp-lightning-cannon"
+  },
+  "daemonic-talons": {
+   "slug": "daemonic-talons",
+   "name": "Daemonic Talons",
+   "profiles": [
+    {
+     "name": "Daemonic Talons",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/daemonic-talons"
+  },
+  "ironfist": {
+   "slug": "ironfist",
+   "name": "Ironfist",
+   "profiles": [
+    {
+     "name": "Ironfist",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Extra Attacks (+1)",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Many Ogres wrap their off-hand and forearm in heavy gauntlets of spiked iron and thick plates of armour. They use these brutal implements both as a weapon and as protection, swinging their mighty fists to clobber their victims and fend off their futile attempts at retaliation.",
+   "url": "https://tow.whfb.app/weapons-of-war/ironfist"
+  },
+  "moonfire-shot": {
+   "slug": "moonfire-shot",
+   "name": "Moonfire Shot",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/moonfire-shot"
+  },
+  "plagueclaw-catapult": {
+   "slug": "plagueclaw-catapult",
+   "name": "Plagueclaw Catapult",
+   "profiles": [
+    {
+     "name": "Plagueclaw Catapult",
+     "range": "12-72\"",
+     "strength": "2(4)",
+     "ap": "-3",
+     "rules": [
+      "Bombardment",
+      "Cumbersome",
+      "Move or Shoot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/plagueclaw-catapult"
+  },
+  "thrusting-spear": {
+   "slug": "thrusting-spear",
+   "name": "Thrusting Spear",
+   "profiles": [
+    {
+     "name": "Thrusting Spear",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Fight In Extra Rank"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "The favoured weapon of massed infantry regiments. Although too long to be used effectively on the charge, thrusting spears are the ideal defensive weapon. Their length enables their wielders to fight in multiple ranks whilst keeping the enemy at a (comparatively) safe distance and robbing them of their impetus, forcing them to battle past jabbing spear tips to close the distance.",
+   "url": "https://tow.whfb.app/weapons-of-war/thrusting-spear"
+  },
+  "iron-claw": {
+   "slug": "iron-claw",
+   "name": "Iron Claw",
+   "profiles": [
+    {
+     "name": "Iron Claw",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-3",
+     "rules": [
+      "Killing Blow"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/iron-claw"
+  },
+  "missile-weapons": {
+   "slug": "missile-weapons",
+   "name": "Missile Weapons",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/missile-weapons"
+  },
+  "ogre-pistol": {
+   "slug": "ogre-pistol",
+   "name": "Ogre Pistol",
+   "profiles": [
+    {
+     "name": "Ogre Pistol",
+     "range": "24\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Ogres often carry large barrelled pistols made by modifying handguns used by Men and Dwarfs to fit their massive fists. Although seldom well-maintained, such weapons delight their proud owners with the volume of their report.",
+   "url": "https://tow.whfb.app/weapons-of-war/ogre-pistol"
+  },
+  "swiftshiver-shards": {
+   "slug": "swiftshiver-shards",
+   "name": "Swiftshiver Shards",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/swiftshiver-shards"
+  },
+  "brace-of-ogre-pistols": {
+   "slug": "brace-of-ogre-pistols",
+   "name": "Brace of Ogre Pistols",
+   "profiles": [
+    {
+     "name": "Brace of Ogre Pistols Ranged",
+     "range": "24\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Multiple Shots (2)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    },
+    {
+     "name": "Brace of Ogre Pistols Combat",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Extra Attacks (+1)",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "As with most races that make use of black powder weapons, those Ogres that can carry two pistols invariably will. Ogres armed in this way will fire a quick volley of shots into the ranks of the enemy before reversing their grip upon the spent weapons and using them as brutal clubs.",
+   "url": "https://tow.whfb.app/weapons-of-war/brace-of-ogre-pistols"
+  },
+  "harvester-cannon": {
+   "slug": "harvester-cannon",
+   "name": "Harvester Cannon",
+   "profiles": [
+    {
+     "name": "Harvester Cannon",
+     "range": "12\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Cumbersome",
+      "Needs More Nails"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/harvester-cannon"
+  },
+  "more-than-one-missile-weapon": {
+   "slug": "more-than-one-missile-weapon",
+   "name": "More than One Missile Weapon",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/more-than-one-missile-weapon"
+  },
+  "trueflight-arrows": {
+   "slug": "trueflight-arrows",
+   "name": "Trueflight Arrows",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/trueflight-arrows"
+  },
+  "baleful-torrent": {
+   "slug": "baleful-torrent",
+   "name": "Baleful Torrent",
+   "profiles": [
+    {
+     "name": "Baleful Torrent",
+     "range": "12\"",
+     "strength": "5",
+     "ap": "-1",
+     "rules": [
+      "Column of Fire",
+      "Cumbersome"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/baleful-torrent"
+  },
+  "bows": {
+   "slug": "bows",
+   "name": "Bows",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/bows"
+  },
+  "longbow": {
+   "slug": "longbow",
+   "name": "Longbow",
+   "profiles": [
+    {
+     "name": "Longbow",
+     "range": "30\"",
+     "strength": "3",
+     "ap": "-",
+     "rules": [
+      "Armour Bane (1)",
+      "Volley Fire"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A longbow is capable of firing at an incredible range and with quite alarming power. A skilled archer can hit an enemy from a great distance, only increasing in deadliness as the range shortens.",
+   "url": "https://tow.whfb.app/weapons-of-war/longbow"
+  },
+  "warp-gaze": {
+   "slug": "warp-gaze",
+   "name": "Warp Gaze",
+   "profiles": [
+    {
+     "name": "Warp Gaze",
+     "range": "48\"",
+     "strength": "6",
+     "ap": "-3",
+     "rules": [
+      "Cumbersome",
+      "Multiple Wounds (2)",
+      "Through & Through"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/warp-gaze"
+  },
+  "hellblade": {
+   "slug": "hellblade",
+   "name": "Hellblade",
+   "profiles": [
+    {
+     "name": "Hellblade",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Cleaving Blow"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Each life taken by a Hellblade's wicked edge strengthens its bearer, filling the Daemon with an overwhelming need to take more skulls for the throne of Khorne.",
+   "url": "https://tow.whfb.app/weapons-of-war/hellblade"
+  },
+  "shortbow": {
+   "slug": "shortbow",
+   "name": "Shortbow",
+   "profiles": [
+    {
+     "name": "Shortbow",
+     "range": "18\"",
+     "strength": "3",
+     "ap": "-",
+     "rules": [
+      "Quick Shot",
+      "Volley Fire"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Small, short-ranged bows are favoured by light troops, cavalry and Goblins (who are too short to use a longbow). A skilled archer can load, draw and loose a shortbow without breaking stride, thanks to its compact design.",
+   "url": "https://tow.whfb.app/weapons-of-war/shortbow"
+  },
+  "plaguesword": {
+   "slug": "plaguesword",
+   "name": "Plaguesword",
+   "profiles": [
+    {
+     "name": "Plaguesword",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Armour Bane (1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "From the pitted edges of these ugly weapons loathsome toxins ooze, infecting the jagged wounds they inflict with innumerable maladies.",
+   "url": "https://tow.whfb.app/weapons-of-war/plaguesword"
+  },
+  "warbow": {
+   "slug": "warbow",
+   "name": "Warbow",
+   "profiles": [
+    {
+     "name": "Warbow",
+     "range": "24\"",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Volley Fire"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "The most commonly seen type of bow can best be described as a 'warbow'. Often made from composite materials and cunningly recurved, a warbow is designed to transfer the strength of the archer directly into every shot.",
+   "url": "https://tow.whfb.app/weapons-of-war/warbow"
+  },
+  "black-powder-weapons": {
+   "slug": "black-powder-weapons",
+   "name": "Black Powder Weapons",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/black-powder-weapons"
+  },
+  "deaths-heads": {
+   "slug": "deaths-heads",
+   "name": "Death's Heads",
+   "profiles": [
+    {
+     "name": "Death's Heads",
+     "range": "12\"",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Move & Shoot",
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Their openings sealed with coarse thread and their insides filled with pus and viscera, these crude grenades wreak terrible damage upon the flesh of their victims.",
+   "url": "https://tow.whfb.app/weapons-of-war/deaths-heads"
+  },
+  "handgun": {
+   "slug": "handgun",
+   "name": "Handgun",
+   "profiles": [
+    {
+     "name": "Handgun",
+     "range": "24\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Ponderous"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "A handgun is a simple firearm, consisting of a metal barrel mounted on a wooden stock. More advanced versions boast complex mechanisms of levers and springs. Others rely on a long, slow burning fuse soaked in saltpetre to ignite the powder. Handguns have a respectable range and hit very hard, making them valued weapons indeed.",
+   "url": "https://tow.whfb.app/weapons-of-war/handgun"
+  },
+  "piercing-claws": {
+   "slug": "piercing-claws",
+   "name": "Piercing Claws",
+   "profiles": [
+    {
+     "name": "Piercing Claws",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (2)",
+      "Extra Attacks (+1)",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "The Daemons of Slaanesh strike at their foes with wicked claws, slicing through the sturdiest armour with ease to sever limbs and claim souls for their thirsting master.",
+   "url": "https://tow.whfb.app/weapons-of-war/piercing-claws"
+  },
+  "flames-of-tzeentch": {
+   "slug": "flames-of-tzeentch",
+   "name": "Flames of Tzeentch",
+   "profiles": [
+    {
+     "name": "Flames of Tzeentch",
+     "range": "18\"",
+     "strength": "3",
+     "ap": "-",
+     "rules": [
+      "Flaming Attacks",
+      "Multiple Shots (2)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "From the iridescent flesh of their blazing limbs, Horrors and Flamers alike hurl bolts of roiling magical flame and writhing chaos energy at the foe.",
+   "url": "https://tow.whfb.app/weapons-of-war/flames-of-tzeentch"
+  },
+  "pistol": {
+   "slug": "pistol",
+   "name": "Pistol",
+   "profiles": [
+    {
+     "name": "Pistol",
+     "range": "12\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Pistols are smaller versions of handguns, made using similar methods. Their smaller form means that, whilst their range is reduced, they can be wielded single-handed, and their heft makes them effective clubs to be used at close quarters once their charge is spent.",
+   "url": "https://tow.whfb.app/weapons-of-war/pistol"
+  },
+  "brace-of-pistols": {
+   "slug": "brace-of-pistols",
+   "name": "Brace of Pistols",
+   "profiles": [
+    {
+     "name": "Brace of Pistols Ranged",
+     "range": "12\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Multiple Shots (2)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    },
+    {
+     "name": "Brace of Pistols Combat",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Extra Attacks (+1)",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Warriors that can do so will enter battle with a matched pair of pistols (or more), enabling them to snap off multiple shots. In combat, a skilled duellist can shoot, club, parry and jab with their pistols.",
+   "url": "https://tow.whfb.app/weapons-of-war/brace-of-pistols"
+  },
+  "lampreys-bite": {
+   "slug": "lampreys-bite",
+   "name": "Lamprey's Bite",
+   "profiles": [
+    {
+     "name": "Lamprey's Bite",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Screamers flock around creatures larger than them, latching on to their enemy's flanks with their hideous jaws and tearing chunks from their flesh.",
+   "url": "https://tow.whfb.app/weapons-of-war/lampreys-bite"
+  },
+  "repeater-handgun": {
+   "slug": "repeater-handgun",
+   "name": "Repeater Handgun",
+   "profiles": [
+    {
+     "name": "Repeater Handgun",
+     "range": "24\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Multiple Shots (3)",
+      "Ponderous"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Some believe that more is better, and what could be better than a multi-barrelled gun? A repeater gun consists of several barrels welded together. They look splendid, but are time consuming to load.",
+   "url": "https://tow.whfb.app/weapons-of-war/repeater-handgun"
+  },
+  "repeater-pistol": {
+   "slug": "repeater-pistol",
+   "name": "Repeater Pistol",
+   "profiles": [
+    {
+     "name": "Repeater Pistol",
+     "range": "12\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Multiple Shots (3)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/repeater-pistol"
+  },
+  "crossbows": {
+   "slug": "crossbows",
+   "name": "Crossbows",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/crossbows"
+  },
+  "crossbow": {
+   "slug": "crossbow",
+   "name": "Crossbow",
+   "profiles": [
+    {
+     "name": "Crossbow",
+     "range": "30\"",
+     "strength": "4",
+     "ap": "-",
+     "rules": [
+      "Armour Bane (2)",
+      "Ponderous"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "The average crossbow is brutally powerful and relatively easy to use. Compared to handguns, they are quick and easy to manufacture and to learn the use of. All told, this makes them the ideal weapon for large regiments and poorly trained conscripts in provincial armies.",
+   "url": "https://tow.whfb.app/weapons-of-war/crossbow"
+  },
+  "repeater-crossbow": {
+   "slug": "repeater-crossbow",
+   "name": "Repeater Crossbow",
+   "profiles": [
+    {
+     "name": "Repeater Crossbow",
+     "range": "24\"",
+     "strength": "3",
+     "ap": "-",
+     "rules": [
+      "Armour Bane (1)",
+      "Multiple Shots (2)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "To address how slow crossbows are to load, some races have experimented with repeater crossbows. Sacrificing raw power for speed, the strings of repeater crossbows can be levered back quickly, ready for a fresh bolt to drop into place from a hopper mounted atop the weapon.",
+   "url": "https://tow.whfb.app/weapons-of-war/repeater-crossbow"
+  },
+  "repeater-handbow": {
+   "slug": "repeater-handbow",
+   "name": "Repeater Handbow",
+   "profiles": [
+    {
+     "name": "Repeater Handbow",
+     "range": "12\"",
+     "strength": "3",
+     "ap": "-",
+     "rules": [
+      "Multiple Shots (2)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Based on the same principles as a repeater crossbow, a repeater handbow is a small, rapid-firing weapon. Such weapons lack strength and range, and they are prone to malfunction, but this is more than compensated for by their versatility. In fact, such is their versatility that some warriors arm themselves with a brace, enabling them to deliver a withering amount of fire. Such weapons are favoured by assassins for their discreet size and almost silent operation.",
+   "url": "https://tow.whfb.app/weapons-of-war/repeater-handbow"
+  },
+  "brace-of-repeater-handbows": {
+   "slug": "brace-of-repeater-handbows",
+   "name": "Brace of Repeater Handbows",
+   "profiles": [
+    {
+     "name": "Brace of Repeater Handbows",
+     "range": "12\"",
+     "strength": "3",
+     "ap": "-",
+     "rules": [
+      "Multiple Shots (4)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/brace-of-repeater-handbows"
+  },
+  "thrown-weapons": {
+   "slug": "thrown-weapons",
+   "name": "Thrown Weapons",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/thrown-weapons"
+  },
+  "throwing-weapons": {
+   "slug": "throwing-weapons",
+   "name": "Throwing Weapons",
+   "profiles": [
+    {
+     "name": "Throwing Weapon",
+     "range": "9\"",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Move & Shoot",
+      "Multiple Shots (2)",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Throwing weapons, such as stars and knives, are small, easily concealed weapons and, consequently, they are favoured by assassins and lightly armed infiltrators. Despite being short ranged, such weapons can be used at a run.",
+   "url": "https://tow.whfb.app/weapons-of-war/throwing-weapons"
+  },
+  "javelin": {
+   "slug": "javelin",
+   "name": "Javelin",
+   "profiles": [
+    {
+     "name": "Javelin",
+     "range": "12\"",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Move & Shoot",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "The javelin is a light spear designed for throwing, which is far too flimsy to be used in hand-to-hand fighting. It is not a particularly common weapon as it has a short range, but it is popular enough amongst the light troops of several races.",
+   "url": "https://tow.whfb.app/weapons-of-war/javelin"
+  },
+  "sling": {
+   "slug": "sling",
+   "name": "Sling",
+   "profiles": [
+    {
+     "name": "Sling",
+     "range": "18\"",
+     "strength": "3",
+     "ap": "-",
+     "rules": [
+      "Multiple Shots (2)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Not truly a throwing weapon, slings consist of a looped string of cloth or leather into which a stone is placed and then launched with surprising strength and accuracy. The sling itself greatly increases how far a stone can be thrown, and with how much force. Skilled users can launch rapid volleys of shots with barely a break in their stride.",
+   "url": "https://tow.whfb.app/weapons-of-war/sling"
+  },
+  "throwing-axe": {
+   "slug": "throwing-axe",
+   "name": "Throwing Axe",
+   "profiles": [
+    {
+     "name": "Throwing Axe",
+     "range": "9\"",
+     "strength": "S+1",
+     "ap": "-",
+     "rules": [
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Throwing axes are keenly balanced weapons that can be thrown accurately despite their weight. Despite this, even the strongest warrior cannot throw such a hefty weapon very far. Yet if a throwing axe hits its target, the effect can be quite devastating.",
+   "url": "https://tow.whfb.app/weapons-of-war/throwing-axe"
+  },
+  "warpfire-blast": {
+   "slug": "warpfire-blast",
+   "name": "Warpfire Blast",
+   "profiles": [
+    {
+     "name": "Warpfire Blast",
+     "range": "6\"-24\"",
+     "strength": "4(8)",
+     "ap": "-1(-3)",
+     "rules": [
+      "Bombardment",
+      "Cumbersome",
+      "Flaming Attacks",
+      "Multiple Wounds (D3+1)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/warpfire-blast"
+  },
+  "armour": {
+   "slug": "armour",
+   "name": "Armour",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/armour"
+  },
+  "armour-value": {
+   "slug": "armour-value",
+   "name": "Armour Value",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/armour-value"
+  },
+  "light-armour": {
+   "slug": "light-armour",
+   "name": "Light Armour",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/light-armour"
+  },
+  "heavy-armour": {
+   "slug": "heavy-armour",
+   "name": "Heavy Armour",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/heavy-armour"
+  },
+  "full-plate-armour": {
+   "slug": "full-plate-armour",
+   "name": "Full Plate Armour",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/full-plate-armour"
+  },
+  "maximum-armour-value": {
+   "slug": "maximum-armour-value",
+   "name": "Maximum Armour Value",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/maximum-armour-value"
+  },
+  "no-armour": {
+   "slug": "no-armour",
+   "name": "No Armour",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/no-armour"
+  },
+  "unusual-armour": {
+   "slug": "unusual-armour",
+   "name": "Unusual Armour",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/unusual-armour"
+  },
+  "additional-equipment": {
+   "slug": "additional-equipment",
+   "name": "Additional Equipment",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/additional-equipment"
+  },
+  "shield": {
+   "slug": "shield",
+   "name": "Shield",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/shield"
+  },
+  "barding": {
+   "slug": "barding",
+   "name": "Barding",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/barding"
+  },
+  "wizards-and-armour-weapons": {
+   "slug": "wizards-and-armour-weapons",
+   "name": "Wizards & Armour (Weapons)",
+   "profiles": [],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/wizards-and-armour-weapons"
+  },
+  "darkforged-weapon-renegade": {
+   "slug": "darkforged-weapon-renegade",
+   "name": "Darkforged Weapon (Renegade)",
+   "profiles": [],
+   "text": "These weapons vary in style and shape, as do the abilities granted them by the twisted runes inscribed upon them.",
+   "url": "https://tow.whfb.app/weapons-of-war/darkforged-weapon-renegade"
+  },
+  "demolition-rockets-renegade": {
+   "slug": "demolition-rockets-renegade",
+   "name": "Demolition Rockets (Renegade)",
+   "profiles": [
+    {
+     "name": "Demolition Rockets (Renegade)",
+     "range": "12-48\"",
+     "strength": "4(8)",
+     "ap": "-1(-3)",
+     "rules": [
+      "Armour Bane (1)",
+      "Bombardment",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (D6)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/demolition-rockets-renegade"
+  },
+  "infernal-incendiaries-renegade": {
+   "slug": "infernal-incendiaries-renegade",
+   "name": "Infernal Incendiaries (Renegade)",
+   "profiles": [
+    {
+     "name": "Infernal Incendiaries (Renegade)",
+     "range": "12-48\"",
+     "strength": "3(4)",
+     "ap": "-1(-1)",
+     "rules": [
+      "Armour Bane (1)",
+      "Bombardment",
+      "Cumbersome",
+      "Flaming Attacks",
+      "Move or Shoot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "",
+   "url": "https://tow.whfb.app/weapons-of-war/infernal-incendiaries-renegade"
+  },
+  "naptha-bombs-renegade": {
+   "slug": "naptha-bombs-renegade",
+   "name": "Naptha Bombs (Renegade)",
+   "profiles": [
+    {
+     "name": "Naptha Bombs (Profile) (Renegade)",
+     "range": "9\"",
+     "strength": "3",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Flaming Attacks",
+      "Move & Shoot",
+      "Quick Shot"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Containing sorcerous concoctions of sulphurous chemicals and the distilled essence of sundered fire-Daemons, Naptha bombs are unstable explosive flasks which shatter when thrown, unleashing a mass of seething flame.",
+   "url": "https://tow.whfb.app/weapons-of-war/naptha-bombs-renegade"
+  }
+ },
+ "rules": {
+  "armour-bane": {
+   "slug": "armour-bane",
+   "name": "Armour Bane (X)",
+   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound, the Armour Piercing characteristic of its weapon is improved by the amount shown in brackets after the name of this special rule (shown here as 'X').\n\nFor example, if a natural 6 is rolled when rolling To Wound with a weapon that has an AP of ' - ' and the Armour Bane (1) special rule, its AP counts as being -1 when making an Armour Save roll against that wound.",
+   "url": "https://tow.whfb.app/special-rules/armour-bane"
+  },
+  "multiple-wounds": {
+   "slug": "multiple-wounds",
+   "name": "Multiple Wounds (X)",
+   "text": "Each unsaved wound inflicted by an attack with this special rule is multiplied by the number shown in brackets after the name of this special rule (shown here as 'X'). For example, Multiple Wounds (2) would mean that each unsaved wound would cause the target to lose two Wounds. Where the number of Multiple Wounds is generated by a dice roll, roll separately for each unsaved wound.\n\nNote that excess wounds caused to a model will have no additional effect unless that model is a character, in which case this special rule counts for Overkill. Excess wounds do not 'spill over' onto other models in the unit.",
+   "url": "https://tow.whfb.app/special-rules/multiple-wounds"
+  },
+  "multiple-shots": {
+   "slug": "multiple-shots",
+   "name": "Multiple Shots (X)",
+   "text": "A weapon with this special rule can either fire a single shot as normal, or it can be fired a number of times, as shown in brackets after the name of this special rule (shown here as 'X'). If multiple shots are fired, each roll To Hit suffers an additional -1 To Hit modifier. All models in a unit equipped with weapons with this special rule must fire either a single or Multiple Shots. Where the number of Multiple Shots is generated by a dice roll, roll separately for each model.",
+   "url": "https://tow.whfb.app/special-rules/multiple-shots"
+  },
+  "poisoned-attacks": {
+   "slug": "poisoned-attacks",
+   "name": "Poisoned Attacks",
+   "text": "If a model with Poisoned Attacks rolls a natural 6 when making a roll To Hit, it may apply a +2 modifier to that hit’s roll To Wound. Unless otherwise stated, a model with this special rule may use it when making both shooting and combat attacks. Any spells cast by the model are unaffected, as are any attacks made with magic weapons.\n\nNote that if an attack needs a To Hit roll of 7+, or hits automatically, this special rule cannot be used.",
+   "url": "https://tow.whfb.app/special-rules/poisoned-attacks"
+  },
+  "volley-fire": {
+   "slug": "volley-fire",
+   "name": "Volley Fire",
+   "text": "When a unit with this special rule makes a shooting attack, half of the models in each rank other than the front rank (or front two ranks if the unit is on a hill), rounding up, can shoot (in addition to the usual models that shoot from the front rank, or front two ranks if the unit is on a hill). A unit cannot Volley Fire if it has moved for any reason during this turn (including reforming), or when making a Stand & Shoot charge reaction.\n\nNote that models in rear ranks use the line of sight of the model at the front of their file.",
+   "url": "https://tow.whfb.app/special-rules/volley-fire"
+  },
+  "breath-weapon": {
+   "slug": "breath-weapon",
+   "name": "Breath Weapon",
+   "text": "A model with a Breath Weapon can use it once per round, during the Shooting phase of its turn. Place the flame template with its broad end over the intended target and its narrow end touching the model's base edge anywhere along its front arc. The template must lie entirely within the model's vision arc. Any model whose base lies underneath the template risks being hit. The Strength and any special rules of the breath weapon will be detailed in the creature's rules.\n\nBreath weapons cannot be used when making a Stand & Shoot charge reaction, or when the model is engaged in combat.",
+   "url": "https://tow.whfb.app/special-rules/breath-weapon"
+  },
+  "flaming-attacks": {
+   "slug": "flaming-attacks",
+   "name": "Flaming Attacks",
+   "text": "Any attack made or hits caused by a model with this special rule, or made using a weapon or spell with this special rule, is a 'Flaming' attack. In addition, a model with this special rule causes Fear in models whose troop type is war beasts or swarms.\n\nUnless otherwise stated, a model with this special rule makes Flaming attacks both when shooting and in combat (though any spells cast by the model are unaffected, as are any attacks made with magic weapons they might be wielding).",
+   "url": "https://tow.whfb.app/special-rules/flaming-attacks"
+  },
+  "magical-attacks": {
+   "slug": "magical-attacks",
+   "name": "Magical Attacks",
+   "text": "Any attack made or hit caused by a model with this special rule, or made using a weapon with this special rule, is a 'Magical' attack.\n\nNote that all spells are considered to have this special rule, as are any hits caused by magic items.",
+   "url": "https://tow.whfb.app/special-rules/magical-attacks"
+  },
+  "fight-in-extra-rank": {
+   "slug": "fight-in-extra-rank",
+   "name": "Fight in Extra Rank",
+   "text": "A model with this special rule may make a supporting attacks.",
+   "url": "https://tow.whfb.app/special-rules/fight-in-extra-rank"
+  },
+  "requires-two-hands": {
+   "slug": "requires-two-hands",
+   "name": "Requires Two Hands",
+   "text": "A model cannot use a shield alongside a weapon with this special rule during the Combat phase (a shield can still be used against wounds caused by shooting or magic during other phases of the game).",
+   "url": "https://tow.whfb.app/special-rules/requires-two-hands"
+  },
+  "move-shoot": {
+   "slug": "move-shoot",
+   "name": "Move & Shoot",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/move-shoot"
+  },
+  "quick-shot": {
+   "slug": "quick-shot",
+   "name": "Quick Shot",
+   "text": "A weapon with this special rule does not suffer the usual -1 To Hit modifier for Moving and Shooting. In addition, a unit equipped with weapons with this special rule can use them to make a Stand & Shoot charge reaction regardless of how close the charging unit is.",
+   "url": "https://tow.whfb.app/special-rules/quick-shot"
+  },
+  "strike-first": {
+   "slug": "strike-first",
+   "name": "Strike First",
+   "text": "During the Combat phase, a model with this special rule that is engaged in combat improves its Initiative characteristic to 10 (before any other modifiers are applied). If a model has both this rule and Strike Last, the two rules cancel one another out.",
+   "url": "https://tow.whfb.app/special-rules/strike-first"
+  },
+  "strike-last": {
+   "slug": "strike-last",
+   "name": "Strike Last",
+   "text": "During the Combat phase, a model with this special rule that is engaged in combat reduces its Initiative characteristic to 1 (before any other modifiers are applied). If a model has both this rule and Strike First, the two rules cancel one another out.",
+   "url": "https://tow.whfb.app/special-rules/strike-last"
+  },
+  "killing-blow": {
+   "slug": "killing-blow",
+   "name": "Killing Blow",
+   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound for an attack made in combat, it has struck a 'Killing Blow'. Enemy models whose troop type is infantry or cavalry are not permitted an armour or Regeneration save against a Killing Blow (Ward saves can be attempted as normal). If an enemy model whose troop type is infantry or cavalry suffers an unsaved wound from a Killing Blow, it loses all of its remaining Wounds.\n\nNote that if an attack wounds automatically, this special rule cannot be used.",
+   "url": "https://tow.whfb.app/special-rules/killing-blow"
+  },
+  "cannon-fire": {
+   "slug": "cannon-fire",
+   "name": "Cannon Fire",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/cannon-fire"
+  },
+  "cumbersome": {
+   "slug": "cumbersome",
+   "name": "Cumbersome",
+   "text": "Weapons with this special rule cannot be used when making a Stand & Shoot charge reaction.",
+   "url": "https://tow.whfb.app/special-rules/cumbersome"
+  },
+  "cannonade": {
+   "slug": "cannonade",
+   "name": "Cannonade",
+   "text": "When shooting with a steam cannonade, roll two Artillery dice before making any rolls To Hit. The number of shots fired is equal to the total of both Artillery dice:\n\n• If a Misfire is rolled on one of the Artillery dice, all shots fired from the steam cannonade this turn suffer an additional -1 To Hit modifier (instead of rolling on a Misfire table).\n• If a Misfire is rolled on both of the Artillery dice, no shots are fired and this model loses a single Wound (instead of rolling on a Misfire table).\n\nAfter determining the number of shots, roll To Hit for each as normal, using the crew's Ballistic Skill and applying all appropriate modifiers.",
+   "url": "https://tow.whfb.app/special-rules/cannonade"
+  },
+  "ponderous": {
+   "slug": "ponderous",
+   "name": "Ponderous",
+   "text": "A weapon with this special rule suffers a To Hit modifier of -2 for Moving and Shooting, rather than the usual -1.",
+   "url": "https://tow.whfb.app/special-rules/ponderous"
+  },
+  "move-or-shoot": {
+   "slug": "move-or-shoot",
+   "name": "Move or Shoot",
+   "text": "A weapon with this special rule cannot be used in the Shooting phase if the model equipped with it moved for any reason during this turn (including rallying and reforming).",
+   "url": "https://tow.whfb.app/special-rules/move-or-shoot"
+  },
+  "dwarf-crafted": {
+   "slug": "dwarf-crafted",
+   "name": "Dwarf Crafted",
+   "text": "Models with this special rule do not suffer the usual -1 To Hit modifier when making a Stand & Shoot charge reaction.",
+   "url": "https://tow.whfb.app/special-rules/dwarf-crafted"
+  },
+  "extra-attacks": {
+   "slug": "extra-attacks",
+   "name": "Extra Attacks (+X)",
+   "text": "A model with this special rule has a modifier to its Attacks characteristic, as shown in brackets after the name of this special rule (shown here as '+X'). If this modifier is determined by the roll of a dice, roll when the model's combat is chosen during any Choose & Fight Combat sub-phase.",
+   "url": "https://tow.whfb.app/special-rules/extra-attacks"
+  },
+  "monster-slayer": {
+   "slug": "monster-slayer",
+   "name": "Monster Slayer",
+   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound for an attack made in combat, it has struck a 'Monster Slaying Blow'. Enemy models whose troop type is monster are not permitted an armour or Regeneration save against a Monster Slaying Blow (Ward saves can be attempted as normal). If an enemy model whose troop type is monster suffers an unsaved wound from a Monster Slaying Blow, it loses all of its remaining Wounds.\n\nNote that if an attack wounds automatically, this special rule cannot be used.",
+   "url": "https://tow.whfb.app/special-rules/monster-slayer"
+  },
+  "cleaving-blow": {
+   "slug": "cleaving-blow",
+   "name": "Cleaving Blow",
+   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound for an attack made in combat, it has struck a 'Cleaving Blow'. Enemy models whose troop type is regular infantry, heavy infantry, light cavalry, heavy cavalry or war beasts are not permitted an armour or Regeneration save against a Cleaving Blow (Ward saves can be attempted as normal).\n\nNote that if an attack wounds automatically, this special rule cannot be used.",
+   "url": "https://tow.whfb.app/special-rules/cleaving-blow"
+  },
+  "counter-charge": {
+   "slug": "counter-charge",
+   "name": "Counter Charge",
+   "text": "This special rule can only be used by units that consist entirely of models with this special rule. When a unit with this special rule is charged in its front arc by an enemy unit whose troop type is cavalry, chariot or monster, it may declare a 'Counter Charge' charge reaction:\n\nCounter Charge\n\nThe unit surges forward to meet the enemy charge. Measure the distance between the two units. If the distance is less than the Movement characteristic of the charging unit, the charged unit has not enough time to meet the enemy charge and must either Hold or Flee instead. Otherwise, pivot the unit about its centre so that it is facing directly towards the centre of the charging enemy unit. After pivoting, the unit moves D3+1\" directly towards the enemy unit. Both units are considered to have charged during this turn.\n\nFleeing units and units already engaged in combat when charged cannot Counter Charge. A unit can only Counter Charge in response to one charge per turn, even if charged by multiple units. Once all charges have been declared, the inactive player can choose which charging unit to Counter Charge. The unit will then Hold against the other charging units.",
+   "url": "https://tow.whfb.app/special-rules/counter-charge"
+  },
+  "impact-hits": {
+   "slug": "impact-hits",
+   "name": "Impact Hits (X)",
+   "text": "The number of Impact Hits caused varies from model to model, and will be shown in brackets after the name of this special rule (shown here as 'X'). Often, this is determined by the roll of a dice.\n\nResolving Impact Hits\n\nImpact Hits can only be made by a charging model that moved 3\" or more and that is in base contact with the enemy. Impact Hits are resolved against the charged unit when the combat is chosen during Step 1.1 of the Choose Combat & Fight sub-phase, before issuing challenges. They hit automatically and use the unmodified Strength of the model making them.",
+   "url": "https://tow.whfb.app/special-rules/impact-hits"
+  },
+  "whirling-doom": {
+   "slug": "whirling-doom",
+   "name": "Whirling Doom",
+   "text": "With a single salvo of spinning axes, a Goblin-hewer can cut through several ranks of troops. When shooting a Goblin-hewer, roll an Artillery dice before making any rolls To Hit. The number of shots fired is equal to the roll of the Artillery dice plus a D3 modifier:\n\n• Per rank (including the rear rank, even if it is incomplete), if the Goblin-hewer lies in the unit's front or rear arc.\n• Per file, if the Goblin-hewer lies in the unit's flank arc.\n\nHowever, if a misfire is rolled on the Artillery dice, no shots are fired and a critical fault has occurred. Roll immediately on the appropriate Misfire table to determine exactly what.",
+   "url": "https://tow.whfb.app/special-rules/whirling-doom"
+  },
+  "helblaster": {
+   "slug": "helblaster",
+   "name": "Helblaster",
+   "text": "When shooting a Helblaster Volley Gun, roll three Artillery dice before making any rolls To Hit. The number of shots fired is equal to the total of all three Artillery dice:\n\n• If a Misfire is rolled on one of the Artillery dice, all shots fired from the Helblaster Volley Gun this turn suffer an additional -1 To Hit modifier.\n• If a Misfire is rolled on two of the Artillery dice, no shots are fired and a critical fault has occurred. Roll immediately on the appropriate Misfire table to determine exactly what.\n• If a Misfire is rolled on all three of the Artillery dice, all of the barrels fire simultaneously, with devastating effect. The Helblaster Volley Gun fires 30 shots, but is destroyed and immediately removed from play. All shots fired from the Helblaster Volley Gun this turn suffer an additional -1 To Hit modifier.\n\nAfter determining the number of shots, roll To Hit for each as normal, using the crew's Ballistic Skill and applying all appropriate modifiers.",
+   "url": "https://tow.whfb.app/special-rules/helblaster"
+  },
+  "bombardment": {
+   "slug": "bombardment",
+   "name": "Bombardment",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/bombardment"
+  },
+  "immovable-object": {
+   "slug": "immovable-object",
+   "name": "Immovable Object",
+   "text": "Once this model has been placed on the battlefield during deployment it cannot be moved by its crew during the Remaining Moves sub-phase.\n\nNote that the model can still pivot freely at any time during its turn (the better to face the enemy) and may make a follow up move as normal.",
+   "url": "https://tow.whfb.app/special-rules/immovable-object"
+  },
+  "helstorm": {
+   "slug": "helstorm",
+   "name": "Helstorm",
+   "text": "A Helstorm Rocket Battery launches a barrage of rockets high into the sky, passing over intervening regiments and even terrain. When shooting with this weapon, work your way through the following steps:\n\n1. Choose Target: No line of sight is required for this weapon. Instead, choose an enemy unit that is between its minimum and maximum range to be the target and place D3 blast templates so that the central hole of each is over that unit.\n\n2. Scatter: Once each template has been placed, it will scatter. Roll an Artillery dice and a Scatter dice for each template in turn:\n\n• If a 'Misfire' is rolled on the Artillery dice, the rocket has failed to launch. Once all shots from this weapon have been resolved, roll once on the appropriate Misfire table for each Misfire rolled.\n• If a 'Hit!' is rolled on the Scatter dice, use the small arrow above the Hit! symbol to determine the direction of the scatter and move the template a number of inches equal to the roll of the Artillery dice minus the crew's Ballistic Skill characteristic (to a minimum of zero).\n• If an arrow is rolled on the Scatter dice, move the template a number of inches equal to the roll of the Artillery dice in the direction the arrow points.\n\n3. Damage: Any model whose base lies underneath a template risks being hit by this weapon.",
+   "url": "https://tow.whfb.app/special-rules/helstorm"
+  },
+  "poisoned-wind": {
+   "slug": "poisoned-wind",
+   "name": "Poisoned Wind",
+   "text": "When a model using a weapon with this special rule makes a roll To Wound, a roll of 6+ is always a success, even if the target's Toughness is so high that the weapon would not normally be able to wound it. Finally, no armour save is permitted against wounds caused by a weapon with this special rule (Ward and Regeneration saves can be attempted as normal).\n\nNote that models wielding weapons that have this special rule are immune to this special rule.",
+   "url": "https://tow.whfb.app/special-rules/poisoned-wind"
+  },
+  "multi-barrelled": {
+   "slug": "multi-barrelled",
+   "name": "Multi-Barrelled",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/multi-barrelled"
+  },
+  "thunderous-impact": {
+   "slug": "thunderous-impact",
+   "name": "Thunderous Impact",
+   "text": "Until your next Start of Turn sub-phase, any unit (friend or foe) that was within 2D6\" of the strike point when a Cathayan grand cannon shoots suffers a -1 modifier to its Movement characteristic and cannot use the Swiftstride special rule.",
+   "url": "https://tow.whfb.app/special-rules/thunderous-impact"
+  },
+  "furious-charge": {
+   "slug": "furious-charge",
+   "name": "Furious Charge",
+   "text": "During a turn in which it made a charge move of 3\" or more, a model with this special rule gains a +1 modifier to its Attacks characteristic.",
+   "url": "https://tow.whfb.app/special-rules/furious-charge"
+  },
+  "column-of-fire": {
+   "slug": "column-of-fire",
+   "name": "Column of Fire",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/column-of-fire"
+  },
+  "quake": {
+   "slug": "quake",
+   "name": "Quake",
+   "text": "Until your next Start of Turn sub-phase, any unit (friend or foe) that was within 2D6\" of the central hole of the blast template after scattering suffers a -1 modifier to its Movement characteristic and cannot use the Swiftstride special rule.",
+   "url": "https://tow.whfb.app/special-rules/quake"
+  },
+  "slow-reload": {
+   "slug": "slow-reload",
+   "name": "Slow Reload",
+   "text": "If this weapon shot during your previous turn, it may be unable to shoot during this turn. Roll a D6 before shooting with this weapon. On a roll of 1-2, the slow and ponderous reload process has not yet been completed and the weapon does not shoot this turn. If the Dreadquake Mortar has an Ogre Loader, you may apply a +1 modifier to this roll.",
+   "url": "https://tow.whfb.app/special-rules/slow-reload"
+  },
+  "wailing-spirits": {
+   "slug": "wailing-spirits",
+   "name": "Wailing Spirits",
+   "text": "Any unit that suffers one or more unsaved wounds from this weapon must make a Panic test as if it had taken heavy casualties.",
+   "url": "https://tow.whfb.app/special-rules/wailing-spirits"
+  },
+  "ambushers": {
+   "slug": "ambushers",
+   "name": "Ambushers",
+   "text": "A unit with this special rule may be held in reserve rather than be deployed at the start of the game. From the beginning of round two onwards, roll a D6 during each of your Start of Turn sub-phases for each unit of Ambushers in your army that is held in reserve. On a roll of 1-3, the unit is delayed until your next turn at least. On a roll of 4+, the unit arrives, entering the battle as reinforcements during the Compulsory Moves sub-phase. The unit may be placed on any edge of the battlefield, chosen by its controlling player, but cannot be placed within 8\" of an enemy model. If any Ambushers are still held in reserve by the start of round five, they arrive automatically.",
+   "url": "https://tow.whfb.app/special-rules/ambushers"
+  },
+  "screaming-skulls": {
+   "slug": "screaming-skulls",
+   "name": "Screaming Skulls",
+   "text": "Any unit that suffers one or more unsaved wounds from this weapon must make a Panic test as if it had taken heavy casualties.",
+   "url": "https://tow.whfb.app/special-rules/screaming-skulls"
+  },
+  "ignores-cover": {
+   "slug": "ignores-cover",
+   "name": "Ignores Cover",
+   "text": "If a model making a shooting attack has this special rule, it ignores any To Hit modifiers caused by partial or full cover.",
+   "url": "https://tow.whfb.app/special-rules/ignores-cover"
+  },
+  "lightning-strike": {
+   "slug": "lightning-strike",
+   "name": "Lightning Strike",
+   "text": "When shooting with this weapon, draw a straight line, 8D6\" in length, from the model's base edge. Any model (friend or foe) whose base falls under this line suffers a hit, the Strength of which is determined by rolling an Artillery dice. If a 'Misfire' is rolled when rolling to determine the Strength of this weapon, something has gone horribly wrong. Roll immediately on the Warp Lightning Misfire table to determine exactly what.\n\nD6 | Result\n1 | Meltdown: The machine and its crew explode in a spectacular green fireball. The model fails to shoot this turn. Instead, it is destroyed and immediately removed from play.\n2-4 | Energy Overload: Unfathomable energies spin the war machine around before it unleashes a potent blast of warp lightning. The Warp Lightning Cannon shoots with a Strength of 6 in a random direction, determined by rolling a Scatter dice.\n5-6 | Fzzzt: With a high-pitched screech, followed by a descending, whirring noise, the energy dissipates harmlessly. The model fails to shoot this turn.",
+   "url": "https://tow.whfb.app/special-rules/lightning-strike"
+  },
+  "needs-more-nails": {
+   "slug": "needs-more-nails",
+   "name": "Needs More Nails",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/needs-more-nails"
+  },
+  "through-through": {
+   "slug": "through-through",
+   "name": "Through & Through",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/through-through"
+  }
+ }
+}

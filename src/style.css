@@ -351,10 +351,7 @@ body.sheet-open .bottom-panel { display: none; }
   padding: 7px 14px; border-radius: 999px; background: #2a2e32; border: 1px solid var(--line); color: var(--muted); font-size: calc(13px * var(--ui));
 }
 
-/* Test verlangen im Einheitenpanel */
-.test-row { display: flex; gap: 6px; margin-bottom: 8px; }
-.test-row select { flex: 1; min-width: 0; font: inherit; font-size: calc(12px * var(--ui)); color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 4px; }
-.test-row button { white-space: nowrap; padding: 5px 8px; font-size: calc(12px * var(--ui)); }
+
 #m-result { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
 /* ---- Rechte kurze Tischkante: Würfel und Würfelprotokoll ---- */
@@ -466,8 +463,6 @@ body.hide-left #sidebar, body.hide-right #rightbar { display: none; }
 .bottom-panel .col + .col { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); margin-top: 10px; padding-top: 4px; }
 #obj-panel .cols { align-items: stretch; }
 table.profile th, table.profile td { padding: 3px 2px; }
-.test-row { flex-wrap: wrap; }
-.test-row select { min-width: 70px; }
 
 /* Fenster: alles einspaltig, Schließen-Knopf ohne Überlappung */
 .sheet > h3:first-of-type { padding-right: 28px; }
@@ -553,3 +548,15 @@ body:not(.battle) #toolbox [data-sheet="score"], body:not(.battle) #toolbox [dat
 #view-toggles:hover { opacity: 1; }
 #view-toggles button { padding: 2px 10px; font-size: calc(14px * var(--ui)); line-height: 1.4; background: rgba(42, 46, 50, .9); }
 body.hide-left #toggle-left, body.hide-right #toggle-right { border-color: var(--accent); color: var(--accent); }
+
+/* Einheiten-Popup: Waffen, Rettungswürfe und kompakter Regelbereich */
+table.weapons td.w-rules, table.weapons th:last-child { text-align: left; font-size: calc(11px * var(--ui)); }
+table.weapons td:first-child a { color: var(--text); text-decoration: none; }
+table.weapons td:first-child a:hover { color: var(--accent); }
+.bottom-panel .compact details { padding: 3px 8px; margin-bottom: 4px; border-radius: 6px; }
+.bottom-panel .compact summary { font-size: calc(12px * var(--ui)); }
+.bottom-panel .compact details p { font-size: calc(12px * var(--ui)); }
+.bottom-panel .compact .note { font-size: calc(11px * var(--ui)); }
+#p-options { font-size: calc(12px * var(--ui)); color: var(--muted); margin: 0 0 6px; }
+#p-options:empty { display: none; }
+#p-weapons .compact, #p-saves .compact { margin-top: 6px; }

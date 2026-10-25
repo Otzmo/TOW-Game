@@ -166,29 +166,8 @@
     </header>
     <div class="cols">
       <section class="col">
-        <h3>Game</h3>
         <label class="check"><input type="checkbox" id="p-ranges"> Show ranges</label>
-        <div class="test-row">
-          <select id="p-test-type"></select>
-          <select id="p-test-mod" title="Modifier to Leadership"></select>
-          <button id="p-test">Request test</button>
-        </div>
         <div id="p-join"></div>
-        <div id="p-vp">
-          <div class="stack">
-            <span class="label">Status</span>
-            <div class="seg" id="p-status">
-              <button data-status="">In play</button><button data-status="fleeing">Fleeing</button><button
-                data-status="fledOff">Fled</button><button data-status="destroyed">Destroyed</button>
-            </div>
-          </div>
-          <div class="row" id="p-wounds-row"><span class="label">Wounds</span>
-            <button data-wound="lose">−</button><output id="p-wounds"></output><button data-wound="heal">+</button></div>
-          <label class="check" id="p-captured-row"><input type="checkbox" id="p-captured"> Standard captured by the enemy</label>
-          <div class="row"><span class="label">Points cost</span>
-            <input id="p-points" type="number" min="0" step="1" inputmode="numeric"></div>
-          <p class="meta" id="p-vp-value"></p>
-        </div>
         <p class="meta" id="p-move"></p>
       </section>
 
@@ -198,19 +177,22 @@
           <thead><tr><th></th><th>M</th><th>WS</th><th>BS</th><th>S</th><th>T</th><th>W</th><th>I</th><th>A</th><th>Ld</th></tr></thead>
           <tbody id="p-profile"></tbody>
         </table>
-        <h3>Equipment</h3>
-        <p id="p-equip" class="pre"></p>
-        <h3>Options</h3>
-        <p id="p-options"></p>
+      </section>
+
+      <section class="col wide-col">
+        <h3>Weapons</h3>
+        <div id="p-weapons"></div>
       </section>
 
       <section class="col">
-        <h3 id="p-items-head">Magic Items &amp; Abilities</h3>
+        <h3>Armour, Ward &amp; Regeneration</h3>
+        <div id="p-saves"></div>
+      </section>
+
+      <section class="col compact">
+        <h3>Options, Magic Items &amp; Special Rules</h3>
+        <p id="p-options" class="small"></p>
         <div id="p-items"></div>
-      </section>
-
-      <section class="col">
-        <h3>Special Rules</h3>
         <div id="p-rules"></div>
         <p class="meta" id="p-source"></p>
       </section>
@@ -226,6 +208,24 @@
         <div class="row"><span class="label">Models</span>
           <button data-act="m-">−</button><output id="p-models"></output><button data-act="m+">+</button></div>
         <button id="p-rank" class="wide">Arrange in ranks (0.5″ apart)</button>
+      </section>
+
+      <section class="col">
+        <h3>Status</h3>
+        <div id="p-vp">
+          <div class="stack">
+            <div class="seg" id="p-status">
+              <button data-status="">In play</button><button data-status="fleeing">Fleeing</button><button
+                data-status="fledOff">Fled</button><button data-status="destroyed">Destroyed</button>
+            </div>
+          </div>
+          <div class="row" id="p-wounds-row"><span class="label">Wounds</span>
+            <button data-wound="lose">−</button><output id="p-wounds"></output><button data-wound="heal">+</button></div>
+          <label class="check" id="p-captured-row"><input type="checkbox" id="p-captured"> Standard captured by the enemy</label>
+          <div class="row"><span class="label">Points cost</span>
+            <input id="p-points" type="number" min="0" step="1" inputmode="numeric"></div>
+          <p class="meta" id="p-vp-value"></p>
+        </div>
       </section>
     </div>
   </aside>
