@@ -184,8 +184,10 @@ export async function importBbList(
   const factionSlug = lastSegment(list.factionId);
   const data = await loadFaction(factionSlug);
   const warnings: string[] = [];
+  // Regel nach Namen finden (ohne Klammerwerte), z. B. "Frenzy" oder "Hatred (Dwarfs)"
+  const ruleByName = new Map(Object.values(data.rules).map((r) => [norm(r.name.replace(/\([^)]*\)/g, '')), r.key]));
   // Name wie an der Einheit (mit Wert, z. B. "Chaos Armour (5+)"), sonst der allgemeine Regelname
-  const rule = (key: string, labels: Record<string, string> = {}): RuleRef | null => {
+  const rule =(key: string, labels: Record<string, string> = {}): RuleRef | null => {
     const r = data.rules[key];
     return r ? { name: labels[key] ?? r.name, text: r.text, url: r.url } : null;
   };
@@ -229,6 +231,20 @@ export async function importBbList(
       const note = [it.type, `${cost} pts`].filter(Boolean).join(' · ');
       return { name: it.name, text: it.text, url: it.url, note, ...(it.profiles?.length ? { profiles: it.profiles } : {}) };
     });
+
+    // Regeln, die eine Regel oder ein Gegenstand verleiht ("Models with the Mark of Khorne have the Frenzy
+    // special rule"), kommen mit dazu – mit ihrem Text, damit auch ihre Profiländerungen gelten
+    for (const src of [...rules, ...items]) {
+      for (const m of (src.text ?? '').matchAll(/\b(?:have|has|gain|gains|gaining)\s+the\s+([^.]*?)\s+special rules?\b/gi)) {
+        for (const name of m[1].split(/,\s*|\s+and\s+/)) {
+          const key = ruleByName.get(norm(name.replace(/\([^)]*\)/g, '')));
+          if (!key || ruleKeys.has(key)) continue;
+          ruleKeys.add(key);
+          const r = rule(key, /\(.+\)/.test(name) ? { [key]: name.trim() } : labels);
+          if (r) rules.push(r);
+        }
+      }
+    }
 
     const command = entry.selectedOptions
       .filter((o) => o.groupId.endsWith('-command'))

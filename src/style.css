@@ -568,3 +568,7 @@ table.weapons td:first-child a:hover { color: var(--accent); }
 .save-from { font-size: calc(12px * var(--ui)); color: var(--muted); }
 .opt-plain { margin: 0 0 4px; padding: 3px 8px; font-size: calc(12px * var(--ui)); font-weight: 600; }
 #p-options { margin: 0 0 6px; }
+/* Profil: durch Regeln geänderte Werte hervorgehoben, situationsabhängige in Klammern */
+table.profile td.stat-mod { color: var(--accent); font-weight: 700; }
+table.profile td[title] { cursor: help; }
+.stat-sit { color: #8fca7a; font-size: .85em; margin-left: 1px; }

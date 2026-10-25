@@ -4,6 +4,7 @@ import {
 } from '../model/store';
 import type { History } from '../model/history';
 import { armourInfo, loadWeapons, optionInfo, unitSaves, unitWeapons, visibleOptions, visibleRules, weaponRule } from '../model/gear';
+import { modifiedValue, statMods } from '../model/modifiers';
 import { hasStandard, unitVictoryPoints, wounds } from '../model/score';
 import type { RuleRef, UnitState, UnitStatus } from '../model/types';
 import { PLAYER_COLORS } from '../view/theme';
@@ -184,9 +185,7 @@ export class UnitPanel {
         ? `${u.models} models · ${base} · Skirmish · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″${warn}`
         : `${u.models} models · ${base} · formation ${cols} × ${ranks} · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″`;
     $('p-join').innerHTML = this.joinHtml(u.id);
-    $('p-profile').innerHTML = info.profile
-      .map((r) => `<tr><td>${escapeHtml(r.name)}</td>${r.values.map((v) => `<td>${escapeHtml(v)}</td>`).join('')}</tr>`)
-      .join('');
+    $('p-profile').innerHTML = this.profileHtml(u);
     // Was oben schon erklärt ist (Waffen, Rettungswürfe, Optionen), steht unten nicht noch einmal
     const shown = new Set<string>();
     $('p-weapons').innerHTML = this.weaponsHtml(u, shown);
@@ -251,6 +250,22 @@ export class UnitPanel {
     if (!r) return '';
     const link = r.url ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">Full text ↗</a>` : '';
     return `<div class="w-rule-text"><b>${escapeHtml(r.name)}</b><p>${escapeHtml(r.text)}</p>${link}</div>`;
+  }
+
+  /**
+   * Profil mit den Änderungen durch Sonderregeln und Gegenstände: dauerhafte ersetzen den Wert
+   * (hervorgehoben), situationsabhängige stehen in Klammern dahinter, z. B. Furious Charge: A 1(2).
+   */
+  private profileHtml(u: UnitState): string {
+    const { info } = u;
+    // Waffenregeln wie "Extra Attacks (+1)" gelten nur für den Träger und stehen in der Waffentabelle
+    const mods = statMods([...visibleRules(info), ...info.items]);
+    return info.profile.map((r) => `<tr><td>${escapeHtml(r.name)}</td>${r.values.map((v, i) => {
+      const m = modifiedValue(v, i, mods);
+      if (!m.changed && !m.situational) return `<td>${escapeHtml(v)}</td>`;
+      const sit = m.situational ? `<span class="stat-sit">(${escapeHtml(m.situational)})</span>` : '';
+      return `<td class="${m.changed ? 'stat-mod' : ''}" title="${escapeHtml(`Profile ${v}\n${m.sources.join('\n')}`)}">${escapeHtml(m.value)}${sit}</td>`;
+    }).join('')}</tr>`).join('');
   }
 
   /** Sonderregel einer Waffe: Text aus der Waffenliste, sonst aus den Regeln der Einheit */
