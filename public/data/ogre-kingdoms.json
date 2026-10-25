@@ -13,7 +13,7 @@
     "depth": 40
    },
    "unitSize": "1",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Base Size: Unit Size: Equipment:",
    "category": "Character",
    "profile": [
     {
@@ -37,7 +37,8 @@
     "bull-charge",
     "fear",
     "impact-hits",
-    "ogre-charge"
+    "ogre-kingdoms-charge",
+    "ogre-club"
    ],
    "ruleLabels": {
     "armour-bane": "Armour Bane (1)",
@@ -51,7 +52,7 @@
      "per": "unit"
     },
     {
-     "label": "• Ironfist",
+     "label": "• Ogre Kingdoms Ironfist",
      "cost": 6,
      "per": "unit"
     },
@@ -76,16 +77,17 @@
      "per": "unit"
     },
     {
-     "label": "• Stonehorn",
-     "cost": 195,
+     "label": "• A Tyrant may purchase magic items up to a total of",
+     "cost": 100,
      "per": "unit"
     },
     {
-     "label": "• Thundertusk",
-     "cost": 165,
+     "label": "• A Bruiser may purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "butcher": {
    "slug": "butcher",
@@ -96,7 +98,7 @@
     "depth": 40
    },
    "unitSize": "1",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -120,13 +122,13 @@
     "fear",
     "impact-hits",
     "lore-of-the-great-maw",
-    "ogre-charge"
+    "ogre-kingdoms-charge"
    ],
    "ruleLabels": {
     "armour-bane": "Armour Bane (1)",
     "impact-hits": "Impact Hits (2)"
    },
-   "cost": 105,
+   "cost": 95,
    "options": [
     {
      "label": "• May take an additional hand weapon",
@@ -134,16 +136,32 @@
      "per": "unit"
     },
     {
-     "label": "• May take a Butcher's Cauldron",
+     "label": "• May take a Butcher’s Cauldron",
      "cost": 30,
      "per": "unit"
     },
     {
+     "label": "• Be a Level 4 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
      "label": "• Be a Level 2 Wizard",
-     "cost": 35,
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "firebelly": {
    "slug": "firebelly",
@@ -154,7 +172,7 @@
     "depth": 40
    },
    "unitSize": "1",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -172,14 +190,14 @@
      ]
     }
    ],
-   "equipment": "Hand weapon and flaming breath",
+   "equipment": "Hand weapon and flaming breath (see below)",
    "specialRules": [
     "armour-bane",
     "blessings-of-the-volcano-god",
     "fear",
     "flaming-attacks",
     "impact-hits",
-    "ogre-charge"
+    "ogre-kingdoms-charge"
    ],
    "ruleLabels": {
     "armour-bane": "Armour Bane (1)",
@@ -194,10 +212,16 @@
     },
     {
      "label": "• May be a Level 2 Wizard",
-     "cost": 35,
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• May purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "giant": {
    "slug": "giant",
@@ -253,7 +277,7 @@
     "depth": 25
    },
    "unitSize": "20+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -299,7 +323,8 @@
      "cost": 5,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "gnoblar-scraplauncher": {
    "slug": "gnoblar-scraplauncher",
@@ -358,7 +383,8 @@
    ],
    "equipment": "• Scraplauncher: Scraplauncher catapult\n• Gnoblar Scrapper: Sharp stuff (counts as hand weapon and throwing weapons)\n• Rhinox: Tusks and horns (counts as a hand weapon)",
    "specialRules": [
-    "armour-bane",
+    "armour-bane-2",
+    "rhinox-only",
     "close-order",
     "fear",
     "first-charge",
@@ -366,11 +392,11 @@
     "large-target"
    ],
    "ruleLabels": {
-    "armour-bane": "Armour Bane (2, Rhinox only)",
     "impact-hits": "Impact Hits (D6+1)"
    },
    "cost": 140,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "gnoblar-trappers": {
    "slug": "gnoblar-trappers",
@@ -381,7 +407,7 @@
     "depth": 25
    },
    "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -418,8 +444,9 @@
     "largely-insignificant",
     "move-through-cover",
     "scouts",
-    "skirmish-formation",
-    "traps-and-snares"
+    "skirmishers",
+    "traps-and-snares",
+    "entourage"
    ],
    "ruleLabels": {},
    "cost": 5,
@@ -429,7 +456,8 @@
      "cost": 5,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "gorger": {
    "slug": "gorger",
@@ -440,7 +468,7 @@
     "depth": 50
    },
    "unitSize": "1",
-   "troopType": "Monstrous Creature",
+   "troopType": "Monstrous creature",
    "category": "Monster",
    "profile": [
     {
@@ -451,17 +479,19 @@
       "0",
       "5",
       "5",
-      "4",
+      "5",
       "2",
       "4",
       "8"
      ]
     }
    ],
-   "equipment": "Wicked claws, distensible jaw and calloused hide (counts as light armour)",
+   "equipment": "Wicked claws (see below), distensible jaw (see below)",
    "specialRules": [
     "ambushers",
+    "armoured-hide",
     "close-order",
+    "open-order",
     "fear",
     "frenzy",
     "ravenous-hunger",
@@ -470,6 +500,7 @@
     "unbreakable"
    ],
    "ruleLabels": {
+    "armoured-hide": "Armoured Hide (2)",
     "regeneration": "Regeneration (6+)"
    },
    "cost": 90,
@@ -484,7 +515,8 @@
      "cost": 3,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "hunter": {
    "slug": "hunter",
@@ -495,7 +527,7 @@
     "depth": 50
    },
    "unitSize": "1",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -513,15 +545,17 @@
      ]
     }
    ],
-   "equipment": "Hand weapon, great throwing spear and light armour",
+   "equipment": "Hand weapon, great throwing spears (see below) and light armour",
    "specialRules": [
     "armour-bane",
     "fear",
     "impact-hits",
     "loner",
     "move-through-cover",
-    "ogre-charge",
-    "running-with-the-pack"
+    "ogre-kingdoms-charge",
+    "running-with-the-pack",
+    "vanguard",
+    "ogre-club"
    ],
    "ruleLabels": {
     "armour-bane": "Armour Bane (1)",
@@ -535,36 +569,37 @@
      "per": "unit"
     },
     {
-     "label": "• May take a harpoon launcher",
-     "cost": 10,
-     "per": "unit"
-    },
-    {
-     "label": "• Stonehorn",
-     "cost": 195,
-     "per": "unit"
-    },
-    {
-     "label": "• Thundertusk",
-     "cost": 165,
-     "per": "unit"
-    },
-    {
-     "label": "• The Ambushers special rule",
-     "cost": 10,
-     "per": "unit"
-    },
-    {
-     "label": "• The Scouts special rule",
+     "label": "• Great weapon",
      "cost": 5,
      "per": "unit"
     },
     {
-     "label": "• The Vanguard special rule",
-     "cost": 3,
+     "label": "• Blood Vulture",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Harpoon Launcher",
+     "cost": 15,
+     "per": "unit"
+    },
+    {
+     "label": "• The Ambushers special rule",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• The Scouts special rule",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• May purchase magic items up to a total of",
+     "cost": 75,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "ironblaster": {
    "slug": "ironblaster",
@@ -637,7 +672,8 @@
    ],
    "equipment": "• Ironblaster: Cannon of the Sky-titans\n• Leadbelcher: Hand weapon\n• Gnoblar Scrapper: Sharp stuff (counts as hand weapon and throwing weapons)\n• Rhinox: Tusks and horns (counts as a hand weapon)",
    "specialRules": [
-    "armour-bane",
+    "armour-bane-2",
+    "rhinox-only",
     "close-order",
     "fear",
     "first-charge",
@@ -645,11 +681,11 @@
     "large-target"
    ],
    "ruleLabels": {
-    "armour-bane": "Armour Bane (2, Rhinox only)",
     "impact-hits": "Impact Hits (D6+1)"
    },
    "cost": 185,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "ironguts": {
    "slug": "ironguts",
@@ -660,7 +696,7 @@
     "depth": 40
    },
    "unitSize": "3+",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -697,7 +733,8 @@
     "close-order",
     "fear",
     "impact-hits",
-    "ogre-charge"
+    "ogre-kingdoms-charge",
+    "ravenous-hunger"
    ],
    "ruleLabels": {
     "impact-hits": "Impact Hits (1)"
@@ -720,6 +757,11 @@
      "per": "unit"
     },
     {
+     "label": "• A Gutlord may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
      "label": "• A standard bearer may have the Look-out Gnoblar special rule",
      "cost": 5,
      "per": "unit"
@@ -728,8 +770,14 @@
      "label": "• Have the Veteran special rule",
      "cost": 2,
      "per": "model"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "leadbelchers": {
    "slug": "leadbelchers",
@@ -740,7 +788,7 @@
     "depth": 40
    },
    "unitSize": "2+",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -772,17 +820,20 @@
      ]
     }
    ],
-   "equipment": "Hand weapons, leadbelcher guns and light armour",
+   "equipment": "Hand weapons, leadbelcher guns (see below) and light armour",
    "specialRules": [
     "close-order",
+    "open-order",
     "fear",
     "impact-hits",
-    "ogre-charge"
+    "ogre-kingdoms-charge",
+    "ogre-club",
+    "ravenous-hunger"
    ],
    "ruleLabels": {
     "impact-hits": "Impact Hits (1)"
    },
-   "cost": 41,
+   "cost": 39,
    "options": [
     {
      "label": "• Upgrade one model to a Thunderfist (champion)",
@@ -799,7 +850,8 @@
      "cost": 2,
      "per": "model"
     }
-   ]
+   ],
+   "renegade": true
   },
   "maneaters": {
    "slug": "maneaters",
@@ -810,7 +862,7 @@
     "depth": 40
    },
    "unitSize": "2+",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -842,13 +894,15 @@
      ]
     }
    ],
-   "equipment": "Hand weapons and light armour",
+   "equipment": "Hand weapons, Ogre pistol, and light armour",
    "specialRules": [
     "close-order",
     "fear",
     "impact-hits",
     "motley-crew",
-    "ogre-charge"
+    "ogre-kingdoms-charge",
+    "veteran",
+    "ogre-club"
    ],
    "ruleLabels": {
     "impact-hits": "Impact Hits (1)"
@@ -861,7 +915,7 @@
      "per": "model"
     },
     {
-     "label": "• Ironfist",
+     "label": "• Ogre Kingdoms Ironfist",
      "cost": 4,
      "per": "model"
     },
@@ -871,13 +925,8 @@
      "per": "model"
     },
     {
-     "label": "• Ogre pistol",
-     "cost": 6,
-     "per": "model"
-    },
-    {
      "label": "• Brace of Ogre pistols",
-     "cost": 12,
+     "cost": 6,
      "per": "model"
     },
     {
@@ -901,8 +950,18 @@
      "per": "unit"
     },
     {
+     "label": "• A Maneater Captain may purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
      "label": "• A standard bearer may have the Look-out Gnoblar special rule",
      "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• 0-1 unit per 1,000 points may purchase a magic standard worth up to",
+     "cost": 100,
      "per": "unit"
     },
     {
@@ -924,8 +983,24 @@
      "label": "• Vanguard",
      "cost": 0,
      "per": "unit"
+    },
+    {
+     "label": "• Scouts",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Move Through Cover",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Swiftstride",
+     "cost": 0,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "mournfang-cavalry": {
    "slug": "mournfang-cavalry",
@@ -936,7 +1011,7 @@
     "depth": 100
    },
    "unitSize": "2+",
-   "troopType": "Monstrous Cavalry",
+   "troopType": "Monstrous cavalry",
    "category": "Cavalry",
    "profile": [
     {
@@ -989,7 +1064,8 @@
     "fear",
     "impact-hits",
     "mournfang-charge",
-    "swiftstride"
+    "swiftstride",
+    "ogre-club"
    ],
    "ruleLabels": {
     "armoured-hide": "Armoured Hide (1)",
@@ -1003,7 +1079,7 @@
      "per": "model"
     },
     {
-     "label": "• Ironfists",
+     "label": "• Ogre Kingdoms Ironfists",
      "cost": 4,
      "per": "model"
     },
@@ -1031,8 +1107,19 @@
      "label": "• A brace of Ogre pistols",
      "cost": 12,
      "per": "unit"
+    },
+    {
+     "label": "• Magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
+     "label": "• 0-1 unit per 1,000 points may purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "ogre-bulls": {
    "slug": "ogre-bulls",
@@ -1043,7 +1130,7 @@
     "depth": 40
    },
    "unitSize": "3+",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -1081,7 +1168,9 @@
     "close-order",
     "fear",
     "impact-hits",
-    "ogre-charge"
+    "ogre-kingdoms-charge",
+    "ravenous-hunger",
+    "ogre-club"
    ],
    "ruleLabels": {
     "armour-bane": "Armour Bane (1)",
@@ -1095,7 +1184,7 @@
      "per": "model"
     },
     {
-     "label": "• Ironfists",
+     "label": "• Ogre Kingdoms Ironfists",
      "cost": 4,
      "per": "model"
     },
@@ -1118,8 +1207,14 @@
      "label": "• A standard bearer may have the Look-out Gnoblar special rule",
      "cost": 5,
      "per": "unit"
+    },
+    {
+     "label": "• 0-1 unit per 1,000 points may purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "sabretusk-pack": {
    "slug": "sabretusk-pack",
@@ -1190,7 +1285,7 @@
     "depth": 40
    },
    "unitSize": "1",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1214,13 +1309,13 @@
     "fear",
     "impact-hits",
     "lore-of-the-great-maw",
-    "ogre-charge"
+    "ogre-kingdoms-charge"
    ],
    "ruleLabels": {
     "armour-bane": "Armour Bane (1)",
     "impact-hits": "Impact Hits (2)"
    },
-   "cost": 230,
+   "cost": 180,
    "options": [
     {
      "label": "• May take an additional hand weapon",
@@ -1228,16 +1323,32 @@
      "per": "unit"
     },
     {
-     "label": "• May take a Butcher's Cauldron",
+     "label": "• May take a Butcher’s Cauldron",
      "cost": 30,
      "per": "unit"
     },
     {
      "label": "• Be a Level 4 Wizard",
-     "cost": 35,
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• Be a Level 2 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "stonehorn": {
    "slug": "stonehorn",
@@ -1258,8 +1369,8 @@
       "3",
       "-",
       "6",
-      "(+1)",
-      "(+4)",
+      "6",
+      "6",
       "2",
       "4",
       "-"
@@ -1268,22 +1379,58 @@
    ],
    "equipment": "Horns of stone and petrified flesh (counts as full plate armour)",
    "specialRules": [
-    "armour-bane",
+    "armour-bane-2",
+    "stonehorn-only",
     "close-order",
     "first-charge",
+    "howdah",
     "impact-hits",
     "large-target",
+    "stomp-attacks",
     "stone-skeleton",
     "swiftstride",
     "terror",
-    "thunderous-charge"
+    "thunderous-charge",
+    "ogre-club"
    ],
    "ruleLabels": {
-    "armour-bane": "Armour Bane (2, Stonehorn only)",
-    "impact-hits": "Impact Hits (D6+1)"
+    "impact-hits": "Impact Hits (D6+1)",
+    "stomp-attacks": "Stomp Attacks (D3)"
    },
-   "cost": null,
-   "options": []
+   "cost": 220,
+   "options": [
+    {
+     "label": "• A blood vulture (see below)",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• A harpoon launcher",
+     "cost": 15,
+     "per": "unit"
+    },
+    {
+     "label": "• Additional hand weapon",
+     "cost": 3,
+     "per": "unit"
+    },
+    {
+     "label": "• Great weapon",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• Ogre Kingdoms Ironfist",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• May add 1 Ogre Crew with Hand weapon and harpoon launcher",
+     "cost": 25,
+     "per": "unit"
+    }
+   ],
+   "renegade": true
   },
   "stonehorn-riders": {
    "slug": "stonehorn-riders",
@@ -1390,8 +1537,8 @@
       "3",
       "-",
       "6",
-      "(+1)",
-      "(+4)",
+      "6",
+      "6",
       "2",
       "4",
       "-"
@@ -1402,19 +1549,24 @@
    "specialRules": [
     "close-order",
     "first-charge",
+    "howdah",
     "impact-hits",
     "large-target",
     "numbing-chill",
     "stomp-attacks",
+    "smooth-ride",
+    "strike-last",
     "swiftstride",
-    "terror"
+    "terror",
+    "ogre-club"
    ],
    "ruleLabels": {
     "impact-hits": "Impact Hits (D3)",
-    "stomp-attacks": "Stomp Attacks (3)"
+    "stomp-attacks": "Stomp Attacks (D3+1)"
    },
-   "cost": null,
-   "options": []
+   "cost": 215,
+   "options": [],
+   "renegade": true
   },
   "thundertusk-riders": {
    "slug": "thundertusk-riders",
@@ -1510,7 +1662,7 @@
     "depth": 40
    },
    "unitSize": "1",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Base Size: Unit Size: Equipment:",
    "category": "Character",
    "profile": [
     {
@@ -1534,7 +1686,8 @@
     "bull-charge",
     "fear",
     "impact-hits",
-    "ogre-charge"
+    "ogre-kingdoms-charge",
+    "ogre-club"
    ],
    "ruleLabels": {
     "armour-bane": "Armour Bane (1)",
@@ -1548,7 +1701,7 @@
      "per": "unit"
     },
     {
-     "label": "• Ironfist",
+     "label": "• Ogre Kingdoms Ironfist",
      "cost": 6,
      "per": "unit"
     },
@@ -1573,16 +1726,17 @@
      "per": "unit"
     },
     {
-     "label": "• Stonehorn",
-     "cost": 195,
+     "label": "• A Tyrant may purchase magic items up to a total of",
+     "cost": 100,
      "per": "unit"
     },
     {
-     "label": "• Thundertusk",
-     "cost": 165,
+     "label": "• A Bruiser may purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "yhetees": {
    "slug": "yhetees",
@@ -1593,7 +1747,7 @@
     "depth": 40
    },
    "unitSize": "3+",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -1633,13 +1787,14 @@
     "loner",
     "move-through-cover",
     "numbing-chill",
-    "open-order-formation",
-    "swiftstride"
+    "open-order",
+    "swiftstride",
+    "ravenous-hunger"
    ],
    "ruleLabels": {
     "armoured-hide": "Armoured Hide (1)"
    },
-   "cost": 46,
+   "cost": 43,
    "options": [
     {
      "label": "• Any unit may upgrade one model to a Greyback (champion)",
@@ -1647,16 +1802,83 @@
      "per": "unit"
     },
     {
-     "label": "• The Scouts special rule",
+     "label": "• The Ambushers special rule",
      "cost": 3,
      "per": "model"
     },
     {
-     "label": "• The Vanguard special rule",
+     "label": "• The Scouts special rule",
      "cost": 2,
      "per": "model"
+    },
+    {
+     "label": "• The Vanguard special rule",
+     "cost": 1,
+     "per": "model"
     }
-   ]
+   ],
+   "renegade": true
+  },
+  "sabretusk-packs": {
+   "slug": "sabretusk-packs",
+   "name": "Sabretusk Packs",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag",
+   "base": {
+    "width": 25,
+    "depth": 50
+   },
+   "unitSize": "2-10",
+   "troopType": "War beasts",
+   "category": "",
+   "profile": [
+    {
+     "name": "Sabretusk",
+     "values": [
+      "8",
+      "4",
+      "0",
+      "4",
+      "4",
+      "2",
+      "4",
+      "2",
+      "6"
+     ]
+    }
+   ],
+   "equipment": "Claws and fangs (counts as hand weapons)",
+   "specialRules": [
+    "armour-bane",
+    "fear",
+    "impetuous",
+    "loner",
+    "move-through-cover",
+    "open-order",
+    "skirmishers",
+    "swiftstride"
+   ],
+   "ruleLabels": {
+    "armour-bane": "Armour Bane (1)"
+   },
+   "cost": 17,
+   "options": [
+    {
+     "label": "• The Ambushers special rule",
+     "cost": 3,
+     "per": "model"
+    },
+    {
+     "label": "• The Scouts special rule",
+     "cost": 2,
+     "per": "model"
+    },
+    {
+     "label": "• The Vanguard special rule",
+     "cost": 1,
+     "per": "model"
+    }
+   ],
+   "renegade": true
   }
  },
  "rules": {
@@ -1705,14 +1927,14 @@
   "ravenous-hunger": {
    "key": "ravenous-hunger",
    "name": "Ravenous Hunger",
-   "text": "When a Gorger declares a charge, it may re-roll its Charge roll.",
-   "url": "https://tow.whfb.app/special-rules/ravenous-hunger"
+   "text": "If the majority of the models in a unit have this special rule, it may re-roll its Charge roll.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "largely-insignificant": {
    "key": "largely-insignificant",
    "name": "Largely Insignificant",
    "text": "Units with this special rule never cause friendly units to make Panic tests. However, a unit with this special rule cannot be joined by a character without this special rule.",
-   "url": "https://tow.whfb.app/special-rules/largely-insignificant"
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "eadbutt-giant": {
    "key": "eadbutt-giant",
@@ -1740,9 +1962,9 @@
   },
   "look-out-gnoblar": {
    "key": "look-out-gnoblar",
-   "name": "Look-out Gnoblar",
-   "text": "A champion or character that has joined a unit with this special rule may make a \"Look Out, Sir!\" roll if there are two or more rank and file models in the unit (rather than the usual five). In addition, you may re-roll a \"Look Out, Sir!\" roll if there are five or more rank and file models in the unit.",
-   "url": "https://tow.whfb.app/special-rules/look-out-gnoblar"
+   "name": "Look-Out Gnoblar",
+   "text": "A champion or character that has joined a unit with this special rule may make a “Look Out, Sir!” roll if there are two or more rank and file models in the unit (rather than the usual five). In addition, you may re-roll a “Look Out, Sir!” roll if there are five or more rank and file models in the unit.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "mighty-swing-giant": {
    "key": "mighty-swing-giant",
@@ -1771,8 +1993,8 @@
   "numbing-chill": {
    "key": "numbing-chill",
    "name": "Numbing Chill",
-   "text": "Whilst in base contact with this model, enemy models suffer a -1 modifier to their Weapon Skill and Initiative characteristics, to a minimum of 1.",
-   "url": "https://tow.whfb.app/special-rules/numbing-chill"
+   "text": "Enemy units engaged in combat with one or more models with this rule have the Strikes Last special rule and a -1 modifier to their Weapon Skill characteristic, to a minimum of 1.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "stone-skeleton": {
    "key": "stone-skeleton",
@@ -2001,6 +2223,72 @@
    "name": "Flammable",
    "text": "A model with this special rule cannot make a Regeneration save against a wound caused by a Flaming attack.",
    "url": "https://tow.whfb.app/special-rules/flammable"
+  },
+  "ogre-kingdoms-charge": {
+   "key": "ogre-kingdoms-charge",
+   "name": "Ogre Kingdoms Charge",
+   "text": "The Strength and Armour Piercing characteristics of any impact hits caused by an Infantry model with this special rule are improved by the current rank bonus of its unit, or in the case of characters, the current rank bonus of any unit they have joined.\nIn addition, if a unit with this special rule makes a Charge move of 6\" or more following a Charge or Pursuit roll that includes one or more natural 6s, all models in the unit gain Impact Hits (1) and treat low linear obstacles as open ground during the turn in which they charge.\nNote: This means that models separated only by a low linear obstacle are considered to be in base contact with one another for the purposes of combat and the enemy unit receives no benefits for defending a low linear obstacle against this unit..",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
+  },
+  "ogre-club": {
+   "key": "ogre-club",
+   "name": "Ogre Club",
+   "text": "A hand weapon carried by a model with this special rule has an Armour Piercing characteristic of -1.\nNote that this special rule only applies to a single, non-magical hand weapon, and does not apply to a model's mount (should it have one). If the model is using an Ogre Kingdoms Ironfist as a weapon (or any other sort of weapon), this special rule ceases to apply.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
+  },
+  "big-names": {
+   "key": "big-names",
+   "name": "Big Names",
+   "text": "Some models drawn from the Ogre Kingdoms army list may be given a Big Name, chosen from those detailed on this page. Each Big Name gives the model certain benefits in the form of modified characteristics and additional special rules:",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
+  },
+  "open-order": {
+   "key": "open-order",
+   "name": "Open Order",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/open-order"
+  },
+  "skirmishers": {
+   "key": "skirmishers",
+   "name": "Skirmishers",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/skirmishers"
+  },
+  "entourage": {
+   "key": "entourage",
+   "name": "Entourage",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/entourage"
+  },
+  "armour-bane-2": {
+   "key": "armour-bane-2",
+   "name": "Armour Bane (2",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/armour-bane-2"
+  },
+  "rhinox-only": {
+   "key": "rhinox-only",
+   "name": "Rhinox only)",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/rhinox-only"
+  },
+  "stonehorn-only": {
+   "key": "stonehorn-only",
+   "name": "Stonehorn only)",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/stonehorn-only"
+  },
+  "smooth-ride": {
+   "key": "smooth-ride",
+   "name": "Smooth Ride",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/smooth-ride"
+  },
+  "strike-last": {
+   "key": "strike-last",
+   "name": "Strike Last",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/strike-last"
   }
  },
  "items": {
@@ -2073,8 +2361,8 @@
    "type": "Magic Weapon",
    "cost": 90,
    "costOverride": null,
-   "text": "Thundermace (Profile)Notes: Rather than attacking normally, the wielder of the Thundermace may choose to make a special 'Thunderstrike' attack. If they do, make a single roll To Hit. If this is successful, place a small (3\") blast template so that its central hole is directly over the centre of the hit unit. Any enemy model whose base lies underneath the template risks being hit by this weapon.",
-   "url": "https://tow.whfb.app/magic-item/thundermace"
+   "text": "Notes: Rather than attacking normally, the wielder of the Thundermace may choose to make a special ‘Thunderstrike’ attack. If they do, make a single roll To Hit. If this is successful, place a small (3\") blast template so that its central hole is directly over the centre of the hit unit. Any enemy model whose base lies underneath the template risks being hit by this weapon.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "tenderiser": {
    "slug": "tenderiser",
@@ -2083,7 +2371,7 @@
    "cost": 70,
    "costOverride": null,
    "text": "Tenderiser (Profile)",
-   "url": "https://tow.whfb.app/magic-item/tenderiser"
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "skullplucker": {
    "slug": "skullplucker",
@@ -2091,8 +2379,8 @@
    "type": "Magic Weapon",
    "cost": 45,
    "costOverride": null,
-   "text": "Skullplucker (Profile)",
-   "url": "https://tow.whfb.app/magic-item/skullplucker"
+   "text": "Killing Blow, Magical Attacks, Strike First",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "bloodcleaver": {
    "slug": "bloodcleaver",
@@ -2100,8 +2388,8 @@
    "type": "Magic Weapon",
    "cost": 30,
    "costOverride": null,
-   "text": "Bloodcleaver (Profile)Notes: Emissaries of the Great Maw only. If the wielder of the Bloodcleaver causes one or more unsaved wounds during the Combat phase, they recover a single lost Wound.",
-   "url": "https://tow.whfb.app/magic-item/bloodcleaver"
+   "text": "R        S        AP        Special Rules\nBloodcleaver        Combat  S   -1   Magical Attacks\nNotes: Emissaries of the Great Maw only. If the wielder of the Bloodcleaver causes one or more unsaved wounds during the Combat phase, they recover a single lost Wound.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "gutmaw": {
    "slug": "gut-maw",
@@ -2109,8 +2397,8 @@
    "type": "Magic Armour",
    "cost": 45,
    "costOverride": null,
-   "text": "The Gut Maw is a suit of heavy armour. In addition, for each unsaved wound the wearer causes during a Challenge, they recover a single lost Wound.",
-   "url": "https://tow.whfb.app/magic-item/gut-maw"
+   "text": "May be worn with other armour. The wearer of the Gut Maw improves their armour save by one. In addition, for each unsaved wound the wearer causes during a Challenge, they recover a single lost Wound.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "mastodonarmour": {
    "slug": "mastodon-armour",
@@ -2119,34 +2407,34 @@
    "cost": 40,
    "costOverride": null,
    "text": "The Mastodon Armour is a suit of full plate armour. In addition, its wearer has a 6+ Ward save against any wounds suffered.",
-   "url": "https://tow.whfb.app/magic-item/mastodon-armour"
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "spangleshard": {
    "slug": "spangleshard",
    "name": "Spangleshard",
    "type": "Talisman",
-   "cost": 35,
+   "cost": 30,
    "costOverride": null,
    "text": "The Spangleshard gives its bearer a 4+ Ward save against any wounds suffered. However, if a natural 1 is rolled, the Spangleshard is destroyed and it cannot be used again.",
-   "url": "https://tow.whfb.app/magic-item/spangleshard"
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "cathayanjetpendant": {
    "slug": "cathayan-jet-pendant",
-   "name": "Cathayan Jet Pendant*",
+   "name": "Cathayan Jet Pendant",
    "type": "Talisman",
    "cost": 10,
    "costOverride": null,
-   "text": "A Cathayan Jet Pendant gives its bearer a 6+ Ward save against any wounds suffered that were caused by a Magic Missile, a Magical Vortex, or an Assailment spell.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/cathayan-jet-pendant"
+   "text": "A Cathayan Jet Pendant gives its bearer (and any unit they have joined) a 6+ Ward save against any wounds suffered that were caused by a Magic Missile, a Magical Vortex, or an Assailment spell.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "dragonhidebanner": {
    "slug": "dragonhide-banner",
    "name": "Dragonhide Banner",
    "type": "Magic Standard",
-   "cost": 45,
+   "cost": 75,
    "costOverride": null,
-   "text": "A unit carrying the Dragonhide Banner may re-roll any rolls To Hit of a natural 1. In addition, a unit carrying the Dragonhide Banner has the Flaming Attacks special rule.",
-   "url": "https://tow.whfb.app/magic-item/dragonhide-banner"
+   "text": "A unit carrying the Dragonhide Banner may re-roll any rolls To Hit of a natural 1. In addition, a unit carrying the Dragonhide Banner has the Flaming Attacks Numbing Chill special rule.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "runemaw": {
    "slug": "rune-maw",
@@ -2154,8 +2442,8 @@
    "type": "Magic Standard",
    "cost": 40,
    "costOverride": null,
-   "text": "When an enemy Wizard chooses a unit carrying the Rune Maw as the target of a spell, roll a D6. On a 3+, the Wizard's controlling player must choose another target. If there is no other viable target in range, the spell cannot be cast.",
-   "url": "https://tow.whfb.app/magic-item/rune-maw"
+   "text": "When an enemy Wizard chooses a unit carrying the Rune Maw as the target of a spell, roll a D6. On a 3+, the Wizard’s controlling player must choose another target. If there is no other viable target in range, the spell cannot be cast.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "cannibaltotem": {
    "slug": "cannibal-totem",
@@ -2164,7 +2452,7 @@
    "cost": 30,
    "costOverride": null,
    "text": "A unit carrying the Cannibal Totem gains the Regeneration (5+) special rule, but rolls only a single D6 when making a Pursuit roll (rather than the usual 2D6).",
-   "url": "https://tow.whfb.app/magic-item/cannibal-totem"
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "bullstandard": {
    "slug": "bull-standard",
@@ -2172,8 +2460,8 @@
    "type": "Magic Standard",
    "cost": 20,
    "costOverride": null,
-   "text": "A unit carrying the Bull Standard may re-roll any failed rolls To Wound when resolving Impact Hits .",
-   "url": "https://tow.whfb.app/magic-item/bull-standard"
+   "text": "A unit carrying the Bull Standard may re-roll any failed rolls To Wound when resolving Impact Hits.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "jadelion": {
    "slug": "jade-lion",
@@ -2182,25 +2470,25 @@
    "cost": 25,
    "costOverride": null,
    "text": "The bearer of the Jade Lion and their unit may re-roll any failed Fear, Panic, Rally or Terror test.",
-   "url": "https://tow.whfb.app/magic-item/jade-lion"
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "daemonslayerscars": {
    "slug": "daemon-slayer-scars",
-   "name": "Daemon-Slayer Scars*",
+   "name": "Daemon-Slayer Scars",
    "type": "Enchanted Item",
    "cost": 20,
    "costOverride": null,
-   "text": "The bearer of Daemon-slayer Scars gains the Terror special rule.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/daemon-slayer-scars"
+   "text": "The bearer of Daemon-slayer Scars gains the Terror special rule.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "fistfuloflaurels": {
    "slug": "fistful-of-laurels",
-   "name": "Fistful of Laurels*",
+   "name": "Fistful Of Laurels",
    "type": "Enchanted Item",
    "cost": 15,
    "costOverride": null,
-   "text": "Single use. The bearer of a Fistful of Laurels and their unit may re-roll the 2D6 when making a Break test.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/fistful-of-laurels"
+   "text": "Single use. The bearer of a Fistful of Laurels and their unit may re-roll the 2D6 when making a Break test.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "halflingcookbook": {
    "slug": "halfling-cookbook",
@@ -2208,8 +2496,8 @@
    "type": "Arcane Item",
    "cost": 30,
    "costOverride": null,
-   "text": "The bearer of the Halfling Cookbook increases their Command range, Dispel range and the range of a single spell chosen by their controlling player (not including range self spells) by 3\".",
-   "url": "https://tow.whfb.app/magic-item/halfling-cookbook"
+   "text": "The bearer of the Halfling Cookbook increases their Command range, Dispel range and the range of a single spell chosen by their controlling player (not including range ‘self ’ spells) by 3\".",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "hellheart": {
    "slug": "hellheart",
@@ -2218,16 +2506,16 @@
    "cost": 20,
    "costOverride": null,
    "text": "Single use. During the Command sub-phase of their turn, the bearer of the Hellheart may consume it. When they do so, they immediately lose a single Wound. However, until your next Start of Turn sub-phase, if any enemy Wizard rolls any natural double when making a Casting roll, the spell is miscast.",
-   "url": "https://tow.whfb.app/magic-item/hellheart"
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "grutssickle": {
    "slug": "gruts-sickle",
-   "name": "Grut's Sickle",
+   "name": "Grut’s Sickle",
    "type": "Arcane Item",
    "cost": 40,
    "costOverride": null,
-   "text": "After making a Casting roll, the bearer of Grut's Sickle may use it to roll an additional D3 and add its result to their Casting roll. However, a single friendly model within 3\" of the bearer immediately loses a single Wound.\n\nNote that the result of this additional D3 cannot cause a miscast or a perfect invocation.",
-   "url": "https://tow.whfb.app/magic-item/gruts-sickle"
+   "text": "After making a Casting roll, the bearer of Grut’s Sickle may use it to roll an additional D3 and add its result to their Casting roll. However, a single friendly model within 3\" of the bearer immediately loses a single Wound.\nNote that the result of this additional D3 cannot cause a miscast or a perfect invocation.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   },
   "swordofreaving": {
    "slug": "sword-of-reaving",
@@ -3002,6 +3290,20 @@
    "costOverride": null,
    "text": "Enemy units may not make Stomp Attacks against a unit carrying the Monster Hunter's Tapestry.",
    "url": "https://tow.whfb.app/magic-item/monster-hunters-tapestry"
+  },
+  "toothgnoblar": {
+   "slug": "tooth-gnoblar",
+   "name": "Tooth-Gnoblar",
+   "type": "Arcane Item",
+   "cost": 10,
+   "costOverride": null,
+   "text": "0-3 per model. Single use. After making a Casting roll for a spell from the Lore of the Great Maw, the bearer may choose to use a Tooth-Gnoblar. If they do so, apply a +1 modifier to the result. A model may only use one Tooth-Gnoblar per Casting roll.",
+   "url": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag"
   }
+ },
+ "renegade": {
+  "version": "1.5.2.2",
+  "source": "https://docs.google.com/document/d/1MaoPo4ytwOQLUdWPopfVpfBt7_qC_UZD6EX7xO6Ysag",
+  "appliedAt": "2026-10-25T14:19:28.955Z"
  }
 }

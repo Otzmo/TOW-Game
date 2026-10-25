@@ -56,8 +56,8 @@
     "width": 40,
     "depth": 40
    },
-   "unitSize": "3+",
-   "troopType": "Swarm",
+   "unitSize": "2+",
+   "troopType": "Swarms",
    "category": "Infantry",
    "profile": [
     {
@@ -75,19 +75,21 @@
      ]
     }
    ],
-   "equipment": "Claws and fangs (counts as a hand weapons)",
+   "equipment": "Claws and fangs (counts as a hand weapon)",
    "specialRules": [
     "fly",
     "necromantic-undead",
     "regeneration",
-    "skirmish-formation"
+    "skirmishers",
+    "cloud-of-horror"
    ],
    "ruleLabels": {
     "fly": "Fly (7)",
     "regeneration": "Regeneration (6+)"
    },
    "cost": 39,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "black-coach": {
    "slug": "black-coach",
@@ -162,7 +164,8 @@
     "regeneration": "Regeneration (6+)"
    },
    "cost": 205,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "black-knights": {
    "slug": "black-knights",
@@ -172,8 +175,8 @@
     "width": 30,
     "depth": 60
    },
-   "unitSize": "5+",
-   "troopType": "Heavy Cavalry",
+   "unitSize": "4+",
+   "troopType": "Heavy cavalry",
    "category": "Cavalry",
    "profile": [
     {
@@ -207,7 +210,7 @@
     {
      "name": "Skeletal Steed",
      "values": [
-      "7",
+      "8",
       "2",
       "-",
       "3",
@@ -226,10 +229,11 @@
     "first-charge",
     "necromantic-undead",
     "regeneration",
-    "swiftstride"
+    "swiftstride",
+    "spectral-steed"
    ],
    "ruleLabels": {
-    "cleaving-blow": "Cleaving Blow (Riders only)",
+    "cleaving-blow": "Cleaving Blow (Black Knights & Hell Knight only)",
     "regeneration": "Regeneration (6+)"
    },
    "cost": 24,
@@ -258,8 +262,19 @@
      "label": "• Upgrade one model to a musician",
      "cost": 6,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• A Hell Knight may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "blood-knights": {
    "slug": "blood-knights",
@@ -269,8 +284,8 @@
     "width": 30,
     "depth": 60
    },
-   "unitSize": "5+",
-   "troopType": "Heavy Cavalry",
+   "unitSize": "4+",
+   "troopType": "Heavy cavalry",
    "category": "Cavalry",
    "profile": [
     {
@@ -352,6 +367,11 @@
      "per": "unit"
     },
     {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
      "label": "• Replace heavy armour with full plate armour",
      "cost": 5,
      "per": "model"
@@ -360,8 +380,19 @@
      "label": "• Have the Drilled special rule",
      "cost": 3,
      "per": "model"
+    },
+    {
+     "label": "• Vampiric Powers up to a total of",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
+     "label": "• Magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "cairn-wraith": {
    "slug": "cairn-wraith",
@@ -372,7 +403,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -390,7 +421,7 @@
      ]
     }
    ],
-   "equipment": "Spectral scythe",
+   "equipment": "Spectral scythe (see below)",
    "specialRules": [
     "ethereal",
     "indomitable",
@@ -403,7 +434,8 @@
     "regeneration": "Regeneration (6+)"
    },
    "cost": 50,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "corpse-cart": {
    "slug": "corpse-cart",
@@ -414,7 +446,7 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "Heavy Chariot",
+   "troopType": "Heavy chariot",
    "category": "Chariot",
    "profile": [
     {
@@ -470,7 +502,8 @@
     "lore-of-undeath",
     "necromantic-undead",
     "random-attacks",
-    "regeneration"
+    "regeneration",
+    "vigor-mortis"
    ],
    "ruleLabels": {
     "impact-hits": "Impact Hits (D3+1)",
@@ -478,7 +511,7 @@
     "random-attacks": "Random Attacks (The Restless Dead only)",
     "regeneration": "Regeneration (6+)"
    },
-   "cost": 115,
+   "cost": 60,
    "options": [
     {
      "label": "• Whip",
@@ -500,7 +533,8 @@
      "cost": 15,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "coven-throne": {
    "slug": "coven-throne",
@@ -511,7 +545,7 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "Heavy Chariot",
+   "troopType": "Heavy chariot",
    "category": "Chariot",
    "profile": [
     {
@@ -559,6 +593,7 @@
    ],
    "equipment": "• Pallid Handmaidens: Hand weapons\n• Spirit Horde: Hand weapons and lances",
    "specialRules": [
+    "accursed-weapons",
     "close-order",
     "dark-vitality",
     "first-charge",
@@ -572,13 +607,15 @@
     "scrying-pool"
    ],
    "ruleLabels": {
+    "accursed-weapons": "Accursed Weapons (Pallid Handmaidens only)",
     "fly": "Fly (8)",
     "impact-hits": "Impact Hits (D6+1)",
     "random-attacks": "Random Attacks (Spirit Horde only)",
     "regeneration": "Regeneration (6+)"
    },
    "cost": null,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "crypt-ghouls": {
    "slug": "crypt-ghouls",
@@ -588,8 +625,8 @@
     "width": 25,
     "depth": 25
    },
-   "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "unitSize": "5+",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -621,27 +658,37 @@
      ]
     }
    ],
-   "equipment": "Hand weapons",
+   "equipment": "Hand weapons and calloused hide (counts as light armour)",
    "specialRules": [
+    "armour-bane",
+    "dark-vitality",
     "move-through-cover",
     "necromantic-undead",
-    "open-order-formation",
+    "open-order",
     "poisoned-attacks",
     "regeneration",
     "reserve-move",
-    "skirmish-formation"
+    "skirmishers",
+    "the-hunger"
    ],
    "ruleLabels": {
+    "armour-bane": "Armour Bane (1)",
     "regeneration": "Regeneration (6+)"
    },
-   "cost": 9,
+   "cost": 8,
    "options": [
     {
-     "label": "• Any unit may upgrade one model to a Crypt Ghast (champion)",
+     "label": "• Upgrade one model to a Crypt Ghast (champion)",
      "cost": 6,
      "per": "unit"
+    },
+    {
+     "label": "• Have the Ambushers special rule",
+     "cost": 1,
+     "per": "model"
     }
-   ]
+   ],
+   "renegade": true
   },
   "crypt-horrors": {
    "slug": "crypt-horrors",
@@ -652,7 +699,7 @@
     "depth": 40
    },
    "unitSize": "3+",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -684,18 +731,20 @@
      ]
     }
    ],
-   "equipment": "Filth-encrusted claws",
+   "equipment": "Filth-encrusted claws (see below) and scaly skin (counts as heavy armour)",
    "specialRules": [
+    "dark-vitality",
     "indomitable",
     "move-through-cover",
     "necromantic-undead",
-    "open-order-formation",
+    "open-order",
     "regeneration",
-    "stomp-attacks"
+    "stomp-attacks",
+    "the-hunger"
    ],
    "ruleLabels": {
     "indomitable": "Indomitable (1)",
-    "regeneration": "Regeneration (6+)",
+    "regeneration": "Regeneration (5+)",
     "stomp-attacks": "Stomp Attacks (1)"
    },
    "cost": 46,
@@ -705,7 +754,8 @@
      "cost": 7,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "dire-wolves": {
    "slug": "dire-wolves",
@@ -716,7 +766,7 @@
     "depth": 50
    },
    "unitSize": "5-20",
-   "troopType": "War Beast",
+   "troopType": "War beasts",
    "category": "Cavalry",
    "profile": [
     {
@@ -748,10 +798,10 @@
      ]
     }
    ],
-   "equipment": "Claws and fangs (counts as a hand weapons)",
+   "equipment": "Claws and fangs (counts as hand weapons)",
    "specialRules": [
     "necromantic-undead",
-    "open-order-formation",
+    "open-order",
     "regeneration",
     "reserve-move",
     "slavering-charge",
@@ -768,7 +818,8 @@
      "cost": 6,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "fell-bats": {
    "slug": "fell-bats",
@@ -779,7 +830,7 @@
     "depth": 40
    },
    "unitSize": "3+",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -797,12 +848,12 @@
      ]
     }
    ],
-   "equipment": "Claws and fangs (counts as a hand weapons)",
+   "equipment": "Claws and fangs (counts as a hand weapon)",
    "specialRules": [
     "fly",
     "necromantic-undead",
     "regeneration",
-    "skirmish-formation",
+    "skirmishers",
     "swiftstride"
    ],
    "ruleLabels": {
@@ -810,7 +861,8 @@
     "regeneration": "Regeneration (6+)"
    },
    "cost": 15,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "grave-guard": {
    "slug": "grave-guard",
@@ -820,8 +872,8 @@
     "width": 25,
     "depth": 25
    },
-   "unitSize": "10+",
-   "troopType": "Heavy Infantry",
+   "unitSize": "5+",
+   "troopType": "Heavy infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -888,6 +940,16 @@
      "per": "unit"
     },
     {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• A Seneschal may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
      "label": "• Have the Drilled special rule",
      "cost": 2,
      "per": "model"
@@ -897,7 +959,8 @@
      "cost": 1,
      "per": "model"
     }
-   ]
+   ],
+   "renegade": true
   },
   "hexwraiths": {
    "slug": "hexwraiths",
@@ -908,7 +971,7 @@
     "depth": 60
    },
    "unitSize": "5-10",
-   "troopType": "Light Cavalry",
+   "troopType": "Base Size: Unit Size: Equipment:",
    "category": "Cavalry",
    "profile": [
     {
@@ -940,7 +1003,7 @@
      ]
     },
     {
-     "name": "Spectral Steed",
+     "name": "Skeletal Steed",
      "values": [
       "8",
       "2",
@@ -961,7 +1024,7 @@
     "fly",
     "magical-attacks",
     "necromantic-undead",
-    "open-order-formation",
+    "open-order",
     "regeneration",
     "spectral-reapers",
     "swiftstride",
@@ -978,7 +1041,8 @@
      "cost": 6,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "master-necromancer": {
    "slug": "master-necromancer",
@@ -989,7 +1053,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1020,34 +1084,30 @@
     "indomitable": "Indomitable (1)",
     "regeneration": "Regeneration (5+)"
    },
-   "cost": 130,
+   "cost": 145,
    "options": [
-    {
-     "label": "• Nightmare",
-     "cost": 16,
-     "per": "unit"
-    },
-    {
-     "label": "• Mortis Engine",
-     "cost": 195,
-     "per": "unit"
-    },
-    {
-     "label": "• Abyssal Terror",
-     "cost": 120,
-     "per": "unit"
-    },
-    {
-     "label": "• Zombie Dragon",
-     "cost": 215,
-     "per": "unit"
-    },
     {
      "label": "• Be a Level 4 Wizard",
      "cost": 30,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• Be a Level 2 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "mortis-engine": {
    "slug": "mortis-engine",
@@ -1058,7 +1118,7 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "Heavy Chariot",
+   "troopType": "Heavy chariot",
    "category": "Chariot",
    "profile": [
     {
@@ -1123,10 +1183,12 @@
     "fly": "Fly (8)",
     "impact-hits": "Impact Hits (D6+1)",
     "random-attacks": "Random Attacks (Spirit Horde only)",
-    "regeneration": "Regeneration (6+)"
+    "regeneration": "Regeneration (6+)",
+    "wailing-dirge": "Wailing Dirge (-2)"
    },
    "cost": null,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "necromantic-acolyte": {
    "slug": "necromantic-acolyte",
@@ -1137,7 +1199,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1171,21 +1233,27 @@
    "cost": 60,
    "options": [
     {
-     "label": "• Nightmare",
-     "cost": 16,
+     "label": "• Be a Level 4 Wizard",
+     "cost": 30,
      "per": "unit"
     },
     {
-     "label": "• Mortis Engine",
-     "cost": 195,
+     "label": "• Purchase magic items up to a total of",
+     "cost": 100,
      "per": "unit"
     },
     {
      "label": "• Be a Level 2 Wizard",
      "cost": 30,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "nightmare": {
    "slug": "nightmare",
@@ -1196,7 +1264,7 @@
     "depth": 60
    },
    "unitSize": "1",
-   "troopType": "Heavy Cavalry",
+   "troopType": "Heavy cavalry",
    "category": "Mount",
    "profile": [
     {
@@ -1222,8 +1290,9 @@
     "swiftstride"
    ],
    "ruleLabels": {},
-   "cost": null,
-   "options": []
+   "cost": 16,
+   "options": [],
+   "renegade": true
   },
   "skeletal-steed-vampire-counts": {
    "slug": "skeletal-steed-vampire-counts",
@@ -1234,13 +1303,13 @@
     "depth": 60
    },
    "unitSize": "1",
-   "troopType": "Heavy Cavalry",
+   "troopType": "Heavy cavalry",
    "category": "Mount",
    "profile": [
     {
      "name": "Skeletal Steed",
      "values": [
-      "7",
+      "8",
       "2",
       "-",
       "3",
@@ -1252,15 +1321,17 @@
      ]
     }
    ],
-   "equipment": "Skeletal hooves (counts as hand weapon) and barding",
+   "equipment": "Skeletal hooves (counts as a hand weapon) and barding",
    "specialRules": [
     "first-charge",
     "necromantic-undead",
-    "swiftstride"
+    "swiftstride",
+    "spectral-steed"
    ],
    "ruleLabels": {},
-   "cost": null,
-   "options": []
+   "cost": 14,
+   "options": [],
+   "renegade": true
   },
   "skeleton-warriors-vampire-counts": {
    "slug": "skeleton-warriors-vampire-counts",
@@ -1271,7 +1342,7 @@
     "depth": 25
    },
    "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -1303,7 +1374,7 @@
      ]
     }
    ],
-   "equipment": "Hand weapons, light armour and shields",
+   "equipment": "Hand weapons light armour and shields",
    "specialRules": [
     "close-order",
     "horde",
@@ -1313,10 +1384,15 @@
    "ruleLabels": {
     "regeneration": "Regeneration (6+)"
    },
-   "cost": 5,
+   "cost": 4,
    "options": [
     {
-     "label": "• The entire unit may take thrusting spears",
+     "label": "• Thrusting spears",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Light armour",
      "cost": 1,
      "per": "model"
     },
@@ -1334,8 +1410,19 @@
      "label": "• Upgrade one model to a musician",
      "cost": 5,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Implacable Defence special rule",
+     "cost": 10,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "spirit-hosts": {
    "slug": "spirit-hosts",
@@ -1345,8 +1432,8 @@
     "width": 40,
     "depth": 40
    },
-   "unitSize": "3-6",
-   "troopType": "Swarm",
+   "unitSize": "2-6",
+   "troopType": "Swarms",
    "category": "Infantry",
    "profile": [
     {
@@ -1370,7 +1457,7 @@
     "ethereal",
     "magical-attacks",
     "necromantic-undead",
-    "open-order-formation",
+    "open-order",
     "regeneration",
     "reserve-move"
    ],
@@ -1378,7 +1465,8 @@
     "regeneration": "Regeneration (6+)"
    },
    "cost": 49,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "strigoi-ghoul-king": {
    "slug": "strigoi-ghoul-king",
@@ -1389,7 +1477,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1407,17 +1495,19 @@
      ]
     }
    ],
-   "equipment": "Hand weapon",
+   "equipment": "Hand weapon, Wicked Claws, and scaly skin (counts as heavy armour)",
    "specialRules": [
     "dark-vitality",
     "flammable",
+    "ghoulkin",
     "hatred",
     "indomitable",
     "lore-of-undeath",
     "necromantic-undead",
     "poisoned-attacks",
     "regeneration",
-    "the-hunger"
+    "the-hunger",
+    "vanguard"
    ],
    "ruleLabels": {
     "hatred": "Hatred (all enemies)",
@@ -1427,11 +1517,6 @@
    "cost": 145,
    "options": [
     {
-     "label": "• May be mounted on a Terrorgheist",
-     "cost": 185,
-     "per": "unit"
-    },
-    {
      "label": "• Level 1 Wizard",
      "cost": 30,
      "per": "unit"
@@ -1440,8 +1525,19 @@
      "label": "• Level 2 Wizard",
      "cost": 60,
      "per": "unit"
+    },
+    {
+     "label": "• May purchase magic items up to a total of",
+     "cost": 75,
+     "per": "unit"
+    },
+    {
+     "label": "• May take Vampiric Powers up to a total of",
+     "cost": 75,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "terrorgheist": {
    "slug": "terrorgheist",
@@ -1506,42 +1602,35 @@
    "category": "Mount",
    "profile": [
     {
-     "name": "Terrorgheist (Mount)",
+     "name": "Terrorgheist",
      "values": [
       "6",
       "3",
-      "-",
+      "0",
       "5",
-      "(+1)",
-      "(+5)",
+      "6",
+      "6",
       "3",
       "4",
-      "-"
+      "4"
      ]
     }
    ],
-   "equipment": "Filth-encrusted talons, rancid maw and calloused hide (counts as light armour)",
+   "equipment": "Filth-encrusted talons (see below), rancid maw (see below) and scaly skin (counts as heavy armour)",
    "specialRules": [
     "close-order",
     "fly",
     "indomitable",
     "infested",
-    "large-target",
-    "necromantic-undead",
-    "regeneration",
-    "stomp-attacks",
-    "swiftstride",
-    "terror",
-    "wailing-dirge"
+    "large-target"
    ],
    "ruleLabels": {
     "fly": "Fly (9)",
-    "indomitable": "Indomitable (1)",
-    "regeneration": "Regeneration (5+)",
-    "stomp-attacks": "Stomp Attacks (D6)"
+    "indomitable": "Indomitable (1)"
    },
-   "cost": null,
-   "options": []
+   "cost": 205,
+   "options": [],
+   "renegade": true
   },
   "tomb-banshee": {
    "slug": "tomb-banshee",
@@ -1552,7 +1641,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1582,10 +1671,12 @@
    ],
    "ruleLabels": {
     "indomitable": "Indomitable (1)",
-    "regeneration": "Regeneration (6+)"
+    "regeneration": "Regeneration (6+)",
+    "wailing-dirge": "Wailing Dirge (-1)"
    },
    "cost": 90,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "vampire-count": {
    "slug": "vampire-count",
@@ -1700,7 +1791,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1719,20 +1810,9 @@
     }
    ],
    "equipment": "Hand weapon",
-   "specialRules": [
-    "banner-of-the-count",
-    "dark-vitality",
-    "flammable",
-    "indomitable",
-    "lore-of-undeath",
-    "necromantic-undead",
-    "regeneration"
-   ],
-   "ruleLabels": {
-    "indomitable": "Indomitable (1)",
-    "regeneration": "Regeneration (5+)"
-   },
-   "cost": 75,
+   "specialRules": [],
+   "ruleLabels": {},
+   "cost": 70,
    "options": [
     {
      "label": "• Additional hand weapon",
@@ -1765,21 +1845,52 @@
      "per": "unit"
     },
     {
-     "label": "• Nightmare",
-     "cost": 16,
+     "label": "• Full Plate armour",
+     "cost": 9,
      "per": "unit"
     },
     {
-     "label": "• Coven Throne",
-     "cost": 210,
+     "label": "• Be a Level 2 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Be a Level 3 Wizard",
+     "cost": 60,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• Take Vampiric Powers up to a total of",
+     "cost": 100,
      "per": "unit"
     },
     {
      "label": "• Be a Level 1 Wizard",
      "cost": 30,
      "per": "unit"
+    },
+    {
+     "label": "• Be a Level 2 Wizard",
+     "cost": 60,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• Take Vampiric Powers up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "vargheists": {
    "slug": "vargheists",
@@ -1789,8 +1900,8 @@
     "width": 40,
     "depth": 40
    },
-   "unitSize": "3+",
-   "troopType": "Monstrous Infantry",
+   "unitSize": "2+",
+   "troopType": "Monstrous infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -1822,23 +1933,27 @@
      ]
     }
    ],
-   "equipment": "Wicked claws",
+   "equipment": "Wicked claws (see below) and calloused hide (counts as light armour)",
    "specialRules": [
     "armour-bane",
     "dark-vitality",
+    "dispersed-formation",
     "flammable",
     "fly",
     "frenzy",
+    "furious-charge",
     "indomitable",
+    "impetuous",
     "necromantic-undead",
     "regeneration",
-    "skirmish-formation"
+    "skirmishers",
+    "the-hunger"
    ],
    "ruleLabels": {
     "armour-bane": "Armour Bane (2)",
     "fly": "Fly (9)",
     "indomitable": "Indomitable (1)",
-    "regeneration": "Regeneration (6+)"
+    "regeneration": "Regeneration  (5+)"
    },
    "cost": 61,
    "options": [
@@ -1847,7 +1962,8 @@
      "cost": 7,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "varghulf": {
    "slug": "varghulf",
@@ -1858,7 +1974,7 @@
     "depth": 50
    },
    "unitSize": "1",
-   "troopType": "Monstrous Creature",
+   "troopType": "Monstrous creature",
    "category": "Monster",
    "profile": [
     {
@@ -1871,12 +1987,12 @@
       "5",
       "4",
       "4",
-      "4",
+      "5",
       "4"
      ]
     }
    ],
-   "equipment": "Wicked claws and calloused hide (counts as light armour)",
+   "equipment": "Wicked claws (see below) and scaly skin (counts as heavy armour)",
    "specialRules": [
     "bestial-fury",
     "close-order",
@@ -1885,17 +2001,14 @@
     "flammable",
     "frenzy",
     "indomitable",
-    "necromantic-undead",
-    "regeneration",
-    "swiftstride",
-    "terror"
+    "necromantic-undead"
    ],
    "ruleLabels": {
-    "indomitable": "Indomitable (1)",
-    "regeneration": "Regeneration (5+)"
+    "indomitable": "Indomitable (1)"
    },
-   "cost": 140,
-   "options": []
+   "cost": 110,
+   "options": [],
+   "renegade": true
   },
   "wight-king": {
    "slug": "wight-king",
@@ -1906,7 +2019,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1925,16 +2038,8 @@
     }
    ],
    "equipment": "Hand weapon and heavy armour",
-   "specialRules": [
-    "indomitable",
-    "killing-blow",
-    "necromantic-undead",
-    "regeneration"
-   ],
-   "ruleLabels": {
-    "indomitable": "Indomitable (1)",
-    "regeneration": "Regeneration (5+)"
-   },
+   "specialRules": [],
+   "ruleLabels": {},
    "cost": 85,
    "options": [
     {
@@ -1958,11 +2063,17 @@
      "per": "unit"
     },
     {
-     "label": "• May be mounted on a Skeletal Steed",
-     "cost": 14,
+     "label": "• A Wight King may purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• A Wight Lord may purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "wight-lord": {
    "slug": "wight-lord",
@@ -1973,7 +2084,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1992,16 +2103,9 @@
     }
    ],
    "equipment": "Hand weapon and heavy armour",
-   "specialRules": [
-    "killing-blow",
-    "necromantic-undead",
-    "regeneration",
-    "wight-banner"
-   ],
-   "ruleLabels": {
-    "regeneration": "Regeneration (6+)"
-   },
-   "cost": 40,
+   "specialRules": [],
+   "ruleLabels": {},
+   "cost": 60,
    "options": [
     {
      "label": "• Additional hand weapon",
@@ -2024,11 +2128,17 @@
      "per": "unit"
     },
     {
-     "label": "• May be mounted on a Skeletal Steed",
-     "cost": 14,
+     "label": "• A Wight King may purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• A Wight Lord may purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "zombie-dragon": {
    "slug": "zombie-dragon",
@@ -2084,17 +2194,17 @@
     "depth": 25
    },
    "unitSize": "20-40",
-   "troopType": "Regular Infantry",
+   "troopType": "Base Size: Unit Size: Equipment:",
    "category": "Infantry",
    "profile": [
     {
-     "name": "Zombies",
+     "name": "Zombie",
      "values": [
       "4",
-      "2",
+      "1",
       "0",
       "3",
-      "3",
+      "2",
       "1",
       "1",
       "1",
@@ -2108,7 +2218,8 @@
     "horde",
     "necromantic-undead",
     "regeneration",
-    "the-newly-dead"
+    "the-newly-dead",
+    "shambling-horde"
    ],
    "ruleLabels": {
     "regeneration": "Regeneration (6+)"
@@ -2125,7 +2236,8 @@
      "cost": 5,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   }
  },
  "rules": {
@@ -2143,15 +2255,15 @@
   },
   "invocation-of-nehek": {
    "key": "invocation-of-nehek",
-   "name": "Invocation of Nehek",
-   "text": "During the Command sub-phase of their turn, if they are not engaged in combat, this character may attempt to resurrect the fallen by making a Leadership test (using their own Leadership). If this test is passed, a single friendly unit that has the Necromantic Undead special rule and is within 12\" of this character recovers a number of lost Wounds. However, magically repairing great Undead beasts is much harder than raising Zombies from the dirt. Therefore, how many Wounds are recovered depends upon the unit's troop type and this character's Level of Wizardry:\n\n• If the unit's troop type is regular infantry or heavy infantry, it recovers a number of Wounds equal to this character's Level of Wizardry +D3.\n• If the unit's troop type is swarms, light cavalry or war beasts, it recovers a number of Wounds equal to this character's Level of Wizardry +1.\n• If the unit's troop type is monstrous infantry, heavy cavalry, monstrous cavalry or light chariot, it recovers a number of Wounds equal to this character's Level of Wizardry.\n• If the unit's troop type is heavy chariot, monstrous creature, behemoth or war machine, it recovers a single Wound.",
-   "url": "https://tow.whfb.app/special-rules/invocation-of-nehek"
+   "name": "Invocation Of Nehek",
+   "text": "During the Command sub-phase of their turn, if they are not engaged in combat, this character may attempt to resurrect the fallen (see page 28) by making a Leadership test (using their own Leadership). If this test is passed, a single friendly unit that has the Necromantic Undead special rule and is within 12\" of this character recovers a number of lost Wounds. However, magically repairing great Undead beasts is much harder than\nraising Zombies from the dirt. Therefore, how many Wounds are recovered depends upon the unit’s troop type and this character’s Level of Wizardry:\n* If the unit’s troop type is ‘regular infantry’ or ‘swarms,’ it recovers a number of Wounds equal to this character’s Level of Wizardry +D3.\n* If the unit’s troop type is ‘light cavalry’ or ‘war beasts,’ it recovers a number of Wounds equal to this character’s Level of Wizardry +1.\n* If the unit’s troop type is ‘heavy infantry,’ ‘monstrous infantry,’ ‘heavy cavalry,’ ‘monstrous cavalry’ or ‘light chariot,’ it recovers a number of Wounds equal to this character’s Level of Wizardry.\n* If the unit’s troop type is ‘heavy chariot,’ ‘monstrous creature,’ ‘behemoth’ or ‘war machine,’ it recovers a single Wound.\n* Models with the Dark Vitality or Ethereal special rules recover half the amount of wounds as described above (including any bonuses), rounding fractions up.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "the-hunger": {
    "key": "the-hunger",
    "name": "The Hunger",
-   "text": "At the end of any Combat phase in which this character inflicted one or more unsaved wounds, roll a D6. On a roll of 6, this character recovers a single lost Wound. However, so great is this character's hunger that, whenever they (and any unit they have joined) make a Pursuit roll, they roll only a single D6 (rather than the usual 2D6).",
-   "url": "https://tow.whfb.app/special-rules/the-hunger"
+   "text": "At the end of a Combat phase in which a unit with this special rule caused one or more unsaved wounds, roll a D6 for each unsaved wound caused. For each roll of 5+, models with this special rule recover one lost Wound, following the rules for Resurrecting the Fallen. However, a model with the Behemoth troop type may only ever recover a maximum of one Wound per phase in this manner.\nIn addition, if a unit with this special rule wishes to Pursue or Overrun, it must make a Leadership test. If this test is failed, the unit still Pursues or Overruns, but rolls a single D6 to determine the distance moved, rather than the usual 2D6.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "wight-banner": {
    "key": "wight-banner",
@@ -2162,8 +2274,8 @@
   "implacable-defence": {
    "key": "implacable-defence",
    "name": "Implacable Defence",
-   "text": "A unit with this special rule that is arrayed in a Close Order formation, and that is equipped with and chooses to use shields, may choose not to Give Ground should it lose a round of combat.\n\nHowever, if the winning side significantly outnumbers the losing side, it will overwhelm the loser. If the Unit Strength of the winning side is more than twice that of the losing side, this unit cannot use this special rule and must Give Ground as normal.",
-   "url": "https://tow.whfb.app/special-rules/implacable-defence"
+   "text": "A unit with this special rule that is arrayed in a Close Order formation, and that is equipped with and chooses to use shields, may choose not to Give Ground should it lose a round of combat.\nHowever, if the winning side significantly outnumbers the losing side, it will overwhelm the loser. If the Unit Strength of the winning side is more than twice that of the losing side, this unit cannot use this special rule and must Give Ground as normal.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "bound-spirits": {
    "key": "bound-spirits",
@@ -2175,7 +2287,7 @@
    "key": "accursed-weapons",
    "name": "Accursed Weapons",
    "text": "A hand weapon carried by a model with this special rule has the Magical Attacks special rule and an Armour Piercing characteristic of -1.",
-   "url": "https://tow.whfb.app/special-rules/accursed-weapons"
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "martial-pride": {
    "key": "martial-pride",
@@ -2234,8 +2346,8 @@
   "cleaving-blow": {
    "key": "cleaving-blow",
    "name": "Cleaving Blow",
-   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound for an attack made in combat, it has struck a 'Cleaving Blow'. Enemy models whose troop type is regular infantry, heavy infantry, light cavalry, heavy cavalry or war beasts are not permitted an armour or Regeneration save against a Cleaving Blow (Ward saves can be attempted as normal).\n\nNote that if an attack wounds automatically, this special rule cannot be used.",
-   "url": "https://tow.whfb.app/special-rules/cleaving-blow"
+   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound for an attack made in combat, it has struck\na ‘Cleaving Blow.’ Enemy models whose troop type is ‘regular infantry,’ ‘heavy infantry,’ ‘light cavalry,’ ‘heavy cavalry’ or ‘war beasts’ are not permitted an armour or Regeneration save against a Cleaving Blow (Ward saves can be attempted as normal).\nNote that if an attack wounds automatically, this special rule cannot be used.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "spectral-coach": {
    "key": "spectral-coach",
@@ -2264,38 +2376,38 @@
   "indomitable": {
    "key": "indomitable",
    "name": "Indomitable (X)",
-   "text": "A unit with this special rule reduces the number of wounds suffered due to the Unstable special rule by the number shown in brackets (shown here as 'X').\n\nNote that this special rule is not cumulative. If two or more models in a unit have this special rule, use the highest value for the entire unit. For example, if a character with Indomitable (2) joins a unit with Indomitable (1), the whole unit uses the character's Indomitable (2) special rule.",
-   "url": "https://tow.whfb.app/special-rules/indomitable"
+   "text": "A unit with this special rule reduces the number of wounds suffered due to the Unstable special rule by the number shown in brackets (shown here as ‘X’).\nNote that this special rule is not cumulative. If two or more models in a unit have this special rule, use the highest value for the entire unit. For example, if a character with Indomitable (2) joins a unit with Indomitable (1), the whole unit uses the character’s Indomitable (2) special rule.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "dark-vitality": {
    "key": "dark-vitality",
    "name": "Dark Vitality",
-   "text": "Models with this special rule are not subject to the Death of a General rule. In addition, unless they have joined a unit that does not have this special rule they (and their mounts) can march as normal.",
-   "url": "https://tow.whfb.app/special-rules/dark-vitality"
+   "text": "Models with this special rule are not affected if the Master of the Dead for your army is slain. Furthermore, unless they have joined a unit that does not have this special rule they (and their mounts) can march as normal. In addition, A Vampire Count or Vampire Thrall Wizard with this special rule may wear armour or carry a shield without penalty. IE: They may Cast and Dispel as Normal.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "necromantic-undead": {
    "key": "necromantic-undead",
    "name": "Necromantic Undead",
-   "text": "Models with this special rule are 'Undead'. Undead models cannot march (unless they have the Fly (X) special rule and choose to move by flying). In addition, all Undead models have the following universal special rules:\n\n• Fear\n• Immune To Psychology\n• Unbreakable\n• Unstable\n\nA character with this special rule cannot join a unit without this special rule, and vice versa.",
-   "url": "https://tow.whfb.app/special-rules/necromantic-undead"
+   "text": "Models with this special rule are ‘Undead.’ Undead models cannot march (unless they have the Fly (X) special rule and choose to move by flying). In addition, all Undead models have the following universal special rules:\n* Fear\n* Immune to Psychology\n* Unbreakable\n* Unstable\nA character with this special rule cannot join a unit without this special rule, and vice versa",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "the-newly-dead": {
    "key": "the-newly-dead",
    "name": "The Newly Dead",
-   "text": "When resurrecting the fallen, a unit with this special rule can be taken beyond its starting size (but not beyond its maximum size).",
-   "url": "https://tow.whfb.app/special-rules/the-newly-dead"
+   "text": "When resurrecting the fallen, a unit with this special rule can be taken beyond its starting size by an additional 20 models.\n________________",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "resurrecting-the-fallen": {
    "key": "resurrecting-the-fallen",
-   "name": "Resurrecting the Fallen",
-   "text": "In an undead army, it is possible to heal a unit by recovering lost Wounds, and to resurrect fallen warriors. Wounds recovered in this way follow a strict order:\n\n• First, any characters that have joined the unit are healed. A character that has been reduced to zero Wounds and removed from play cannot be resurrected.\n• Second, models with more than one Wound on their profile are healed.\n• Next, the unit champion is resurrected, displacing rank-and-file models as required, followed by the standard bearer and musician.\n• Finally, rank-and-file models are resurrected.\n\nNote that, in the case of multiple Wound models, each model must be fully healed, recovering all of its lost Wounds, before another can be healed or resurrected.\n\nNote also that at least one model must remain in order for a unit to be healed. In other words, a unit that has been reduced to zero Wounds and removed from play cannot be resurrected.\n\nResurrected models are added to the front rank until it reaches the minimum required to claim a Rank Bonus, after which additional models can be added to the front or rear rank. If the unit already has more than one rank, models can only be added to the rear rank. A unit cannot be taken beyond its starting size.",
-   "url": "https://tow.whfb.app/special-rules/resurrecting-the-fallen"
+   "name": "Resurrecting The Fallen",
+   "text": "In a Vampire Counts army, it is possible to heal a unit by recovering lost Wounds, and to resurrect fallen warriors. Wounds recovered in this way follow a strict order:\n* First, any characters that have joined the unit are healed. A character that has been reduced to zero Wounds and removed from play cannot be resurrected.\n* Second, models with more than one Wound on their profile are healed.\n* Next, the unit champion is resurrected, displacing rank-and-file models as required, followed by the standard bearer and musician.\n* Finally, rank-and-file models are resurrected.\nNote that, in the case of multiple Wound models, each model must be fully healed, recovering all of its lost Wounds, before another can be healed or resurrected.\nNote also that at least one model must remain in order for a unit to be healed. In other words, a unit that has been reduced to zero Wounds and removed from play cannot be resurrected.\nResurrected models are added to the front rank until it reaches the minimum required to claim a Rank Bonus, after which additional models can be added to the front or rear rank. If the unit already has more than one rank, models can only be added to the rear rank. A unit cannot be taken beyond its starting size.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "wailing-dirge": {
    "key": "wailing-dirge",
-   "name": "Wailing Dirge",
-   "text": "During the Shooting phase of its turn, unless it marched during the preceding Movement phase, a model with this special rule may make a 'Wailing Dirge' attack. A Wailing Dirge attack may target any enemy unit that is within 8\" of this model (including units that are engaged in combat) and that this model can draw a line of sight to, or that this model is engaged in combat with.\n\nThe target must make a Leadership test with a -2 modifier to its Leadership characteristic (to a minimum of 2). If this test is failed, the target suffers a number of wounds equal to the amount by which it failed the test, with no armour or Regeneration saves permitted (Ward saves can be attempted as normal).\n\nNote that a Wailing Dirge attack can target an enemy character, regardless of the usual rules for targeting Lone characters.",
-   "url": "https://tow.whfb.app/special-rules/wailing-dirge"
+   "name": "Wailing Dirge (X)",
+   "text": "During the Shooting phase of its turn, unless it marched during the preceding Movement phase, A model with this special rule may make a ‘Wailing Dirge’ attack. A Wailing Dirge attack is a Shooting attack with the Magical Attacks special rule and a range of 8”. A Wailing Dirge attack can target an enemy Lone character regardless of the usual rules for targeting Lone characters. may target any enemy unit that is within 8\" of this model (including units that are engaged in combat) and that this model can draw a line of sight to. or that this model is engaged in combat with  If this model is engaged in combat during the Shooting phase, it may target a unit in base contact with a Wailing Dirge attack and may do so even if it charged this turn.\nA Wailing Dirge attack does not roll to hit and wound as normal. Instead, the target must make a Leadership test with a -2 negative modifier to its Leadership characteristic shown in the brackets after the name of this special rule (shown here as ‘X’). If this test is failed, the target suffers a number of wounds equal to the amount by which it failed the test, with no armour or Regeneration saves permitted (Ward saves can be attempted as normal).\nNote that a Wailing Dirge attack may reduce the target's Leadership characteristic to a minimum of 2  a Wailing Dirge attack can target an enemy character, regardless of the usual rules for targeting Lone characters.\n.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "close-order": {
    "key": "close-order",
@@ -2464,71 +2576,137 @@
    "name": "Killing Blow",
    "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound for an attack made in combat, it has struck a 'Killing Blow'. Enemy models whose troop type is infantry or cavalry are not permitted an armour or Regeneration save against a Killing Blow (Ward saves can be attempted as normal). If an enemy model whose troop type is infantry or cavalry suffers an unsaved wound from a Killing Blow, it loses all of its remaining Wounds.\n\nNote that if an attack wounds automatically, this special rule cannot be used.",
    "url": "https://tow.whfb.app/special-rules/killing-blow"
+  },
+  "master-of-the-dead": {
+   "key": "master-of-the-dead",
+   "name": "Master of the Dead",
+   "text": "Your army must include at least one Wizard to be its Master of the Dead.If your army includes several Wizards, the Master of the Dead  will be the one with the highest Level of Wizardry. If two or more models have the highest Wizard Level, you may choose which one is the Master of the Dead when writing your muster list. You must tell your opponent which model is your Master of the Dead before deploying your army.\nShould your Master of the Dead be slain, the magical animus of the army starts to dissipate. As soon as your Master of the Dead is removed from play as a casualty, all friendly units with the Necromantic Undead special rule lose the Regeneration (X) special rule.\nIn addition, at the end of the phase in which your Master of the Dead was removed from play as a casualty, and during each of your Start of Turn sub-phases for the remainder of the game, all friendly units with the Necromantic Undead special rule that are currently on the battlefield must make a Leadership test. If this test is failed, the unit loses a number of Wounds equal to the amount by which it failed the test.\nFor example, your army’s Master of the Dead is destroyed during your opponent’s Shooting phase. At the end of that phase a unit of Skeleton Warriors (Ld 5) makes a Leadership test and rolls a 7 (failing the test by 2). That unit immediately loses two Wounds. During your next Start of Turn sub-phase, the same unit makes another Leadership test, this time rolling a 6, resulting in the loss of one Wound.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
+  },
+  "spectral-steed": {
+   "key": "spectral-steed",
+   "name": "Spectral Steed",
+   "text": "A unit comprised entirely of modes with this special rule treats all terrain as open ground for the purposes of movement. They cannot end their movement inside impassable terrain, though they can pass through it.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
+  },
+  "ghoulkin": {
+   "key": "ghoulkin",
+   "name": "Ghoulkin",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/ghoulkin"
+  },
+  "shambling-horde": {
+   "key": "shambling-horde",
+   "name": "Shambling Horde.",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/shambling-horde"
+  },
+  "open-order": {
+   "key": "open-order",
+   "name": "Open Order",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/open-order"
+  },
+  "skirmishers": {
+   "key": "skirmishers",
+   "name": "Skirmishers",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/skirmishers"
+  },
+  "cloud-of-horror": {
+   "key": "cloud-of-horror",
+   "name": "Cloud of Horror",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/cloud-of-horror"
+  },
+  "dispersed-formation": {
+   "key": "dispersed-formation",
+   "name": "Dispersed Formation",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/dispersed-formation"
+  },
+  "furious-charge": {
+   "key": "furious-charge",
+   "name": "Furious Charge",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/furious-charge"
+  },
+  "impetuous": {
+   "key": "impetuous",
+   "name": "Impetuous",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/impetuous"
+  },
+  "vigor-mortis": {
+   "key": "vigor-mortis",
+   "name": "Vigor Mortis",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/vigor-mortis"
   }
  },
  "items": {
   "curseoftherevenant": {
    "slug": "curse-of-the-revenant",
-   "name": "Curse of the Revenant",
-   "type": "Ability",
-   "cost": 50,
+   "name": "Curse Of The Revenant",
+   "type": "Arcane Item",
+   "cost": 40,
    "costOverride": null,
    "text": "This Vampire has a +1 modifier to its Wounds characteristic.",
-   "url": "https://tow.whfb.app/magic-item/curse-of-the-revenant"
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "beguile": {
    "slug": "beguile",
    "name": "Beguile",
-   "type": "Ability",
-   "cost": 40,
+   "type": "Arcane Item",
+   "cost": 20,
    "costOverride": null,
-   "text": "Enemy units must make a Leadership test before making any rolls To Hit against this Vampire during the Combat phase. If this test is failed, only rolls of a natural 6 will hit.",
-   "url": "https://tow.whfb.app/magic-item/beguile"
+   "text": "Enemy units must make a Leadership test before making any rolls To Hit against this model during the Combat phase. If this test is failed, only rolls of a natural 6 will hit.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "flyinghorror": {
    "slug": "flying-horror",
    "name": "Flying Horror",
-   "type": "Ability",
+   "type": "Arcane Item",
    "cost": 35,
    "costOverride": null,
-   "text": "Models whose troop type is infantry only. This Vampire gains the Fly (10) rule, but cannot join a unit.",
-   "url": "https://tow.whfb.app/magic-item/flying-horror"
+   "text": "Models whose troop type is ‘infantry’ only. This Vampire gains the Fly (10) rule, but cannot join a unit.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "darkacolyte": {
    "slug": "dark-acolyte",
    "name": "Dark Acolyte",
-   "type": "Ability",
+   "type": "Arcane Item",
    "cost": 30,
    "costOverride": null,
-   "text": "This Vampire gains the Invocation of Nehek special rule. For the purposes of using this special rule, this model counts as a Level 1 Wizard.",
-   "url": "https://tow.whfb.app/magic-item/dark-acolyte"
+   "text": "This Vampire gains the Invocation of Nehek special rule (as described on page 5). For the purposes of using this special rule, this model counts as a Level 1 Wizard.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "masteroftheblackarts": {
    "slug": "master-of-the-black-arts",
-   "name": "Master of the Black Arts",
-   "type": "Ability",
+   "name": "Master Of The Black Arts",
+   "type": "Arcane Item",
    "cost": 30,
    "costOverride": null,
-   "text": "This Vampiric Power may only be taken by a Vampire Count that is a Level 2 Wizard, or by a Vampire Thrall that is a Level 1 Wizard. This Vampire increases their Level of Wizardry by 1.",
-   "url": "https://tow.whfb.app/magic-item/master-of-the-black-arts"
+   "text": "This Vampiric Power may only be taken by a Vampire Lord that is a Level 3 Wizard, or by a Vampire Thrall that is a Level 1 Wizard. This Vampire increases their Level of Wizardry by 1.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "supernaturalhorror": {
    "slug": "supernatural-horror",
    "name": "Supernatural Horror",
-   "type": "Ability",
+   "type": "Arcane Item",
    "cost": 20,
    "costOverride": null,
    "text": "This Vampire gains the Terror special rule.",
-   "url": "https://tow.whfb.app/magic-item/supernatural-horror"
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "lordofthenight": {
    "slug": "lord-of-the-night",
-   "name": "Lord of the Night",
-   "type": "Ability",
+   "name": "Lord Of The Night",
+   "type": "Arcane Item",
    "cost": 15,
    "costOverride": null,
    "text": "During the Command sub-phase of their turn, this Vampire may attempt to resurrect fallen creatures of the night by making a Leadership test (using their own Leadership). If this test is passed, a single friendly unit of Fell Bats, Bat Swarms or Dire Wolves that is within 12\" of this model recovers D6 lost Wounds.",
-   "url": "https://tow.whfb.app/magic-item/lord-of-the-night"
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "frostblade": {
    "slug": "frostblade",
@@ -2536,17 +2714,17 @@
    "type": "Magic Weapon",
    "cost": 60,
    "costOverride": null,
-   "text": "Frostblade (Profile)Notes: Any enemy model that suffers one or more unsaved wounds from the Frostblade must immediately make a Toughness test. If this test is failed, they gain the Strike Last special rule and must reduce their Initiative characteristic to 1 for the remainder of the game.",
-   "url": "https://tow.whfb.app/magic-item/frostblade"
+   "text": "R        S        AP        Special Rules\nFrostblade        Combat        S        -        Killing Blow, Magical Attacks\nNotes: Any enemy model that suffers one or more unsaved wounds from the Frostblade must immediately make a Toughness test. If this test is failed, they gain the Strike Last special rule and must reduce their Initiative characteristic to 1 for the remainder of the game.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "swordofkings": {
    "slug": "sword-of-kings",
-   "name": "Sword of Kings",
+   "name": "Sword Of Kings",
    "type": "Magic Weapon",
    "cost": 55,
    "costOverride": null,
-   "text": "Sword of Kings (Profile)Notes: The wielder of the Sword of Kings strikes a Killing Blow if they roll a natural 5 or 6 when making a roll To Wound, rather than the usual 6.",
-   "url": "https://tow.whfb.app/magic-item/sword-of-kings"
+   "text": "R        S        AP        Special Rules\nSword of Kings        Combat  S+1        -1        Killing Blow, Magical Attacks\nNotes: The wielder of the Sword of Kings strikes a Killing Blow if they roll a natural 5 or 6 when making a roll To Wound, rather than the usual 6.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "blooddrinker": {
    "slug": "blood-drinker",
@@ -2554,8 +2732,8 @@
    "type": "Magic Weapon",
    "cost": 45,
    "costOverride": null,
-   "text": "Blood Drinker (Profile)Notes: If the wielder of Blood Drinker causes one or more unsaved wounds during the Combat phase, they recover a single lost Wound.",
-   "url": "https://tow.whfb.app/magic-item/blood-drinker"
+   "text": "R        S        AP        Special Rules\nBlood Drinker        Combat        S        -1        Magical Attacks\nNotes: If the wielder of Blood Drinker causes one or more unsaved wounds during the Combat phase, they recover a single lost Wound.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "dreadlance": {
    "slug": "dreadlance",
@@ -2563,8 +2741,8 @@
    "type": "Magic Weapon",
    "cost": 40,
    "costOverride": null,
-   "text": "Dreadlance (Profile)Notes: Models whose troop type is cavalry or monster only. The Dreadlance can only be used during a turn in which the wielder charged. In subsequent turns (or if the wielder did not charge) the model must use its hand weapon instead. The wielder of the Dreadlance may re-roll any failed rolls To Hit made whilst using it.",
-   "url": "https://tow.whfb.app/magic-item/dreadlance"
+   "text": "R        S        AP        Special Rules\nDreadlance        Combat  S+2        -2        Armour Bane (1), Magical Attacks\nNotes: Models whose troop type is ‘cavalry’ or ‘monster’ only. The Dreadlance can only be used during a turn in which the wielder charged. In subsequent turns (or if the wielder did not charge) the model must use its hand weapon instead. The wielder of the Dreadlance may re-roll any failed rolls To Hit made whilst using it.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "theflayedhauberk": {
    "slug": "the-flayed-hauberk",
@@ -2573,7 +2751,7 @@
    "cost": 35,
    "costOverride": null,
    "text": "The Flayed Hauberk is a suit of heavy armour which may be worn by a Wizard without penalty. In addition, its wearer has a 6+ Ward save against any wounds suffered.",
-   "url": "https://tow.whfb.app/magic-item/the-flayed-hauberk"
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "theaccursedarmour": {
    "slug": "the-accursed-armour",
@@ -2581,8 +2759,8 @@
    "type": "Magic Armour",
    "cost": 30,
    "costOverride": null,
-   "text": "Models whose troop type is infantry or cavalry only. The Accursed Armour is a suit of full plate armour. In addition, its wearer has a +1 modifier to their Toughness characteristic, but suffers a -1 modifier to their Weapon Skill and Initiative characteristics (to a minimum of 1).",
-   "url": "https://tow.whfb.app/magic-item/the-accursed-armour"
+   "text": "Models whose troop type is ‘infantry’ or ‘cavalry’ only. The Accursed Armour is a suit of full plate armour. In addition, its wearer has a +1 modifier to their Toughness characteristic, but suffers a -1 modifier to their Weapon Skill and Initiative characteristics (to a minimum of 1).",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "voncarsteinring": {
    "slug": "von-carstein-ring",
@@ -2590,71 +2768,71 @@
    "type": "Talisman",
    "cost": 40,
    "costOverride": null,
-   "text": "Vampires only. Single use. When the wearer of the Von Carstein Ring loses their last Wound, roll a D6. On a roll of 2+, the Wound is not lost.",
-   "url": "https://tow.whfb.app/magic-item/von-carstein-ring"
+   "text": "Vampires only. The bearer of this item has a 5+ Ward save against all wounds suffered. In addition, if the bearer loses their final Wound and is removed from play as a casualty, roll a D6. On a roll of 2+, the model is immediately returned to play. Place the model back in the exact position it occupied prior to being removed, with 1 Wound remaining.\nOnce this resurrection ability has been used, the Von Carstein Ring is destroyed and its effects are lost for the remainder of the game.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "crownofthedamned": {
    "slug": "crown-of-the-damned",
-   "name": "Crown of the Damned",
+   "name": "Crown Of The Damned",
    "type": "Talisman",
    "cost": 35,
    "costOverride": null,
    "text": "The Crown of the Damned gives its wearer a 4+ Ward save against any wounds suffered. However, due to the wailing of the spirits trapped within the crown, its wearer is also subject to the Stupidity special rule.",
-   "url": "https://tow.whfb.app/magic-item/crown-of-the-damned"
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "bannerofthebarrows": {
    "slug": "banner-of-the-barrows",
-   "name": "Banner of the Barrows",
+   "name": "Banner Of The Barrows",
    "type": "Magic Standard",
-   "cost": 65,
+   "cost": 50,
    "costOverride": null,
-   "text": "Wight Lord Battle Standard Bearer only. During the Combat phase, when a unit carrying the Banner of the Barrows makes a roll To Hit, a roll of 3+ is always a success, regardless of the target's Weapon Skill.",
-   "url": "https://tow.whfb.app/magic-item/banner-of-the-barrows"
+   "text": "Cannot be taken by a unit with the Dark Vitality special rule. During the Combat phase, when a unit carrying the Banner of the Barrows makes a roll To Hit, a roll of 3+ is always a success, regardless of the target’s Weapon Skill.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "drakenhofbanner": {
    "slug": "drakenhof-banner",
    "name": "Drakenhof Banner",
    "type": "Magic Standard",
-   "cost": 50,
+   "cost": 60,
    "costOverride": null,
    "text": "If a unit carrying the Drakenhof Banner has the Regeneration (X+) special rule, it improves the armour value of its Regeneration save by 1.",
-   "url": "https://tow.whfb.app/magic-item/drakenhof-banner"
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "thescreamingbanner": {
    "slug": "the-screaming-banner",
    "name": "The Screaming Banner",
    "type": "Magic Standard",
-   "cost": 45,
+   "cost": 25,
    "costOverride": null,
    "text": "When an enemy unit makes a Leadership test due to Fear caused by a unit carrying the Screaming Banner, it must roll an extra D6 and discard the lowest result.",
-   "url": "https://tow.whfb.app/magic-item/the-screaming-banner"
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "standardofhellishvigour": {
    "slug": "standard-of-hellish-vigour",
-   "name": "Standard of Hellish Vigour",
+   "name": "Standard Of Hellish Vigour",
    "type": "Magic Standard",
    "cost": 40,
    "costOverride": null,
    "text": "A unit carrying the Standard of Hellish Vigour gains the Reserve Move special rule.",
-   "url": "https://tow.whfb.app/magic-item/standard-of-hellish-vigour"
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "helmofcommandment": {
    "slug": "helm-of-commandment",
-   "name": "Helm of Commandment",
+   "name": "Helm Of Commandment",
    "type": "Enchanted Item",
    "cost": 40,
    "costOverride": null,
-   "text": "Necromancers and Wights only. During the Command sub-phase of their turn, this character may attempt to enhance the sentience of those around them by making a Leadership test (using their own Leadership). If this test is passed, until your next Start of Turn sub-phase this character and any unit they have joined gains a +D3 modifier to their Weapon Skill characteristic (to a maximum of 10).",
-   "url": "https://tow.whfb.app/magic-item/helm-of-commandment"
+   "text": "Necromancers and Wights only. During the Command sub-phase of their turn, this character may attempt to enhance the sentience of those around them by making a Leadership test (using their own Leadership). If this test is passed, until your next Start of Turn sub-phase this character and any unit they have joined gains a +1 modifier to their Weapon Skill characteristic (to a maximum of 10).",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "handofdust": {
    "slug": "hand-of-dust",
-   "name": "Hand of Dust",
+   "name": "Hand Of Dust",
    "type": "Enchanted Item",
    "cost": 35,
    "costOverride": null,
-   "text": "Necromancers only. This model can cast the following Bound spell, with a Power Level of 2. Roll a D6 each time the Hand of Dust is used. On a roll of 1, it crumbles to dust and cannot be used again:\n\nType | Assailment\nCasting Value | 9+\nRange | Combat\n\nThe target enemy unit suffers 2D6 Strength 5 hits, each with an AP of -1.",
-   "url": "https://tow.whfb.app/magic-item/hand-of-dust"
+   "text": "Necromancers and Wights only. This model can cast the following Bound spell, with a Power Level of 1. Roll a D6 each time the Hand of Dust is used. On a roll of 1, it crumbles to dust and cannot be used again:\nEffect: The target enemy unit suffers 2D6 Strength 5 hits, each with an AP of -1.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "cloakofmistandshadows": {
    "slug": "cloak-of-mist-and-shadows",
@@ -2671,26 +2849,26 @@
    "type": "Arcane Item",
    "cost": 50,
    "costOverride": null,
-   "text": "The bearer of the Skull Staff increases their Dispel range by 3\" and, when attempting a Wizardly dispel, may apply a +1 modifier to their Dispel roll.\n\nNote that this is a modifier to the result of a roll – it does not negate a roll of a natural double 1.",
-   "url": "https://tow.whfb.app/magic-item/skull-staff"
+   "text": "The bearer of the Skull Staff increases their Dispel range by 3\" and, when attempting a Wizardly dispel, may apply a +1 modifier to their Dispel roll.\nNote that this is a modifier to the result of a roll – it does not negate a roll of a natural double 1.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "sceptreofdenoirot": {
    "slug": "sceptre-of-de-noirot",
-   "name": "Sceptre of De Noirot",
+   "name": "Sceptre Of De Noirot",
    "type": "Arcane Item",
    "cost": 35,
    "costOverride": null,
-   "text": "The bearer of the Sceptre of de Noirot may attempt to resurrect the fallen by using the Invocation of Nehek special rule twice during their Command sub-phase (rather than the usual once). Roll a D6 each time the sceptre is used. On a roll of 1, the bearer loses a single Wound.",
-   "url": "https://tow.whfb.app/magic-item/sceptre-of-de-noirot"
+   "text": "Master Necromancer Only. When the wielder of the Sceptre De Noirot uses the Invocation of Nehek special rule on a friendly unit whose troop type is infantry or cavalry, roll an additional D3 when determining how many wounds are recovered.\nThe bearer of the Sceptre of de Noirot may attempt to resurrect the fallen by using the Invocation of Nehek special rule twice during their Command sub-phase (rather than the usual once). Roll a D6 each time the sceptre is used. On a roll of 1, the bearer loses a single Wound.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "spellfamiliar": {
    "slug": "spell-familiar",
-   "name": "Spell Familiar*",
+   "name": "Spell Familiar",
    "type": "Arcane Item",
    "cost": 15,
    "costOverride": null,
-   "text": "0-1 per Wizard. The owner of a Spell Familiar knows one more spell (chosen in the usual way) than is normal for their Level of Wizardry.\n\nNote that this does not increase the Wizard's Level.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/spell-familiar"
+   "text": "0-1 per Wizard. The owner of a Spell Familiar knows one more spell (chosen in the usual way) than is normal for their Level of Wizardry.\nNote that this does not increase the Wizard’s Level.\nTo represent their varying attributes, some models may be given Vampiric Powers. A Vampiric Power does not affect a model’s mount (should it have one). Each Vampiric Power may only be chosen once per army.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   },
   "swordofreaving": {
    "slug": "sword-of-reaving",
@@ -3465,6 +3643,56 @@
    "costOverride": null,
    "text": "Enemy units may not make Stomp Attacks against a unit carrying the Monster Hunter's Tapestry.",
    "url": "https://tow.whfb.app/magic-item/monster-hunters-tapestry"
+  },
+  "cloakofmistshadows": {
+   "slug": "cloak-of-mist-shadows",
+   "name": "Cloak Of Mist & Shadows",
+   "type": "Enchanted Item",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Necromancers whose troop type is ‘infantry’ only. The wearer of the Cloak of Mist & Shadows gains the Ethereal special rule.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
+  },
+  "redfury": {
+   "slug": "red-fury",
+   "name": "Red Fury",
+   "type": "Arcane Item",
+   "cost": 50,
+   "costOverride": null,
+   "text": "Level 1 Wizard Vampires only. During the Combat phase, for each unsaved wound caused by this model's Attacks, it immediately makes one additional Attack. These additional Attacks cannot generate further Attacks.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
+  },
+  "honourordeath": {
+   "slug": "honour-or-death",
+   "name": "Honour or Death",
+   "type": "Arcane Item",
+   "cost": 35,
+   "costOverride": null,
+   "text": "Any enemy model that wishes to issue a challenge whilst engaged in the same combat as a model with this Vampiric Power must first make a Leadership test (using their own Leadership.) Apply a +1 modifier to the dice roll for each point of difference between its Weapon Skill characteristic and that of the model with this Vampiric Power (to a maximum of +2).\nIf the test is passed, the challenge is issued as normal. If the test is failed, the challenge is not issued and the enemy model must Retire, following the rules for refusing a challenge. In addition, challenges issued by a model with this Vampiric Power cannot be refused.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
+  },
+  "quickblood": {
+   "slug": "quickblood",
+   "name": "Quickblood",
+   "type": "Arcane Item",
+   "cost": 25,
+   "costOverride": null,
+   "text": "This Vampire gains the Strike First special rule.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
+  },
+  "infinitehatred": {
+   "slug": "infinite-hatred",
+   "name": "Infinite Hatred",
+   "type": "Arcane Item",
+   "cost": 25,
+   "costOverride": null,
+   "text": "This Vampire gains the Hatred (all enemies) special rule.",
+   "url": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs"
   }
+ },
+ "renegade": {
+  "version": "1.5.3.1",
+  "source": "https://docs.google.com/document/d/19fZUYGvDSKilKPnZhLpd6ZZ8PYJWqfaapEFgs1oNeEs",
+  "appliedAt": "2026-10-25T14:19:35.805Z"
  }
 }

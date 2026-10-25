@@ -12,8 +12,8 @@
     "width": 25,
     "depth": 25
    },
-   "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "unitSize": "5+",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -50,8 +50,9 @@
     "elven-reflexes",
     "hatred",
     "move-through-cover",
-    "open-order-formation",
-    "sea-dragon-cloak"
+    "open-order",
+    "sea-dragon-cloak",
+    "vanguard"
    ],
    "ruleLabels": {
     "hatred": "Hatred (High Elves)"
@@ -82,8 +83,29 @@
      "label": "• Upgrade one model to a musician",
      "cost": 6,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• A Reaver may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Veteran special rule",
+     "cost": 1,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Ambushers special rule",
+     "cost": 1,
+     "per": "model"
     }
-   ]
+   ],
+   "renegade": true
   },
   "black-dragon": {
    "slug": "black-dragon",
@@ -138,8 +160,8 @@
     "width": 25,
     "depth": 25
    },
-   "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "unitSize": "5+",
+   "troopType": "Heavy infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -171,7 +193,7 @@
      ]
     }
    ],
-   "equipment": "Hand weapons, dread halberds and full plate armour",
+   "equipment": "Hand weapons, dread halberds (see below) and full plate armour",
    "specialRules": [
     "close-order",
     "elven-reflexes",
@@ -182,7 +204,7 @@
     "stubborn"
    ],
    "ruleLabels": {
-    "hatred": "Hatred (High Elves)"
+    "hatred": "Hatred (All Enemies)"
    },
    "cost": 15,
    "options": [
@@ -205,8 +227,19 @@
      "label": "• Have the Drilled special rule",
      "cost": 1,
      "per": "model"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• A Tower Master may purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "bloodwrack-medusa": {
    "slug": "bloodwrack-medusa",
@@ -235,7 +268,7 @@
      ]
     }
    ],
-   "equipment": "Hand weapon, petrifying gaze and light armour",
+   "equipment": "Hand weapon, Halberd, petrifying gaze (see below) and light armour",
    "specialRules": [
     "close-order",
     "elven-reflexes",
@@ -245,14 +278,16 @@
     "magic-resistance",
     "murderous",
     "poisoned-attacks",
-    "stony-stare"
+    "stony-stare",
+    "impetuous"
    ],
    "ruleLabels": {
     "hatred": "Hatred (High Elves)",
     "magic-resistance": "Magic Resistance (-1)"
    },
-   "cost": 85,
-   "options": []
+   "cost": 70,
+   "options": [],
+   "renegade": true
   },
   "bloodwrack-shrine": {
    "slug": "bloodwrack-shrine",
@@ -263,13 +298,13 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "Heavy Chariot",
+   "troopType": "Heavy chariot",
    "category": "Chariot",
    "profile": [
     {
      "name": "Bloodwrack Shrine",
      "values": [
-      "2",
+      "7",
       "-",
       "-",
       "5",
@@ -313,6 +348,7 @@
    "specialRules": [
     "close-order",
     "dragged-along",
+    "will-of-the-gods",
     "elven-reflexes",
     "frenzy",
     "hatred",
@@ -322,15 +358,17 @@
     "murderous",
     "poisoned-attacks",
     "stony-stare",
-    "terror"
+    "terror",
+    "impetuous"
    ],
    "ruleLabels": {
     "hatred": "Hatred (High Elves)",
     "impact-hits": "Impact Hits (D6+1)",
     "magic-resistance": "Magic Resistance (-1)"
    },
-   "cost": 175,
-   "options": []
+   "cost": 140,
+   "options": [],
+   "renegade": true
   },
   "cauldron-of-blood": {
    "slug": "cauldron-of-blood",
@@ -347,7 +385,7 @@
     {
      "name": "Cauldron of Blood",
      "values": [
-      "2",
+      "5",
       "-",
       "-",
       "5",
@@ -369,24 +407,24 @@
       "-",
       "5",
       "1",
-      "9"
+      "8"
      ]
     }
    ],
    "equipment": "• Witch Elf Crew: Two hand weapons",
    "specialRules": [
-    "blessings-of-khaine",
     "close-order",
     "dragged-along",
+    "will-of-the-gods",
     "elven-reflexes",
     "frenzy",
     "hatred",
     "impact-hits",
     "large-target",
     "magic-resistance",
-    "murderous",
-    "poisoned-attacks",
-    "terror"
+    "terror",
+    "blessings-of-khaine",
+    "altar-of-khaine"
    ],
    "ruleLabels": {
     "hatred": "Hatred (High Elves)",
@@ -394,7 +432,8 @@
     "magic-resistance": "Magic Resistance (-1)"
    },
    "cost": null,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "cold-one-dark-elves": {
    "slug": "cold-one-dark-elves",
@@ -522,7 +561,7 @@
     "depth": 60
    },
    "unitSize": "5+",
-   "troopType": "Heavy Cavalry",
+   "troopType": "Heavy cavalry",
    "category": "Cavalry",
    "profile": [
     {
@@ -570,7 +609,8 @@
    ],
    "equipment": "• Cold One Knights: Hand weapons, lances, heavy armour and shields\n• Cold Ones: Claws and teeth (counts as a hand weapons)",
    "specialRules": [
-    "armour-bane",
+    "armour-bane-1",
+    "cold-one-only",
     "armoured-hide",
     "close-order",
     "elven-reflexes",
@@ -578,15 +618,47 @@
     "first-charge",
     "hatred",
     "stupidity",
-    "swiftstride"
+    "swiftstride",
+    "counter-charge"
    ],
    "ruleLabels": {
-    "armour-bane": "Armour Bane (1, Cold One only)",
     "armoured-hide": "Armoured Hide (1)",
     "hatred": "Hatred (High Elves)"
    },
    "cost": 31,
-   "options": []
+   "options": [
+    {
+     "label": "• Upgrade one model to a Dread Knight (champion)",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• Replace heavy armour with full plate armour",
+     "cost": 4,
+     "per": "model"
+    },
+    {
+     "label": "• A Dread Knight may purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
+    }
+   ],
+   "renegade": true
   },
   "dark-elf-dreadlord": {
    "slug": "dark-elf-dreadlord",
@@ -597,7 +669,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -678,36 +750,22 @@
      "per": "unit"
     },
     {
-     "label": "• Dark Steed",
-     "cost": 14,
-     "per": "unit"
-    },
-    {
-     "label": "• Cold One",
-     "cost": 18,
-     "per": "unit"
-    },
-    {
-     "label": "• Cold One Chariot",
-     "cost": 125,
-     "per": "unit"
-    },
-    {
-     "label": "• Black Dragon",
-     "cost": 280,
-     "per": "unit"
-    },
-    {
-     "label": "• Manticore",
-     "cost": 130,
-     "per": "unit"
-    },
-    {
      "label": "• May have the Sea Dragon Cloak special rule",
      "cost": 4,
      "per": "unit"
+    },
+    {
+     "label": "• A Dreadlord may purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• A Master may purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "dark-elf-master": {
    "slug": "dark-elf-master",
@@ -718,7 +776,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -799,26 +857,22 @@
      "per": "unit"
     },
     {
-     "label": "• Dark Steed",
-     "cost": 14,
-     "per": "unit"
-    },
-    {
-     "label": "• Cold One",
-     "cost": 18,
-     "per": "unit"
-    },
-    {
-     "label": "• Cold One Chariot",
-     "cost": 125,
-     "per": "unit"
-    },
-    {
      "label": "• May have the Sea Dragon Cloak special rule",
      "cost": 4,
      "per": "unit"
+    },
+    {
+     "label": "• A Dreadlord may purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• A Master may purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "dark-elf-shades": {
    "slug": "dark-elf-shades",
@@ -829,7 +883,7 @@
     "depth": 25
    },
    "unitSize": "5+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -861,14 +915,15 @@
      ]
     }
    ],
-   "equipment": "Hand weapons and repeater crossbows",
+   "equipment": "Hand weapons, repeater crossbows, and light armour",
    "specialRules": [
     "elven-reflexes",
     "evasive",
     "hatred",
     "move-through-cover",
     "scouts",
-    "skirmish-formation"
+    "skirmishers",
+    "fire-and-flee"
    ],
    "ruleLabels": {
     "hatred": "Hatred (High Elves)"
@@ -886,13 +941,13 @@
      "per": "model"
     },
     {
-     "label": "• The entire unit may take light armour",
-     "cost": 1,
-     "per": "model"
-    },
-    {
      "label": "• Any unit may upgrade one model to a Bloodshade (champion)",
      "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• A Bloodshade may purchase magic items up to a total of",
+     "cost": 25,
      "per": "unit"
     },
     {
@@ -909,8 +964,14 @@
      "label": "• Have the Veteran special rule",
      "cost": 1,
      "per": "model"
+    },
+    {
+     "label": "• Have the Feigned Flight special rule",
+     "cost": 1,
+     "per": "model"
     }
-   ]
+   ],
+   "renegade": true
   },
   "dark-elf-warriors": {
    "slug": "dark-elf-warriors",
@@ -1001,7 +1062,7 @@
     "depth": 60
    },
    "unitSize": "1",
-   "troopType": "Monstrous Cavalry",
+   "troopType": "Monstrous cavalry",
    "category": "Mount",
    "profile": [
     {
@@ -1021,18 +1082,19 @@
    ],
    "equipment": "Hooves (counts as a hand weapon)",
    "specialRules": [
-    "armour-bane",
+    "armour-bane-1",
+    "dark-pegasus-only",
     "counter-charge",
     "first-charge",
     "fly",
     "swiftstride"
    ],
    "ruleLabels": {
-    "armour-bane": "Armour Bane (1, Dark Pegasus only)",
     "fly": "Fly (10)"
    },
    "cost": null,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "dark-riders": {
    "slug": "dark-riders",
@@ -1043,7 +1105,7 @@
     "depth": 60
    },
    "unitSize": "5+",
-   "troopType": "Light Cavalry",
+   "troopType": "Base Size: Unit Size: Equipment:",
    "category": "Cavalry",
    "profile": [
     {
@@ -1094,8 +1156,8 @@
     "elven-reflexes",
     "fast-cavalry",
     "hatred",
-    "open-order-formation",
-    "skirmish-formation",
+    "open-order",
+    "skirmishers",
     "swiftstride"
    ],
    "ruleLabels": {
@@ -1138,7 +1200,8 @@
      "cost": 1,
      "per": "model"
     }
-   ]
+   ],
+   "renegade": true
   },
   "dark-steed": {
    "slug": "dark-steed",
@@ -1185,7 +1248,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Base Size: Unit Size: Equipment:",
    "category": "Character",
    "profile": [
     {
@@ -1211,7 +1274,8 @@
     "loner",
     "murderous",
     "poisoned-attacks",
-    "strike-first"
+    "strike-first",
+    "warband"
    ],
    "ruleLabels": {
     "hatred": "Hatred (all enemies)"
@@ -1234,11 +1298,12 @@
      "per": "unit"
     },
     {
-     "label": "• May be mounted on a Cauldron of Blood",
-     "cost": 150,
+     "label": "• May purchase magic items up to a total of",
+     "cost": 75,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "doomfire-warlocks": {
    "slug": "doomfire-warlocks",
@@ -1249,7 +1314,7 @@
     "depth": 60
    },
    "unitSize": "5+",
-   "troopType": "Light Cavalry",
+   "troopType": "Light cavalry",
    "category": "Cavalry",
    "profile": [
     {
@@ -1302,13 +1367,10 @@
     "elven-reflexes",
     "fast-cavalry",
     "hatred",
-    "open-order-formation",
-    "poisoned-attacks",
-    "swiftstride"
+    "open-order"
    ],
    "ruleLabels": {
-    "hatred": "Hatred (High Elves)",
-    "poisoned-attacks": "Poisoned Attacks (Riders only)"
+    "hatred": "Hatred (High Elves)"
    },
    "cost": 22,
    "options": [
@@ -1316,8 +1378,14 @@
      "label": "• Any unit may upgrade one model to a Master (champion)",
      "cost": 6,
      "per": "unit"
+    },
+    {
+     "label": "• A Master may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "har-ganeth-executioners": {
    "slug": "har-ganeth-executioners",
@@ -1327,8 +1395,8 @@
     "width": 25,
     "depth": 25
    },
-   "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "unitSize": "5+",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -1371,7 +1439,7 @@
    "ruleLabels": {
     "hatred": "Hatred (High Elves)"
    },
-   "cost": 15,
+   "cost": 14,
    "options": [
     {
      "label": "• Upgrade one model to a Draich Master (champion)",
@@ -1390,10 +1458,21 @@
     },
     {
      "label": "• Have the Drilled special rule",
-     "cost": 2,
+     "cost": 1,
      "per": "model"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• A Draich Master may purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "harpies": {
    "slug": "harpies",
@@ -1404,7 +1483,7 @@
     "depth": 25
    },
    "unitSize": "5+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -1427,14 +1506,15 @@
     "fly",
     "move-through-cover",
     "scouts",
-    "skirmish-formation",
+    "skirmishers",
     "swiftstride"
    ],
    "ruleLabels": {
     "fly": "Fly (10)"
    },
    "cost": 11,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "high-beastmaster": {
    "slug": "high-beastmaster",
@@ -1442,7 +1522,7 @@
    "url": "https://tow.whfb.app/unit/high-beastmaster",
    "base": null,
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1494,32 +1574,28 @@
      "per": "unit"
     },
     {
-     "label": "• Scourgerunner Chariot",
-     "cost": 85,
-     "per": "unit"
-    },
-    {
-     "label": "• Manticore",
-     "cost": 130,
-     "per": "unit"
-    },
-    {
      "label": "• May have the Sea Dragon Cloak special rule",
      "cost": 4,
      "per": "unit"
+    },
+    {
+     "label": "• May purchase magic items up to a total of",
+     "cost": 75,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "khainite-assassin": {
    "slug": "khainite-assassin",
    "name": "Khainite Assassin",
    "url": "https://tow.whfb.app/unit/khainite-assassin",
    "base": {
-    "width": 25,
-    "depth": 25
+    "width": 30,
+    "depth": 60
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Heavy cavalry",
    "category": "Character",
    "profile": [
     {
@@ -1537,17 +1613,19 @@
      ]
     }
    ],
-   "equipment": "Hand weapon and throwing weapons",
+   "equipment": "Claws and teeth (counts as a hand weapon)",
    "specialRules": [
-    "eternal-hatred",
-    "hatred",
-    "hidden-dark-elves",
-    "immune-to-psychology",
-    "murderous",
-    "strike-first"
+    "armour-bane-1",
+    "cold-one-only",
+    "armoured-hide",
+    "fear",
+    "first-charge",
+    "stupidity",
+    "swiftstride",
+    "counter-charge"
    ],
    "ruleLabels": {
-    "hatred": "Hatred (all enemies)"
+    "armoured-hide": "Armoured Hide (1)"
    },
    "cost": 80,
    "options": [
@@ -1575,8 +1653,14 @@
      "label": "• Manbane",
      "cost": 15,
      "per": "unit"
+    },
+    {
+     "label": "• May purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "kharibdyss": {
    "slug": "kharibdyss",
@@ -1599,7 +1683,7 @@
       "7",
       "5",
       "5",
-      "3",
+      "4",
       "5",
       "6"
      ]
@@ -1632,8 +1716,9 @@
    "ruleLabels": {
     "stomp-attacks": "Stomp Attacks (D3+1)"
    },
-   "cost": 195,
-   "options": []
+   "cost": 145,
+   "options": [],
+   "renegade": true
   },
   "manticore-dark-elves": {
    "slug": "manticore-dark-elves",
@@ -1694,7 +1779,7 @@
     "depth": 50
    },
    "unitSize": "1",
-   "troopType": "War Machine",
+   "troopType": "War machine",
    "category": "War Machine",
    "profile": [
     {
@@ -1730,13 +1815,14 @@
    "specialRules": [
     "elven-reflexes",
     "hatred",
-    "skirmish-formation"
+    "skirmishers"
    ],
    "ruleLabels": {
     "hatred": "Hatred (High Elves)"
    },
    "cost": 80,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "repeater-crossbowmen": {
    "slug": "repeater-crossbowmen",
@@ -1746,8 +1832,8 @@
     "width": 25,
     "depth": 25
    },
-   "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "unitSize": "5+",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -1789,7 +1875,7 @@
    "ruleLabels": {
     "hatred": "Hatred (High Elves)"
    },
-   "cost": 11,
+   "cost": 10,
    "options": [
     {
      "label": "• Upgrade one model to a Lordling (champion)",
@@ -1807,6 +1893,11 @@
      "per": "unit"
     },
     {
+     "label": "• Any unit of Dark Elf Warriors may take thrusting spears",
+     "cost": 1,
+     "per": "model"
+    },
+    {
      "label": "• Any unit of Repeater Crossbowmen may take shields",
      "cost": 1,
      "per": "model"
@@ -1815,8 +1906,14 @@
      "label": "• Have the Veteran special rule",
      "cost": 1,
      "per": "model"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "scourgerunner-chariot": {
    "slug": "scourgerunner-chariot",
@@ -1897,15 +1994,15 @@
     "width": 25,
     "depth": 25
    },
-   "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "unitSize": "5+",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
      "name": "Sister of Slaughter",
      "values": [
       "5",
-      "5",
+      "6",
       "4",
       "3",
       "3",
@@ -1916,37 +2013,35 @@
      ]
     },
     {
-     "name": "Hag",
+     "name": "Handmaiden of Shards",
      "values": [
       "5",
-      "5",
+      "6",
       "4",
       "3",
       "3",
       "1",
       "6",
       "3",
-      "8"
+      "9"
      ]
     }
    ],
-   "equipment": "Hand weapons and lash & buckler",
+   "equipment": "Hand weapons and lash & buckler (see below)",
    "specialRules": [
     "dance-of-death",
     "elven-reflexes",
     "hatred",
-    "impetuous",
-    "loner",
     "murderous",
-    "open-order-formation"
+    "strike-first"
    ],
    "ruleLabels": {
     "hatred": "Hatred (High Elves)"
    },
-   "cost": 17,
+   "cost": 14,
    "options": [
     {
-     "label": "• Upgrade one model to a Hag (champion)",
+     "label": "• Upgrade one model to a Handmaiden of Shards (champion)",
      "cost": 7,
      "per": "unit"
     },
@@ -1959,8 +2054,19 @@
      "label": "• Upgrade one model to a musician",
      "cost": 7,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• A Handmaiden of Shards may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "sorceress": {
    "slug": "sorceress",
@@ -1971,7 +2077,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -2001,29 +2107,30 @@
    "ruleLabels": {
     "hatred": "Hatred (High Elves)"
    },
-   "cost": 75,
+   "cost": 80,
    "options": [
     {
-     "label": "• Dark Steed",
-     "cost": 14,
+     "label": "• Be a Level 4 Wizard",
+     "cost": 30,
      "per": "unit"
     },
     {
-     "label": "• Cold One",
-     "cost": 18,
-     "per": "unit"
-    },
-    {
-     "label": "• Dark Pegasus",
-     "cost": 35,
+     "label": "• Purchase magic items up to a total of",
+     "cost": 100,
      "per": "unit"
     },
     {
      "label": "• Be a Level 2 Wizard",
      "cost": 30,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "supreme-sorceress": {
    "slug": "supreme-sorceress",
@@ -2034,7 +2141,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -2064,34 +2171,30 @@
    "ruleLabels": {
     "hatred": "Hatred (High Elves)"
    },
-   "cost": 150,
+   "cost": 155,
    "options": [
-    {
-     "label": "• Dark Steed",
-     "cost": 14,
-     "per": "unit"
-    },
-    {
-     "label": "• Cold One",
-     "cost": 18,
-     "per": "unit"
-    },
-    {
-     "label": "• Dark Pegasus",
-     "cost": 35,
-     "per": "unit"
-    },
-    {
-     "label": "• Black Dragon",
-     "cost": 280,
-     "per": "unit"
-    },
     {
      "label": "• Be a Level 4 Wizard",
      "cost": 30,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• Be a Level 2 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "war-hydra": {
    "slug": "war-hydra",
@@ -2142,16 +2245,19 @@
     "large-target",
     "monster-handlers",
     "regeneration",
+    "flammable",
     "stomp-attacks",
-    "terror"
+    "terror",
+    "if-one-head-is-severed-another-takes-its-place"
    ],
    "ruleLabels": {
     "extra-attacks": "Extra Attacks (+remaining Wounds)",
     "regeneration": "Regeneration (5+)",
-    "stomp-attacks": "Stomp Attacks (D3)"
+    "stomp-attacks": "Stomp Attacks (D3+1)"
    },
-   "cost": 200,
-   "options": []
+   "cost": 165,
+   "options": [],
+   "renegade": true
   },
   "witch-elves": {
    "slug": "witch-elves",
@@ -2161,8 +2267,8 @@
     "width": 25,
     "depth": 25
    },
-   "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "unitSize": "5+",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -2224,8 +2330,161 @@
      "label": "• Upgrade one model to a musician",
      "cost": 7,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
+  },
+  "scourgerunner-chariots": {
+   "slug": "scourgerunner-chariots",
+   "name": "Scourgerunner Chariots",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA",
+   "base": {
+    "width": 50,
+    "depth": 100
+   },
+   "unitSize": "1-3",
+   "troopType": "Light chariot",
+   "category": "",
+   "profile": [
+    {
+     "name": "Chariot",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "4",
+      "4",
+      "4",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Beastmaster Crew (x2)",
+     "values": [
+      "-",
+      "4",
+      "4",
+      "3",
+      "-",
+      "-",
+      "4",
+      "1",
+      "8"
+     ]
+    },
+    {
+     "name": "Dark Steed (x2)",
+     "values": [
+      "9",
+      "3",
+      "-",
+      "3",
+      "-",
+      "-",
+      "4",
+      "1",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "",
+   "specialRules": [
+    "elven-reflexes",
+    "hatred",
+    "impact-hits",
+    "open-order",
+    "sea-dragon-cloak",
+    "swiftstride"
+   ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)",
+    "impact-hits": "Impact Hits (D6)"
+   },
+   "cost": 85,
+   "options": [],
+   "renegade": true
+  },
+  "cold-one-chariots": {
+   "slug": "cold-one-chariots",
+   "name": "Cold One Chariots",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA",
+   "base": {
+    "width": 50,
+    "depth": 100
+   },
+   "unitSize": "1",
+   "troopType": "Heavy chariot",
+   "category": "",
+   "profile": [
+    {
+     "name": "Chariot",
+     "values": [
+      "-",
+      "-",
+      "-",
+      "5",
+      "5",
+      "4",
+      "-",
+      "-",
+      "-"
+     ]
+    },
+    {
+     "name": "Knight Charioteer (x2)",
+     "values": [
+      "-",
+      "5",
+      "4",
+      "4",
+      "-",
+      "-",
+      "5",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Cold One (x2)",
+     "values": [
+      "7",
+      "3",
+      "-",
+      "4",
+      "-",
+      "-",
+      "2",
+      "2",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "",
+   "specialRules": [
+    "armour-bane-1",
+    "cold-one-only",
+    "close-order",
+    "elven-reflexes",
+    "fear",
+    "first-charge",
+    "hatred",
+    "impact-hits",
+    "stupidity"
+   ],
+   "ruleLabels": {
+    "hatred": "Hatred (High Elves)",
+    "impact-hits": "Impact Hits (D6+1)"
+   },
+   "cost": 110,
+   "options": [],
+   "renegade": true
   }
  },
  "rules": {
@@ -2298,8 +2557,8 @@
   "martial-prowess": {
    "key": "martial-prowess",
    "name": "Martial Prowess",
-   "text": "During the first round of combat, a unit with this special rule gains a +1 modifier to its Weapon Skill characteristic. In addition, a unit with this special rule can make supporting attacks to its flank or rear, as well as to its front.",
-   "url": "https://tow.whfb.app/special-rules/martial-prowess"
+   "text": "A unit with this special rule can make supporting attacks to its flank or rear, as well as to its front.",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "cursed-coven": {
    "key": "cursed-coven",
@@ -2341,37 +2600,37 @@
    "key": "elven-reflexes",
    "name": "Elven Reflexes",
    "text": "A model with this special rule (but not its mount) has a +1 modifier to its Initiative characteristic (to a maximum of 10) during the first round of any combat.",
-   "url": "https://tow.whfb.app/special-rules/elven-reflexes"
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "eternal-hatred": {
    "key": "eternal-hatred",
    "name": "Eternal Hatred",
-   "text": "Against High Elves, this model's Hatred applies in every round of close combat, not just the first.\n\nNote that this special rule does not apply to this model's mount (should it have one).",
-   "url": "https://tow.whfb.app/special-rules/eternal-hatred"
+   "text": "Against High Elves, this model’s Hatred applies in every round of close combat, not just the first.\nNote that this special rule does not apply to this model’s mount (should it have one).",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "hekartis-blessing": {
    "key": "hekartis-blessing",
-   "name": "Hekarti's Blessing",
-   "text": "Once per game, a model with this special rule may re-roll a single failed Casting roll.",
-   "url": "https://tow.whfb.app/special-rules/hekartis-blessing"
+   "name": "Hekarti’s Blessing",
+   "text": "Once per turn, a model with this special rule may re-roll a single failed Casting roll.",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "murderous": {
    "key": "murderous",
    "name": "Murderous",
-   "text": "When engaged in combat, a model with this special rule that is fighting with a hand weapon may re-roll any rolls To Wound of a natural 1.\n\nNote that this special rule only applies to a single, non-magical hand weapon and does not apply to a model's mount (should it have one). If the model is using two hand weapons or any other sort of weapon, this special rule ceases to apply.",
-   "url": "https://tow.whfb.app/special-rules/murderous"
+   "text": "When engaged in combat, a model with this special rule may re-roll any rolls To Wound of a natural 1.\nNote that this special rule only applies to mundane weapons and does not apply to a model’s mount (should it have one). If the model is using a magic weapon this special rule ceases to apply.",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "sea-dragon-cloak": {
    "key": "sea-dragon-cloak",
    "name": "Sea Dragon Cloak",
    "text": "A model with this special rule improves its armour value by 1 (to a maximum of 2+) against non-magical shooting attacks.",
-   "url": "https://tow.whfb.app/special-rules/sea-dragon-cloak"
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "cleaving-blow": {
    "key": "cleaving-blow",
    "name": "Cleaving Blow",
-   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound for an attack made in combat, it has struck a 'Cleaving Blow'. Enemy models whose troop type is regular infantry, heavy infantry, light cavalry, heavy cavalry or war beasts are not permitted an armour or Regeneration save against a Cleaving Blow (Ward saves can be attempted as normal).\n\nNote that if an attack wounds automatically, this special rule cannot be used.",
-   "url": "https://tow.whfb.app/special-rules/cleaving-blow"
+   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound for an attack made in combat, it has struck a ‘Cleaving Blow.’ Enemy models whose troop type is ‘regular infantry,’ ‘heavy infantry,’ ‘light cavalry,’ ‘heavy cavalry’ or ‘war beasts’ are not permitted an armour or Regeneration save against a Cleaving Blow (Ward saves can be attempted as normal).\nNote that if an attack wounds automatically, this special rule cannot be used.",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "hatred": {
    "key": "hatred",
@@ -2612,26 +2871,92 @@
    "name": "Horde",
    "text": "A unit with this special rule may increase the maximum Rank Bonus it can claim (as determined by its troop type) by one.",
    "url": "https://tow.whfb.app/special-rules/horde"
+  },
+  "will-of-the-gods": {
+   "key": "will-of-the-gods",
+   "name": "Will of the Gods",
+   "text": "A model with this special rule may join a unit of Infantry with unit strength 10 or more despite being a Heavy Chariot.  If it does so, it must always be placed in the centre of the front rank, and it no longer has the Lumbering rule (Rulebook p. 195). Only one model with this special rule may join each unit.\n________________",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
+  },
+  "warband": {
+   "key": "warband",
+   "name": "Warband",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/warband"
+  },
+  "armour-bane-1": {
+   "key": "armour-bane-1",
+   "name": "Armour Bane (1",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/armour-bane-1"
+  },
+  "cold-one-only": {
+   "key": "cold-one-only",
+   "name": "Cold One only)",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/cold-one-only"
+  },
+  "dark-pegasus-only": {
+   "key": "dark-pegasus-only",
+   "name": "Dark Pegasus only)",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/dark-pegasus-only"
+  },
+  "open-order": {
+   "key": "open-order",
+   "name": "Open Order",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/open-order"
+  },
+  "vanguard": {
+   "key": "vanguard",
+   "name": "Vanguard",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/vanguard"
+  },
+  "skirmishers": {
+   "key": "skirmishers",
+   "name": "Skirmishers",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/skirmishers"
+  },
+  "altar-of-khaine": {
+   "key": "altar-of-khaine",
+   "name": "Altar of Khaine",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/altar-of-khaine"
+  },
+  "flammable": {
+   "key": "flammable",
+   "name": "Flammable",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/flammable"
+  },
+  "if-one-head-is-severed-another-takes-its-place": {
+   "key": "if-one-head-is-severed-another-takes-its-place",
+   "name": "If One Head is Severed… Another Takes Its Place",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/if-one-head-is-severed-another-takes-its-place"
   }
  },
  "items": {
   "executionersaxe": {
    "slug": "executioners-axe",
-   "name": "Executioner's Axe",
+   "name": "Executioner’s Axe",
    "type": "Magic Weapon",
    "cost": 70,
    "costOverride": null,
-   "text": "Executioner's Axe (Profile)Notes: When making a roll To Wound for a hit caused with the Executioner's Axe, a roll of 2+ is always a success, regardless of the target's Toughness.",
-   "url": "https://tow.whfb.app/magic-item/executioners-axe"
+   "text": "R        S        AP        Special Rules\nExecutioner’s Axe Combat        S        -2        Killing Blow, Magical Attacks, Strike Last Notes: When making a roll To Wound for a hit caused with the Executioner’s Axe, a roll of 2+ is always a success, regardless of the target’s Toughness.",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "swordofruin": {
    "slug": "sword-of-ruin",
-   "name": "Sword of Ruin",
+   "name": "Sword Of Ruin",
    "type": "Magic Weapon",
    "cost": 65,
    "costOverride": null,
-   "text": "Sword of Ruin (Profile)Notes: No armour, Ward or Regeneration saves are permitted against wounds caused by the Sword of Ruin.",
-   "url": "https://tow.whfb.app/magic-item/sword-of-ruin"
+   "text": "R        S        AP        Special Rules\nSword of Ruin        Combat        S        *        Magical Attacks\nNotes: No armour, Ward or Regeneration saves are permitted against wounds caused by the Sword of Ruin.",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "lifetaker": {
    "slug": "lifetaker",
@@ -2640,25 +2965,25 @@
    "cost": 35,
    "costOverride": null,
    "text": "Lifetaker (Profile)",
-   "url": "https://tow.whfb.app/magic-item/lifetaker"
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "whipofagony": {
    "slug": "whip-of-agony",
-   "name": "Whip of Agony",
+   "name": "Whip Of Agony",
    "type": "Magic Weapon",
-   "cost": 30,
+   "cost": 20,
    "costOverride": null,
-   "text": "Whip of Agony (Profile)Notes: High Beastmasters only. Any enemy model that suffers one or more unsaved wounds from the Whip of Agony suffers a -1 modifier to its Toughness characteristic (to a minimum of 1) for the remainder of the game.",
-   "url": "https://tow.whfb.app/magic-item/whip-of-agony"
+   "text": "R        S        AP        Special Rules\nWhip of Agony        Combat  S+1        -1        Magical Attacks, Strike First\nNotes: High Beastmasters only. Any enemy model that suffers one or more unsaved wounds from the Whip of Agony suffers a -1 modifier to its Toughness characteristic (to a minimum of 1) for the remainder of the game.",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "shieldofghrond": {
    "slug": "shield-of-ghrond",
-   "name": "Shield of Ghrond",
+   "name": "Shield Of Ghrond",
    "type": "Magic Armour",
    "cost": 40,
    "costOverride": null,
    "text": "The Shield of Ghrond is a shield. In addition, all attacks directed against its bearer suffer a -1 modifier to their Strength characteristic (to a minimum of 1).",
-   "url": "https://tow.whfb.app/magic-item/shield-of-ghrond"
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "bloodarmour": {
    "slug": "blood-armour",
@@ -2666,53 +2991,53 @@
    "type": "Magic Armour",
    "cost": 30,
    "costOverride": null,
-   "text": "Models whose troop type is infantry or cavalry only. The Blood Armour is a suit of armour that gives its wearer an armour value of 5+. For each unsaved wound the wearer inflicts, this armour value is improved by 1, to a maximum of 2+.",
-   "url": "https://tow.whfb.app/magic-item/blood-armour"
+   "text": "Models whose troop type is ‘infantry’ or ‘cavalry’ only. The Blood Armour is a suit of armour that gives its wearer an armour value of 5+. For each unsaved wound the wearer inflicts, this armour value is improved by 1, to a maximum of 2+.",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "pendantofkhaeleth": {
    "slug": "pendant-of-khaeleth",
-   "name": "Pendant of Khaeleth",
+   "name": "Pendant Of Khaeleth",
    "type": "Talisman",
    "cost": 40,
    "costOverride": null,
    "text": "The Pendant of Khaeleth gives its bearer a 5+ Ward save against any wounds suffered that were caused by an attack with a Strength of 4 or lower, and a 4+ Ward save against any wounds suffered that were caused by an attack with a Strength of 5 or higher.",
-   "url": "https://tow.whfb.app/magic-item/pendant-of-khaeleth"
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "pearlofinfinitebleakness": {
    "slug": "pearl-of-infinite-bleakness",
-   "name": "Pearl of Infinite Bleakness",
+   "name": "Pearl Of Infinite Bleakness",
    "type": "Talisman",
    "cost": 15,
    "costOverride": null,
    "text": "The bearer of the Pearl of Infinite Bleakness and any unit they have joined gains the Immune to Psychology special rule.",
-   "url": "https://tow.whfb.app/magic-item/pearl-of-infinite-bleakness"
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "bannerofnagarythe": {
    "slug": "banner-of-nagarythe",
-   "name": "Banner of Nagarythe",
+   "name": "Banner Of Nagarythe",
    "type": "Magic Standard",
-   "cost": 65,
+   "cost": 50,
    "costOverride": null,
-   "text": "A unit carrying the Banner of Nagarythe gains the Stubborn special rule. In addition, when calculating its combat result, the unit may claim an additional bonus of +1 combat result point.",
-   "url": "https://tow.whfb.app/magic-item/banner-of-nagarythe"
+   "text": "A unit carrying the Banner of Nagarythe gains the Stubborn special rule. In addition, when calculating its combat result, the unit may claim an additional bonus of +1 combat",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "standardofslaughter": {
    "slug": "standard-of-slaughter",
-   "name": "Standard of Slaughter",
+   "name": "Standard Of Slaughter",
    "type": "Magic Standard",
    "cost": 40,
    "costOverride": null,
    "text": "When calculating its combat result during a turn in which it charged, a unit carrying the Standard of Slaughter may claim an additional bonus of +D3 combat result points.",
-   "url": "https://tow.whfb.app/magic-item/standard-of-slaughter"
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "bannerofharganeth": {
    "slug": "banner-of-har-ganeth",
-   "name": "Banner of Har Ganeth",
+   "name": "Banner Of Har Ganeth",
    "type": "Magic Standard",
    "cost": 25,
    "costOverride": null,
    "text": "A unit carrying the Banner of Har Ganeth improves the Armour Piercing characteristic of its combat weapons by 1.",
-   "url": "https://tow.whfb.app/magic-item/banner-of-har-ganeth"
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "coldbloodedbanner": {
    "slug": "cold-blooded-banner",
@@ -2720,8 +3045,8 @@
    "type": "Magic Standard",
    "cost": 20,
    "costOverride": null,
-   "text": "Single use. A unit carrying the Cold-blooded Banner may use it when making any test against its Leadership characteristic, including a Break test. When it does, it may roll an extra D6 and discard the highest result.",
-   "url": "https://tow.whfb.app/magic-item/cold-blooded-banner"
+   "text": "Single use. A unit carrying the Cold-blooded Banner may use it after making any test against its Leadership characteristic, including a Break test. When it does, it may re-roll the test.",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "blackdragonegg": {
    "slug": "black-dragon-egg",
@@ -2729,17 +3054,17 @@
    "type": "Enchanted Item",
    "cost": 35,
    "costOverride": null,
-   "text": "Single use. During the Command sub-phase of their turn, the bearer of a Black Dragon Egg can consume it. Until the end of that turn, the model has a Toughness characteristic of 6 (which cannot be improved further) and gains noxious breath.",
-   "url": "https://tow.whfb.app/magic-item/black-dragon-egg"
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of a Black Dragon Egg can consume it. Until your next Command sub-phase, the model has a Toughness characteristic of 6 (which cannot be improved further) and gains noxious breath (see page 18).",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "hydrastooth": {
    "slug": "hydras-tooth",
-   "name": "Hydra's Tooth",
+   "name": "Hydra’s Tooth",
    "type": "Enchanted Item",
    "cost": 30,
    "costOverride": null,
-   "text": "A Hydra's Tooth is a missile weapon with the following profile:\n\nHydra's Tooth (Profile)Notes: This weapon can target a specific model within the target unit, such as a champion or a character.",
-   "url": "https://tow.whfb.app/magic-item/hydras-tooth"
+   "text": "A Hydra’s Tooth is a missile weapon with the following profile:\nR        S        AP        Special Rules\n9\"        S        -3        Magical Attacks,\nMove & Shoot, Quick Shot Notes: This weapon can target a specific model within the target unit, such as a champion or a character.",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "theguidingeye": {
    "slug": "the-guiding-eye",
@@ -2748,7 +3073,7 @@
    "cost": 25,
    "costOverride": null,
    "text": "Single use. The bearer of the Guiding Eye and any unit they have joined may re-roll any failed rolls To Hit made during the Shooting phase.",
-   "url": "https://tow.whfb.app/magic-item/the-guiding-eye"
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "blackstaff": {
    "slug": "black-staff",
@@ -2757,25 +3082,25 @@
    "cost": 55,
    "costOverride": null,
    "text": "The bearer of the Black Staff may use it when attempting to cast a spell. If they do so, roll an extra D6 when making the Casting roll and discard the lowest result. However, if a double 1 is rolled on any two of the dice rolled, the spell is miscast.",
-   "url": "https://tow.whfb.app/magic-item/black-staff"
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "focusfamiliar": {
    "slug": "focus-familiar",
-   "name": "Focus Familiar*",
+   "name": "Focus Familiar",
    "type": "Arcane Item",
    "cost": 10,
    "costOverride": null,
-   "text": "Single use. The owner of a Focus Familiar may use it when they attempt to cast a spell. Place a marker (such as a Familiar model) completely within 12\" of the owner. The range and all effects of the spell are measured from this marker, rather than from the owner. If the spell requires a line of sight, this is determined from the marker (which has a 360° vision arc).\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/focus-familiar"
+   "text": "Single use. The owner of a Focus Familiar may use it when they attempt to cast a spell. Place a marker (such as a Familiar model) completely within 12\" of the owner. The range (including the range to dispel unless it is a vortex) and all effects of the spell, are measured from this marker, rather than from the owner. If the spell requires a line of sight, this is determined from the marker (which has a 360° vision arc). If the spell remains in play, keep the marker on the board until the spell is dispelled or removed from play.",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "tomeoffurion": {
    "slug": "tome-of-furion",
-   "name": "Tome of Furion",
+   "name": "Tome Of Furion",
    "type": "Arcane Item",
    "cost": 15,
    "costOverride": null,
-   "text": "The bearer of the Tome of Furion knows one more spell (chosen in the usual way) than is normal for their Level of Wizardry.",
-   "url": "https://tow.whfb.app/magic-item/tome-of-furion"
+   "text": "0-1 per model. The bearer of the Tome of Furion knows one more spell (chosen in the usual way) than is normal for their Level of Wizardry.",
+   "url": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA"
   },
   "swordofreaving": {
    "slug": "sword-of-reaving",
@@ -3551,5 +3876,10 @@
    "text": "Enemy units may not make Stomp Attacks against a unit carrying the Monster Hunter's Tapestry.",
    "url": "https://tow.whfb.app/magic-item/monster-hunters-tapestry"
   }
+ },
+ "renegade": {
+  "version": "1.5.2.2",
+  "source": "https://docs.google.com/document/d/1DxVMfxgaDnemxkmqxatHZwGNv0i1rRoekbsmVKgmRmA",
+  "appliedAt": "2026-10-25T14:19:24.449Z"
  }
 }

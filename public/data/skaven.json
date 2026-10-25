@@ -12,8 +12,8 @@
     "width": 25,
     "depth": 25
    },
-   "unitSize": "20-40",
-   "troopType": "Regular Infantry",
+   "unitSize": "20+",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -50,7 +50,8 @@
     "close-order",
     "horde",
     "scurry-away",
-    "warband"
+    "warband",
+    "regimental-unit"
    ],
    "ruleLabels": {},
    "cost": 4,
@@ -79,8 +80,14 @@
      "label": "• Upgrade one model to a musician",
      "cost": 5,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "doomwheel": {
    "slug": "doomwheel",
@@ -91,7 +98,7 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "Heavy Chariot",
+   "troopType": "Base Size: Unit Size:",
    "category": "Chariot",
    "profile": [
     {
@@ -100,9 +107,9 @@
       "3D6",
       "-",
       "-",
+      "6",
       "5",
       "5",
-      "4",
       "-",
       "-",
       "-"
@@ -145,17 +152,15 @@
     "impact-hits",
     "large-target",
     "random-attacks",
-    "random-movement",
-    "stomp-attacks",
-    "zzzzap"
+    "random-movement"
    ],
    "ruleLabels": {
-    "impact-hits": "Impact Hits (D3+1)",
-    "random-attacks": "Random Attacks (Rats only)",
-    "stomp-attacks": "Stomp Attacks (2)"
+    "impact-hits": "Impact Hits (D6+1)",
+    "random-attacks": "Random Attacks (Rats only)"
    },
    "cost": 145,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "giant-rats": {
    "slug": "giant-rats",
@@ -166,7 +171,7 @@
     "depth": 25
    },
    "unitSize": "10-30",
-   "troopType": "War Beast",
+   "troopType": "War beasts",
    "category": "Cavalry",
    "profile": [
     {
@@ -175,7 +180,7 @@
       "6",
       "2",
       "0",
-      "2",
+      "3",
       "3",
       "1",
       "4",
@@ -187,10 +192,12 @@
    "equipment": "Claws and teeth (counts as hand weapons)",
    "specialRules": [
     "close-order",
+    "open-order",
     "fight-in-extra-rank",
     "horde",
     "scurry-away",
-    "warband"
+    "warband",
+    "motley-crew"
    ],
    "ruleLabels": {},
    "cost": 3,
@@ -202,10 +209,11 @@
     },
     {
      "label": "• Upgrade one Packmaster to a Master Moulder (champion)",
-     "cost": 7,
+     "cost": 20,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "grey-seer": {
    "slug": "grey-seer",
@@ -216,7 +224,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -234,7 +242,7 @@
      ]
     }
    ],
-   "equipment": "Hand weapon and D3 Warpstone Tokens",
+   "equipment": "Hand weapon and",
    "specialRules": [
     "lore-of-the-horned-rat",
     "magical-attacks",
@@ -247,7 +255,7 @@
    "ruleLabels": {
     "magic-resistance": "Magic Resistance (-1)"
    },
-   "cost": 185,
+   "cost": 155,
    "options": [
     {
      "label": "• May be a level 4 Wizard",
@@ -255,11 +263,12 @@
      "per": "unit"
     },
     {
-     "label": "• May be mounted on a Screaming Bell",
-     "cost": 185,
+     "label": "• May purchase magic items up to a total of",
+     "cost": 100,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "gutter-runners": {
    "slug": "gutter-runners",
@@ -270,7 +279,7 @@
     "depth": 25
    },
    "unitSize": "5+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -292,7 +301,7 @@
      "values": [
       "6",
       "4",
-      "4",
+      "5",
       "3",
       "3",
       "1",
@@ -310,7 +319,8 @@
     "move-through-cover",
     "scouts",
     "scurry-away",
-    "skirmish-formation"
+    "skirmishers",
+    "poisoned-attacks"
    ],
    "ruleLabels": {},
    "cost": 14,
@@ -336,11 +346,12 @@
      "per": "model"
     },
     {
-     "label": "• Have the Poisoned Attacks special rule",
-     "cost": 2,
-     "per": "model"
+     "label": "• An Assassin may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "hell-pit-abomination": {
    "slug": "hell-pit-abomination",
@@ -361,7 +372,7 @@
       "3",
       "1",
       "6",
-      "5",
+      "6",
       "6",
       "4",
       "D6+1",
@@ -369,7 +380,7 @@
      ]
     }
    ],
-   "equipment": "Warpstone claws",
+   "equipment": "Warpstone claws (see below) and mutated hide (counts as heavy armour)",
    "specialRules": [
     "abominable-attacks",
     "close-order",
@@ -381,9 +392,7 @@
     "regeneration",
     "stomp-attacks",
     "terror",
-    "timmm-berrr",
-    "too-horrible-to-die",
-    "unbreakable"
+    "timmm-berrr"
    ],
    "ruleLabels": {
     "magic-resistance": "Magic Resistance (-1)",
@@ -391,7 +400,8 @@
     "stomp-attacks": "Stomp Attacks (D3+1)"
    },
    "cost": 210,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "master-assassin": {
    "slug": "master-assassin",
@@ -402,7 +412,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -415,12 +425,12 @@
       "4",
       "2",
       "8",
-      "3",
+      "4",
       "7"
      ]
     }
    ],
-   "equipment": "Two hand weapons and throwing weapons",
+   "equipment": "Hand weapon and throwing weapons",
    "specialRules": [
     "ambushers",
     "eshin-infiltration",
@@ -432,11 +442,20 @@
     "poisoned-attacks",
     "scurry-away",
     "verminous-valour",
-    "warpstone-weapons"
+    "warpstone-weapons",
+    "strikes-first",
+    "dodge"
    ],
    "ruleLabels": {},
-   "cost": 90,
-   "options": []
+   "cost": 120,
+   "options": [
+    {
+     "label": "• May purchase magic items up to a total of",
+     "cost": 75,
+     "per": "unit"
+    }
+   ],
+   "renegade": true
   },
   "master-moulder": {
    "slug": "master-moulder",
@@ -498,7 +517,7 @@
     "depth": 25
    },
    "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -520,7 +539,7 @@
      "values": [
       "6",
       "3",
-      "3",
+      "4",
       "3",
       "3",
       "1",
@@ -530,21 +549,18 @@
      ]
     }
    ],
-   "equipment": "Hand weapons",
+   "equipment": "Two hand weapons",
    "specialRules": [
     "evasive",
     "fire-and-flee",
     "scurry-away",
-    "skirmish-formation"
+    "skirmishers",
+    "vanguard",
+    "regimental-unit"
    ],
    "ruleLabels": {},
    "cost": 7,
    "options": [
-    {
-     "label": "• The entire unit may take additional hand weapons",
-     "cost": 2,
-     "per": "model"
-    },
     {
      "label": "• Slings",
      "cost": 2,
@@ -560,7 +576,8 @@
      "cost": 6,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "packmaster": {
    "slug": "packmaster",
@@ -621,12 +638,12 @@
     "width": 25,
     "depth": 25
    },
-   "unitSize": "2-10",
-   "troopType": "Regular Infantry",
+   "unitSize": "5+",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
-     "name": "Plague Censer Bearer",
+     "name": "Censer Bearer",
      "values": [
       "5",
       "3",
@@ -635,22 +652,28 @@
       "4",
       "1",
       "3",
-      "1",
+      "2",
       "5"
      ]
     }
    ],
-   "equipment": "Hand weapons and plague censers",
+   "equipment": "Hand weapons and plague censers (see below)",
    "specialRules": [
     "frenzy",
     "scurry-away",
-    "skirmish-formation",
+    "skirmishers",
     "stubborn",
-    "warband"
+    "warband",
+    "hatred",
+    "detachment",
+    "plague-disciples"
    ],
-   "ruleLabels": {},
-   "cost": 13,
-   "options": []
+   "ruleLabels": {
+    "hatred": "Hatred (all enemies)"
+   },
+   "cost": 16,
+   "options": [],
+   "renegade": true
   },
   "plague-furnace": {
    "slug": "plague-furnace",
@@ -661,13 +684,13 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "Heavy Chariot",
+   "troopType": "Heavy chariot",
    "category": "Chariot",
    "profile": [
     {
      "name": "Plague Furnace",
      "values": [
-      "2",
+      "5",
       "-",
       "-",
       "5",
@@ -696,23 +719,17 @@
    "equipment": "• Plague Furnace: Billowing Death\n• Plague Monk Crew: Hand weapon",
    "specialRules": [
     "dragged-along",
-    "fear",
+    "terror",
     "frenzy",
     "great-censer",
-    "impact-hits",
-    "large-target",
-    "magic-resistance",
-    "poisoned-attacks",
-    "scurrying-masses",
-    "stomp-attacks"
+    "impact-hits"
    ],
    "ruleLabels": {
-    "impact-hits": "Impact Hits (D3+1)",
-    "magic-resistance": "Magic Resistance (-1)",
-    "stomp-attacks": "Stomp Attacks (D3+1)"
+    "impact-hits": "Impact Hits (D6+1)"
    },
    "cost": null,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "plague-monks": {
    "slug": "plague-monks",
@@ -723,7 +740,7 @@
     "depth": 25
    },
    "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -761,11 +778,44 @@
     "frenzy",
     "horde",
     "scurry-away",
-    "warband"
+    "warband",
+    "regimental-unit"
    ],
    "ruleLabels": {},
    "cost": 7,
-   "options": []
+   "options": [
+    {
+     "label": "• The entire unit may take additional hand weapons",
+     "cost": 2,
+     "per": "model"
+    },
+    {
+     "label": "• Upgrade one model to a Plague Deacon (champion)",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• A Plague Deacon may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
+     "label": "• 0-1 unit per 1,000 points may purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    }
+   ],
+   "renegade": true
   },
   "plague-priest": {
    "slug": "plague-priest",
@@ -776,7 +826,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -824,16 +874,17 @@
      "per": "unit"
     },
     {
-     "label": "• Plague censer",
+     "label": "• Plague censer (see below)",
      "cost": 6,
      "per": "unit"
     },
     {
-     "label": "• May be mounted on a Plague Furnace",
-     "cost": 170,
+     "label": "• May purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "plagueclaw-catapult": {
    "slug": "plagueclaw-catapult",
@@ -844,7 +895,7 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "War Machine",
+   "troopType": "War machine",
    "category": "War Machine",
    "profile": [
     {
@@ -876,15 +927,16 @@
      ]
     }
    ],
-   "equipment": "Plagueclaw Catapult, hand weapons and light armour",
+   "equipment": "Plagueclaw Catapult (see below), hand weapons and light armour",
    "specialRules": [
     "random-attacks",
-    "skirmish-formation",
+    "skirmishers",
     "stubborn"
    ],
    "ruleLabels": {},
    "cost": 110,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "poisoned-wind-globadiers": {
    "slug": "poisoned-wind-globadiers",
@@ -895,11 +947,11 @@
     "depth": 25
    },
    "unitSize": "2-10",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
-     "name": "Globadier",
+     "name": "Globadiers",
      "values": [
       "5",
       "3",
@@ -913,15 +965,17 @@
      ]
     }
    ],
-   "equipment": "Hand weapons, Poisoned Wind globes and light armour",
+   "equipment": "Hand weapons, Poisoned Wind globes (see below) and light armour",
    "specialRules": [
     "scurry-away",
-    "skirmish-formation",
-    "warband"
+    "skirmishers",
+    "warband",
+    "life-is-cheap"
    ],
    "ruleLabels": {},
    "cost": 10,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "rat-ogres": {
    "slug": "rat-ogres",
@@ -932,7 +986,7 @@
     "depth": 50
    },
    "unitSize": "3+",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -950,21 +1004,23 @@
      ]
     }
    ],
-   "equipment": "Hand weapons and mutated hides (counts as heavy armour)",
+   "equipment": "Hand weapons, and mutated hides (counts as heavy armour)",
    "specialRules": [
-    "armour-bane",
     "close-order",
+    "armour-bane",
     "fear",
     "frenzy",
     "horde",
-    "safe-from-harm",
     "scurry-away",
-    "warband"
+    "warband",
+    "scurrying-masses",
+    "warpstone-weapons",
+    "motley-crew"
    ],
    "ruleLabels": {
     "armour-bane": "Armour Bane (2)"
    },
-   "cost": 48,
+   "cost": 40,
    "options": [
     {
      "label": "• Include one Packmaster for every two Rat Ogres",
@@ -973,10 +1029,11 @@
     },
     {
      "label": "• Upgrade one Packmaster to a Master Moulder (champion)",
-     "cost": 7,
+     "cost": 20,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "rat-swarms": {
    "slug": "rat-swarms",
@@ -987,11 +1044,11 @@
     "depth": 40
    },
    "unitSize": "3+",
-   "troopType": "Swarm",
+   "troopType": "Swarms",
    "category": "Infantry",
    "profile": [
     {
-     "name": "Rat Swarm",
+     "name": "Rat Swarms",
      "values": [
       "6",
       "2",
@@ -1009,13 +1066,14 @@
    "specialRules": [
     "immune-to-psychology",
     "loner",
-    "skirmish-formation",
+    "skirmishers",
     "unbreakable",
     "vanguard"
    ],
    "ruleLabels": {},
    "cost": 36,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "screaming-bell": {
    "slug": "screaming-bell",
@@ -1026,13 +1084,13 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "Heavy Chariot",
+   "troopType": "Heavy chariot",
    "category": "Chariot",
    "profile": [
     {
      "name": "Screaming Bell",
      "values": [
-      "2",
+      "5",
       "-",
       "-",
       "5",
@@ -1060,24 +1118,14 @@
    ],
    "equipment": "• Rat Ogre Crew: Hand weapon",
    "specialRules": [
-    "armour-bane",
-    "blessings-of-the-horned-rat",
-    "dragged-along",
-    "impact-hits",
-    "large-target",
-    "magic-resistance",
-    "scurrying-masses",
-    "stubborn",
-    "terror",
-    "tolling-the-bell"
+    "armour-bane-2",
+    "rat-ogre-only",
+    "blessings-of-the-horned-rat"
    ],
-   "ruleLabels": {
-    "armour-bane": "Armour Bane (2, Rat Ogre only)",
-    "impact-hits": "Impact Hits (D6+1)",
-    "magic-resistance": "Magic Resistance (-3)"
-   },
+   "ruleLabels": {},
    "cost": null,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "skaven-chieftain": {
    "slug": "skaven-chieftain",
@@ -1088,7 +1136,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1140,8 +1188,19 @@
      "label": "• May replace light armour with heavy armour",
      "cost": 3,
      "per": "unit"
+    },
+    {
+     "label": "• A Skaven Warlord may purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• A Skaven Chieftain may purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "skaven-warlord": {
    "slug": "skaven-warlord",
@@ -1152,7 +1211,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1204,8 +1263,19 @@
      "label": "• May replace light armour with heavy armour",
      "cost": 3,
      "per": "unit"
+    },
+    {
+     "label": "• A Skaven Warlord may purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• A Skaven Chieftain may purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "stormvermin": {
    "slug": "stormvermin",
@@ -1216,7 +1286,7 @@
     "depth": 25
    },
    "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "troopType": "Heavy infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -1248,16 +1318,17 @@
      ]
     }
    ],
-   "equipment": "Hand weapons, halberds and heavy armour",
+   "equipment": "Hand weapons, halberds, heavy armour",
    "specialRules": [
     "close-order",
     "horde",
     "scurry-away",
     "warband",
-    "warpstone-weapons"
+    "warpstone-weapons",
+    "regimental-unit"
    ],
    "ruleLabels": {},
-   "cost": 10,
+   "cost": 9,
    "options": [
     {
      "label": "• The entire unit may take shields",
@@ -1278,8 +1349,19 @@
      "label": "• Upgrade one model to a musician",
      "cost": 6,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• A Fangleader may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "warlock-engineer": {
    "slug": "warlock-engineer",
@@ -1290,7 +1372,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1308,7 +1390,7 @@
      ]
     }
    ],
-   "equipment": "Hand weapon and D3 Warpstone Tokens",
+   "equipment": "Hand weapon and",
    "specialRules": [
     "lore-of-the-horned-rat",
     "magical-attacks",
@@ -1322,25 +1404,41 @@
    "options": [
     {
      "label": "• Level 1 Wizard",
-     "cost": 40,
+     "cost": 30,
      "per": "unit"
     },
     {
      "label": "• Level 2 Wizard",
-     "cost": 70,
+     "cost": 60,
      "per": "unit"
     },
     {
-     "label": "• Warplock musket",
+     "label": "• Warplock musket (see below)",
      "cost": 9,
      "per": "unit"
     },
     {
-     "label": "• Warplock pistol",
+     "label": "• Warplock pistol (see below)",
      "cost": 6,
      "per": "unit"
+    },
+    {
+     "label": "• Doomrocket (see below) (0-1 Per Army)",
+     "cost": 35,
+     "per": "unit"
+    },
+    {
+     "label": "• May purchase Warlock Optics (see below)",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• May purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "warp-lightning-cannon": {
    "slug": "warp-lightning-cannon",
@@ -1351,7 +1449,7 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "War Machine",
+   "troopType": "War machine",
    "category": "War Machine",
    "profile": [
     {
@@ -1383,13 +1481,14 @@
      ]
     }
    ],
-   "equipment": "Warp Lightning Cannon, hand weapons and light armour",
+   "equipment": "Warp Lightning Cannon (see below), hand weapons and light armour",
    "specialRules": [
-    "skirmish-formation"
+    "skirmishers"
    ],
    "ruleLabels": {},
    "cost": 110,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "warplock-jezzails": {
    "slug": "warplock-jezzails",
@@ -1400,7 +1499,7 @@
     "depth": 50
    },
    "unitSize": "3+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -1418,15 +1517,16 @@
      ]
     }
    ],
-   "equipment": "Hand weapons, warplock jezzails and pavise",
+   "equipment": "Hand weapons, warplock jezzails (see below) and pavise",
    "specialRules": [
-    "open-order-formation",
+    "open-order",
     "scurry-away",
     "warband"
    ],
    "ruleLabels": {},
-   "cost": 19,
-   "options": []
+   "cost": 15,
+   "options": [],
+   "renegade": true
   },
   "weapon-team": {
    "slug": "weapon-team",
@@ -1493,6 +1593,218 @@
      "per": "model"
     }
    ]
+  },
+  "weapon-teams": {
+   "slug": "weapon-teams",
+   "name": "Weapon Teams",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ",
+   "base": {
+    "width": 25,
+    "depth": 50
+   },
+   "unitSize": "1",
+   "troopType": "Regular infantry",
+   "category": "",
+   "profile": [
+    {
+     "name": "Weapon Team Crew",
+     "values": [
+      "5",
+      "3",
+      "3",
+      "3",
+      "3",
+      "2",
+      "3",
+      "2",
+      "4"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons and light armour",
+   "specialRules": [
+    "loner",
+    "skirmish",
+    "scurry-away",
+    "detachment"
+   ],
+   "ruleLabels": {},
+   "cost": 15,
+   "options": [
+    {
+     "label": "• Doom-flayer",
+     "cost": 40,
+     "per": "model"
+    },
+    {
+     "label": "• Poisoned Wind Mortar",
+     "cost": 55,
+     "per": "model"
+    },
+    {
+     "label": "• Ratling Gun",
+     "cost": 50,
+     "per": "model"
+    },
+    {
+     "label": "• Warpfire Thrower",
+     "cost": 40,
+     "per": "model"
+    },
+    {
+     "label": "• Warp Grinder",
+     "cost": 30,
+     "per": "model"
+    }
+   ],
+   "renegade": true
+  },
+  "skaven-dregs": {
+   "slug": "skaven-dregs",
+   "name": "Skaven Dregs",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "20-40",
+   "troopType": "Regular infantry",
+   "category": "",
+   "profile": [
+    {
+     "name": "Dreg-rat",
+     "values": [
+      "5",
+      "2",
+      "2",
+      "3",
+      "3",
+      "1",
+      "4",
+      "1",
+      "2"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons",
+   "specialRules": [
+    "close-order",
+    "levies",
+    "horde",
+    "scurry-away",
+    "expendable",
+    "cornered-rats",
+    "loner"
+   ],
+   "ruleLabels": {},
+   "cost": 2,
+   "options": [
+    {
+     "label": "• Spears",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Shields",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Slings",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Include one Packmaster (champion)",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one Packmaster to a Master Moulder (champion)",
+     "cost": 20,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 2,
+     "per": "unit"
+    }
+   ],
+   "renegade": true
+  },
+  "packmasters-master-moulders": {
+   "slug": "packmasters-master-moulders",
+   "name": "Packmasters & Master Moulders",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "(see Dregs, Rat Ogre, & Giant Rat profiles)",
+   "troopType": "Regular infantry",
+   "category": "",
+   "profile": [
+    {
+     "name": "Packmaster",
+     "values": [
+      "6",
+      "3",
+      "3",
+      "3",
+      "3",
+      "1",
+      "4",
+      "1",
+      "6"
+     ]
+    },
+    {
+     "name": "Master Moulder",
+     "values": [
+      "6",
+      "5",
+      "3",
+      "4",
+      "4",
+      "2",
+      "5",
+      "2",
+      "7"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons and light armour",
+   "specialRules": [
+    "close-order",
+    "horde",
+    "leader-of-the-pack-skaven",
+    "motley-crew",
+    "scurry-away",
+    "warband",
+    "verminous-valour"
+   ],
+   "ruleLabels": {
+    "verminous-valour": "Verminous Valour (Master Moulder Only)"
+   },
+   "cost": null,
+   "options": [
+    {
+     "label": "• Whip",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Things-catcher (see below)",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• A Master Moulder may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
+    }
+   ],
+   "renegade": true
   }
  },
  "rules": {
@@ -1613,32 +1925,32 @@
   "poisoned-wind": {
    "key": "poisoned-wind",
    "name": "Poisoned Wind",
-   "text": "When a model using a weapon with this special rule makes a roll To Wound, a roll of 6+ is always a success, even if the target's Toughness is so high that the weapon would not normally be able to wound it. Finally, no armour save is permitted against wounds caused by a weapon with this special rule (Ward and Regeneration saves can be attempted as normal).\n\nNote that models wielding weapons that have this special rule are immune to this special rule.",
-   "url": "https://tow.whfb.app/special-rules/poisoned-wind"
+   "text": "When a model using a weapon with this special rule makes a roll To Wound, a roll of 5+ is always a success, even if the target's Toughness is so high that the weapon would not normally be able to wound it. Finally, no armour save is permitted against wounds caused by a weapon with this special rule (Ward and Regeneration saves can be attempted as normal).\nNote that models wielding weapons that have this special rule are immune to this special rule.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "scurry-away": {
    "key": "scurry-away",
    "name": "Scurry Away",
    "text": "Models with this special rule have a +1 modifier to the result of any Flee roll they make.",
-   "url": "https://tow.whfb.app/special-rules/scurry-away"
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "scurrying-masses": {
    "key": "scurrying-masses",
    "name": "Scurrying Masses",
-   "text": "Whilst within 3\" of a friendly unit, this model gains a positive (+) modifier to its Leadership characteristic equal to that unit's current Rank Bonus, up to a maximum of Leadership 10.",
-   "url": "https://tow.whfb.app/special-rules/scurrying-masses"
+   "text": "Whilst within 3\" of a friendly Skaven unit, this unit may add a positive (+) modifier to its Leadership characteristic equal to that unit’s current Rank Bonus, up to a maximum of Leadership 10.\nNote that this may not be combined with any leadership bonus provided by Warband or the Inspiring Presence special rule.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "verminous-valour": {
    "key": "verminous-valour",
    "name": "Verminous Valour",
-   "text": "Unless they are engaged in a challenge, a character with this special rule that has joined a unit that has a Unit Strength of 10 or more may voluntarily 'retire' to the rear of the unit at any time, moving through the ranks and taking up a position away from the combat. Should they do so, they are no longer within the fighting rank and cannot make any attacks or have attacks directed against them. However, the unit may still use this character's Leadership.",
-   "url": "https://tow.whfb.app/special-rules/verminous-valour"
+   "text": "A model with this special rule may voluntarily ‘retire’ (“Too Many Characters,” Rulebook, p.209) during the Combat Phase. In order to do so the model must:\n* Be joined to a unit that has a Unit Strength of 10 or more.\n* Not be part of a Challenge.\n* Not be subject to “Nowhere to Run” (Rulebook, p.211).\n* Be able to be placed inside the unit outside of all fighting ranks.\n* Do so before any attacks are allocated and resolved for the current initiative step of a combat that they are in.\nShould a model ‘retire’ in this way the unit may still use this character's Leadership. All other restrictions for retiring apply.\nIn subsequent turns, if this model’s unit remains engaged in combat with the same enemy unit, a model with this rule may move through the ranks and join any fighting rank before challenges are issued during step 1.1 of the “Choose Combat & Fight Phase” (“Characters in Combat,” Rulebook p.209.)\nIf at any time there is nowhere to place a ‘retired’ model outside of a fighting rank they must immediately  move through the ranks and take a position in the front row of a fighting rank. They may not make any attacks in this round of combat but they may have attacks directed against them.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "warpstone-weapons": {
    "key": "warpstone-weapons",
    "name": "Warpstone Weapons",
-   "text": "A hand weapon carried by a model with this special rule has the Magical Attacks special rule and an Armour Piercing characteristic of -1.\n\nNote that this special rule only applies to a single, ordinary hand weapon. If the model is using two hand weapons or any other sort of weapon, this special rule ceases to apply.",
-   "url": "https://tow.whfb.app/special-rules/warpstone-weapons"
+   "text": "A hand weapon carried by a model with this special rule has the Magical Attacks special rule and an Armour Piercing characteristic of -1.\nNote that this special rule only applies to a single, ordinary hand weapon. If the model is using two hand weapons or any other sort of weapon, this special rule ceases to apply.\nSkaven Misfire table:\n1\nWhoompff! All of the unit’s ammunition detonates prematurely. All friendly and enemy units within 3” suffer D3 hits using this weapon’s profile. Once resolved, this unit is removed.\n2-5\nWildly off Target. The unit loses control of its weapon. Roll the scatter dice. Resolve the weapon’s attacks against the first unit within range and line of sight (friend or foe) in the direction of the arrow (including a Hit). If a further Misfire is rolled, this unit  is removed.\n6\nPppphhtt! The weapon does not fire this turn.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "close-order": {
    "key": "close-order",
@@ -1891,6 +2203,102 @@
    "name": "Warp Grinder",
    "text": "Notes: If a Weapon Team is equipped with a Warp Grinder, both it and its parent unit gain the Ambushers special rule.",
    "url": "https://tow.whfb.app/special-rules/warp-grinder"
+  },
+  "expendable": {
+   "key": "expendable",
+   "name": "Expendable",
+   "text": "If all friendly Skaven models engaged in a combat have this rule, friendly Skaven units may target the engaged enemy units in that combat during the Shooting Phase. Resolve all rolls to hit as normal. Then, using all failed to hit rolls, roll to wound on a unit with the Expendable special rule engaged in the combat chosen by your opponent.\nIf firing with a model using a blast template, centre the template over a fighting rank so that it touches both friendly and enemy models as equally as possible with as many models as possible. Roll to scatter and resolve the attack as normal.\nIf using a Magic Missile to target an enemy unit engaged with a friendly unit with this rule, failed casting rolls (but not successfully dispelled rolls or miscasts) count as successfully cast on a friendly unit with the Expendable special rule engaged in the combat chosen by your opponent.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
+  },
+  "pushed-into-battle": {
+   "key": "pushed-into-battle",
+   "name": "Pushed Into Battle",
+   "text": "A model with this special rule may join a unit of Infantry with unit strength 10 or more despite being a Heavy Chariot.  If it does so, it must always be placed in the centre of the front rank, and it no longer has the Lumbering rule (Rulebook p. 195). Only one model with this special rule may join each unit.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
+  },
+  "strikes-first": {
+   "key": "strikes-first",
+   "name": "Strikes First",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/strikes-first"
+  },
+  "dodge": {
+   "key": "dodge",
+   "name": "Dodge",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/dodge"
+  },
+  "regimental-unit": {
+   "key": "regimental-unit",
+   "name": "Regimental Unit",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/regimental-unit"
+  },
+  "skirmish": {
+   "key": "skirmish",
+   "name": "Skirmish",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/skirmish"
+  },
+  "detachment": {
+   "key": "detachment",
+   "name": "Detachment",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/detachment"
+  },
+  "levies": {
+   "key": "levies",
+   "name": "Levies",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/levies"
+  },
+  "cornered-rats": {
+   "key": "cornered-rats",
+   "name": "Cornered Rats",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/cornered-rats"
+  },
+  "open-order": {
+   "key": "open-order",
+   "name": "Open Order",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/open-order"
+  },
+  "skirmishers": {
+   "key": "skirmishers",
+   "name": "Skirmishers",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/skirmishers"
+  },
+  "life-is-cheap": {
+   "key": "life-is-cheap",
+   "name": "Life is Cheap",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/life-is-cheap"
+  },
+  "hatred": {
+   "key": "hatred",
+   "name": "Hatred",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/hatred"
+  },
+  "plague-disciples": {
+   "key": "plague-disciples",
+   "name": "Plague Disciples",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/plague-disciples"
+  },
+  "armour-bane-2": {
+   "key": "armour-bane-2",
+   "name": "Armour Bane (2",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/armour-bane-2"
+  },
+  "rat-ogre-only": {
+   "key": "rat-ogre-only",
+   "name": "Rat Ogre only)",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/rat-ogre-only"
   }
  },
  "items": {
@@ -1900,44 +2308,44 @@
    "type": "Magic Weapon",
    "cost": 100,
    "costOverride": null,
-   "text": "The Fellblade (Profile)Notes: Characters whose Troop Type is infantry only. No armour, Ward or Regeneration saves are permitted against wounds caused by this weapon. However, during the Command sub-phase of their turn, the wielder of the Fellblade must roll a D3. On a roll of 1, they lose a single Wound.",
-   "url": "https://tow.whfb.app/magic-item/the-fellblade"
+   "text": "Notes: No Armour, Ward or Regeneration saves are permitted against wounds caused by this weapon. However, during the Command sub-phase of their turn, the wielder of the Fellblade must roll a D6. On a roll of 3+ there is no effect. On a roll of 1-2 the wielder suffers a single wound with no Armour Save allowed. Ward and Regeneration saves may be taken as normal.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "weepingblade": {
    "slug": "weeping-blade",
    "name": "Weeping Blade",
    "type": "Magic Weapon",
-   "cost": 50,
+   "cost": 40,
    "costOverride": null,
    "text": "Weeping Blade (Profile)",
-   "url": "https://tow.whfb.app/magic-item/weeping-blade"
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "bladeofnurglitch": {
    "slug": "blade-of-nurglitch",
-   "name": "Blade of Nurglitch",
+   "name": "Blade Of Nurglitch",
    "type": "Magic Weapon",
-   "cost": 35,
+   "cost": 15,
    "costOverride": null,
-   "text": "Blade of Nurglitch (Profile)Notes: Any enemy model that suffers one or more unsaved wounds from the Blade of Nurglitch must immediately make a Toughness test. If this test is failed, they suffer a -1 modifier to their Toughness characteristic (to a minimum of 1) for the remainder of the game.",
-   "url": "https://tow.whfb.app/magic-item/blade-of-nurglitch"
+   "text": "Notes: Any enemy model that suffers one or more unsaved wounds from the Blade of Nurglitch must immediately make a Toughness test. If this test is failed, they suffer a -1 modifier to their Toughness characteristic (to a minimum of 1) for the remainder of the game.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "deathglobe": {
    "slug": "death-globe",
-   "name": "Death Globe*",
+   "name": "Death Globe",
    "type": "Magic Weapon",
    "cost": 25,
    "costOverride": null,
-   "text": "Death Globe (Profile)Notes: Single use. A model armed with a Death Globe must target a specific model within its target unit, such as a champion or a character. Make a roll To Hit as normal. If successful, centre a small (3\") blast template over the target model. Any model whose base lies underneath the template must make an Initiative test. If this test is failed, they lose a single Wound.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/death-globe"
+   "text": "R        S        AP        Special Rules\nDeath Globe        9\"           2    N/A        Magical Attacks, Move & Shoot, Quick Shot,                         Poisoned Wind\nNotes: Single use. A model armed with a Death Globe may target a specific model within its target unit, such as a champion or a character. Make a roll To Hit as normal. If successful, centre a small (3\") blast template over the target model. Any model whose base lies underneath the template risks being hit.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "warpstonearmour": {
    "slug": "warpstone-armour",
-   "name": "Warpstone Armour*",
+   "name": "Warpstone Armour",
    "type": "Magic Armour",
-   "cost": 25,
+   "cost": 15,
    "costOverride": null,
-   "text": "The Warpstone Armour is a suit of heavy armour which may be purchased and worn by a Wizard, even if they do not have the option to be equipped with armour, a shield or barding, without penalty.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/warpstone-armour"
+   "text": "The Warpstone Armour is a suit of heavy armour which may be purchased and worn even if the character does not have the option to be equipped with armour. A Wizard may wear this armour without penalty.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "cautiousshield": {
    "slug": "cautious-shield",
@@ -1945,8 +2353,8 @@
    "type": "Magic Armour",
    "cost": 20,
    "costOverride": null,
-   "text": "The Cautious Shield is a shield. In addition, its bearer may choose to wield it with two hands when their combat is chosen during Step 1.1 of any Choose & Fight Combat sub-phase. If they do, until the end of this Combat phase it improves its armour save by 3, but their Attacks characteristic is reduced to 0.",
-   "url": "https://tow.whfb.app/magic-item/cautious-shield"
+   "text": "The Cautious Shield is a shield. In addition, its bearer may choose to wield it with two hands when their combat is chosen during Step 1.1 of any Choose & Fight Combat sub-phase.\nIf they do, until the end of this Combat phase it improves its armour value by 3, but their Attacks characteristic is reduced to 0.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "shadowmagnet": {
    "slug": "shadow-magnet",
@@ -1955,7 +2363,7 @@
    "cost": 40,
    "costOverride": null,
    "text": "Any enemy model that targets the bearer of the Shadow Magnet or any unit they have joined during the Shooting phase suffers an additional -1 To Hit modifier.",
-   "url": "https://tow.whfb.app/magic-item/shadow-magnet"
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "warpstoneamulet": {
    "slug": "warpstone-amulet",
@@ -1964,25 +2372,25 @@
    "cost": 35,
    "costOverride": null,
    "text": "The Warpstone Amulet gives its bearer a 4+ Ward save against any wounds suffered that were caused by a non-magical enemy attack.",
-   "url": "https://tow.whfb.app/magic-item/warpstone-amulet"
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "stormbanner": {
    "slug": "storm-banner",
    "name": "Storm Banner",
    "type": "Magic Standard",
-   "cost": 65,
+   "cost": 75,
    "costOverride": null,
-   "text": "Single use. A unit carrying the Storm Banner may activate it during the Command sub-phase of their turn. Until your next Start of Turn sub-phase, enemy units cannot use the Fly (X) special rule and all enemy shooting suffers an additional -1 To Hit modifier.",
-   "url": "https://tow.whfb.app/magic-item/storm-banner"
+   "text": "Single use. A unit carrying the Storm Banner may activate it during any Command sub-phase. For this player turn and the next: all friendly and enemy units cannot use the Fly (X) special rule, the range of all missile weapons is halved (rounding fractions up) and all war machines cannot shoot.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "grandbannerofsuperiority": {
    "slug": "grand-banner-of-superiority",
-   "name": "Grand Banner of Superiority",
+   "name": "Grand Banner Of Superiority",
    "type": "Magic Standard",
-   "cost": 50,
+   "cost": 40,
    "costOverride": null,
    "text": "When calculating its combat result, a unit carrying the Grand Banner of Superiority may claim an additional bonus of +D3 combat result points.",
-   "url": "https://tow.whfb.app/magic-item/grand-banner-of-superiority"
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "dwarfhidebanner": {
    "slug": "dwarf-hide-banner",
@@ -1991,16 +2399,16 @@
    "cost": 40,
    "costOverride": null,
    "text": "A unit carrying the Dwarf Hide Banner gains the Hatred (Dwarfs) and Stubborn special rules.",
-   "url": "https://tow.whfb.app/magic-item/dwarf-hide-banner"
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "bannerofverminousscurrying": {
    "slug": "banner-of-verminous-scurrying",
-   "name": "Banner of Verminous Scurrying",
+   "name": "Banner Of Verminous Scurrying",
    "type": "Magic Standard",
    "cost": 35,
    "costOverride": null,
    "text": "A unit carrying the Banner of Verminous Scurrying gains the Swiftstride special rule.",
-   "url": "https://tow.whfb.app/magic-item/banner-of-verminous-scurrying"
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "brassorb": {
    "slug": "brass-orb",
@@ -2008,8 +2416,8 @@
    "type": "Enchanted Item",
    "cost": 50,
    "costOverride": null,
-   "text": "Single use. Instead of attacking normally during the Combat phase, the bearer of the Brass Orb can toss it at a specific model within a unit they are engaged in combat with, such as a champion or a character. Make a single roll To Hit. If successful, the target model must make an Initiative test. If this test is failed, the target model is removed from play as a casualty.",
-   "url": "https://tow.whfb.app/magic-item/brass-orb"
+   "text": "Single use. Instead of attacking normally during the Combat phase, the bearer of the Brass Orb can toss it at a single model they are engaged in combat with. Make a single roll To Hit. If successful, the target model must make an Initiative test. If this test is failed, the target model is removed from play as a casualty.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "skalm": {
    "slug": "skalm",
@@ -2017,17 +2425,17 @@
    "type": "Enchanted Item",
    "cost": 35,
    "costOverride": null,
-   "text": "Single use. During the Command sub-phase of their turn, the bearer of Skalm can use it. The model immediately recovers a single lost Wound and, until your next Start of Turn sub-phase, has a +1 modifier to their Toughness characteristic.",
-   "url": "https://tow.whfb.app/magic-item/skalm"
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of Skalm can use it. The model immediately recovers D3 lost wounds and, until your next Start of Turn sub-phase, has a +1 modifier to their Toughness characteristic.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "skavenbrew": {
    "slug": "skavenbrew",
-   "name": "Skavenbrew*",
+   "name": "Skavenbrew",
    "type": "Enchanted Item",
    "cost": 20,
    "costOverride": null,
-   "text": "Single use. Skaven Warlords and Skaven Chieftains only. During the Command sub-phase of their turn, if they are not engaged in combat, this character may attempt to distribute Skavenbrew to a unit they have joined by making a Leadership test (using their own Leadership). If this test is passed, until your next Start of Turn sub-phase this character and any unit they have joined gains the Frenzy special rule.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/skavenbrew"
+   "text": "Single use. Skaven Warlords and Skaven Chieftains only. During the Command sub-phase of their turn, if they are not engaged in combat, this character may attempt to distribute Skavenbrew to a unit they have joined by making a Leadership test (using their own Leadership). If this test is passed, until your next Start of Turn sub-phase this character and any unit they have joined gains the Frenzy special rule.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "warpcondenser": {
    "slug": "warp-condenser",
@@ -2036,25 +2444,25 @@
    "cost": 50,
    "costOverride": null,
    "text": "The bearer of the Warp Condenser increases their Dispel range by 3\". Additionally, when attempting to cast a Magic Missile spell, the bearer of the Warp Condenser gains a +1 modifier to their Casting roll. Finally, should they miscast a spell, the bearer of the Warp Condenser can re-roll the result rolled on the Miscast table.",
-   "url": "https://tow.whfb.app/magic-item/warp-condenser"
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "stormdaemon": {
    "slug": "storm-daemon",
    "name": "Storm Daemon",
    "type": "Arcane Item",
-   "cost": 30,
+   "cost": 40,
    "costOverride": null,
-   "text": "This model can cast the following Bound spell, with a Power Level of 1:\n\nType | Magic Missile\nCasting Value | 8+\nRange | 18\"\n\nThe target enemy unit suffers D3+1 Strength 5 hits, each with an AP of -2.",
-   "url": "https://tow.whfb.app/magic-item/storm-daemon"
+   "text": "The wielder of the Storm Daemon can cast the Warp Lightning spell from the Lore of the Horned Rat as a Bound spell, with a Power Level of 2.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "warpstonetokens": {
    "slug": "warpstone-tokens",
-   "name": "Warpstone Tokens*",
+   "name": "Warpstone Tokens",
    "type": "Arcane Item",
    "cost": 15,
    "costOverride": null,
-   "text": "A Wizard may purchase up to three Warpstone Tokens, each of which is single use. Before making a Casting roll, a Wizard may choose to consume a single Warpstone Token. For each Token consumed, they may roll an additional D3 and add its result to their Casting roll. However, for each natural 1 that is rolled, the Wizard loses a single Wound.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/warpstone-tokens"
+   "text": "A Wizard may purchase up to three Warpstone Tokens, each of which is single use. Before making a Casting roll, a Wizard may choose to consume a single Warpstone Token. For each Token consumed, they may roll an additional D3 and add its result to their Casting roll. After the casting roll, roll a D6. On a roll of one the Wizard loses a single Wound.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   },
   "swordofreaving": {
    "slug": "sword-of-reaving",
@@ -2829,6 +3237,20 @@
    "costOverride": null,
    "text": "Enemy units may not make Stomp Attacks against a unit carrying the Monster Hunter's Tapestry.",
    "url": "https://tow.whfb.app/magic-item/monster-hunters-tapestry"
+  },
+  "plaguebanner": {
+   "slug": "plague-banner",
+   "name": "Plague Banner",
+   "type": "Magic Standard",
+   "cost": 30,
+   "costOverride": null,
+   "text": "Unit of Plague Monks Only. Single use. The Plague Banner may be activated at the start of any Combat Phase. For the remainder of the phase all Plague Monk models in the unit may re-roll failed To Hit rolls and failed To Wound rolls.",
+   "url": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ"
   }
+ },
+ "renegade": {
+  "version": "1.5.2.2",
+  "source": "https://docs.google.com/document/d/1QAt19do6rdvZgE8E6wLxUBkxfLBwdWYncAiof01vFHQ",
+  "appliedAt": "2026-10-25T14:19:27.292Z"
  }
 }

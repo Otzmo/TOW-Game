@@ -59,7 +59,7 @@
     "depth": 75
    },
    "unitSize": "3+",
-   "troopType": "Monstrous Cavalry",
+   "troopType": "Monstrous cavalry",
    "category": "Cavalry",
    "profile": [
     {
@@ -72,12 +72,12 @@
       "5",
       "3",
       "3",
-      "2",
+      "3",
       "8"
      ]
     },
     {
-     "name": "Bull Centaur Ba'hal",
+     "name": "Bull Centaur Ba’hal",
      "values": [
       "7",
       "4",
@@ -86,7 +86,7 @@
       "5",
       "3",
       "3",
-      "3",
+      "4",
       "8"
      ]
     }
@@ -109,7 +109,7 @@
     "armoured-hide": "Armoured Hide (1)",
     "impact-hits": "Impact Hits (D3)"
    },
-   "cost": 56,
+   "cost": 54,
    "options": [
     {
      "label": "• Great weapons",
@@ -122,7 +122,7 @@
      "per": "model"
     },
     {
-     "label": "• Upgrade one model to a Ba'hal (champion)",
+     "label": "• Upgrade one model to a Ba’hal (champion)",
      "cost": 6,
      "per": "unit"
     },
@@ -135,8 +135,24 @@
      "label": "• Upgrade one model to a musician",
      "cost": 6,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• Take a Darkforged weapon (see page 22)",
+     "cost": 15,
+     "per": "unit"
+    },
+    {
+     "label": "• purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "bull-centaur-taurruk": {
    "slug": "bull-centaur-taurruk",
@@ -147,11 +163,11 @@
     "depth": 75
    },
    "unitSize": "1",
-   "troopType": "Monstrous Cavalry",
+   "troopType": "Monstrous cavalry (character)",
    "category": "Character",
    "profile": [
     {
-     "name": "Taur'ruk",
+     "name": "Taur’ruk",
      "values": [
       "7",
       "5",
@@ -187,8 +203,8 @@
    "cost": 145,
    "options": [
     {
-     "label": "• Darkforged weapon",
-     "cost": 10,
+     "label": "• Darkforged weapon (see page 22)",
+     "cost": 15,
      "per": "unit"
     },
     {
@@ -205,8 +221,14 @@
      "label": "• May take a shield",
      "cost": 3,
      "per": "unit"
+    },
+    {
+     "label": "• May purchase magic items up to a total of",
+     "cost": 75,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "daemonsmith-sorcerer": {
    "slug": "daemonsmith-sorcerer",
@@ -217,7 +239,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Heavy Infantry",
+   "troopType": "Heavy infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -249,18 +271,28 @@
    "cost": 85,
    "options": [
     {
-     "label": "• Darkforged weapon",
-     "cost": 10,
-     "per": "unit"
-    },
-    {
-     "label": "• Naptha bombs",
+     "label": "• Darkforged weapon (see page 22)",
      "cost": 15,
      "per": "unit"
     },
     {
-     "label": "• Blood of Hashut",
-     "cost": 20,
+     "label": "• Naptha bombs (see page 22)",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Blood of Hashut (see page 22)",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Be a Level 4 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 100,
      "per": "unit"
     },
     {
@@ -269,16 +301,12 @@
      "per": "unit"
     },
     {
-     "label": "• Be mounted on a Great Taurus",
-     "cost": 120,
-     "per": "unit"
-    },
-    {
-     "label": "• Be mounted on a Lammasu",
-     "cost": 95,
+     "label": "• Purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "deathshrieker-rocket-launcher": {
    "slug": "deathshrieker-rocket-launcher",
@@ -289,11 +317,11 @@
     "depth": 75
    },
    "unitSize": "1",
-   "troopType": "War Machine",
+   "troopType": "War machine",
    "category": "War Machine",
    "profile": [
     {
-     "name": "Deathshrieker Rocket Launcher",
+     "name": "Deathshrieker",
      "values": [
       "-",
       "-",
@@ -321,13 +349,13 @@
      ]
     }
    ],
-   "equipment": "Demolition Rockets, Infernal Incendiaries, hand weapons and heavy armour",
+   "equipment": "Demolition Rockets (see below), Infernal Incendiaries (see below), hand weapons and heavy light armour",
    "specialRules": [
     "blackshard-armour",
-    "skirmish-formation"
+    "skirmishers"
    ],
    "ruleLabels": {},
-   "cost": 120,
+   "cost": 110,
    "options": [
     {
      "label": "• May have the Hellbound special rule",
@@ -339,7 +367,8 @@
      "cost": 10,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "dreadquake-mortar": {
    "slug": "dreadquake-mortar",
@@ -347,7 +376,7 @@
    "url": "https://tow.whfb.app/unit/dreadquake-mortar",
    "base": null,
    "unitSize": "1",
-   "troopType": "War Machine",
+   "troopType": "War machine",
    "category": "War Machine",
    "profile": [
     {
@@ -377,33 +406,19 @@
       "3",
       "9"
      ]
-    },
-    {
-     "name": "Ogre Loader",
-     "values": [
-      "-",
-      "3",
-      "-",
-      "4",
-      "-",
-      "(+2)",
-      "2",
-      "(+2)",
-      "-"
-     ]
     }
    ],
-   "equipment": "Dreadquake Mortar, hand weapons and heavy armour",
+   "equipment": "Dreadquake Mortar (see below), hand weapons and  heavy light armour.",
    "specialRules": [
     "blackshard-armour",
-    "skirmish-formation"
+    "skirmishers"
    ],
    "ruleLabels": {},
    "cost": 165,
    "options": [
     {
      "label": "• May have an Ogre Loader",
-     "cost": 20,
+     "cost": 35,
      "per": "unit"
     },
     {
@@ -416,7 +431,8 @@
      "cost": 10,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "giant-wolf": {
    "slug": "giant-wolf",
@@ -427,7 +443,7 @@
     "depth": 50
    },
    "unitSize": "1",
-   "troopType": "Light Cavalry",
+   "troopType": "Light cavalry",
    "category": "Mount",
    "profile": [
     {
@@ -447,14 +463,14 @@
    ],
    "equipment": "Claws and fangs (counts as a hand weapon)",
    "specialRules": [
-    "chariot-runners",
     "fast-cavalry",
     "fire-and-flee",
     "swiftstride"
    ],
    "ruleLabels": {},
    "cost": null,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "great-taurus": {
    "slug": "great-taurus",
@@ -511,7 +527,7 @@
     "depth": 50
    },
    "unitSize": "1",
-   "troopType": "War Machine",
+   "troopType": "War machine",
    "category": "War Machine",
    "profile": [
     {
@@ -521,7 +537,7 @@
       "-",
       "-",
       "-",
-      "4",
+      "5",
       "3",
       "-",
       "-",
@@ -546,11 +562,12 @@
    "equipment": "Bolt thrower, hand weapons and light armour",
    "specialRules": [
     "levies",
-    "skirmish-formation"
+    "skirmishers"
    ],
    "ruleLabels": {},
    "cost": 45,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "hobgoblin-cutthroats": {
    "slug": "hobgoblin-cutthroats",
@@ -561,7 +578,7 @@
     "depth": 25
    },
    "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -629,7 +646,8 @@
      "cost": 5,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "hobgoblin-khan": {
    "slug": "hobgoblin-khan",
@@ -640,7 +658,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -658,7 +676,7 @@
      ]
     }
    ],
-   "equipment": "Hand weapon and throwing weapons",
+   "equipment": "Hand Weapon and throwing weapons",
    "specialRules": [
     "backstab",
     "evasive",
@@ -668,6 +686,11 @@
    "ruleLabels": {},
    "cost": 45,
    "options": [
+    {
+     "label": "• Additional hand weapon",
+     "cost": 3,
+     "per": "unit"
+    },
     {
      "label": "• Great weapon",
      "cost": 4,
@@ -684,12 +707,12 @@
      "per": "unit"
     },
     {
-     "label": "Shield",
+     "label": "• Shield",
      "cost": 2,
      "per": "unit"
     },
     {
-     "label": "Light armour",
+     "label": "• Light armour",
      "cost": 3,
      "per": "unit"
     },
@@ -697,8 +720,14 @@
      "label": "• May be mounted on a Giant Wolf",
      "cost": 10,
      "per": "unit"
+    },
+    {
+     "label": "• May purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "hobgoblin-wolf-riders": {
    "slug": "hobgoblin-wolf-riders",
@@ -709,7 +738,7 @@
     "depth": 50
    },
    "unitSize": "5+",
-   "troopType": "Light Cavalry",
+   "troopType": "Light cavalry",
    "category": "Cavalry",
    "profile": [
     {
@@ -762,8 +791,8 @@
     "fast-cavalry",
     "fire-and-flee",
     "levies",
-    "open-order-formation",
-    "skirmish-formation",
+    "open-order",
+    "skirmishers",
     "swiftstride"
    ],
    "ruleLabels": {},
@@ -804,7 +833,8 @@
      "cost": 1,
      "per": "model"
     }
-   ]
+   ],
+   "renegade": true
   },
   "infernal-castellan": {
    "slug": "infernal-castellan",
@@ -889,8 +919,8 @@
     "width": 25,
     "depth": 25
    },
-   "unitSize": "10+",
-   "troopType": "Heavy Infantry",
+   "unitSize": "5+",
+   "troopType": "Heavy infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -925,14 +955,14 @@
    "equipment": "Hand weapons and heavy armour",
    "specialRules": [
     "close-order",
-    "detachment-special-rules",
+    "detachment",
     "regimental-unit",
     "resolute",
     "shieldwall",
     "stubborn"
    ],
    "ruleLabels": {},
-   "cost": 11,
+   "cost": 10,
    "options": [
     {
      "label": "• Great weapons",
@@ -940,12 +970,12 @@
      "per": "model"
     },
     {
-     "label": "• Fireglaives",
-     "cost": 4,
+     "label": "• Fireglaives and Blackshard Armour (see page 22)",
+     "cost": 2,
      "per": "model"
     },
     {
-     "label": "• Hailshot blunderbusses",
+     "label": "• Hailshot blunderbusses (see page 22)",
      "cost": 5,
      "per": "model"
     },
@@ -970,21 +1000,42 @@
      "per": "unit"
     },
     {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
      "label": "• Pistol",
      "cost": 3,
      "per": "unit"
     },
     {
-     "label": "• Naptha bombs",
+     "label": "• Naptha bombs (see page 22 )",
      "cost": 6,
      "per": "unit"
+    },
+    {
+     "label": "• A Deathmask may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Drilled special rule",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Have the Veteran special rule",
+     "cost": 1,
+     "per": "model"
     },
     {
      "label": "• Have the Blackshard Armour special rule",
      "cost": 1,
      "per": "model"
     }
-   ]
+   ],
+   "renegade": true
   },
   "infernal-ironsworn": {
    "slug": "infernal-ironsworn",
@@ -994,8 +1045,8 @@
     "width": 25,
     "depth": 25
    },
-   "unitSize": "10+",
-   "troopType": "Heavy Infantry",
+   "unitSize": "5+",
+   "troopType": "Heavy infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -1027,7 +1078,7 @@
      ]
     }
    ],
-   "equipment": "Hand weapons and full plate armour",
+   "equipment": "Hand weapons and heavy armour",
    "specialRules": [
     "blackshard-armour",
     "close-order",
@@ -1041,7 +1092,7 @@
     "veteran"
    ],
    "ruleLabels": {},
-   "cost": 19,
+   "cost": 16,
    "options": [
     {
      "label": "• Great weapons",
@@ -1069,16 +1120,37 @@
      "per": "unit"
     },
     {
+     "label": "• Upgrade one model to a musician",
+     "cost": 7,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
      "label": "• Pistol",
      "cost": 3,
      "per": "unit"
     },
     {
-     "label": "• Naptha bombs",
+     "label": "• Naptha bombs (see page 22)",
      "cost": 6,
      "per": "unit"
+    },
+    {
+     "label": "• Darkforged weapon (see page 22)",
+     "cost": 15,
+     "per": "unit"
+    },
+    {
+     "label": "• An Overseer may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "infernal-seneschal": {
    "slug": "infernal-seneschal",
@@ -1164,7 +1236,7 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "Heavy Chariot",
+   "troopType": "Heavy chariot",
    "category": "Chariot",
    "profile": [
     {
@@ -1221,11 +1293,12 @@
      "per": "unit"
     },
     {
-     "label": "• May replace its Steam Cannonade with a Skullcracker",
+     "label": "• May replace its Steam Cannonade with a Skullcracker (see page 11)",
      "cost": 10,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "kdaai-fireborn": {
    "slug": "kdaai-fireborn",
@@ -1236,18 +1309,18 @@
     "depth": 40
    },
    "unitSize": "3+",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry",
    "category": "Infantry",
    "profile": [
     {
-     "name": "K'daai Fireborn",
+     "name": "K’daai Fireborn",
      "values": [
       "6",
       "4",
       "2",
       "5",
       "4",
-      "2",
+      "3",
       "4",
       "3",
       "7"
@@ -1261,16 +1334,17 @@
       "2",
       "5",
       "4",
-      "2",
+      "3",
       "4",
       "4",
       "8"
      ]
     }
    ],
-   "equipment": "Rage and hellfire (counts as hand weapons)",
+   "equipment": "Rage and hellfire (counts as hand weapons), heavy armour",
    "specialRules": [
     "blazing-body",
+    "born-of-fire",
     "close-order",
     "ensorcelled-weapons",
     "fear",
@@ -1284,14 +1358,20 @@
    "ruleLabels": {
     "regeneration": "Regeneration (5+)"
    },
-   "cost": 41,
+   "cost": 38,
    "options": [
     {
      "label": "• Any unit may upgrade one model to a Manburner (champion)",
      "cost": 7,
      "per": "unit"
+    },
+    {
+     "label": "• A Manburner may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "lammasu": {
    "slug": "lammasu",
@@ -1302,7 +1382,7 @@
     "depth": 75
    },
    "unitSize": "1",
-   "troopType": "Monstrous Creature",
+   "troopType": "Monstrous creature",
    "category": "Monster",
    "profile": [
     {
@@ -1342,16 +1422,17 @@
    "cost": null,
    "options": [
     {
-     "label": "• May have a mace tail",
+     "label": "• May have a mace tail (see below)",
      "cost": 10,
      "per": "unit"
     },
     {
-     "label": "• May have Sorcerous Exhalation",
+     "label": "• May have Sorcerous Exhalation (see below)",
      "cost": 15,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "magma-cannon": {
    "slug": "magma-cannon",
@@ -1362,7 +1443,7 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "War Machine",
+   "troopType": "War machine",
    "category": "War Machine",
    "profile": [
     {
@@ -1394,10 +1475,10 @@
      ]
     }
    ],
-   "equipment": "Fire thrower, hand weapons and heavy armour",
+   "equipment": "Fire thrower, hand weapons and  heavy light armour",
    "specialRules": [
     "blackshard-armour",
-    "skirmish-formation"
+    "skirmishers"
    ],
    "ruleLabels": {},
    "cost": 125,
@@ -1412,7 +1493,8 @@
      "cost": 10,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "sneaky-gits": {
    "slug": "sneaky-gits",
@@ -1423,11 +1505,11 @@
     "depth": 25
    },
    "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
-     "name": "Sneaking Git",
+     "name": "Sneaky Git",
      "values": [
       "4",
       "4",
@@ -1462,7 +1544,7 @@
     "evasive",
     "levies",
     "move-through-cover",
-    "skirmish-formation"
+    "skirmishers"
    ],
    "ruleLabels": {},
    "cost": 6,
@@ -1482,7 +1564,8 @@
      "cost": 6,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "sorcerer-prophet": {
    "slug": "sorcerer-prophet",
@@ -1493,7 +1576,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Heavy Infantry",
+   "troopType": "Heavy infantry (character)",
    "category": "Character",
    "profile": [
     {
@@ -1522,21 +1605,21 @@
     "stubborn"
    ],
    "ruleLabels": {},
-   "cost": 195,
+   "cost": 175,
    "options": [
     {
-     "label": "• Darkforged weapon",
-     "cost": 10,
-     "per": "unit"
-    },
-    {
-     "label": "• Naptha bombs",
+     "label": "• Darkforged weapon (see page 22)",
      "cost": 15,
      "per": "unit"
     },
     {
-     "label": "• Blood of Hashut",
-     "cost": 20,
+     "label": "• Naptha bombs (see page 22)",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Blood of Hashut (see page 22)",
+     "cost": 10,
      "per": "unit"
     },
     {
@@ -1545,21 +1628,469 @@
      "per": "unit"
     },
     {
-     "label": "• Be mounted on a Bale Taurus",
-     "cost": 160,
+     "label": "• Purchase magic items up to a total of",
+     "cost": 100,
      "per": "unit"
     },
     {
-     "label": "• Be mounted on a Great Taurus",
-     "cost": 120,
+     "label": "• Be a Level 2 Wizard",
+     "cost": 30,
      "per": "unit"
     },
     {
-     "label": "• Be mounted on a Lammasu",
-     "cost": 95,
+     "label": "• Purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
+  },
+  "chaos-dwarf-lords": {
+   "slug": "chaos-dwarf-lords",
+   "name": "Chaos Dwarf Lords",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy infantry (character)",
+   "category": "",
+   "profile": [
+    {
+     "name": "Despot",
+     "values": [
+      "3",
+      "7",
+      "4",
+      "4",
+      "5",
+      "3",
+      "4",
+      "4",
+      "10"
+     ]
+    },
+    {
+     "name": "Seneschal",
+     "values": [
+      "3",
+      "6",
+      "4",
+      "4",
+      "5",
+      "2",
+      "3",
+      "3",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon and heavy armour",
+   "specialRules": [
+    "blackshard-armour",
+    "ensorcelled-weapons",
+    "rallying-cry",
+    "relentless-march",
+    "resolute",
+    "stubborn"
+   ],
+   "ruleLabels": {},
+   "cost": 125,
+   "options": [
+    {
+     "label": "• Darkforged weapon (see page 22)",
+     "cost": 15,
+     "per": "unit"
+    },
+    {
+     "label": "• Additional Hand Weapon",
+     "cost": 3,
+     "per": "unit"
+    },
+    {
+     "label": "• Great weapon",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• Hailshot blunderbuss (see page 22)",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Pistol",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Naptha bombs (see page 22)",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• May take a shield",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
+    }
+   ],
+   "renegade": true
+  },
+  "infernal-guard-commanders": {
+   "slug": "infernal-guard-commanders",
+   "name": "Infernal Guard Commanders",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "1",
+   "troopType": "Heavy infantry (character)",
+   "category": "",
+   "profile": [
+    {
+     "name": "Castellan",
+     "values": [
+      "3",
+      "6",
+      "4",
+      "5",
+      "5",
+      "3",
+      "2",
+      "3",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapon and heavy armour",
+   "specialRules": [
+    "blackshard-armour",
+    "ensorcelled-weapons",
+    "rallying-cry",
+    "resolute",
+    "stubborn",
+    "infernal-taskmaster",
+    "quell-panic"
+   ],
+   "ruleLabels": {},
+   "cost": 75,
+   "options": [
+    {
+     "label": "• Darkforged weapon (see page 22)",
+     "cost": 15,
+     "per": "unit"
+    },
+    {
+     "label": "• Great weapon",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• Fireglaive (see page 22)",
+     "cost": 3,
+     "per": "unit"
+    },
+    {
+     "label": "• Pistol",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Naptha bombs (see page 22)",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• May take a shield",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• A Castellan may purchase magic items up to a total of",
+     "cost": 75,
+     "per": "unit"
+    }
+   ],
+   "renegade": true
+  },
+  "chaos-dwarf-warriors": {
+   "slug": "chaos-dwarf-warriors",
+   "name": "Chaos Dwarf Warriors",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy infantry",
+   "category": "",
+   "profile": [
+    {
+     "name": "Chaos Dwarf Warrior",
+     "values": [
+      "3",
+      "4",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Veteran Warrior",
+     "values": [
+      "3",
+      "4",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "2",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons and heavy armour",
+   "specialRules": [
+    "close-order",
+    "detachment",
+    "regimental-unit",
+    "resolute",
+    "shieldwall"
+   ],
+   "ruleLabels": {},
+   "cost": 7,
+   "options": [
+    {
+     "label": "• Great weapons",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Shields",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Upgrade one model to a Veteran Warrior (champion)",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• A Veteran Warrior may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Drilled special rule",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Have the Veteran special rule",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    }
+   ],
+   "renegade": true
+  },
+  "blunderbuss-decimators": {
+   "slug": "blunderbuss-decimators",
+   "name": "Blunderbuss Decimators",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "5+",
+   "troopType": "Heavy infantry",
+   "category": "",
+   "profile": [
+    {
+     "name": "Blunderbuss Decimator",
+     "values": [
+      "3",
+      "3",
+      "3",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    },
+    {
+     "name": "Veteran Warrior",
+     "values": [
+      "3",
+      "3",
+      "4",
+      "3",
+      "4",
+      "1",
+      "2",
+      "1",
+      "9"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons, heavy armour and Hailshot blunderbuss",
+   "specialRules": [
+    "open-order",
+    "detachment",
+    "resolute",
+    "hailfire"
+   ],
+   "ruleLabels": {},
+   "cost": 10,
+   "options": [
+    {
+     "label": "• Great weapons",
+     "cost": 2,
+     "per": "model"
+    },
+    {
+     "label": "• Shields",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Upgrade one model to a Veteran Warrior (champion)",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Pistol",
+     "cost": 3,
+     "per": "unit"
+    },
+    {
+     "label": "• Naptha bombs (see page 22)",
+     "cost": 6,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Drilled special rule",
+     "cost": 1,
+     "per": "model"
+    }
+   ],
+   "renegade": true
+  },
+  "note-a-character-mounted-on-a-bale-taurus-has-1-toughness-and-4-wounds": {
+   "slug": "note-a-character-mounted-on-a-bale-taurus-has-1-toughness-and-4-wounds",
+   "name": "Note: A character mounted on a Bale Taurus has +1 Toughness and +4 Wounds.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0",
+   "base": {
+    "width": 60,
+    "depth": 100
+   },
+   "unitSize": "1",
+   "troopType": "Behemoth (Bale Taurus), Monstrous Creature (Great Taurus)",
+   "category": "",
+   "profile": [
+    {
+     "name": "Great Taurus",
+     "values": [
+      "6",
+      "5",
+      "-",
+      "5",
+      "-",
+      "(+4)",
+      "3",
+      "3",
+      "-"
+     ]
+    }
+   ],
+   "equipment": "Trampling hooves (see below) and goring horns (see below)",
+   "specialRules": [],
+   "ruleLabels": {},
+   "cost": null,
+   "options": [],
+   "renegade": true
+  },
+  "indentured-ogres": {
+   "slug": "indentured-ogres",
+   "name": "Indentured Ogres",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0",
+   "base": null,
+   "unitSize": "1",
+   "troopType": "War Machine",
+   "category": "",
+   "profile": [
+    {
+     "name": "Ogre Loader",
+     "values": [
+      "-",
+      "3",
+      "3",
+      "4",
+      "-",
+      "(+2)",
+      "2",
+      "2",
+      "8"
+     ]
+    }
+   ],
+   "equipment": "Hand Weapon",
+   "specialRules": [
+    "enough-for-everyone",
+    "indentured-crew"
+   ],
+   "ruleLabels": {},
+   "cost": null,
+   "options": [
+    {
+     "label": "• May take Naptha Bombs",
+     "cost": 8,
+     "per": "unit"
+    }
+   ],
+   "renegade": true
   }
  },
  "rules": {
@@ -1579,7 +2110,7 @@
    "key": "quell-panic",
    "name": "Quell Panic",
    "text": "Unless this unit is fleeing, any friendly unit that is within 6\" of this unit and that has the Levies special rule may re-roll a failed Panic test.",
-   "url": "https://tow.whfb.app/special-rules/quell-panic"
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "carriage-hauler": {
    "key": "carriage-hauler",
@@ -1608,8 +2139,8 @@
   "born-of-fire": {
    "key": "born-of-fire",
    "name": "Born of Fire",
-   "text": "A Bale Taurus or Great Taurus has a 3+ Ward save against any wounds suffered that were caused by an attack that has the Flaming Attacks special rule.",
-   "url": "https://tow.whfb.app/special-rules/born-of-fire"
+   "text": "A model with this rule has a 3+ Ward save against any wounds suffered that were caused by an attack that has the Flaming Attacks special rule.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "sorcerous-miasma": {
    "key": "sorcerous-miasma",
@@ -1632,20 +2163,20 @@
   "backstab": {
    "key": "backstab",
    "name": "Backstab",
-   "text": "If a unit with this special rule is engaged with an enemy unit's flank or rear arc, it may re-roll any failed rolls To Hit made against that enemy unit.",
-   "url": "https://tow.whfb.app/special-rules/backstab"
+   "text": "If a unit with this special rule is engaged with an enemy unit’s flank or rear arc, it may re-roll any failed rolls To Hit made against that enemy unit.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "ensorcelled-weapons": {
    "key": "ensorcelled-weapons",
    "name": "Ensorcelled Weapons",
-   "text": "A hand weapon carried by a model with this special rule has the Magical Attacks special rule and an Armour Piercing characteristic of -1.\n\nNote that this special rule only applies to a single, non-magical hand weapon and does not apply to a model's mount (should it have one). If the model is using two hand weapons or any other sort of weapon, this special rule ceases to apply.",
-   "url": "https://tow.whfb.app/special-rules/ensorcelled-weapons"
+   "text": "A hand weapon carried by a model with this special rule has the Magical Attacks special rule and an Armour Piercing characteristic of -1.\nNote that this special rule only applies to a single, non-magical hand weapon and does not apply to a model’s mount (should it have one). If the model is using two hand weapons or any other sort of weapon, this special rule ceases to apply.\n________________",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "blackshard-armour": {
    "key": "blackshard-armour",
    "name": "Blackshard Armour",
-   "text": "A model with this special rule has a 5+ Ward save against any wounds suffered that were caused by an attack that has the Flaming Attacks special rule. In addition, a Wizard with this special rule may wear armour without penalty.",
-   "url": "https://tow.whfb.app/special-rules/blackshard-armour"
+   "text": "A model with this special rule improves their armour value by 1 and  has a 5+ Ward save against any wounds suffered that were caused by an attack that has the Flaming Attacks special rule. In addition, a Wizard with this special rule may wear armour without penalty.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "grinding-wheels": {
    "key": "grinding-wheels",
@@ -1656,26 +2187,26 @@
   "blazing-body": {
    "key": "blazing-body",
    "name": "Blazing Body",
-   "text": "At the start of every Combat phase, any model (friend or foe) that is in base contact with this model and that does not also have this special rule suffers a single Strength 3 hit with an AP of -. This hit has the Flaming Attacks special rule.\n\nNote that any Wounds lost due to these hits do not count towards the combat result.",
-   "url": "https://tow.whfb.app/special-rules/blazing-body"
+   "text": "Each combat phase, during Step 1.1 of the Choose Combat\n& Fight sub-phase, before issuing challenges, any model (friend or foe) that is in base contact with this model and that does not also have this special rule suffers a single Strength 4 hit with an AP of -1. This hit has the Flaming Attacks special rule.\nNote that any Wounds lost due to these hits do not count towards the combat result.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "hellbound": {
    "key": "hellbound",
    "name": "Hellbound",
-   "text": "A Hellbound model has a 6+ Ward save against any wounds suffered that were caused by a non-magical enemy attack and gains both the Fear and Magical Attacks special rules. If the model already has the Fear special rule, it instead gains the Terror special rule. Additionally, once per game, a Hellbound model may re-roll one Scatter dice or one Artillery dice. However, should a Hellbound model ever have to make a roll on a Misfire table, it suffers a -1 modifier to the result.",
-   "url": "https://tow.whfb.app/special-rules/hellbound"
+   "text": "A Hellbound model has a 6+ Ward save against any wounds suffered that were caused by a non-magical enemy attack and gains both the Fear and Magical Attacks special rules. If the model already has the Fear special rule, it instead gains the Terror special rule. Additionally, once per game, a Hellbound model may re-roll one Scatter dice or one Artillery dice. However, should a Hellbound model ever have to make a roll on a Misfire table, it suffers a -1 modifier to the result.\nNote that any Hellcannon taken as a Rare choice in a Chaos Dwarf Grand Army gains this special rule.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "stampede": {
    "key": "stampede",
    "name": "Stampede",
    "text": "Impact Hits caused by a model with this special rule have an Armour Piercing characteristic of -2.",
-   "url": "https://tow.whfb.app/special-rules/stampede"
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "resolute": {
    "key": "resolute",
    "name": "Resolute",
-   "text": "Models with this special rule suffer a -1 modifier to the result of any Flee roll or Pursuit roll they make (to a minimum of 1).\n\nNote that this modifier does not apply to Chaos Dwarf mounted characters.",
-   "url": "https://tow.whfb.app/special-rules/resolute"
+   "text": "Models with this special rule suffer a -1 modifier to the result of any Flee roll or Pursuit roll they make (to a minimum of 1).\nNote that this modifier does not apply to mounted characters.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "close-order": {
    "key": "close-order",
@@ -1964,17 +2495,65 @@
    "name": "Move Through Cover",
    "text": "Models with this special rule do not suffer any modifiers to their Movement characteristic for moving through difficult or dangerous terrain. In addition, a model with this special rule may re-roll any rolls of 1 when making Dangerous Terrain tests.",
    "url": "https://tow.whfb.app/special-rules/move-through-cover"
+  },
+  "relentless-march": {
+   "key": "relentless-march",
+   "name": "Relentless March",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/relentless-march"
+  },
+  "infernal-taskmaster": {
+   "key": "infernal-taskmaster",
+   "name": "Infernal Taskmaster",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/infernal-taskmaster"
+  },
+  "detachment": {
+   "key": "detachment",
+   "name": "Detachment",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/detachment"
+  },
+  "open-order": {
+   "key": "open-order",
+   "name": "Open Order",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/open-order"
+  },
+  "hailfire": {
+   "key": "hailfire",
+   "name": "Hailfire!",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/hailfire"
+  },
+  "skirmishers": {
+   "key": "skirmishers",
+   "name": "Skirmishers",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/skirmishers"
+  },
+  "enough-for-everyone": {
+   "key": "enough-for-everyone",
+   "name": "Enough for Everyone",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/enough-for-everyone"
+  },
+  "indentured-crew": {
+   "key": "indentured-crew",
+   "name": "Indentured Crew",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/indentured-crew"
   }
  },
  "items": {
   "blackhammerofhashut": {
    "slug": "black-hammer-of-hashut",
-   "name": "Black Hammer of Hashut",
+   "name": "Black Hammer Of Hashut",
    "type": "Magic Weapon",
    "cost": 60,
    "costOverride": null,
-   "text": "Black Hammer of Hashut (Profile)Notes: Against models with the Flammable special rule, this weapon also has the Killing Blow special rule.",
-   "url": "https://tow.whfb.app/magic-item/black-hammer-of-hashut"
+   "text": "R        S        AP        Special Rules\nBlack Hammer        Combat  S+2        -1        (Killing Blow), Flaming Attacks,\nof Hashut        Magical Attacks, Multiple Wounds (D3)\nNotes: Against models with the Flammable special rule, this weapon also has the Killing Blow special rule.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "darkmaul": {
    "slug": "dark-maul",
@@ -1982,17 +2561,17 @@
    "type": "Magic Weapon",
    "cost": 50,
    "costOverride": null,
-   "text": "Dark Maul (Profile)Notes: Any enemy model that suffers one or more unsaved wounds from the Dark Maul must immediately make a Strength test. If this test is failed, the enemy model loses an additional Wound.",
-   "url": "https://tow.whfb.app/magic-item/dark-maul"
+   "text": "R        S        AP        Special Rules\nDark Maul        Combat        S        -2        Killing Blow, Magical Attacks\nNotes: Any enemy model that suffers one or more unsaved wounds from the Dark Maul must immediately make a Strength test. If this test is failed, the enemy model loses an additional Wound.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "daggerofmalice": {
    "slug": "dagger-of-malice",
-   "name": "Dagger of Malice",
+   "name": "Dagger Of Malice",
    "type": "Magic Weapon",
    "cost": 35,
    "costOverride": null,
-   "text": "Dagger of Malice (Profile)Notes: Unlike other Frenzied models, the wielder of the Dagger of Malice cannot lose this special rule.",
-   "url": "https://tow.whfb.app/magic-item/dagger-of-malice"
+   "text": "R        S        AP        Special Rules\nDagger of Malice  Combat        S        -        Frenzy, Hatred (all enemies),\nNotes: Unlike other Frenzied models, the wielder of the Dagger of Malice cannot lose this special rule.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "thegravensceptre": {
    "slug": "the-graven-sceptre",
@@ -2000,35 +2579,35 @@
    "type": "Magic Weapon",
    "cost": 30,
    "costOverride": null,
-   "text": "The Graven Sceptre (Profile)Notes: When making a roll To Wound for a hit caused with the Graven Sceptre, a roll of 4+ is always a success, regardless of the target's Toughness.",
-   "url": "https://tow.whfb.app/magic-item/the-graven-sceptre"
+   "text": "Notes: When making a roll To Wound for a hit caused with the Graven Sceptre, a roll of 4+ is always a success, regardless of the target’s Toughness.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "armourofbazherakthecruel": {
    "slug": "armour-of-bazherak-the-cruel",
-   "name": "Armour of Bazherak the Cruel",
+   "name": "Armour Of Bazherak The Cruel",
    "type": "Magic Armour",
-   "cost": 50,
+   "cost": 40,
    "costOverride": null,
    "text": "The Armour of Bazherak the Cruel is a suit of full plate armour. In addition, its wearer has the Immune to Psychology and Magic Resistance (-2) special rules.",
-   "url": "https://tow.whfb.app/magic-item/armour-of-bazherak-the-cruel"
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "themaskofthefurnace": {
    "slug": "the-mask-of-the-furnace",
-   "name": "The Mask of the Furnace",
+   "name": "The Mask Of The Furnace",
    "type": "Magic Armour",
    "cost": 40,
    "costOverride": null,
    "text": "May be worn with other armour. The wearer of the Mask of the Furnace improves their armour value by 1 (to a maximum of 2+). In addition, they have a 3+ Ward save against any wounds suffered that were caused by an attack that has the Flaming Attacks special rule.",
-   "url": "https://tow.whfb.app/magic-item/the-mask-of-the-furnace"
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "mantleofstone": {
    "slug": "mantle-of-stone",
-   "name": "Mantle of Stone*",
+   "name": "Mantle of Stone",
    "type": "Talisman",
    "cost": 30,
    "costOverride": null,
-   "text": "The wearer of a Mantle of Stone has a +1 modifier to their Toughness characteristic, but a -1 modifier to their Initiative characteristic.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/mantle-of-stone"
+   "text": "0-1 per model. The wearer of a Mantle of Stone has a +1 modifier to their Toughness characteristic, but a -1 modifier to their Initiative characteristic.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "hellshard": {
    "slug": "hellshard",
@@ -2037,16 +2616,16 @@
    "cost": 20,
    "costOverride": null,
    "text": "If the bearer of the Hellshard loses their last Wound to an enemy attack during the Combat phase, the unit that made the attack suffers D6 Strength 5 hits, each with an AP of -1.",
-   "url": "https://tow.whfb.app/magic-item/hellshard"
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "thelammasusbeard": {
    "slug": "the-lammasus-beard",
-   "name": "The Lammasu's Beard",
+   "name": "The Lammasu’s Beard",
    "type": "Magic Standard",
    "cost": 65,
    "costOverride": null,
-   "text": "A unit carrying the Lammasu's Beard has a 6+ Ward save against any wounds suffered and gains the Magic Resistance (-2) special rule. In addition, whilst within 6\" of the model carrying this standard, friendly units have a 5+ Ward save against any wounds suffered during the Shooting phase and gain the Magic Resistance (-1) special rule.",
-   "url": "https://tow.whfb.app/magic-item/the-lammasus-beard"
+   "text": "A unit carrying the Lammasu’s Beard has a 6+ Ward save against any wounds suffered and gains the Magic Resistance (-2) special rule. In addition, whilst within 6\" of the model carrying this standard, friendly units have a 5+ Ward save against any wounds suffered during the Shooting phase and gain the Magic Resistance (-1) special rule.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "ashenbanner": {
    "slug": "ashen-banner",
@@ -2054,26 +2633,26 @@
    "type": "Magic Standard",
    "cost": 30,
    "costOverride": null,
-   "text": "Any enemy model that targets a unit carrying the Ashen Banner during the Shooting phase suffers an additional -1 To Hit modifier.",
-   "url": "https://tow.whfb.app/magic-item/ashen-banner"
+   "text": "Any enemy model that targets shoots at a unit carrying the Ashen Banner during the Shooting phase suffers an additional -1 To Hit modifier.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "overseerssigil": {
    "slug": "overseers-sigil",
-   "name": "Overseer's Sigil",
+   "name": "Overseer’s Sigil",
    "type": "Magic Standard",
    "cost": 25,
    "costOverride": null,
-   "text": "Whilst within 9\" of the model carrying the Overseer's Sigil, friendly units lose the Levies special rule.",
-   "url": "https://tow.whfb.app/magic-item/overseers-sigil"
+   "text": "Whilst within 9\" of the model carrying the Overseer’s Sigil, friendly units lose the Levies special rule.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "shroudoftheancestor": {
    "slug": "shroud-of-the-ancestor",
-   "name": "Shroud of the Ancestor",
+   "name": "Shroud Of The Ancestor",
    "type": "Magic Standard",
    "cost": 10,
    "costOverride": null,
    "text": "A unit carrying the Shroud of the Ancestor gains the Hatred (Dwarfs) special rule.",
-   "url": "https://tow.whfb.app/magic-item/shroud-of-the-ancestor"
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "daemonicfamiliar": {
    "slug": "daemonic-familiar",
@@ -2081,17 +2660,17 @@
    "type": "Enchanted Item",
    "cost": 30,
    "costOverride": null,
-   "text": "Enemy models engaged in combat with the owner of a Daemonic Familiar must reduce the armour value of any Ward or Regeneration save they have by 1, to a minimum of 6+.",
-   "url": "https://tow.whfb.app/magic-item/daemonic-familiar"
+   "text": "Enemy models engaged in combat with the owner of a Daemonic Familiar must reduce the Ward or Regeneration value of any Ward or Regeneration save they have by 1, to a minimum of 6+.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "breathofhashut": {
    "slug": "breath-of-hashut",
-   "name": "Breath of Hashut",
+   "name": "Breath Of Hashut",
    "type": "Enchanted Item",
    "cost": 25,
    "costOverride": null,
-   "text": "Single use. The Breath of Hashut is a breath weapon with the following profile:\n\nBreath of Hashut (Profile)",
-   "url": "https://tow.whfb.app/magic-item/breath-of-hashut"
+   "text": "Single use. The Breath of Hashut is a breath weapon with the following profile:\nR        S        AP        Special Rules\nN/A        4        -2        Breath Weapon,",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "obsidianvambraces": {
    "slug": "obsidian-vambraces",
@@ -2100,7 +2679,7 @@
    "cost": 15,
    "costOverride": null,
    "text": "The wearer of the Obsidian Vambraces has a +1 modifier to their Strength characteristic and the Magic Resistance (-1) special rule. However, if they roll a natural 1 when making a roll To Hit during the Combat phase, the gauntlets shatter into pieces and can no longer be used.",
-   "url": "https://tow.whfb.app/magic-item/obsidian-vambraces"
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "daemonflask": {
    "slug": "daemon-flask",
@@ -2108,26 +2687,26 @@
    "type": "Arcane Item",
    "cost": 50,
    "costOverride": null,
-   "text": "Single use. During the Command sub-phase of their turn, the bearer of the Daemon Flask may open it. When they do so, all enemy units that are within this character's Command range must make a Panic test.",
-   "url": "https://tow.whfb.app/magic-item/daemon-flask"
+   "text": "Single use. During the Command sub-phase of their turn, the bearer of the Daemon Flask may open it. When they do so, all enemy units that are within this character’s Command range must make a Panic test.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "vialoflammasublood": {
    "slug": "vial-of-lammasu-blood",
-   "name": "Vial of Lammasu Blood",
+   "name": "Vial Of Lammasu Blood",
    "type": "Arcane Item",
    "cost": 40,
    "costOverride": null,
-   "text": "Single use. A Wizard may use this item instead of making a dispel attempt. If they do so, the spell is automatically dispelled with no Dispel roll required.\n\nNote that a perfect invocation cannot be dispelled.",
-   "url": "https://tow.whfb.app/magic-item/vial-of-lammasu-blood"
+   "text": "Single use. A Wizard may use this item instead of making a dispel attempt. If they do so, the spell is automatically dispelled with no Dispel roll required.\nNote that a perfect invocation cannot be dispelled.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "scrollofbinding": {
    "slug": "scroll-of-binding",
-   "name": "Scroll of Binding*",
+   "name": "Scroll Of Binding",
    "type": "Arcane Item",
    "cost": 30,
    "costOverride": null,
-   "text": "Single use. A Wizard may use this scroll when attempting to cast a spell. If they do so, the Wizard rolls 3D6 when making their Casting roll (rather than the usual 2D6). However, if a double 1 is rolled on any two of the dice rolled, the spell is miscast.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/scroll-of-binding"
+   "text": "Single use. A Wizard may use this scroll when attempting to cast a spell. If they do so, the Wizard rolls 3D6 when making their Casting roll (rather than the usual 2D6). However, if\na double 1 is rolled on any two of the dice rolled, the spell is miscast.",
+   "url": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0"
   },
   "swordofreaving": {
    "slug": "sword-of-reaving",
@@ -2903,5 +3482,10 @@
    "text": "Enemy units may not make Stomp Attacks against a unit carrying the Monster Hunter's Tapestry.",
    "url": "https://tow.whfb.app/magic-item/monster-hunters-tapestry"
   }
+ },
+ "renegade": {
+  "version": "1.5.2.2",
+  "source": "https://docs.google.com/document/d/1ffg5nPSrhOhMSmX2vTs6_WXOCEwmxA5Hjwy8MdPFXS0",
+  "appliedAt": "2026-10-25T14:19:30.592Z"
  }
 }

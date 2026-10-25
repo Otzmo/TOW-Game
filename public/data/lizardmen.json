@@ -24,24 +24,10 @@
       "-",
       "6",
       "6",
-      "5",
+      "6",
       "1",
       "3",
       "-"
-     ]
-    },
-    {
-     "name": "Skink Crew (x5)",
-     "values": [
-      "-",
-      "2",
-      "3",
-      "3",
-      "-",
-      "-",
-      "4",
-      "1",
-      "6"
      ]
     }
    ],
@@ -49,11 +35,13 @@
    "specialRules": [
     "close-order",
     "cold-blooded",
+    "great-horns",
     "howdah",
     "immune-to-psychology",
     "impact-hits",
     "large-target",
     "poisoned-attacks",
+    "skink-riders",
     "stomp-attacks",
     "stubborn",
     "terror"
@@ -63,19 +51,25 @@
     "poisoned-attacks": "Poisoned Attacks (javelins only)",
     "stomp-attacks": "Stomp Attacks (D3+2)"
    },
-   "cost": 230,
+   "cost": 210,
    "options": [
     {
-     "label": "• Giant blowpipes",
+     "label": "• A Stegadon may replace its giant bow with giant blowpipes",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Giant blowpipes (see below)",
      "cost": 0,
      "per": "unit"
     },
     {
      "label": "• Engine of the Gods",
-     "cost": 25,
+     "cost": 35,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "bastiladon": {
    "slug": "bastiladon",
@@ -86,7 +80,7 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "Monstrous Creature",
+   "troopType": "Monstrous creature",
    "category": "Monster",
    "profile": [
     {
@@ -128,6 +122,7 @@
     "large-target",
     "poisoned-attacks",
     "stomp-attacks",
+    "skink-riders",
     "stubborn",
     "terror"
    ],
@@ -136,11 +131,11 @@
     "poisoned-attacks": "Poisoned Attacks (javelins only)",
     "stomp-attacks": "Stomp Attacks (D3+1)"
    },
-   "cost": 160,
+   "cost": 140,
    "options": [
     {
      "label": "• Replace its Ark of Sotek with a Solar Engine",
-     "cost": 15,
+     "cost": 35,
      "per": "unit"
     },
     {
@@ -148,7 +143,8 @@
      "cost": 5,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "carnosaur": {
    "slug": "carnosaur",
@@ -202,7 +198,7 @@
     "depth": 25
    },
    "unitSize": "5+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -234,13 +230,18 @@
      ]
     }
    ],
-   "equipment": "Hand weapons, blowpipes and calloused hides (counts as light armour)",
+   "equipment": "Hand weapons, blowpipes (see below) and calloused hides (counts as light armour)",
    "specialRules": [
+    "aquatic",
+    "ambushers",
+    "chameleon",
     "cold-blooded",
     "evasive",
+    "fire-flee",
+    "loner",
     "move-through-cover",
     "scouts",
-    "skirmish-formation"
+    "skirmishers"
    ],
    "ruleLabels": {},
    "cost": 11,
@@ -250,18 +251,19 @@
      "cost": 6,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "cold-one-lizardmen": {
    "slug": "cold-one-lizardmen",
    "name": "Cold One (Lizardmen)",
    "url": "https://tow.whfb.app/unit/cold-one-lizardmen",
    "base": {
-    "width": 30,
-    "depth": 60
+    "width": 40,
+    "depth": 40
    },
    "unitSize": "1",
-   "troopType": "Heavy Cavalry",
+   "troopType": "Base Size: Unit Size: Equipment: Special Rules:",
    "category": "Mount",
    "profile": [
     {
@@ -281,18 +283,19 @@
    ],
    "equipment": "Claws and teeth (counts as a hand weapon)",
    "specialRules": [
-    "armour-bane",
     "armoured-hide",
+    "drop-rocks",
     "fear",
-    "stupidity",
+    "fly",
     "swiftstride"
    ],
    "ruleLabels": {
-    "armour-bane": "Armour Bane (1, Cold One only)",
-    "armoured-hide": "Armoured Hide (1)"
+    "armoured-hide": "Armoured Hide (1)",
+    "fly": "Fly (10)"
    },
    "cost": null,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "cold-one-riders": {
    "slug": "cold-one-riders",
@@ -302,8 +305,8 @@
     "width": 30,
     "depth": 60
    },
-   "unitSize": "5+",
-   "troopType": "Heavy Cavalry",
+   "unitSize": "4+",
+   "troopType": "Heavy cavalry",
    "category": "Cavalry",
    "profile": [
     {
@@ -351,18 +354,21 @@
    ],
    "equipment": "• Cold One Riders: Hand weapons, scaly skin (counts as heavy armour) and shields\n• Cold Ones: Claws and teeth (counts as a hand weapon)",
    "specialRules": [
-    "armour-bane",
+    "armour-bane-1",
+    "cold-one-only",
     "armoured-hide",
     "close-order",
+    "counter-charge",
     "cold-blooded",
     "fear",
     "obsidian-blades",
+    "predatory-fighter",
     "stupidity",
     "swiftstride"
    ],
    "ruleLabels": {
-    "armour-bane": "Armour Bane (1, Cold One only)",
-    "armoured-hide": "Armoured Hide (1)"
+    "armoured-hide": "Armoured Hide (3)",
+    "predatory-fighter": "Predatory Fighter (Rider and Pack Leader only)"
    },
    "cost": 34,
    "options": [
@@ -387,11 +393,27 @@
      "per": "unit"
     },
     {
+     "label": "• Take light armour",
+     "cost": 4,
+     "per": "model"
+    },
+    {
      "label": "• Have the Drilled special rule",
      "cost": 2,
      "per": "model"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• A Pack Leader may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "jungle-swarms": {
    "slug": "jungle-swarms",
@@ -402,11 +424,11 @@
     "depth": 40
    },
    "unitSize": "3+",
-   "troopType": "Swarm",
+   "troopType": "Swarms",
    "category": "Infantry",
    "profile": [
     {
-     "name": "Jungle Swarm",
+     "name": "Jungle Swarms",
      "values": [
       "5",
       "3",
@@ -427,13 +449,14 @@
     "loner",
     "move-through-cover",
     "poisoned-attacks",
-    "skirmish-formation",
+    "skirmishers",
     "unbreakable",
     "vanguard"
    ],
    "ruleLabels": {},
    "cost": 40,
-   "options": []
+   "options": [],
+   "renegade": true
   },
   "kroxigor": {
    "slug": "kroxigor",
@@ -444,7 +467,7 @@
     "depth": 40
    },
    "unitSize": "3+",
-   "troopType": "Monstrous Infantry",
+   "troopType": "Monstrous infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -476,13 +499,13 @@
      ]
     }
    ],
-   "equipment": "Great weapons and scaly skin (counts as heavy armour)",
+   "equipment": "Great weapons and plated carapace (counts as full plate) scaly skin (counts as heavy armour)",
    "specialRules": [
     "aquatic",
     "close-order",
     "cold-blooded",
     "fear",
-    "skirmish-screen"
+    "predatory-fighter"
    ],
    "ruleLabels": {},
    "cost": 49,
@@ -492,7 +515,8 @@
      "cost": 7,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "razordon-pack": {
    "slug": "razordon-pack",
@@ -603,7 +627,7 @@
     "depth": 40
    },
    "unitSize": "3+",
-   "troopType": "Monstrous Cavalry",
+   "troopType": "Monstrous cavalry",
    "category": "Cavalry",
    "profile": [
     {
@@ -638,13 +662,13 @@
      "name": "Ripperdactyl",
      "values": [
       "2",
-      "3",
+      "4",
       "-",
       "4",
       "-",
       "-",
       "3",
-      "2",
+      "3",
       "-"
      ]
     }
@@ -654,19 +678,21 @@
     "armoured-hide",
     "cleaving-blow",
     "cold-blooded",
+    "counter-charge",
     "fear",
     "fly",
-    "furious-charge",
+    "furious-charge-predatory-fighter",
     "impetuous",
-    "skirmish-formation",
+    "skink-riders",
+    "skirmishers",
     "swiftstride",
     "toad-rage"
    ],
    "ruleLabels": {
-    "armoured-hide": "Armoured Hide (1)",
+    "armoured-hide": "Armoured Hide (2)",
     "cleaving-blow": "Cleaving Blow (Ripperdactyl only)",
     "fly": "Fly (9)",
-    "furious-charge": "Furious Charge (Ripperdactyl only)"
+    "furious-charge-predatory-fighter": "Furious Charge Predatory Fighter (Ripperdactyl only)"
    },
    "cost": 40,
    "options": [
@@ -674,8 +700,14 @@
      "label": "• Any unit may upgrade one model to a Ripperdactyl Champion",
      "cost": 6,
      "per": "unit"
+    },
+    {
+     "label": "• A Champion may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "salamander-pack": {
    "slug": "salamander-pack",
@@ -739,7 +771,7 @@
     "depth": 30
    },
    "unitSize": "1",
-   "troopType": "Heavy Infantry",
+   "troopType": "Heavy infantry",
    "category": "Character",
    "profile": [
     {
@@ -758,12 +790,7 @@
     }
    ],
    "equipment": "Hand weapon and scaly skin (counts as heavy armour)",
-   "specialRules": [
-    "cold-blooded",
-    "furious-charge",
-    "obsidian-blades",
-    "rallying-cry"
-   ],
+   "specialRules": [],
    "ruleLabels": {},
    "cost": 140,
    "options": [
@@ -793,16 +820,22 @@
      "per": "unit"
     },
     {
-     "label": "• Cold One",
-     "cost": 18,
+     "label": "• May take light armour",
+     "cost": 3,
      "per": "unit"
     },
     {
-     "label": "• Carnosaur",
-     "cost": 170,
+     "label": "• A Saurus Oldblood may purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• A Saurus Scar-Veteran may purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "saurus-scar-veteran": {
    "slug": "saurus-scar-veteran",
@@ -813,7 +846,7 @@
     "depth": 30
    },
    "unitSize": "1",
-   "troopType": "Heavy Infantry",
+   "troopType": "Heavy infantry",
    "category": "Character",
    "profile": [
     {
@@ -832,12 +865,7 @@
     }
    ],
    "equipment": "Hand weapon and scaly skin (counts as heavy armour)",
-   "specialRules": [
-    "cold-blooded",
-    "furious-charge",
-    "obsidian-blades",
-    "rallying-cry"
-   ],
+   "specialRules": [],
    "ruleLabels": {},
    "cost": 90,
    "options": [
@@ -867,16 +895,22 @@
      "per": "unit"
     },
     {
-     "label": "• Cold One",
-     "cost": 18,
+     "label": "• May take light armour",
+     "cost": 3,
      "per": "unit"
     },
     {
-     "label": "• Carnosaur",
-     "cost": 170,
+     "label": "• A Saurus Oldblood may purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• A Saurus Scar-Veteran may purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "saurus-warriors": {
    "slug": "saurus-warriors",
@@ -887,7 +921,7 @@
     "depth": 30
    },
    "unitSize": "10+",
-   "troopType": "Heavy Infantry",
+   "troopType": "Heavy infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -923,10 +957,11 @@
    "specialRules": [
     "close-order",
     "cold-blooded",
-    "obsidian-blades"
+    "obsidian-blades",
+    "predatory-fighter"
    ],
    "ruleLabels": {},
-   "cost": 14,
+   "cost": 12,
    "options": [
     {
      "label": "• The entire unit may take thrusting spears",
@@ -935,25 +970,41 @@
     },
     {
      "label": "• Upgrade one model to a Spawn Leader (champion)",
-     "cost": 7,
+     "cost": 6,
      "per": "unit"
     },
     {
      "label": "• Upgrade one model to a standard bearer",
-     "cost": 7,
+     "cost": 6,
      "per": "unit"
     },
     {
      "label": "• Upgrade one model to a musician",
-     "cost": 7,
+     "cost": 6,
      "per": "unit"
     },
     {
-     "label": "• 0-1 unit per 1,000 points may have the Shieldwall special rule",
+     "label": "• A Spawn Leader may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 50,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Shieldwall special rule",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• Have the Drilled special rule",
      "cost": 1,
      "per": "model"
     }
-   ]
+   ],
+   "renegade": true
   },
   "skink-chief": {
    "slug": "skink-chief",
@@ -964,7 +1015,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Character",
    "profile": [
     {
@@ -983,14 +1034,15 @@
     }
    ],
    "equipment": "Hand weapon and calloused hide (counts as light armour)",
-   "specialRules": [
-    "aquatic",
-    "cold-blooded",
-    "poisoned-attacks"
-   ],
+   "specialRules": [],
    "ruleLabels": {},
    "cost": 45,
    "options": [
+    {
+     "label": "• A Skink Priest may be a Level 2 Wizard",
+     "cost": 30,
+     "per": "unit"
+    },
     {
      "label": "• Additional hand weapon",
      "cost": 3,
@@ -1002,7 +1054,7 @@
      "per": "unit"
     },
     {
-     "label": "• Blowpipe",
+     "label": "• Blowpipe (see below)",
      "cost": 4,
      "per": "unit"
     },
@@ -1012,26 +1064,32 @@
      "per": "unit"
     },
     {
-     "label": "• A Skink Chief may take a shield",
+     "label": "• Take a shield",
      "cost": 2,
      "per": "unit"
     },
     {
-     "label": "• Terradon",
-     "cost": 30,
+     "label": "• Be equipped with light armour",
+     "cost": 3,
      "per": "unit"
     },
     {
-     "label": "• Ripperdactyl",
-     "cost": 35,
+     "label": "• Have the Scouts special rule",
+     "cost": 10,
      "per": "unit"
     },
     {
-     "label": "• Stegadon",
-     "cost": 215,
+     "label": "• Have the Vanguard special rule",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "skink-priest": {
    "slug": "skink-priest",
@@ -1042,7 +1100,7 @@
     "depth": 25
    },
    "unitSize": "1",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Character",
    "profile": [
     {
@@ -1061,12 +1119,7 @@
     }
    ],
    "equipment": "Hand weapon and calloused hide (counts as light armour)",
-   "specialRules": [
-    "arcane-vassal",
-    "aquatic",
-    "cold-blooded",
-    "lore-of-lustria"
-   ],
+   "specialRules": [],
    "ruleLabels": {},
    "cost": 60,
    "options": [
@@ -1076,11 +1129,52 @@
      "per": "unit"
     },
     {
-     "label": "• Ancient Stegadon",
-     "cost": 230,
+     "label": "• Additional hand weapon",
+     "cost": 3,
+     "per": "unit"
+    },
+    {
+     "label": "• Cavalry spear (if appropriately mounted)",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• Blowpipe (see below)",
+     "cost": 4,
+     "per": "unit"
+    },
+    {
+     "label": "• Javelins",
+     "cost": 3,
+     "per": "unit"
+    },
+    {
+     "label": "• Take a shield",
+     "cost": 2,
+     "per": "unit"
+    },
+    {
+     "label": "• Be equipped with light armour",
+     "cost": 3,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Scouts special rule",
+     "cost": 10,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Vanguard special rule",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Purchase magic items up to a total of",
+     "cost": 50,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "skink-skirmishers": {
    "slug": "skink-skirmishers",
@@ -1091,11 +1185,11 @@
     "depth": 25
    },
    "unitSize": "10+",
-   "troopType": "Regular Infantry",
+   "troopType": "Regular infantry",
    "category": "Infantry",
    "profile": [
     {
-     "name": "Skink",
+     "name": "Skink Skirmisher",
      "values": [
       "6",
       "2",
@@ -1125,20 +1219,21 @@
    ],
    "equipment": "Hand weapons and calloused hides (counts as light armour)",
    "specialRules": [
+    "aquatic",
     "cold-blooded",
     "move-through-cover",
     "poisoned-attacks",
-    "skirmish-formation"
+    "skirmishers"
    ],
    "ruleLabels": {
     "poisoned-attacks": "Poisoned Attacks (javelins only)"
    },
-   "cost": 5,
+   "cost": 6,
    "options": [
     {
      "label": "• Blowpipes",
-     "cost": 1,
-     "per": "model"
+     "cost": 0,
+     "per": "unit"
     },
     {
      "label": "• Javelins and shields",
@@ -1160,7 +1255,8 @@
      "cost": 5,
      "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "slann-mage-priest": {
    "slug": "slann-mage-priest",
@@ -1171,13 +1267,13 @@
     "depth": 50
    },
    "unitSize": "1",
-   "troopType": "Monstrous Creature",
+   "troopType": "Monstrous creature infantry",
    "category": "Character",
    "profile": [
     {
      "name": "Slann Mage-Priest",
      "values": [
-      "2",
+      "4",
       "2",
       "3",
       "3",
@@ -1192,17 +1288,31 @@
    "equipment": "Hand weapon",
    "specialRules": [
     "arcane-shield",
-    "close-order",
     "cold-blooded",
+    "close-order",
     "fly",
     "large-target",
-    "lore-of-lustria"
+    "lore-of-lustria",
+    "palanquin",
+    "wisdom-of-the-old-ones"
    ],
    "ruleLabels": {
     "fly": "Fly (8)"
    },
    "cost": 285,
-   "options": []
+   "options": [
+    {
+     "label": "• May take a single purchase 0-3 Disciplines of the Old Ones up to a total of",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• May purchase magic items up to a total of",
+     "cost": 100,
+     "per": "unit"
+    }
+   ],
+   "renegade": true
   },
   "stegadon": {
    "slug": "stegadon",
@@ -1224,24 +1334,10 @@
       "-",
       "5",
       "6",
-      "5",
+      "6",
       "2",
       "4",
       "-"
-     ]
-    },
-    {
-     "name": "Skink Crew (x5)",
-     "values": [
-      "-",
-      "2",
-      "3",
-      "3",
-      "-",
-      "-",
-      "4",
-      "1",
-      "6"
      ]
     }
    ],
@@ -1249,11 +1345,13 @@
    "specialRules": [
     "close-order",
     "cold-blooded",
+    "great-horns",
     "howdah",
     "immune-to-psychology",
     "impact-hits",
     "large-target",
     "poisoned-attacks",
+    "skink-riders",
     "stomp-attacks",
     "stubborn",
     "terror"
@@ -1263,14 +1361,25 @@
     "poisoned-attacks": "Poisoned Attacks (javelins only)",
     "stomp-attacks": "Stomp Attacks (D3+2)"
    },
-   "cost": 215,
+   "cost": 195,
    "options": [
     {
      "label": "• A Stegadon may replace its giant bow with giant blowpipes",
      "cost": 0,
      "per": "unit"
+    },
+    {
+     "label": "• Giant blowpipes (see below)",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Engine of the Gods",
+     "cost": 35,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "temple-guard": {
    "slug": "temple-guard",
@@ -1281,7 +1390,7 @@
     "depth": 30
    },
    "unitSize": "10+",
-   "troopType": "Heavy Infantry",
+   "troopType": "Heavy infantry",
    "category": "Infantry",
    "profile": [
     {
@@ -1293,7 +1402,7 @@
       "4",
       "4",
       "1",
-      "1",
+      "2",
       "2",
       "8"
      ]
@@ -1307,23 +1416,27 @@
       "4",
       "4",
       "1",
-      "1",
+      "2",
       "3",
       "8"
      ]
     }
    ],
-   "equipment": "Hand weapons, halberds, scaly skin (counts as heavy armour) and shields",
+   "equipment": "Hand weapons, halberds, scaly skin (counts as heavy armour), light armour and shields",
    "specialRules": [
     "close-order",
     "cold-blooded",
     "guardians",
     "obsidian-blades",
+    "predatory-fighter",
+    "armoured-hide",
     "shieldwall",
     "stubborn"
    ],
-   "ruleLabels": {},
-   "cost": 16,
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (2)"
+   },
+   "cost": 15,
    "options": [
     {
      "label": "• Upgrade one model to a Revered Guardian (champion)",
@@ -1339,8 +1452,24 @@
      "label": "• Upgrade one model to a musician",
      "cost": 7,
      "per": "unit"
+    },
+    {
+     "label": "• Purchase a magic standard worth up to",
+     "cost": 100,
+     "per": "unit"
+    },
+    {
+     "label": "• Have the Drilled special rule",
+     "cost": 1,
+     "per": "model"
+    },
+    {
+     "label": "• A Revered Guardian may purchase magic items up to a total of",
+     "cost": 50,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "terradon": {
    "slug": "terradon",
@@ -1393,7 +1522,7 @@
     "depth": 40
    },
    "unitSize": "3+",
-   "troopType": "Monstrous Cavalry",
+   "troopType": "Monstrous cavalry",
    "category": "Cavalry",
    "profile": [
     {
@@ -1434,7 +1563,7 @@
       "-",
       "-",
       "2",
-      "1",
+      "2",
       "-"
      ]
     }
@@ -1445,13 +1574,15 @@
     "cold-blooded",
     "drop-rocks",
     "fear",
+    "fire-flee",
     "fly",
     "poisoned-attacks",
-    "skirmish-formation",
+    "skink-riders",
+    "skirmishers",
     "swiftstride"
    ],
    "ruleLabels": {
-    "armoured-hide": "Armoured Hide (1)",
+    "armoured-hide": "Armoured Hide (2)",
     "fly": "Fly (10)",
     "poisoned-attacks": "Poisoned Attacks (javelins only)"
    },
@@ -1459,6 +1590,11 @@
    "options": [
     {
      "label": "• The entire unit may replace javelins with fireleech bolas",
+     "cost": 2,
+     "per": "model"
+    },
+    {
+     "label": "• Take shields",
      "cost": 1,
      "per": "model"
     },
@@ -1466,8 +1602,14 @@
      "label": "• Upgrade one model to a Sky Leader (champion)",
      "cost": 6,
      "per": "unit"
+    },
+    {
+     "label": "• A Sky Leader may purchase magic items up to a total of",
+     "cost": 25,
+     "per": "unit"
     }
-   ]
+   ],
+   "renegade": true
   },
   "troglodon": {
    "slug": "troglodon",
@@ -1478,13 +1620,13 @@
     "depth": 100
    },
    "unitSize": "1",
-   "troopType": "Monstrous Creature",
+   "troopType": "Monstrous creature",
    "category": "Monster",
    "profile": [
     {
      "name": "Troglodon",
      "values": [
-      "7",
+      "8",
       "3",
       "-",
       "5",
@@ -1513,22 +1655,213 @@
    "equipment": "• Troglodon: Venomous talons, venom spray and scaly skin (counts as heavy armour)\n• Skink Oracle: Hand weapon",
    "specialRules": [
     "arcane-vassal",
+    "armoured-hide",
+    "aquatic",
+    "close-order",
+    "cold-blooded"
+   ],
+   "ruleLabels": {
+    "armoured-hide": "Armoured Hide (3)"
+   },
+   "cost": 140,
+   "options": [],
+   "renegade": true
+  },
+  "skink-cohorts": {
+   "slug": "skink-cohorts",
+   "name": "Skink Cohorts",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o",
+   "base": {
+    "width": 25,
+    "depth": 25
+   },
+   "unitSize": "10+",
+   "troopType": "Regular infantry",
+   "category": "",
+   "profile": [
+    {
+     "name": "Skink",
+     "values": [
+      "6",
+      "2",
+      "3",
+      "3",
+      "2",
+      "1",
+      "4",
+      "1",
+      "5"
+     ]
+    },
+    {
+     "name": "Skink Brave",
+     "values": [
+      "6",
+      "2",
+      "4",
+      "3",
+      "2",
+      "1",
+      "4",
+      "1",
+      "5"
+     ]
+    }
+   ],
+   "equipment": "Hand weapons and calloused hides (counts as light armour)",
+   "specialRules": [
     "aquatic",
     "close-order",
     "cold-blooded",
-    "immune-to-psychology",
-    "large-target",
-    "lore-of-lustria",
-    "primeval-roar",
-    "stomp-attacks",
-    "stubborn",
-    "terror"
+    "move-through-cover",
+    "poisoned-attacks",
+    "spawn-kin"
    ],
    "ruleLabels": {
-    "stomp-attacks": "Stomp Attacks (2)"
+    "poisoned-attacks": "Poisoned Attacks (javelins and shortbows only)"
    },
-   "cost": 200,
-   "options": []
+   "cost": 5,
+   "options": [
+    {
+     "label": "• Blowpipes",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Javelins and Shields",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Shortbows",
+     "cost": 0,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a Skink Brave (champion)",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a standard bearer",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Upgrade one model to a musician",
+     "cost": 5,
+     "per": "unit"
+    },
+    {
+     "label": "• Include 0-1 Kroxigor per 8 Skinks, to a maximum of 3",
+     "cost": 49,
+     "per": "unit"
+    }
+   ],
+   "renegade": true
+  },
+  "salamander-packs": {
+   "slug": "salamander-packs",
+   "name": "Salamander Packs",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o",
+   "base": null,
+   "unitSize": "",
+   "troopType": "Regular infantry (Skink handlers), War beasts (Salamanders) Base Size:        25 x 25 mm (Skink Handlers), 50 x 75 mm (Salamanders) Unit Size:        3+/1+*",
+   "category": "",
+   "profile": [
+    {
+     "name": "Salamander",
+     "values": [
+      "6",
+      "3",
+      "3",
+      "5",
+      "4",
+      "3",
+      "4",
+      "2",
+      "5"
+     ]
+    },
+    {
+     "name": "Skink Handler x3",
+     "values": [
+      "6",
+      "2",
+      "3",
+      "3",
+      "2",
+      "1",
+      "4",
+      "1",
+      "5"
+     ]
+    }
+   ],
+   "equipment": "",
+   "specialRules": [
+    "aquatic",
+    "beast-handlers",
+    "cold-blooded",
+    "fear",
+    "reserve-move",
+    "skirmishers"
+   ],
+   "ruleLabels": {},
+   "cost": 65,
+   "options": [],
+   "renegade": true
+  },
+  "razordon-packs": {
+   "slug": "razordon-packs",
+   "name": "Razordon Packs",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o",
+   "base": null,
+   "unitSize": "",
+   "troopType": "Regular infantry (Skink handlers), War beasts (Razordons) Base Size:        25 x 25 mm (Skink Handlers), 50 x 75 mm (Razordons) Unit Size:        3+/1+*",
+   "category": "",
+   "profile": [
+    {
+     "name": "Razordon",
+     "values": [
+      "6",
+      "3",
+      "3",
+      "5",
+      "4",
+      "3",
+      "4",
+      "2",
+      "5"
+     ]
+    },
+    {
+     "name": "Skink Handler x3",
+     "values": [
+      "6",
+      "2",
+      "3",
+      "3",
+      "2",
+      "1",
+      "4",
+      "1",
+      "5"
+     ]
+    }
+   ],
+   "equipment": "",
+   "specialRules": [
+    "aquatic",
+    "beast-handlers",
+    "cold-blooded",
+    "fear",
+    "skirmishers"
+   ],
+   "ruleLabels": {},
+   "cost": 75,
+   "options": [],
+   "renegade": true
   }
  },
  "rules": {
@@ -1631,44 +1964,44 @@
   "arcane-vassal": {
    "key": "arcane-vassal",
    "name": "Arcane Vassal",
-   "text": "Once per turn, unless this model is fleeing or engaged in combat, a single friendly Slann Mage-Priest that is within 12\" of this model may 'channel' a spell through this model. If they do, the range, targeting restrictions and all effects of the spell are measured from this model, rather than from the caster. If the spell requires a line of sight, it is determined from this model.\n\nNote that spells with a range of Self cannot be channelled in this way.",
-   "url": "https://tow.whfb.app/special-rules/arcane-vassal"
+   "text": "Once per turn, unless this model is fleeing or engaged in combat, a single friendly Slann Mage-Priest that is within 24\" of this model may ‘channel’ a spell through this model.\nIf they do, the range (including the range to dispel unless it is a vortex), targeting restrictions and all effects of the spell are measured from this model, rather than from the caster. If the spell requires a line of sight, it is determined from this model.\nNote that spells with a range of ‘Self’ cannot be channelled in this way.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "aquatic": {
    "key": "aquatic",
    "name": "Aquatic",
-   "text": "Models with this special rule do not suffer any modifiers to their Movement characteristic when moving through any difficult or dangerous terrain feature which has been designated a 'water feature'. This might include shallow streams or fords, swampy ground, fast flowing rivers, ponds or lakes, and players should agree prior to the game if any terrain is a water feature.",
-   "url": "https://tow.whfb.app/special-rules/aquatic"
+   "text": "Models with this special rule treat terrain designated as a ‘water feature’ as Open Ground. In addition, as long as at least 50% of the models in the unit are within a ‘water feature’ they benefit from partial cover. ‘Water features’ might include shallow streams or fords, swampy ground, fast flowing rivers, ponds or lakes, and players should agree prior to the game if any terrain is a water feature.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "cleaving-blow": {
    "key": "cleaving-blow",
    "name": "Cleaving Blow",
-   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound for an attack made in combat, it has struck a 'Cleaving Blow'. Enemy models whose troop type is regular infantry, heavy infantry, light cavalry, heavy cavalry or war beasts are not permitted an armour or Regeneration save against a Cleaving Blow (Ward saves can be attempted as normal).\n\nNote that if an attack wounds automatically, this special rule cannot be used.",
-   "url": "https://tow.whfb.app/special-rules/cleaving-blow"
+   "text": "If a model with this special rule rolls a natural 6 when making a roll To Wound for an attack made in combat, it has struck a ‘Cleaving Blow.’ Enemy models whose troop type is ‘regular infantry,’ ‘heavy infantry,’ ‘light cavalry,’ ‘heavy cavalry’ or ‘war beasts’ are not permitted an armour or Regeneration save against a Cleaving Blow (Ward saves can be attempted as normal).\nNote that if an attack wounds automatically, this special rule cannot be used.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "beast-handlers": {
    "key": "beast-handlers",
    "name": "Beast Handlers",
-   "text": "When an enemy unit shoots at a Salamander or Razordon Pack that contains one or more Skink Handlers, the enemy player must roll a D6 for each successful roll To Hit before making any rolls To Wound. On a roll of 1-4, the hit is inflicted upon a Salamander or Razordon. On a roll of 5+, the hit is inflicted upon a Skink Handler. In combat, enemy models must allocate their attacks against a model they are in base contact with (or against the closest model if they are within the fighting rank but not in base contact) before rolling To Hit.",
-   "url": "https://tow.whfb.app/special-rules/beast-handlers"
+   "text": "Each war beast in a unit with this special rule is accompanied by a number of models representing its handlers. As long as any handlers remain, the war beast ignores the Undisciplined special rule.\nDuring deployment, position these models anywhere within 1” of the war beasts. If the handlers are found to be blocking movement or line of sight, simply move them aside.\nIn combat, each handler adds its attacks to those of the war beasts. If there are multiple war beasts in combat, the additional attacks from the handlers are distributed as evenly as possible among the war beasts.\nIf a war beast suffers an unsaved wound from any source, roll a D6. On a roll of 1-4 a war beast loses a Wound, but on a roll of 5+ one of the handlers is removed instead. If all war beasts are removed from play, so are the handlers.\nWhen an enemy unit shoots at a Salamander or Razordon Pack that contains one or more Skink Handlers, the enemy player must roll a D6 for each successful roll To Hit before making any rolls To Wound. On a roll of 1-4, the hit is inflicted upon a Salamander or Razordon. On a roll of 5+, the hit is inflicted upon a Skink Handler.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "cold-blooded": {
    "key": "cold-blooded",
    "name": "Cold Blooded",
-   "text": "When required to make a Fear, Panic or Terror test, models with this special rule may roll an extra D6 and discard the highest result.",
-   "url": "https://tow.whfb.app/special-rules/cold-blooded"
+   "text": "When required to make a Fear, Panic or Terror test, Leadership or Break Test,  models with this special rule may roll an extra D6 and discard the highest result.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "drop-rocks": {
    "key": "drop-rocks",
    "name": "Drop Rocks",
-   "text": "Once per game, a unit with this special rule may perform a 'Drop Rocks' attack against a single enemy unit that is not engaged in combat. To do so, this unit must move (by flying) over the unit it wishes to attack during the Remaining Moves sub-phase. Once this unit's movement is complete, the enemy unit suffers D3 Strength 4 hits, each with an AP of -, for each model in this unit that moved over it.",
-   "url": "https://tow.whfb.app/special-rules/drop-rocks"
+   "text": "Once per game, a unit with this special rule may perform a ‘Drop Rocks’ attack against a single enemy unit that is not engaged in combat. To do so, this unit must move (by flying) over the unit it wishes to attack during the Remaining Moves sub-phase. Once this unit’s movement is complete, the enemy unit suffers D3 Strength 4 hits, each with an AP of -1, for each model in this unit that moved over it.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "obsidian-blades": {
    "key": "obsidian-blades",
    "name": "Obsidian Blades",
-   "text": "A hand weapon carried by a model with this special rule has an Armour Piercing characteristic of -1.\n\nNote that this special rule only applies to a single, non-magical hand weapon and does not apply to a model's mount (should it have one). If the model is using two hand weapons or any other sort of weapon, this special rule ceases to apply.",
-   "url": "https://tow.whfb.app/special-rules/obsidian-blades"
+   "text": "A hand weapon carried by a model with this special rule has an Armour Piercing characteristic of -1.\nNote that this special rule only applies to a single, non-magical hand weapon and does not apply to a model’s mount (should it have one). If the model is using two hand weapons or any other sort of weapon, this special rule ceases to apply.\n________________",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "close-order": {
    "key": "close-order",
@@ -1855,6 +2188,96 @@
    "name": "Fireleech Bolas",
    "text": "",
    "url": "https://tow.whfb.app/special-rules/fireleech-bolas"
+  },
+  "predatory-fighter": {
+   "key": "predatory-fighter",
+   "name": "Predatory Fighter",
+   "text": "A model with this special rule (but not its mount) generates one additional Attack on any natural roll of a 6 made when rolling To Hit in close combat. Roll To Hit and To Wound for this additional Attack as normal. Additional Attacks generated by this special rule cannot themselves generate further Attacks.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
+  },
+  "skink-riders": {
+   "key": "skink-riders",
+   "name": "Skink Riders",
+   "text": "Blessed by Itzl, skinks are cunning riders, and let their ferocious mounts do the brunt of the fighting\nAttacks made against this unit are resolved against the weapon skill of the rider, the crew, or monster, whichever is higher.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
+  },
+  "palanquin": {
+   "key": "palanquin",
+   "name": "Palanquin",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/palanquin"
+  },
+  "wisdom-of-the-old-ones": {
+   "key": "wisdom-of-the-old-ones",
+   "name": "Wisdom of the Old Ones",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/wisdom-of-the-old-ones"
+  },
+  "spawn-kin": {
+   "key": "spawn-kin",
+   "name": "Spawn-kin",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/spawn-kin"
+  },
+  "skirmishers": {
+   "key": "skirmishers",
+   "name": "Skirmishers",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/skirmishers"
+  },
+  "ambushers": {
+   "key": "ambushers",
+   "name": "Ambushers",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/ambushers"
+  },
+  "chameleon": {
+   "key": "chameleon",
+   "name": "Chameleon",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/chameleon"
+  },
+  "fire-flee": {
+   "key": "fire-flee",
+   "name": "Fire & Flee",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/fire-flee"
+  },
+  "reserve-move": {
+   "key": "reserve-move",
+   "name": "Reserve Move",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/reserve-move"
+  },
+  "armour-bane-1": {
+   "key": "armour-bane-1",
+   "name": "Armour Bane (1",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/armour-bane-1"
+  },
+  "cold-one-only": {
+   "key": "cold-one-only",
+   "name": "Cold One only)",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/cold-one-only"
+  },
+  "counter-charge": {
+   "key": "counter-charge",
+   "name": "Counter Charge",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/counter-charge"
+  },
+  "furious-charge-predatory-fighter": {
+   "key": "furious-charge-predatory-fighter",
+   "name": "Furious Charge Predatory Fighter",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/furious-charge-predatory-fighter"
+  },
+  "great-horns": {
+   "key": "great-horns",
+   "name": "Great Horns",
+   "text": "",
+   "url": "https://tow.whfb.app/special-rules/great-horns"
   }
  },
  "items": {
@@ -1870,83 +2293,83 @@
   "becalmingcogitation": {
    "slug": "becalming-cogitation",
    "name": "Becalming Cogitation",
-   "type": "Ability",
-   "cost": 50,
+   "type": "Arcane Item",
+   "cost": 30,
    "costOverride": null,
    "text": "Once per turn, the Slann Mage-Priest may re-roll one of the D6 when making a Wizardly dispel attempt. In addition, this character increases their Dispel range by 3\".",
-   "url": "https://tow.whfb.app/magic-item/becalming-cogitation"
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "wanderingdeliberations": {
    "slug": "wandering-deliberations",
    "name": "Wandering Deliberations",
-   "type": "Ability",
-   "cost": 40,
+   "type": "Arcane Item",
+   "cost": 35,
    "costOverride": null,
-   "text": "Instead of generating spells normally, this character knows four signature spells, chosen from the following Lores of Magic: Battle Magic, Daemonology, Dark Magic, Elementalism, High Magic, Illusion and Necromancy. The character may discard one of these signature spells in favour of a spell from the Lore of Lustria.",
-   "url": "https://tow.whfb.app/magic-item/wandering-deliberations"
+   "text": "Instead of generating spells normally, this character knows four five signature spells chosen from the following Lores of Magic: Battle Magic, Daemonology, Dark Magic,\nElementalism, High Magic, Illusion and Necromancy. The character may discard up to two of these signature spells in favour of up to two spells from the Lore of Lustria (see page 21).",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "transcendenthealing": {
    "slug": "transcendent-healing",
    "name": "Transcendent Healing",
-   "type": "Ability",
+   "type": "Arcane Item",
    "cost": 35,
    "costOverride": null,
    "text": "This character gains the Regeneration (5+) special rule.",
-   "url": "https://tow.whfb.app/magic-item/transcendent-healing"
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "sorcerousvoid": {
    "slug": "sorcerous-void",
    "name": "Sorcerous Void",
-   "type": "Ability",
-   "cost": 30,
+   "type": "Arcane Item",
+   "cost": 25,
    "costOverride": null,
    "text": "This character gains the Magic Resistance (-D3) special rule. Roll the D3 before armies are deployed.",
-   "url": "https://tow.whfb.app/magic-item/sorcerous-void"
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "harrowingscrutiny": {
    "slug": "harrowing-scrutiny",
    "name": "Harrowing Scrutiny",
-   "type": "Ability",
+   "type": "Arcane Item",
    "cost": 20,
    "costOverride": null,
    "text": "This character gains the Terror special rule.",
-   "url": "https://tow.whfb.app/magic-item/harrowing-scrutiny"
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "soulofstone": {
    "slug": "soul-of-stone",
-   "name": "Soul of Stone",
-   "type": "Ability",
-   "cost": 10,
+   "name": "Soul Of Stone",
+   "type": "Arcane Item",
+   "cost": 15,
    "costOverride": null,
-   "text": "When rolling on the Miscast table, this character can modify the result by -1 (to a minimum of 2), or by +1 (to a maximum of 12).",
-   "url": "https://tow.whfb.app/magic-item/soul-of-stone"
+   "text": "The first time that a Slann suffers a Miscast, the spell fails\nautomatically, but no roll on the Miscast table is taken.\nWhen rolling on the Miscast table, this character can modify the result by -1 (to a minimum of 2), or by +1 (to a maximum of 12).",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "bladeofreveredtzunki": {
    "slug": "blade-of-revered-tzunki",
-   "name": "Blade of Revered Tzunki",
+   "name": "Blade Of Revered Tzunki",
    "type": "Magic Weapon",
    "cost": 65,
    "costOverride": null,
-   "text": "Blade of Revered Tzunki (Profile)Notes: No armour or Ward saves are permitted against wounds caused by the Blade of Revered Tzunki (Regeneration saves can be attempted as normal).",
-   "url": "https://tow.whfb.app/magic-item/blade-of-revered-tzunki"
+   "text": "Notes: *No armour or Ward saves are permitted against wounds caused by the Blade of Revered Tzunki (Regeneration saves can be attempted as normal).",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "scimitarofthesunresplendent": {
    "slug": "scimitar-of-the-sun-resplendent",
-   "name": "Scimitar of the Sun Resplendent",
+   "name": "Scimitar Of The Sun Resplendent",
    "type": "Magic Weapon",
    "cost": 50,
    "costOverride": null,
-   "text": "Scimitar of the Sun Resplendent (Profile)",
-   "url": "https://tow.whfb.app/magic-item/scimitar-of-the-sun-resplendent"
+   "text": "R        S        AP        Special Rules\nScimitar of the        Combat        S        -1        Extra Attacks (+D3), Flaming Attacks,",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "staffofthelostsun": {
    "slug": "staff-of-the-lost-sun",
-   "name": "Staff of the Lost Sun",
+   "name": "Staff Of The Lost Sun",
    "type": "Magic Weapon",
    "cost": 40,
    "costOverride": null,
-   "text": "Ranged:\n\nStaff of the Lost Sun Ranged (Profile)Combat:\n\nStaff of the Lost Sun Combat (Profile)Notes: The Staff of the Lost Sun has two profiles, representing its use as both a combat and missile weapon.",
-   "url": "https://tow.whfb.app/magic-item/staff-of-the-lost-sun"
+   "text": "Staff of the Lost Sun R        S        AP        Special Rules\nRanged                12\"        4        -3         Magical Attacks, Multiple Shots (3) Combat        Combat S+1         -        Magical Attacks, Requires Two Hands Notes: The Staff of the Lost Sun has two profiles, representing its use as both a combat and missile weapon.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "piranhablade": {
    "slug": "piranha-blade",
@@ -1955,25 +2378,25 @@
    "cost": 35,
    "costOverride": null,
    "text": "Piranha Blade (Profile)",
-   "url": "https://tow.whfb.app/magic-item/piranha-blade"
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "shieldofthemirrorpool": {
    "slug": "shield-of-the-mirror-pool",
-   "name": "Shield of the Mirror Pool",
+   "name": "Shield Of The Mirror Pool",
    "type": "Magic Armour",
    "cost": 40,
    "costOverride": null,
-   "text": "The Shield of the Mirror Pool is a shield. In addition, each time the bearer loses one or more Wounds to a Magic Missile, the caster suffers a single Strength 5 hit with an AP of -2.",
-   "url": "https://tow.whfb.app/magic-item/shield-of-the-mirror-pool"
+   "text": "The Shield of the Mirror Pool is a shield. In addition, any magic missile that strikes the bearer or any unit he is with is reflected on the roll of 4+ on a D6. If the spell is reflected, the caster (and their unit) become the target of the spell. The caster may make a Wizardly dispel attempt. In addition, each time the bearer loses one or more Wounds to a Magic Missile, the caster suffers a single Strength 5 hit with an AP of -2.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "hideofthecoldones": {
    "slug": "hide-of-the-cold-ones",
-   "name": "Hide of the Cold Ones",
+   "name": "Hide Of The Cold Ones",
    "type": "Magic Armour",
    "cost": 20,
    "costOverride": null,
    "text": "May be worn with other armour. The wearer of the Hide of the Cold Ones improves their armour value by 1 (to a maximum of 2+). However, its wearer is also subject to the Stupidity special rule.",
-   "url": "https://tow.whfb.app/magic-item/hide-of-the-cold-ones"
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "glyphnecklace": {
    "slug": "glyph-necklace",
@@ -1982,25 +2405,25 @@
    "cost": 45,
    "costOverride": null,
    "text": "The bearer of the Glyph Necklace has a 5+ Ward save against any wounds suffered and gains the Magic Resistance (-2) special rule.",
-   "url": "https://tow.whfb.app/magic-item/glyph-necklace"
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "auraofquetzl": {
    "slug": "aura-of-quetzl",
-   "name": "Aura of Quetzl",
+   "name": "Aura Of Quetzl",
    "type": "Talisman",
    "cost": 40,
    "costOverride": null,
    "text": "Any enemy model that directs its attacks against the bearer of the Aura of Quetzl during the Combat phase suffers a -1 modifier to its rolls To Hit.",
-   "url": "https://tow.whfb.app/magic-item/aura-of-quetzl"
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "sunstandardofchotec": {
    "slug": "sun-standard-of-chotec",
-   "name": "Sun Standard of Chotec",
+   "name": "Sun Standard Of Chotec",
    "type": "Magic Standard",
-   "cost": 40,
+   "cost": 65,
    "costOverride": null,
-   "text": "Enemy units cannot declare a Stand & Shoot charge reaction against a unit carrying the Sun Standard of Chotec. In addition, any enemy model that targets a unit carrying this banner during the Shooting phase suffers an additional -1 To Hit modifier.",
-   "url": "https://tow.whfb.app/magic-item/sun-standard-of-chotec"
+   "text": "Enemy units cannot declare a Stand & Shoot charge reaction against a unit carrying the Sun Standard of Chotec. In addition, enemy models suffer a -1 modifier on any To Hit rolls made against the unit carrying this banner. any enemy model that targets a unit carrying this banner during the Shooting phase suffers an additional -1 To Hit modifier.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "skavenpeltbanner": {
    "slug": "skavenpelt-banner",
@@ -2009,79 +2432,79 @@
    "cost": 35,
    "costOverride": null,
    "text": "A unit carrying the Skavenpelt Banner gains the Frenzy and Hatred (Skaven) special rules.",
-   "url": "https://tow.whfb.app/magic-item/skavenpelt-banner"
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "totemofprophecy": {
    "slug": "totem-of-prophecy",
-   "name": "Totem of Prophecy",
+   "name": "Totem Of Prophecy",
    "type": "Magic Standard",
    "cost": 30,
    "costOverride": null,
    "text": "A unit carrying the Totem of Prophecy gains the Fear special rule.",
-   "url": "https://tow.whfb.app/magic-item/totem-of-prophecy"
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "jaguarstandard": {
    "slug": "jaguar-standard",
    "name": "Jaguar Standard",
    "type": "Magic Standard",
-   "cost": 20,
+   "cost": 30,
    "costOverride": null,
-   "text": "When a unit carrying the Jaguar Standard makes a Pursuit roll, it may roll an extra D6 and discard the lowest result.",
-   "url": "https://tow.whfb.app/magic-item/jaguar-standard"
+   "text": "When a unit carrying the Jaguar Standard makes a Pursuit or Charge roll, it may roll an extra D6 and discard the lowest result.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "cloakoffeathers": {
    "slug": "cloak-of-feathers",
-   "name": "Cloak of Feathers",
+   "name": "Cloak Of Feathers",
    "type": "Enchanted Item",
    "cost": 40,
    "costOverride": null,
-   "text": "Skink Heroes whose troop type is infantry only. The wearer of the Cloak of Feathers gains the Fly (10) and Swiftstride special rules.",
-   "url": "https://tow.whfb.app/magic-item/cloak-of-feathers"
+   "text": "Skink Heroes whose troop type is ‘infantry’ only. The wearer of the Cloak of Feathers gains the Fly (10) and Swiftstride special rules.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "venomofthefireflyfrog": {
    "slug": "venom-of-the-firefly-frog",
-   "name": "Venom of the Firefly Frog",
+   "name": "Venom Of The Firefly Frog",
    "type": "Enchanted Item",
    "cost": 15,
    "costOverride": null,
-   "text": "All attacks made during the Combat phase by the bearer of the Venom of the Firefly Frog have the Poisoned Attacks and Flaming Attacks special rules.\n\nNote that this only applies to non-magical weapons and does not apply to a model's mount (should it have one).",
-   "url": "https://tow.whfb.app/magic-item/venom-of-the-firefly-frog"
+   "text": "All attacks made during the Combat phase by the bearer of the Venom of the Firefly Frog have the Poisoned Attacks and Flaming Attacks Magical Attacks special rules.\nNote that this only applies to non-magical weapons and does not apply to a model’s mount (should it have one).",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "hornedone": {
    "slug": "horned-one",
-   "name": "Horned One*",
+   "name": "Horned One",
    "type": "Enchanted Item",
    "cost": 10,
    "costOverride": null,
-   "text": "This magic item may only be taken by a Saurus Hero mounted on a Cold One. This character's mount loses the Stupidity special rule and has Movement characteristic of 8.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/horned-one"
+   "text": "This magic item may only be taken by a Saurus Hero mounted on a Cold One. This character’s mount loses the Stupidity special rule and has Movement characteristic of 8.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "cubeofdarkness": {
    "slug": "cube-of-darkness",
-   "name": "Cube of Darkness*",
+   "name": "Cube Of Darkness",
    "type": "Arcane Item",
    "cost": 50,
    "costOverride": null,
-   "text": "Single use. A Wizard may use this item instead of making a dispel attempt. If they do so, the spell is automatically dispelled with no Dispel roll required. In addition, all remains in play spells currently in play are dispelled, including spells cast by friendly Wizards.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/cube-of-darkness"
+   "text": "Single use. A Wizard may use this item instead of making a dispel attempt. If they do so, the spell is automatically dispelled with no Dispel roll required. In addition, all ‘remains in play’ spells currently in play are dispelled, including spells cast by friendly Wizards.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "itxigrub": {
    "slug": "itxi-grub",
-   "name": "Itxi Grub*",
+   "name": "Itxi Grub",
    "type": "Arcane Item",
-   "cost": 30,
+   "cost": 20,
    "costOverride": null,
-   "text": "Single use. Before making a Casting roll, the bearer may attempt to consume a single Itxi Grub by making a Toughness test. If this test is passed, the bearer may apply a +3 modifier to the Casting roll. However, if this test is failed, the bearer immediately loses a single Wound.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/itxi-grub"
+   "text": "Single use. Before making a Casting roll, the bearer may attempt to consume a single Itxi Grub by making a Leadership test Toughness test using their own Leadership. If this test is passed, the bearer may apply a +3 modifier to the Casting roll. However, if this test is failed, the bearer immediately loses a single Wound.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "cuppedhandsoftheoldones": {
    "slug": "cupped-hands-of-the-old-ones",
-   "name": "Cupped Hands of the Old Ones",
+   "name": "Cupped Hands Of The Old Ones",
    "type": "Arcane Item",
    "cost": 55,
    "costOverride": null,
-   "text": "Should the bearer of the Cupped Hands of the Old Ones miscast a spell, roll a D6. On a roll of 1, the bearer rolls on the Miscast table as normal. On a roll of 2+, the bearer instead nominates an enemy character. Centre a 3\" blast template over this character. Every model whose base lies underneath the template risks being hit and suffering a single Strength 6 hit with an AP of -2.",
-   "url": "https://tow.whfb.app/magic-item/cupped-hands-of-the-old-ones"
+   "text": "Should the bearer of the Cupped Hands of the Old Ones miscast a spell, roll a D6. On a roll of 1, the bearer rolls on the Miscast table as normal. On a roll of 2+, the bearer instead nominates an enemy character. Centre a 3\" blast template over this character. Every model whose base lies underneath the template risks being hit and suffering a single Strength 6 hit with an AP of -2.\nA Slann Mage-Priest may purchase up to three a single Disciplines of the Old Ones. Each Discipline may only be taken once per army.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   },
   "swordofreaving": {
    "slug": "sword-of-reaving",
@@ -2856,6 +3279,38 @@
    "costOverride": null,
    "text": "Enemy units may not make Stomp Attacks against a unit carrying the Monster Hunter's Tapestry.",
    "url": "https://tow.whfb.app/magic-item/monster-hunters-tapestry"
+  },
+  "thefocusedrumination": {
+   "slug": "the-focused-rumination",
+   "name": "The Focused Rumination",
+   "type": "Arcane Item",
+   "cost": 65,
+   "costOverride": null,
+   "text": "This character may apply a +1 modifier to any of their Casting or Dispel rolls. In addition, this character can cast one more spell than is normal for their Level of Wizardry per turn.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
+  },
+  "higherstateofmindconsciousness": {
+   "slug": "higher-state-of-mind-consciousness",
+   "name": "Higher State Of Mind Consciousness",
+   "type": "Arcane Item",
+   "cost": 60,
+   "costOverride": null,
+   "text": "This character gains the Ethereal special rule.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
+  },
+  "focusofmystery": {
+   "slug": "focus-of-mystery",
+   "name": "Focus of Mystery",
+   "type": "Arcane Item",
+   "cost": 45,
+   "costOverride": null,
+   "text": "This Character does not randomly generate their spells. Instead, they know all of the spells from their chosen lore. The character may discard up to two of these spells in favour of up to two spells chosen from the Lore of Lustria or their lore's signature spell.\nNote this Discipline cannot be combined with Wandering Deliberations.",
+   "url": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o"
   }
+ },
+ "renegade": {
+  "version": "1.5.2.1",
+  "source": "https://docs.google.com/document/d/10JbMnZzdadz5bT8WrTIcFzWilhbRWy-chHc6XLf9w4o",
+  "appliedAt": "2026-10-25T14:19:34.073Z"
  }
 }
