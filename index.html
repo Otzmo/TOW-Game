@@ -63,19 +63,14 @@
       <h3>Dice</h3>
       <div class="dice-form">
         <label>Number of D6 <input id="d-count" type="number" min="1" max="100" value="10"></label>
-        <label>To Hit <select id="d-hit"></select></label>
-        <label>To Wound <select id="d-wound"></select></label>
-        <label>Armour Save <select id="d-save"></select></label>
-        <label>Ward save <select id="d-ward"></select></label>
-        <label class="full">Note <input id="d-note" type="text" maxlength="60" placeholder="e.g. Chosen vs. Knights"></label>
-        <label>Regeneration <select id="d-regen"></select></label>
       </div>
       <button id="d-roll" class="primary wide">Roll</button>
-      <div class="dice-quick">
-        <button data-quick="1d6">D6</button><button data-quick="2d6">2D6</button><button
-          data-quick="1d3">D3</button><button data-quick="3d6">3D6</button>
-      </div>
       <div id="d-result"></div>
+      <div class="dice-tools">
+        <label>Target <select id="d-target-value"></select></label>
+        <button id="d-keep">Remove dice below target</button>
+        <button id="d-reroll">Re-roll dice</button>
+      </div>
       <h3>Dice log</h3>
       <ol id="dice-log"></ol>
     </div></aside>

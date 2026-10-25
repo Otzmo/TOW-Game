@@ -572,3 +572,9 @@ table.weapons td:first-child a:hover { color: var(--accent); }
 table.profile td.stat-mod { color: var(--accent); font-weight: 700; }
 table.profile td[title] { cursor: help; }
 .stat-sit { color: #8fca7a; font-size: .85em; margin-left: 1px; }
+/* Würfel: Zielwert und Werkzeuge unter dem Ergebnis */
+.dice-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0 4px; }
+.dice-tools label { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; font-size: calc(12px * var(--ui)); color: var(--muted); }
+.dice-tools select { flex: 1; font: inherit; color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
+.dice-tools button:disabled { opacity: .4; cursor: not-allowed; }
+#d-result .dice-row { margin-top: 4px; }

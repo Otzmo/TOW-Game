@@ -8,79 +8,59 @@ const select = (id: string) => $(id) as HTMLSelectElement;
 const d6 = () => 1 + Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32 * 6);
 const roll = (n: number) => Array.from({ length: n }, d6);
 
-/** Mindestwurf aus einem Auswahlfeld; null = Schritt überspringen. */
-const target = (id: string): number | null => {
-  const v = select(id).value;
-  return v === '' ? null : Number(v);
-};
-
-/** Würfelstufen eines Pools für die Anzeige: Würfe und ab welchem Wert sie gelingen. */
-export interface DiceStage {
-  label: string;
-  dice: number[];
-  /** Würfe ab diesem Wert sind Erfolge; beim Rettungswurf zählen Erfolge als abgewehrt */
-  success: number;
-}
-
-/** Würfel: Pool aus Treffer → Verwundung → Rüstung → Rettung → Regeneration, und schnelle Einzelwürfe. */
+/**
+ * Würfel, allgemein und an keine Aktion gebunden: Anzahl D6 würfeln, danach (auch nachträglich)
+ * einen Zielwert wie 4+ wählen, die Würfel darunter entfernen und die übrigen neu würfeln.
+ */
 export class DicePanel {
+  /** Aktueller Würfelpool */
+  private dice: number[] = [];
+
   constructor(private publish: (entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>) => void) {
-    for (const [id, def, none] of [['d-hit', '4', '– (hits automatically)'], ['d-wound', '4', '– (skip)'],
-      ['d-save', '', '– (none)'], ['d-ward', '', '– (none)'], ['d-regen', '', '– (none)']] as const) {
-      select(id).innerHTML = `<option value="">${none}</option>` +
-        [2, 3, 4, 5, 6].map((n) => `<option value="${n}" ${String(n) === def ? 'selected' : ''}>${n}+</option>`).join('');
-    }
-    $('d-roll').onclick = () => this.rollPool();
-    document.querySelectorAll<HTMLButtonElement>('[data-quick]').forEach((btn) => {
-      btn.onclick = () => this.rollQuick(btn.dataset.quick!);
-    });
-  }
-
-  private rollPool(): void {
-    const count = Math.max(1, Math.min(100, Math.round(Number(($('d-count') as HTMLInputElement).value) || 1)));
-    const note = ($('d-note') as HTMLInputElement).value.trim();
-    const stages: DiceStage[] = [];
-    const parts: string[] = [`${count} D6`];
-    let pool = count;
-
-    const step = (id: string, label: string, word: string, saving: boolean) => {
-      const t = target(id);
-      if (t === null || pool === 0) return;
-      const dice = roll(pool);
-      const ok = dice.filter((d) => d >= t).length;
-      stages.push({ label: `${label} ${t}+`, dice, success: t });
-      // Rüstung/Rettung: gelungene Würfe wehren ab, es bleiben die misslungenen
-      pool = saving ? pool - ok : ok;
-      parts.push(`${saving ? pool : ok} ${word} (${t}+)`);
+    select('d-target-value').innerHTML = '<option value="">– (no target)</option>' +
+      [2, 3, 4, 5, 6].map((n) => `<option value="${n}">${n}+</option>`).join('');
+    $('d-roll').onclick = () => {
+      const count = Math.max(1, Math.min(100, Math.round(Number(($('d-count') as HTMLInputElement).value) || 1)));
+      this.dice = roll(count);
+      this.publish({ kind: 'roll', text: `${count} D6`, dice: [this.dice] });
+      this.render();
     };
-    step('d-hit', 'To Hit', 'hits', false);
-    step('d-wound', 'To Wound', 'wounds', false);
-    step('d-save', 'Armour Save', 'unsaved', true);
-    step('d-ward', 'Ward save', 'unsaved', true);
-    step('d-regen', 'Regeneration', 'unsaved', true);
-    if (!stages.length) {
-      const dice = roll(count);
-      stages.push({ label: 'Roll', dice, success: 7 });
-      parts.push(`total ${dice.reduce((s, d) => s + d, 0)}`);
-    }
-
-    const text = (note ? `${note}: ` : '') + parts.join(' → ');
-    this.show(text, stages);
-    this.publish({ kind: 'roll', text, dice: stages.map((s) => s.dice) });
+    select('d-target-value').onchange = () => this.render();
+    $('d-keep').onclick = () => {
+      const t = this.target();
+      if (t === null || !this.dice.length) return;
+      const before = this.dice.length;
+      this.dice = this.dice.filter((d) => d >= t);
+      ($('d-count') as HTMLInputElement).value = String(Math.max(1, this.dice.length));
+      this.publish({ kind: 'roll', text: `${this.dice.length} of ${before} dice on ${t}+ kept`, dice: [this.dice] });
+      this.render();
+    };
+    $('d-reroll').onclick = () => {
+      if (!this.dice.length) return;
+      this.dice = roll(this.dice.length);
+      this.publish({ kind: 'roll', text: `${this.dice.length} D6 re-rolled`, dice: [this.dice] });
+      this.render();
+    };
+    this.render();
   }
 
-  private rollQuick(kind: string): void {
-    const [n, sides] = kind.split('d').map(Number);
-    const dice = roll(n).map((d) => (sides === 3 ? Math.ceil(d / 2) : d));
-    const sum = dice.reduce((s, d) => s + d, 0);
-    const text = `${n > 1 ? n : ''}D${sides}: ${dice.join(' + ')}${n > 1 ? ` = ${sum}` : ''}`;
-    this.show(text, [{ label: `${n}D${sides}`, dice, success: 7 }]);
-    this.publish({ kind: 'roll', text, dice: [dice] });
+  private target(): number | null {
+    const v = select('d-target-value').value;
+    return v === '' ? null : Number(v);
   }
 
-  private show(text: string, stages: DiceStage[]): void {
-    $('d-result').innerHTML = `<p class="dice-sum">${escapeHtml(text)}</p>` + stages.map((s) =>
-      `<div class="dice-row"><span class="dice-label">${escapeHtml(s.label)}</span>${diceHtml(s.dice, s.success)}</div>`).join('');
+  private render(): void {
+    const t = this.target();
+    const ok = t === null ? null : this.dice.filter((d) => d >= t).length;
+    const sum = this.dice.reduce((s, d) => s + d, 0);
+    $('d-result').innerHTML = this.dice.length
+      ? `<p class="dice-sum">${this.dice.length} D6${ok === null ? ` · total ${sum}` : ` · <b>${ok}</b> on ${t}+`}</p>
+         <div class="dice-row">${diceHtml([...this.dice].sort((a, b) => b - a), t ?? 7)}</div>`
+      : '<p class="meta">Enter the number of dice and roll.</p>';
+    ($('d-keep') as HTMLButtonElement).disabled = t === null || !this.dice.length;
+    ($('d-keep') as HTMLButtonElement).textContent = t === null ? 'Remove dice below target' : `Remove dice below ${t}+`;
+    ($('d-reroll') as HTMLButtonElement).disabled = !this.dice.length;
+    ($('d-reroll') as HTMLButtonElement).textContent = this.dice.length ? `Re-roll ${this.dice.length} dice` : 'Re-roll dice';
   }
 }
 
