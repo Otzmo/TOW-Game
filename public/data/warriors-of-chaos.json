@@ -3946,7 +3946,21 @@
    "cost": 75,
    "costOverride": null,
    "text": "Daemonsword (Profile)Notes: Every roll of a natural 1 made when rolling To Hit with this weapon results in a hit which must be resolved against the unit the wielder has joined, rather than the enemy. If the wielder has not joined a unit, this hit must be resolved against the wielder.",
-   "url": "https://tow.whfb.app/magic-item/daemonsword"
+   "url": "https://tow.whfb.app/magic-item/daemonsword",
+   "profiles": [
+    {
+     "name": "Daemonsword",
+     "range": "Combat",
+     "strength": "S+D3",
+     "ap": "-2",
+     "rules": [
+      "Extra Attacks (+D3)",
+      "Magical Attacks",
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "chaosrunesword": {
    "slug": "chaos-runesword",
@@ -3955,7 +3969,19 @@
    "cost": 45,
    "costOverride": null,
    "text": "Chaos Runesword (Profile)Notes: The wielder of the Chaos Runesword has a +1 modifier to their Weapon Skill and Initiative characteristics.",
-   "url": "https://tow.whfb.app/magic-item/chaos-runesword"
+   "url": "https://tow.whfb.app/magic-item/chaos-runesword",
+   "profiles": [
+    {
+     "name": "Chaos Runesword",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "filthmace": {
    "slug": "filth-mace",
@@ -3964,7 +3990,19 @@
    "cost": 40,
    "costOverride": null,
    "text": "Filth Mace (Profile)Notes: Any enemy model that suffers one or more unsaved wounds from the Filth Mace must immediately make a Toughness test. If this test is failed, the wounded model suffers a -1 modifier to its Toughness characteristic (to a minimum of 1) until the end of the turn.",
-   "url": "https://tow.whfb.app/magic-item/filth-mace"
+   "url": "https://tow.whfb.app/magic-item/filth-mace",
+   "profiles": [
+    {
+     "name": "Filth Mace",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "spellthievingsword": {
    "slug": "spellthieving-sword",
@@ -3973,7 +4011,19 @@
    "cost": 20,
    "costOverride": null,
    "text": "Spellthieving Sword (Profile)Notes: Any enemy Wizard that suffers one or more unsaved wounds from the Spellthieving Sword immediately forgets a single spell (determined at random) for the remainder of the game.",
-   "url": "https://tow.whfb.app/magic-item/spellthieving-sword"
+   "url": "https://tow.whfb.app/magic-item/spellthieving-sword",
+   "profiles": [
+    {
+     "name": "Spellthieving Sword",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "obsidiandreadglaive": {
    "slug": "obsidian-dread-glaive",
@@ -3982,7 +4032,23 @@
    "cost": 55,
    "costOverride": null,
    "text": "Obsidian Dread-Glaive (Profile)Notes: The Obsidian Dread-glaive may only be taken by a model in a Heralds of Darkness Army of Infamy.",
-   "url": "https://tow.whfb.app/magic-item/obsidian-dread-glaive"
+   "url": "https://tow.whfb.app/magic-item/obsidian-dread-glaive",
+   "profiles": [
+    {
+     "name": "Obsidian Dread-Glaive",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Killing Blow",
+      "Magical Attacks",
+      "Requires Two Hands",
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "armourofthedamned": {
    "slug": "armour-of-the-damned",
@@ -4009,7 +4075,19 @@
    "cost": 35,
    "costOverride": null,
    "text": "Dagger of the Dark Pantheon (Profile)Notes: For each Wound an enemy unit loses as a result of an attack made with the Dagger of the Dark Pantheon, its wielder may apply a +1 modifier to their next Casting or Dispel roll.",
-   "url": "https://tow.whfb.app/magic-item/dagger-of-the-dark-pantheon"
+   "url": "https://tow.whfb.app/magic-item/dagger-of-the-dark-pantheon",
+   "profiles": [
+    {
+     "name": "Dagger of the Dark Pantheon",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "chieftainsblade": {
    "slug": "chieftains-blade",
@@ -4018,7 +4096,20 @@
    "cost": 30,
    "costOverride": null,
    "text": "Chieftain's Blade (Profile)Notes: The Chieftain's Blade may only be taken by a model in a Wolves of the Sea Army of Infamy. Whilst engaged in a challenge, the wielder has a +1 modifier to their rolls To Hit.",
-   "url": "https://tow.whfb.app/magic-item/chieftains-blade"
+   "url": "https://tow.whfb.app/magic-item/chieftains-blade",
+   "profiles": [
+    {
+     "name": "Chieftain's Blade",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "daemonicplatemail": {
    "slug": "daemonic-platemail",
@@ -4045,7 +4136,20 @@
    "cost": 25,
    "costOverride": null,
    "text": "Taskmaster's Scourge (Profile)Notes: Models whose troop type is infantry only. During the Command sub-phase of their turn, the wielder of the Taskmaster's Scourge may attempt to urge those around them into battle with a lash of their whip by making a Leadership test (using their own Leadership). If the test is passed, until your next Start of Turn sub-phase, this character and any unit they have joined gain a +D3 modifier to their Movement characteristic (to a maximum of 10).",
-   "url": "https://tow.whfb.app/magic-item/taskmasters-scourge"
+   "url": "https://tow.whfb.app/magic-item/taskmasters-scourge",
+   "profiles": [
+    {
+     "name": "Taskmaster's Scourge",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Extra Attacks (+1)",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "brazencollar": {
    "slug": "brazen-collar",
@@ -4396,7 +4500,20 @@
    "cost": 50,
    "costOverride": null,
    "text": "Sword of Reaving (Profile)Notes: If, after making their attacks, the wielder of this weapon has failed to cause any wounds, they suffer D3 Strength 4 hits with an AP of -1.",
-   "url": "https://tow.whfb.app/magic-item/sword-of-reaving"
+   "url": "https://tow.whfb.app/magic-item/sword-of-reaving",
+   "profiles": [
+    {
+     "name": "Sword of Reaving",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Extra Attacks (+D3)",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "cacklingblade": {
    "slug": "cackling-blade",
@@ -4405,7 +4522,20 @@
    "cost": 65,
    "costOverride": null,
    "text": "Cackling Blade (Profile)Notes: If a natural 6 is rolled for the Extra Attacks (+D6) special rule, the wielder of the Cackling Blade immediately loses a single Wound.",
-   "url": "https://tow.whfb.app/magic-item/cackling-blade"
+   "url": "https://tow.whfb.app/magic-item/cackling-blade",
+   "profiles": [
+    {
+     "name": "Cackling Blade",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Extra Attacks (+D6)",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "dragonblade": {
    "slug": "dragonblade",
@@ -4414,7 +4544,20 @@
    "cost": 0,
    "costOverride": null,
    "text": "Dragonblade (Profile)Notes: Dragonblade is inscribed with a Rune of Fury and a Grudge Rune, as described in Forces of Fantasy.",
-   "url": "https://tow.whfb.app/magic-item/dragonblade"
+   "url": "https://tow.whfb.app/magic-item/dragonblade",
+   "profiles": [
+    {
+     "name": "Dragonblade",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "runeoffury": {
    "slug": "rune-of-fury",
@@ -4441,7 +4584,21 @@
    "cost": 75,
    "costOverride": null,
    "text": "Ogre Blade (Profile)",
-   "url": "https://tow.whfb.app/magic-item/ogre-blade"
+   "url": "https://tow.whfb.app/magic-item/ogre-blade",
+   "profiles": [
+    {
+     "name": "Ogre Blade",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Magical Attacks",
+      "Multiple Wounds (D3)"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "swordofbattle": {
    "slug": "sword-of-battle",
@@ -4450,7 +4607,21 @@
    "cost": 60,
    "costOverride": null,
    "text": "Sword of Battle (Profile)",
-   "url": "https://tow.whfb.app/magic-item/sword-of-battle"
+   "url": "https://tow.whfb.app/magic-item/sword-of-battle",
+   "profiles": [
+    {
+     "name": "Sword of Battle",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Extra Attacks (+1)",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "flailofwrecks": {
    "slug": "flail-of-wrecks",
@@ -4459,7 +4630,21 @@
    "cost": 45,
    "costOverride": null,
    "text": "Flail of Wrecks (Profile)Notes: The Strength modifier and Armour Bane (1) special rule apply only against enemy models the wielder charged this turn. Should the wielder make any rolls To Wound of a natural 1 during the Combat phase, their Initiative is reduced by 1 (to a minimum of 1) for the remainder of the game.",
-   "url": "https://tow.whfb.app/magic-item/flail-of-wrecks"
+   "url": "https://tow.whfb.app/magic-item/flail-of-wrecks",
+   "profiles": [
+    {
+     "name": "Flail of Wrecks",
+     "range": "Combat",
+     "strength": "S+2",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Magical Attacks",
+      "Multiple Wounds (2)"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "meteorhammer": {
    "slug": "meteor-hammer",
@@ -4468,7 +4653,20 @@
    "cost": 50,
    "costOverride": null,
    "text": "Meteor Hammer ProfileNotes: When making a roll To Wound with this weapon, a roll of a 3+ is always a success, regardless of the target's Toughness.",
-   "url": "https://tow.whfb.app/magic-item/meteor-hammer"
+   "url": "https://tow.whfb.app/magic-item/meteor-hammer",
+   "profiles": [
+    {
+     "name": "Meteor Hammer Profile",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-3",
+     "rules": [
+      "Magical Attacks",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "hellforgedaxe": {
    "slug": "hell-forged-axe",
@@ -4477,7 +4675,21 @@
    "cost": 30,
    "costOverride": null,
    "text": "Hell-forged Axe Profile",
-   "url": "https://tow.whfb.app/magic-item/hell-forged-axe"
+   "url": "https://tow.whfb.app/magic-item/hell-forged-axe",
+   "profiles": [
+    {
+     "name": "Hell-forged Axe Profile",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (3)",
+      "Flaming Attacks",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "grimverdict": {
    "slug": "grim-verdict",
@@ -4486,7 +4698,24 @@
    "cost": 40,
    "costOverride": null,
    "text": "Grim Verdict (Profile)Notes: Should the wielder lose a round of combat, they suffer a single wound with no armour save permitted (Ward and Regeneration saves can be attempted as normal).",
-   "url": "https://tow.whfb.app/magic-item/grim-verdict"
+   "url": "https://tow.whfb.app/magic-item/grim-verdict",
+   "profiles": [
+    {
+     "name": "Grim Verdict",
+     "range": "Combat",
+     "strength": "S+3",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (2)",
+      "Furious Charge",
+      "Impetuous",
+      "Magical Attacks",
+      "Requires Two Hands",
+      "Strike Last"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "duellistsblades": {
    "slug": "duellists-blades",
@@ -4495,7 +4724,21 @@
    "cost": 55,
    "costOverride": null,
    "text": "Duellist’s Blades (Profile)",
-   "url": "https://tow.whfb.app/magic-item/duellists-blades"
+   "url": "https://tow.whfb.app/magic-item/duellists-blades",
+   "profiles": [
+    {
+     "name": "Duellist’s Blades",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Extra Attacks (+2)",
+      "Magical Attacks",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "huntersscorn": {
    "slug": "hunters-scorn",
@@ -4504,7 +4747,21 @@
    "cost": 20,
    "costOverride": null,
    "text": "Hunter's Scorn (Profile)Notes: Should an enemy model with a Wounds characteristic of 2 or more suffer one or more unsaved wounds from this weapon, they and their unit suffer a - 1 modifier to their Initiative characteristic (to a minimum of 1) for the remainder of the game. However, if the wielder of Hunter's Scorn fails to wound their target, this effect is lost.",
-   "url": "https://tow.whfb.app/magic-item/hunters-scorn"
+   "url": "https://tow.whfb.app/magic-item/hunters-scorn",
+   "profiles": [
+    {
+     "name": "Hunter's Scorn",
+     "range": "30\"",
+     "strength": "5",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Magical Attacks",
+      "Multiple Shots (2)"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "swordofsorrow": {
    "slug": "sword-of-sorrow",
@@ -4513,7 +4770,21 @@
    "cost": 30,
    "costOverride": null,
    "text": "Sword of Sorrow ProfileNotes: The Sword of Sorrow is a missile weapon; it cannot be used in combat. No Ward or Regeneration saves are permitted against wounds caused by the Sword of Sorrow.",
-   "url": "https://tow.whfb.app/magic-item/sword-of-sorrow"
+   "url": "https://tow.whfb.app/magic-item/sword-of-sorrow",
+   "profiles": [
+    {
+     "name": "Sword of Sorrow Profile",
+     "range": "30\"",
+     "strength": "5",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (2)",
+      "Magical Attacks",
+      "Multiple Wounds (2)"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "dragonslayingsword": {
    "slug": "dragon-slaying-sword",
@@ -4522,7 +4793,20 @@
    "cost": 50,
    "costOverride": null,
    "text": "Dragon Slaying Sword (Profile)",
-   "url": "https://tow.whfb.app/magic-item/dragon-slaying-sword"
+   "url": "https://tow.whfb.app/magic-item/dragon-slaying-sword",
+   "profiles": [
+    {
+     "name": "Dragon Slaying Sword",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Magical Attacks",
+      "Monster Slayer"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "headsmansaxe": {
    "slug": "headsmans-axe",
@@ -4531,7 +4815,21 @@
    "cost": 45,
    "costOverride": null,
    "text": "Headsman’s Axe (Profile)",
-   "url": "https://tow.whfb.app/magic-item/headsmans-axe"
+   "url": "https://tow.whfb.app/magic-item/headsmans-axe",
+   "profiles": [
+    {
+     "name": "Headsman’s Axe",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Killing Blow",
+      "Magical Attacks",
+      "Requires Two Hands"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "spelleateraxe": {
    "slug": "spelleater-axe",
@@ -4540,7 +4838,20 @@
    "cost": 35,
    "costOverride": null,
    "text": "Spelleater Axe (Profile)",
-   "url": "https://tow.whfb.app/magic-item/spelleater-axe"
+   "url": "https://tow.whfb.app/magic-item/spelleater-axe",
+   "profiles": [
+    {
+     "name": "Spelleater Axe",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-1",
+     "rules": [
+      "Magical Attacks",
+      "Magic Resistance (-2)"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "giantblade": {
    "slug": "giant-blade",
@@ -4549,7 +4860,21 @@
    "cost": 30,
    "costOverride": null,
    "text": "Giant Blade (Profile)",
-   "url": "https://tow.whfb.app/magic-item/giant-blade"
+   "url": "https://tow.whfb.app/magic-item/giant-blade",
+   "profiles": [
+    {
+     "name": "Giant Blade",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "",
+     "rules": [
+      "Armour Bane (2)",
+      "Magical Attacks",
+      "Multiple Wounds (2)"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "swordofswiftness": {
    "slug": "sword-of-swiftness",
@@ -4558,7 +4883,20 @@
    "cost": 25,
    "costOverride": null,
    "text": "Sword of Swiftness (Profile)",
-   "url": "https://tow.whfb.app/magic-item/sword-of-swiftness"
+   "url": "https://tow.whfb.app/magic-item/sword-of-swiftness",
+   "profiles": [
+    {
+     "name": "Sword of Swiftness",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Magical Attacks",
+      "Strike First"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "berserkerblade": {
    "slug": "berserker-blade",
@@ -4567,7 +4905,21 @@
    "cost": 20,
    "costOverride": null,
    "text": "Berserker Blade (Profile)Notes: The wielder of the Berserker Blade is Impetuous.",
-   "url": "https://tow.whfb.app/magic-item/berserker-blade"
+   "url": "https://tow.whfb.app/magic-item/berserker-blade",
+   "profiles": [
+    {
+     "name": "Berserker Blade",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-",
+     "rules": [
+      "Extra Attacks (+1)",
+      "Impetuous",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "swordofmight": {
    "slug": "sword-of-might",
@@ -4576,7 +4928,19 @@
    "cost": 20,
    "costOverride": null,
    "text": "Sword of Might (Profile)*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/sword-of-might"
+   "url": "https://tow.whfb.app/magic-item/sword-of-might",
+   "profiles": [
+    {
+     "name": "Sword of Might",
+     "range": "Combat",
+     "strength": "S+1",
+     "ap": "-1",
+     "rules": [
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "bitingblade": {
    "slug": "biting-blade",
@@ -4585,7 +4949,20 @@
    "cost": 15,
    "costOverride": null,
    "text": "Biting Blade (Profile)",
-   "url": "https://tow.whfb.app/magic-item/biting-blade"
+   "url": "https://tow.whfb.app/magic-item/biting-blade",
+   "profiles": [
+    {
+     "name": "Biting Blade",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (1)",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "swordofstriking": {
    "slug": "sword-of-striking",
@@ -4594,7 +4971,19 @@
    "cost": 15,
    "costOverride": null,
    "text": "Sword of Striking (Profile)Notes: During the Combat phase, the wielder of the Sword of Striking has a +1 modifier to their rolls To Hit.\n\n*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/sword-of-striking"
+   "url": "https://tow.whfb.app/magic-item/sword-of-striking",
+   "profiles": [
+    {
+     "name": "Sword of Striking",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "burningblade": {
    "slug": "burning-blade",
@@ -4603,7 +4992,20 @@
    "cost": 5,
    "costOverride": null,
    "text": "Burning Blade (Profile)*Extremely Common",
-   "url": "https://tow.whfb.app/magic-item/burning-blade"
+   "url": "https://tow.whfb.app/magic-item/burning-blade",
+   "profiles": [
+    {
+     "name": "Burning Blade",
+     "range": "Combat",
+     "strength": "S",
+     "ap": "-",
+     "rules": [
+      "Flaming Attacks",
+      "Magical Attacks"
+     ],
+     "notes": ""
+    }
+   ]
   },
   "armourofdestiny": {
    "slug": "armour-of-destiny",

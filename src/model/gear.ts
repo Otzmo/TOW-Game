@@ -15,16 +15,55 @@ export interface WeaponData {
   rules: Record<string, { slug: string; name: string; text: string; url: string }>;
 }
 
-let weaponData: WeaponData | null = null;
-let loading: Promise<WeaponData | null> | null = null;
+/** Erklärungen aus dem Grundregelwerk (scripts/fetch-extras.mjs) */
+interface CoreData {
+  armour: Record<string, { name: string; text: string; url: string }>;
+  command: Record<string, { name: string; text: string; url: string }>;
+}
 
-/** Waffendaten einmal laden (fehlt die Datei, bleibt die Waffenliste leer). */
-export function loadWeapons(): Promise<WeaponData | null> {
-  loading ??= fetch(`${import.meta.env.BASE_URL}data/weapons.json`)
-    .then((r) => (r.ok ? (r.json() as Promise<WeaponData>) : null))
-    .catch(() => null)
-    .then((d) => (weaponData = d));
+let weaponData: WeaponData | null = null;
+let coreData: CoreData | null = null;
+let loading: Promise<unknown> | null = null;
+
+const loadJson = <T>(file: string): Promise<T | null> =>
+  fetch(`${import.meta.env.BASE_URL}data/${file}`).then((r) => (r.ok ? (r.json() as Promise<T>) : null)).catch(() => null);
+
+/** Waffen- und Grundregeldaten einmal laden (fehlt eine Datei, bleibt der Teil leer). */
+export function loadWeapons(): Promise<unknown> {
+  loading ??= Promise.all([
+    loadJson<WeaponData>('weapons.json').then((d) => (weaponData = d)),
+    loadJson<CoreData>('core.json').then((d) => (coreData = d)),
+  ]);
   return loading;
+}
+
+/** Erklärung zu einem Rüstungsteil ("Full plate armour", "Shield" …) */
+export function armourInfo(name: string): RuleRef | null {
+  const r = coreData?.armour[name.toLowerCase().replace(/[^a-z]+/g, '-')];
+  return r ? { name: r.name, text: r.text, url: r.url } : null;
+}
+
+/** Erklärung zu einer Option: Kommandomodell, Waffe, Rüstung oder gleichnamige Sonderregel */
+export function optionInfo(option: string, info: UnitInfo): RuleRef | null {
+  const o = option.trim();
+  const command = (key: string) => {
+    const c = coreData?.command[key];
+    return c ? { name: o, text: c.text, url: c.url } : null;
+  };
+  if (/standard bearer/i.test(o)) return command('standard-bearer');
+  if (/musician/i.test(o)) return command('musician');
+  // Champion: heißt oft wie die zweite Profilzeile ("Marauder chieftain", "Clawleader")
+  if (/champion/i.test(o) || info.profile.slice(1).some((p) => norm(p.name) === norm(o))) return command('champion');
+  const armour = ARMOUR.find((a) => a.re.test(o));
+  if (armour) return armourInfo(armour.name);
+  const weapon = unitWeapons({ ...info, equipment: '', options: [o] })[0];
+  if (weapon) {
+    const p = weapon.profiles[0];
+    const profile = `Range ${p.range} · S ${p.strength} · AP ${p.ap}${p.rules.length ? ` · ${p.rules.join(', ')}` : ''}`;
+    return { name: o, text: [profile, weaponData?.weapons[weapon.slug]?.text].filter(Boolean).join('\n\n'), url: weapon.url };
+  }
+  const rule = info.rules.find((r) => norm(r.name.replace(/\([^)]*\)/g, '')) === norm(o));
+  return rule ? { ...rule, name: o } : null;
 }
 
 const norm = (s: string) => ` ${s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()} `;
@@ -35,9 +74,12 @@ export const ruleSlug = (name: string) =>
 
 /** Waffe mit Profilen und den Texten ihrer Sonderregeln */
 export interface UnitWeapon {
+  slug: string;
   name: string;
   profiles: WeaponProfile[];
   url: string;
+  /** Beschreibung (magische Waffen: Text des Gegenstands) */
+  text: string;
 }
 
 /**
@@ -56,7 +98,7 @@ export function unitWeapons(info: UnitInfo): UnitWeapon[] {
       const key = ` ${variant} `;
       if (!text.includes(key)) continue;
       // Ohne Profil (z. B. Schild) keine Zeile; der Schild zählt beim Rüstungswurf
-      if (w.profiles.length) found.push({ name: w.name, profiles: w.profiles, url: w.url });
+      if (w.profiles.length) found.push({ slug: w.slug, name: w.name, profiles: w.profiles, url: w.url, text: w.text });
       // Gefundenes ausblenden, damit kürzere Namen nicht noch einmal darin treffen
       text = text.split(key).join(' | ');
       break;
@@ -84,10 +126,10 @@ export interface UnitSaves {
   /** z. B. 4 für 4+; null ohne Rüstung */
   armour: number | null;
   parts: string[];
-  /** Bester Ward save und woher er kommt */
-  ward: { value: number; from: string } | null;
+  /** Bester Ward save und die Regel bzw. der Gegenstand, von dem er kommt */
+  ward: { value: number; from: string; source: RuleRef } | null;
   /** Bester Regenerationswurf und woher er kommt */
-  regen: { value: number; from: string } | null;
+  regen: { value: number; from: string; source: RuleRef } | null;
 }
 
 /** Wert aus "Chaos Armour (5+)", "… a 5+ Ward save …" oder "… Regeneration (5+) …" */
@@ -101,14 +143,14 @@ function saveValue(r: RuleRef, kind: RegExp): number | null {
 }
 
 /** Bester Wurf einer Art aus Regeln und Gegenständen (niedrigster Wert gewinnt); ohne erkennbaren Wert: keiner */
-function bestSave(sources: RuleRef[], kind: RegExp): { value: number; from: string } | null {
-  let best: { value: number; from: string } | null = null;
+function bestSave(sources: RuleRef[], kind: RegExp): { value: number; from: string; source: RuleRef } | null {
+  let best: { value: number; from: string; source: RuleRef } | null = null;
   for (const r of sources) {
     if (!kind.test(r.name) && !kind.test(r.text)) continue;
     const value = saveValue(r, kind);
     if (value === null) continue;
     const name = r.name.replace(/\s*\([^)]*\)\s*$/, '');
-    if (!best || value < best.value) best = { value, from: name };
+    if (!best || value < best.value) best = { value, from: name, source: r };
   }
   return best;
 }

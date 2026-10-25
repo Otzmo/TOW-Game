@@ -162,14 +162,58 @@ function parseItems(lines) {
     }
     const m = /^(.+?)(\*)?\s*\t*\s{2,}(\d+)\s*points?\s*$/i.exec(lines[i]) ?? /^(.+?)(\*)?\s+(\d+)\s*points?\s*$/i.exec(l);
     if (m && type) {
-      current = { name: m[1].trim(), cost: Number(m[3]), type, text: '' };
+      current = { name: m[1].trim(), cost: Number(m[3]), type, text: '', table: null };
       items.push(current);
       continue;
     }
-    // Tabellenzellen der Waffenprofile auslassen, Notizen und Fließtext übernehmen
-    if (current && (l.length > 40 || /^Notes:/i.test(l))) current.text += (current.text ? '\n' : '') + l;
+    if (!current) continue;
+    // Waffentabelle: Kopf "R S AP Special Rules", danach die Zellen bis zu den Notizen bzw. zum Fließtext
+    const c = cells(lines[i]);
+    // Kopf beginnt mit "R"; "S", "AP" und "Special Rules" können in eigenen Zeilen folgen
+    if (c[0] === 'R' || (c.includes('R') && c.includes('AP'))) {
+      current.table = [];
+      current.inHeader = true;
+      c.splice(0, c.indexOf('R') + 1);
+    }
+    if (current.table && current.inHeader) {
+      while (c.length && /^(S|AP|Special Rules)$/i.test(c[0])) c.shift();
+      if (!c.length) continue;
+      current.inHeader = false;
+    }
+    if (/^Notes:/i.test(l)) {
+      current.text += (current.text ? '\n' : '') + l;
+      if (current.table) current.tableDone = true;
+      continue;
+    }
+    if (current.table && !current.tableDone && (l.length <= 60 || c.length > 1)) {
+      current.table.push(...c.filter((x) => !/^Special Rules$/i.test(x)));
+      continue;
+    }
+    if (l.length > 40) {
+      if (current.table) current.tableDone = true;
+      current.text += (current.text ? '\n' : '') + l;
+    }
   }
-  return items;
+  return items.map(({ table, tableDone, inHeader, ...it }) => ({ ...it, profiles: weaponProfile(it.name, table) }));
+}
+
+/** Waffenprofil aus den Tabellenzellen: Name, Range, S, AP, dann Sonderregeln */
+function weaponProfile(name, table) {
+  if (!table?.length) return [];
+  const t = [...table];
+  // Führende Zellen mit dem Waffennamen (ggf. mit Range in derselben Zelle) entfernen
+  while (t.length && /^[A-Za-z']/.test(t[0]) && !/^(Combat|N\/A)$/i.test(t[0]) && !/^S([+-]\d)?$/.test(t[0])) {
+    const rest = t[0].replace(new RegExp(`^${name.replace(/[^A-Za-z0-9 ]/g, '.')}\\s*`, 'i'), '').trim();
+    if (rest && rest !== t[0] && /^(Combat|\d+["″]?)/i.test(rest)) {
+      t.splice(0, 1, ...rest.split(/\s+/));
+      break;
+    }
+    t.shift();
+  }
+  const [range = '', strength = '', ap = '', ...rest] = t;
+  if (!range || !strength) return [];
+  const rules = rest.join(' ').split(',').map((r) => r.trim()).filter(Boolean);
+  return [{ name, range, strength, ap: ap === 'N/A' ? '-' : ap, rules, notes: '' }];
 }
 
 async function apply(faction) {
@@ -247,7 +291,9 @@ async function apply(faction) {
     const key = norm(it.name);
     const prev = data.items[key] ?? {};
     data.items[key] = { slug: prev.slug ?? slugify(it.name), name: it.name, type: it.type, cost: it.cost,
-      costOverride: prev.costOverride ?? null, text: it.text || prev.text || '', url };
+      costOverride: prev.costOverride ?? null, text: it.text || prev.text || '', url,
+      // Waffenprofil aus der Tabelle des Dokuments, sonst das von tow.whfb.app
+      ...((it.profiles.length ? it.profiles : prev.profiles) ? { profiles: it.profiles.length ? it.profiles : prev.profiles } : {}) };
   }
 
   data.renegade = { version: version?.[1] ?? version?.[2] ?? '', source: url, appliedAt: new Date().toISOString() };

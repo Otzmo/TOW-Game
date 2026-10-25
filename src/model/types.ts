@@ -15,6 +15,8 @@ export interface RuleRef {
   url?: string;
   /** Zusatzinfo, z. B. Gegenstandstyp und Punkte */
   note?: string;
+  /** Magische Waffe: Waffenprofil(e) wie in weapons.json */
+  profiles?: { name: string; range: string; strength: string; ap: string; rules: string[]; notes: string }[];
 }
 
 /** Feste Angaben zu einer Einheit, ändern sich im Spiel nicht. */

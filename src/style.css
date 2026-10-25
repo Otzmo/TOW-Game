@@ -557,7 +557,7 @@ table.weapons td:first-child a:hover { color: var(--accent); }
 .bottom-panel .compact summary { font-size: calc(12px * var(--ui)); }
 .bottom-panel .compact details p { font-size: calc(12px * var(--ui)); }
 .bottom-panel .compact .note { font-size: calc(11px * var(--ui)); }
-#p-options { font-size: calc(12px * var(--ui)); color: var(--muted); margin: 0 0 6px; }
+
 #p-options:empty { display: none; }
 #p-weapons .compact, #p-saves .compact { margin-top: 6px; }
 .rule-link { padding: 0; border: 0; background: none; color: var(--accent); font: inherit; cursor: pointer; text-decoration: underline dotted; }
@@ -565,3 +565,6 @@ table.weapons td:first-child a:hover { color: var(--accent); }
 .w-rule-text { margin: 6px 0; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: calc(12px * var(--ui)); }
 .w-rule-text p { margin: 4px 0; white-space: pre-line; color: #cfcbc6; }
 .save-line { margin: 0 0 3px; }
+.save-from { font-size: calc(12px * var(--ui)); color: var(--muted); }
+.opt-plain { margin: 0 0 4px; padding: 3px 8px; font-size: calc(12px * var(--ui)); font-weight: 600; }
+#p-options { margin: 0 0 6px; }

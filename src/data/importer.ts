@@ -39,6 +39,8 @@ interface FactionData {
     slug: string; name: string; type: string; cost: number | null; text: string; url: string;
     /** Abweichende Kosten für Charaktere bzw. Einheiten */
     costOverride?: { character?: Cost; unit?: Cost } | null;
+    /** Magische Waffe: Waffenprofil(e) (scripts/fetch-extras.mjs) */
+    profiles?: RuleRef['profiles'];
   }>;
 }
 
@@ -225,7 +227,7 @@ export async function importBbList(
       const cost = itemCost(it, isCharacter, q);
       points += cost;
       const note = [it.type, `${cost} pts`].filter(Boolean).join(' · ');
-      return { name: it.name, text: it.text, url: it.url, note };
+      return { name: it.name, text: it.text, url: it.url, note, ...(it.profiles?.length ? { profiles: it.profiles } : {}) };
     });
 
     const command = entry.selectedOptions
