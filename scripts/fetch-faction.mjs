@@ -147,12 +147,15 @@ async function main(faction) {
     if (!p) { console.warn(`    ⚠ nicht gefunden`); continue; }
     const f = p.entry.fields;
     const ruleKeys = [];
+    // Beschriftung an der Einheit, oft mit Wert, z. B. "Chaos Armour (6+)" oder "Regeneration (5+)"
+    const ruleLabels = {};
     for (const field of [f.specialRules, f.optionalRules]) {
       for (const { target, label } of linkedEntries(field)) {
         const rule = ruleFromTarget(target, label);
         if (!rule) continue;
         if (!data.rules[rule.key]?.text) data.rules[rule.key] = rule;
         if (field === f.specialRules) ruleKeys.push(rule.key);
+        if (/\(.+\)/.test(label) && !ruleLabels[rule.key]) ruleLabels[rule.key] = label;
       }
     }
     data.units[slug] = {
@@ -166,6 +169,7 @@ async function main(faction) {
       profile: (f.unitProfile ?? []).map((row) => ({ name: row.Name, values: PROFILE_KEYS.map((k) => String(row[k] ?? '-')) })),
       equipment: clean(richText(f.equipment)),
       specialRules: ruleKeys,
+      ruleLabels,
       cost: typeof f.cost === 'number' ? f.cost : null,
       options: parseOptionCosts(richText(f.options)),
     };

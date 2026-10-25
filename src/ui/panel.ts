@@ -3,7 +3,7 @@ import {
   canSkirmish, isJoined, isNonUnitChange, isSkirmish, joinedCharacters, SKIRMISH_GAP, spreadPositions, unitLayout,
 } from '../model/store';
 import type { History } from '../model/history';
-import { loadWeapons, unitSaves, unitWeapons, weaponRule } from '../model/gear';
+import { loadWeapons, unitSaves, unitWeapons, visibleOptions, visibleRules, weaponRule } from '../model/gear';
 import { hasStandard, unitVictoryPoints, wounds } from '../model/score';
 import type { RuleRef, UnitState, UnitStatus } from '../model/types';
 import { PLAYER_COLORS } from '../view/theme';
@@ -185,9 +185,10 @@ export class UnitPanel {
       .join('');
     $('p-weapons').innerHTML = this.weaponsHtml(u);
     $('p-saves').innerHTML = this.savesHtml(u);
-    $('p-options').textContent = info.options.length ? `Options: ${info.options.join(' · ')}` : '';
+    const options = visibleOptions(info);
+    $('p-options').textContent = options.length ? `Options: ${options.join(' · ')}` : '';
     $('p-items').innerHTML = info.items.map(ruleHtml).join('');
-    $('p-rules').innerHTML = info.rules.map(ruleHtml).join('') || '<p>–</p>';
+    $('p-rules').innerHTML = visibleRules(info).map(ruleHtml).join('') || '<p>–</p>';
     $('p-source').innerHTML = info.url
       ? `Source: <a href="${escapeHtml(info.url)}" target="_blank" rel="noopener">tow.whfb.app ↗</a>`
       : '';
@@ -250,10 +251,15 @@ export class UnitPanel {
   /** Rüstungswurf aus der Ausrüstung und alles, was Rüstung, Rettung oder Regeneration verbessert */
   private savesHtml(u: UnitState): string {
     const s = unitSaves(u.info);
-    const armour = s.armour !== null
-      ? `<p><b>Armour Save ${s.armour}+</b> <span class="meta">(${escapeHtml(s.parts.join(', '))})</span></p>`
-      : '<p class="meta">No armour in the equipment.</p>';
-    return armour + (s.related.length ? `<div class="compact">${s.related.map(ruleHtml).join('')}</div>` : '');
+    // Nur die Werte; woher sie kommen, steht im Tooltip
+    const line = (label: string, value: number | null, from: string) =>
+      `<p class="save-line" title="${escapeHtml(from)}"><b>${label} ${value !== null ? `${value}+` : '–'}</b></p>`;
+    const lines = [
+      s.armour !== null ? line('Armour Save', s.armour, s.parts.join(', ')) : '',
+      s.ward ? line('Ward Save', s.ward.value, s.ward.from) : '',
+      s.regen ? line('Regeneration Save', s.regen.value, s.regen.from) : '',
+    ].join('');
+    return lines || '<p class="meta">No saves.</p>';
   }
 
   private joinHtml(id: string): string {

@@ -564,3 +564,4 @@ table.weapons td:first-child a:hover { color: var(--accent); }
 .rule-link.on { text-decoration: underline; font-weight: 600; }
 .w-rule-text { margin: 6px 0; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: calc(12px * var(--ui)); }
 .w-rule-text p { margin: 4px 0; white-space: pre-line; color: #cfcbc6; }
+.save-line { margin: 0 0 3px; }

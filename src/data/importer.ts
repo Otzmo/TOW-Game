@@ -28,6 +28,8 @@ interface FactionData {
     profile: { name: string; values: string[] }[];
     equipment: string;
     specialRules: string[];
+    /** Beschriftung an der Einheit mit Wert, z. B. { "chaos-armour-warriors-of-chaos": "Chaos Armour (6+)" } */
+    ruleLabels?: Record<string, string>;
     /** Grundkosten pro Modell */
     cost?: number | null;
     options?: OptionCost[];
@@ -180,9 +182,10 @@ export async function importBbList(
   const factionSlug = lastSegment(list.factionId);
   const data = await loadFaction(factionSlug);
   const warnings: string[] = [];
-  const rule = (key: string): RuleRef | null => {
+  // Name wie an der Einheit (mit Wert, z. B. "Chaos Armour (5+)"), sonst der allgemeine Regelname
+  const rule = (key: string, labels: Record<string, string> = {}): RuleRef | null => {
     const r = data.rules[key];
-    return r ? { name: r.name, text: r.text, url: r.url } : null;
+    return r ? { name: labels[key] ?? r.name, text: r.text, url: r.url } : null;
   };
 
   const units: UnitState[] = list.units.map((entry) => {
@@ -202,7 +205,8 @@ export async function importBbList(
       const key = OPTION_RULES[o.optionId] ?? o.optionId;
       if (data.rules[key]) ruleKeys.add(key);
     }
-    const rules = [...ruleKeys].map(rule).filter((r): r is RuleRef => r !== null);
+    const labels = { ...mount?.ruleLabels, ...src?.ruleLabels };
+    const rules = [...ruleKeys].map((k) => rule(k, labels)).filter((r): r is RuleRef => r !== null);
 
     const q = Math.max(1, entry.quantity);
     const isCharacter = src ? src.category.includes('Character') : entry.quantity === 1;

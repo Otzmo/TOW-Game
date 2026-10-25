@@ -80,15 +80,34 @@ const ARMOUR: { re: RegExp; name: string; base?: number; bonus?: number }[] = [
   { re: /barding/i, name: 'Barding', bonus: 1 },
 ];
 
-/** Regeln und Gegenstände, die Rüstung, Rettung oder Regeneration verbessern */
-const SAVE_RE = /armour value|armour save|ward save|ward \(\d\+\)|regenerat|\bward\b \(/i;
-
 export interface UnitSaves {
   /** z. B. 4 für 4+; null ohne Rüstung */
   armour: number | null;
   parts: string[];
-  /** Regeln und Gegenstände, die Rettungswürfe betreffen */
-  related: RuleRef[];
+  /** Bester Ward save und woher er kommt (Wert null, wenn er in den Daten fehlt) */
+  ward: { value: number | null; from: string } | null;
+  /** Bester Regenerationswurf und woher er kommt */
+  regen: { value: number | null; from: string } | null;
+}
+
+/** Wert aus "Chaos Armour (5+)" bzw. "… a 5+ Ward save …" */
+function saveValue(r: RuleRef, kind: RegExp): number | null {
+  const inName = /\((\d)\+\)/.exec(r.name);
+  if (inName) return Number(inName[1]);
+  const inText = new RegExp(`(\\d)\\+\\s*(?:${kind.source})`, 'i').exec(r.text);
+  return inText ? Number(inText[1]) : null;
+}
+
+/** Bester Wurf einer Art aus Regeln und Gegenständen (niedrigster Wert gewinnt) */
+function bestSave(sources: RuleRef[], kind: RegExp): { value: number | null; from: string } | null {
+  let best: { value: number | null; from: string } | null = null;
+  for (const r of sources) {
+    if (!kind.test(r.name) && !kind.test(r.text)) continue;
+    const value = saveValue(r, kind);
+    const name = r.name.replace(/\s*\([^)]*\)\s*$/, '');
+    if (!best || (value !== null && (best.value === null || value < best.value))) best = { value, from: name };
+  }
+  return best;
 }
 
 export function unitSaves(info: UnitInfo): UnitSaves {
@@ -110,6 +129,27 @@ export function unitSaves(info: UnitInfo): UnitSaves {
     }
   }
   const armour = base !== null ? Math.max(2, base - bonus) : bonus ? 7 - bonus : null;
-  const related = [...info.rules, ...info.items].filter((r) => SAVE_RE.test(r.name) || SAVE_RE.test(r.text));
-  return { armour, parts, related };
+  const sources = [...visibleRules(info), ...info.items];
+  // Regeneration zuerst, damit ihr Text ("… unlike a Ward save …") nicht als Ward save zählt
+  const regen = bestSave(sources, /regeneration/);
+  const ward = bestSave(sources.filter((r) => !/regeneration/i.test(r.name)), /ward save|\bward\b/);
+  return { armour, parts, ward, regen };
+}
+
+/** Götter, deren Mark man wählen kann; ist einer gewählt, gilt kein anderes Mark */
+const GODS = ['khorne', 'nurgle', 'slaanesh', 'tzeentch'];
+
+const chosenGods = (info: UnitInfo) =>
+  GODS.filter((g) => info.options.some((o) => new RegExp(`mark of ${g}`, 'i').test(o)));
+
+/** Gewählte Optionen ohne das allgemeine "Mark of chaos", sobald ein bestimmtes Mark gewählt ist */
+export function visibleOptions(info: UnitInfo): string[] {
+  return chosenGods(info).length ? info.options.filter((o) => !/^mark of chaos$/i.test(o.trim())) : info.options;
+}
+
+/** Sonderregeln ohne die Marks, die nicht gewählt sind (z. B. Mark of Chaos Undivided bei Mark of Khorne) */
+export function visibleRules(info: UnitInfo): RuleRef[] {
+  const gods = chosenGods(info);
+  if (!gods.length) return info.rules;
+  return info.rules.filter((r) => !/^mark of /i.test(r.name) || gods.some((g) => r.name.toLowerCase().includes(g)));
 }
