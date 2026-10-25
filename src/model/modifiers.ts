@@ -17,15 +17,22 @@ export interface StatMod {
   source: string;
 }
 
-const MOD_RE = /([+-]\d+)\s*(?:modifier\s*)?(?:to\s+(?:its|their|the|his|her)\s+)?(Movement|Weapon Skill|Ballistic Skill|Strength|Toughness|Wounds|Initiative|Attacks|Leadership)\b/gi;
+const STAT_NAMES = 'Movement|Weapon Skill|Ballistic Skill|Strength|Toughness|Wounds|Initiative|Attacks|Leadership';
+/** "+1 modifier to its Attacks", "+1 Strength" */
+const MOD_RE = new RegExp(`([+-]\\d+)\\s*(?:modifier\\s*)?(?:to\\s+(?:its|their|the|his|her)\\s+)?(${STAT_NAMES})\\b`, 'gi');
+/** "improve their Toughness characteristic by 1", "increases its Strength by 2", "reduce … by 1" */
+const BY_RE = new RegExp(`\\b(improves?|increases?|raises?|reduces?|lowers?|decreases?)\\s+(?:its|their|the|his|her)\\s+(${STAT_NAMES})(?:\\s+characteristics?)?\\s+by\\s+(\\d+)`, 'gi');
 /** Der Satz betrifft das Modell selbst (nicht Gegner oder andere Einheiten in der Nähe) */
-const SELF_RE = /\b(this model|this character|a model with this special rule|models with this special rule|its bearer|the bearer|bearer|the wielder|wielder|frenzied model|this unit|unit carrying|models in (?:this|the) unit|a model wearing|a model armed)\b/i;
+const SELF_RE = /\b(this model|this character|with this (?:special rule|chaotic trait|trait|ability|gift|rune|upgrade)|its bearer|the bearer|bearer|the wielder|wielder|frenzied model|this unit|unit carrying|models in (?:this|the) unit|a model wearing|a model armed)\b/i;
 const OTHERS_RE = /\b(enemy|opponent|losing side|winning side|friendly [^.]* within|within \d+["″][^.]* of|other units?|each unit that)\b/i;
 /** Bedingungen: dann gilt die Änderung nur in bestimmten Situationen */
-const CONDITION_RE = /\b(during|charge|charged|charging|until|whilst|while|when|if|first round|in which|after|against|each time|once per)\b/i;
+const CONDITION_RE = /\b(during|charge|charged|charging|until|whilst|while|when|if|first round|in which|after|against|each time|once per|on a roll|roll of|rolls? a)\b/i;
 
-/** Änderungen an Profilwerten aus Regeltexten und aus Regelnamen wie "Extra Attacks (+1)" */
-export function statMods(sources: RuleRef[]): StatMod[] {
+/**
+ * Änderungen an Profilwerten aus Regeltexten und aus Regelnamen wie "Extra Attacks (+1)".
+ * @param gear Ausrüstung und Optionen der Einheit, um "Unless they are wearing heavy armour …" zu prüfen
+ */
+export function statMods(sources: RuleRef[], gear = ''): StatMod[] {
   const mods: StatMod[] = [];
   for (const r of sources) {
     const extra = /^Extra Attacks \(\+(\d+)\)/i.exec(r.name);
@@ -36,13 +43,22 @@ export function statMods(sources: RuleRef[]): StatMod[] {
       if (!SELF_RE.test(sentence) || OTHERS_RE.test(sentence)) continue;
       // "If they already have this special rule, they suffer …": Folgen mehrfacher Wahl, kein Profilwert
       if (/already have/i.test(sentence)) continue;
-      for (const m of sentence.matchAll(MOD_RE)) {
-        const stat = STATS[m[2].toLowerCase()];
+      // "Unless they are wearing heavy armour or full plate armour …": trägt die Einheit das, gilt es nicht
+      const unless = /\bunless (?:they are|it is|the model is) wearing ([^,.]+)/i.exec(sentence);
+      if (unless && unless[1].split(/\s+or\s+|,\s*/).some((a) => a.trim() && new RegExp(a.trim(), 'i').test(gear))) continue;
+      const found = [
+        ...[...sentence.matchAll(MOD_RE)].map((m) => ({ stat: m[2], delta: Number(m[1]), at: m.index ?? 0 })),
+        ...[...sentence.matchAll(BY_RE)].map((m) => ({
+          stat: m[2], delta: (/^(reduce|lower|decrease)/i.test(m[1]) ? -1 : 1) * Number(m[3]), at: m.index ?? 0,
+        })),
+      ];
+      for (const f of found) {
+        const stat = STATS[f.stat.toLowerCase()];
         if (stat === undefined) continue;
         // Bedingung nur im Teil vor der Änderung zählt ("a model with this special rule gains …" ist keine)
-        const before = sentence.slice(0, m.index ?? 0).replace(SELF_RE, '');
+        const before = sentence.slice(0, f.at).replace(SELF_RE, '');
         mods.push({
-          stat, delta: Number(m[1]), situational: CONDITION_RE.test(before),
+          stat, delta: f.delta, situational: CONDITION_RE.test(before),
           replaces: /rather than/i.test(sentence), source: r.name,
         });
       }

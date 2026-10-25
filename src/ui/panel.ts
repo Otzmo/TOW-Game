@@ -259,7 +259,7 @@ export class UnitPanel {
   private profileHtml(u: UnitState): string {
     const { info } = u;
     // Waffenregeln wie "Extra Attacks (+1)" gelten nur für den Träger und stehen in der Waffentabelle
-    const mods = statMods([...visibleRules(info), ...info.items]);
+    const mods = statMods([...visibleRules(info), ...info.items], [info.equipment, ...info.options].join(' · '));
     return info.profile.map((r) => `<tr><td>${escapeHtml(r.name)}</td>${r.values.map((v, i) => {
       const m = modifiedValue(v, i, mods);
       if (!m.changed && !m.situational) return `<td>${escapeHtml(v)}</td>`;
