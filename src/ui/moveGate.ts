@@ -5,8 +5,8 @@ import type { PlayerId } from '../model/types';
 const $ = (id: string) => document.getElementById(id)!;
 
 /**
- * Prüft vor jeder Bewegung, ob sie in der aktuellen Phase erlaubt ist, und zeigt sonst einen Hinweis.
- * Ausnahmen (Sonderregeln wie bewegende Zauber) gelten für eine Einheit bis zum Phasenende.
+ * Prüft vor jeder Bewegung, ob die Einheit bewegt werden darf (Zuschauer, online nur eigene Einheiten),
+ * und zeigt sonst einen Hinweis.
  */
 export class MoveGate {
   /** Online der eigene Platz, offline null */
@@ -36,7 +36,8 @@ export class MoveGate {
     let u = units[unitId];
     if (!u) return false;
     if (u.joinedTo && units[u.joinedTo]) u = units[u.joinedTo];
-    const check = checkMove(this.store.state.meta, u, this.seat, this.exceptions.has(u.id), this.store.state.charges);
+    if (this.exceptions.has(u.id)) return true;
+    const check = checkMove(u, this.seat);
     if (check.ok) return true;
     this.show(u.id, `${u.info.name}: ${check.reason}`, check.overridable);
     return false;
@@ -54,7 +55,7 @@ export class MoveGate {
     if (!u) return '';
     const host = u.joinedTo && units[u.joinedTo] ? units[u.joinedTo] : u;
     if (this.exceptions.has(host.id)) return 'exception/special rule';
-    const check = checkMove(this.store.state.meta, host, this.seat, false, this.store.state.charges);
+    const check = checkMove(host, this.seat);
     return check.ok ? check.note ?? '' : '';
   }
 

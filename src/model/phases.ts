@@ -1,4 +1,4 @@
-import type { Charge, GameMeta, PlayerId, UnitState } from './types';
+import type { GameMeta, PlayerId, UnitState } from './types';
 
 /**
  * Zugabfolge von The Old World: vor der ersten Runde die Aufstellung, danach je Spielerzug
@@ -59,56 +59,19 @@ export function repeatPhase(meta: GameMeta): Step {
   return { phase: currentPhase(meta), sub: 0, active: meta.active, round: meta.round };
 }
 
-/** Regeln, die eine Reaktion in der gegnerischen Bewegungsphase erlauben. */
-const REACTION_RULES = /counter charge|fire (&|and) flee/i;
-
 export type MoveCheck =
   | { ok: true; note?: string }
   | { ok: false; reason: string; overridable: boolean };
 
 /**
- * Darf diese Einheit gerade bewegt, gedreht oder umformiert werden?
+ * Darf diese Einheit gerade bewegt, gedreht oder umformiert werden? Bewegt wird frei in jeder Phase;
+ * gesperrt ist nur, was einem nicht gehört.
  * @param seat online der eigene Platz, offline null (beide spielen am selben Bildschirm)
- * @param exception für diese Einheit wurde eine Ausnahme (Sonderregel) erlaubt
- * @param charges Angriffe dieses Zuges (wer angreift, darf in den Angriffsbewegungen ziehen)
  */
-export function checkMove(meta: GameMeta, unit: UnitState, seat: PlayerId | 'spectator' | null, exception: boolean,
-  charges: Record<string, Charge> = {}): MoveCheck {
+export function checkMove(unit: UnitState, seat: PlayerId | 'spectator' | null): MoveCheck {
   if (seat === 'spectator') return { ok: false, reason: 'Spectators cannot move units.', overridable: false };
   if (seat && unit.owner !== seat) {
     return { ok: false, reason: 'Online, each player moves only their own units.', overridable: false };
   }
-  const phase = currentPhase(meta);
-  if (phase === 'setup' || exception) return { ok: true };
-  const own = unit.owner === meta.active;
-  if (phase === 'combat') return { ok: true, note: 'Combat move' };
-  if (phase === 'movement' && own) {
-    const sub = currentSub(meta);
-    const charging = Object.values(charges).some((c) => c.charger === unit.id);
-    const fleeing = unit.status === 'fleeing';
-    if (sub === SUB_DECLARE) {
-      return { ok: false, overridable: true, reason: 'Declare charges first – units move in the following sub-phases.' };
-    }
-    if (sub === SUB_CHARGE_MOVES) {
-      // Angriffe werden von Hand geklärt: jede eigene Einheit, die nicht flieht, darf angreifen
-      return fleeing ? { ok: false, overridable: true, reason: 'Fleeing units cannot charge.' }
-        : { ok: true, note: 'Charge move' };
-    }
-    if (sub === SUB_COMPULSORY) {
-      return fleeing ? { ok: true, note: 'Compulsory move' }
-        : { ok: false, overridable: true, reason: 'Compulsory Moves: only fleeing units and others forced to move.' };
-    }
-    if (charging || fleeing) {
-      return { ok: false, overridable: true, reason: 'Charging and fleeing units do not move during Remaining Moves.' };
-    }
-    return { ok: true };
-  }
-  if (phase === 'movement' && !own) {
-    const rule = [...unit.info.rules].find((r) => REACTION_RULES.test(r.name));
-    if (rule) return { ok: true, note: `Reaction (${rule.name})` };
-    return { ok: false, overridable: true,
-      reason: "It is your opponent's Movement phase. Your units only move now as a charge reaction (e.g. Flee)." };
-  }
-  return { ok: false, overridable: true,
-    reason: `Units cannot move in the ${phaseLabel(phase)} – only in the Movement phase.` };
+  return { ok: true };
 }
