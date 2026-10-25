@@ -581,3 +581,7 @@ table.profile td[title] { cursor: help; }
 /* Geänderter Profilwert: anklickbar, zeigt die Regeln dahinter */
 .stat-link { padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; text-decoration: underline dotted; }
 .stat-link.on { text-decoration: underline; }
+
+/* Fenster Mission: gewürfelte Missionen mit Beschreibung */
+#sheet-mission h4 { margin: 10px 0 4px; }
+#sheet-mission .mission-rule { margin: 4px 0; white-space: pre-line; color: var(--muted); }

@@ -250,6 +250,12 @@ export class SetupPanel {
         `<details><summary>Scoring</summary><p>${esc(SCORING_RULES)}</p></details>` +
         `<details><summary>Terrain Rules</summary><p>${esc(TERRAIN_RULES)}\n${['woods', 'building', 'ruins', 'field', 'lake', 'hill'].map((k) => `${OBJECT_TYPES[k].name}: ${OBJECT_TYPES[k].rules!.join(' · ')}`).join('\n')}</p></details>`
       : '<p class="meta">No battlefield yet. Choose the options and randomise, or place terrain by hand.</p>';
+    // Fenster „Mission“ links unten: gewürfelte Aufstellung und Missionen mit Beschreibung, jederzeit nachzulesen
+    $('mission-info').innerHTML = s.deployment || missions.some(Boolean)
+      ? (s.deployment ? `<p><b>Deployment:</b> ${esc(DEPLOYMENTS[s.deployment])}</p>` : '') +
+        missions.map((m, i) => m ? `<h4>${i === 0 ? 'End of player turn' : 'End of game'}: ${esc(m.name)}</h4><p class="mission-rule">${esc(m.rule)}</p>` : '').join('') +
+        `<details><summary>Scoring</summary><p class="mission-rule">${esc(SCORING_RULES)}</p></details>`
+      : '<p class="meta">No mission rolled yet. Randomise the battlefield in setup step 2.</p>';
 
     $('setup-step').innerHTML = inSetup ? this.stepHtml(step, s, units) : '<p class="meta">The battle has started. The battlefield can still be changed here.</p>';
     // Generator nur vor der Zonenwahl

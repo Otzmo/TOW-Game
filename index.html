@@ -52,6 +52,7 @@
       <button id="load-game">Load</button>
       <input type="file" id="load-file" accept=".json,application/json" hidden>
       <button data-sheet="keys" title="All keyboard shortcuts (?)">Shortcuts</button>
+      <button data-sheet="mission" title="Rolled deployment and missions with their rules">Mission</button>
     </nav>
   </aside>
   <!-- Rechte Spalte: nur Popups (Einheit, Objekt, Fenster, Aufforderungen, Hinweise); leer = ausgeblendet -->
@@ -134,6 +135,7 @@
     <form id="chat-form"><input id="chat-input" type="text" maxlength="300" placeholder="Message …" autocomplete="off"><button>Send</button></form>
   </aside>
   <aside class="sheet wide-sheet" id="sheet-keys" hidden><h3>Keyboard shortcuts</h3><div id="keys-list"></div></aside>
+  <aside class="sheet" id="sheet-mission" hidden><h3>Mission</h3><div id="mission-info"></div></aside>
   <!-- Untere lange Tischkante: ausgewähltes Objekt (Gelände, Marker, Schablone) -->
   <aside id="obj-panel" class="bottom-panel" hidden>
     <header>
