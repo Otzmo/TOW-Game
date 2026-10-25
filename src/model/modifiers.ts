@@ -15,6 +15,8 @@ export interface StatMod {
   /** Ersetzt eine gleichartige Änderung statt sie zu ergänzen ("+2 … rather than the usual +1") */
   replaces: boolean;
   source: string;
+  /** Regeltext der Quelle, um ihn beim Profilwert zu zeigen */
+  text: string;
 }
 
 const STAT_NAMES = 'Movement|Weapon Skill|Ballistic Skill|Strength|Toughness|Wounds|Initiative|Attacks|Leadership';
@@ -36,7 +38,7 @@ export function statMods(sources: RuleRef[], gear = ''): StatMod[] {
   const mods: StatMod[] = [];
   for (const r of sources) {
     const extra = /^Extra Attacks \(\+(\d+)\)/i.exec(r.name);
-    if (extra) mods.push({ stat: 7, delta: Number(extra[1]), situational: true, replaces: false, source: r.name });
+    if (extra) mods.push({ stat: 7, delta: Number(extra[1]), situational: true, replaces: false, source: r.name, text: r.text ?? '' });
     // Würfeltabellen (z. B. Gaze of the Gods): Ergebnisse sind zufällig – gehören nicht ins Profil
     if (/\broll (?:a|two|on)\b[^.]*\b(table|D\d)|\bD6\s+Result\b|following table/i.test(r.text ?? '')) continue;
     for (const sentence of (r.text ?? '').split(/(?<=[.!?])\s+|\n+/)) {
@@ -59,7 +61,7 @@ export function statMods(sources: RuleRef[], gear = ''): StatMod[] {
         const before = sentence.slice(0, f.at).replace(SELF_RE, '');
         mods.push({
           stat, delta: f.delta, situational: CONDITION_RE.test(before),
-          replaces: /rather than/i.test(sentence), source: r.name,
+          replaces: /rather than/i.test(sentence), source: r.name, text: r.text ?? '',
         });
       }
     }
@@ -82,13 +84,15 @@ export interface ModifiedValue {
   changed: boolean;
   /** Woher die Änderungen kommen, für den Tooltip */
   sources: string[];
+  /** Die Änderungen selbst (für die Erklärung beim Anklicken) */
+  mods: StatMod[];
 }
 
 /** Profilwert mit Änderungen; nicht-numerische Werte ("-", "2D6") bleiben unverändert */
 export function modifiedValue(base: string, stat: number, mods: StatMod[]): ModifiedValue {
   const own = mods.filter((m) => m.stat === stat);
   const n = Number.parseInt(base, 10);
-  if (!own.length || !Number.isFinite(n) || String(n) !== base.trim()) return { value: base, situational: null, changed: false, sources: [] };
+  if (!own.length || !Number.isFinite(n) || String(n) !== base.trim()) return { value: base, situational: null, changed: false, sources: [], mods: [] };
   const permanent = total(own.filter((m) => !m.situational));
   const situational = total(own.filter((m) => m.situational));
   const sign = (d: number) => `${d > 0 ? '+' : ''}${d}`;
@@ -97,5 +101,6 @@ export function modifiedValue(base: string, stat: number, mods: StatMod[]): Modi
     situational: situational ? String(n + permanent + situational) : null,
     changed: permanent !== 0,
     sources: own.map((m) => `${m.source}: ${sign(m.delta)}${m.situational ? ' (situational)' : ''}`),
+    mods: own,
   };
 }

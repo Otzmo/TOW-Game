@@ -188,6 +188,7 @@ export class UnitPanel {
         : `${u.models} models · ${base} · formation ${cols} × ${ranks} · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″`;
     $('p-join').innerHTML = this.joinHtml(u.id);
     $('p-profile').innerHTML = this.profileHtml(u);
+    $('p-profile-info').innerHTML = this.infoBox('p');
     // Was oben schon erklärt ist (Waffen, Rettungswürfe, Optionen), steht unten nicht noch einmal
     const shown = new Set<string>();
     this.linked = shown;
@@ -270,11 +271,18 @@ export class UnitPanel {
     const { info } = u;
     // Waffenregeln wie "Extra Attacks (+1)" gelten nur für den Träger und stehen in der Waffentabelle
     const mods = statMods([...visibleRules(info), ...info.items], [info.equipment, ...info.options].join(' · '));
-    return info.profile.map((r) => `<tr><td>${escapeHtml(r.name)}</td>${r.values.map((v, i) => {
+    const STAT_LABELS = ['M', 'WS', 'BS', 'S', 'T', 'W', 'I', 'A', 'Ld'];
+    const sign = (d: number) => `${d > 0 ? '+' : ''}${d}`;
+    return info.profile.map((r, row) => `<tr><td>${escapeHtml(r.name)}</td>${r.values.map((v, i) => {
       const m = modifiedValue(v, i, mods);
       if (!m.changed && !m.situational) return `<td>${escapeHtml(v)}</td>`;
       const sit = m.situational ? `<span class="stat-sit">(${escapeHtml(m.situational)})</span>` : '';
-      return `<td class="${m.changed ? 'stat-mod' : ''}" title="${escapeHtml(`Profile ${v}\n${m.sources.join('\n')}`)}">${escapeHtml(m.value)}${sit}</td>`;
+      // Anklicken zeigt unter dem Profil, welche Regeln den Wert ändern und warum
+      const key = `p:${row}:${i}`;
+      const head = `${r.name} – ${STAT_LABELS[i]} ${v}${m.changed ? ` → ${m.value}` : ''}${m.situational ? ` (${m.situational})` : ''}`;
+      this.infoRefs.set(key, { name: head, text: m.mods.map((x) =>
+        `${x.source}: ${sign(x.delta)} ${STAT_LABELS[i]}${x.situational ? ' (situational)' : ' (always)'}\n${x.text}`).join('\n\n') });
+      return `<td class="${m.changed ? 'stat-mod' : ''}"><button class="stat-link${this.infoOpen === key ? ' on' : ''}" data-info="${key}" title="${escapeHtml(m.sources.join('\n'))}">${escapeHtml(m.value)}${sit}</button></td>`;
     }).join('')}</tr>`).join('');
   }
 

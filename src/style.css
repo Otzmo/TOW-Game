@@ -578,3 +578,6 @@ table.profile td[title] { cursor: help; }
 .dice-tools select { flex: 1; font: inherit; color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
 .dice-tools button:disabled { opacity: .4; cursor: not-allowed; }
 #d-result .dice-row { margin-top: 4px; }
+/* Geänderter Profilwert: anklickbar, zeigt die Regeln dahinter */
+.stat-link { padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; text-decoration: underline dotted; }
+.stat-link.on { text-decoration: underline; }
