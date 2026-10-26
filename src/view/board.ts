@@ -1,6 +1,6 @@
 import { Application, Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
 import { BoardTools } from './boardTools';
-import { alignToBases, chargeDistance, contactPoses, frontCenter } from '../model/flow';
+import { alignToBases, chargeDistance, chargePathCheck, contactPoses, frontCenter } from '../model/flow';
 import {
   isJoined, isNonUnitChange, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
 } from '../model/store';
@@ -279,11 +279,13 @@ export class Board {
       this.events.onAction(chargerId, `cannot reach ${target.info.name}: no room at any edge`);
       return;
     }
+    // Regel 3: einmal schwenken, sonst gerade – sonst Warnung (die Bewegung wird trotzdem ausgeführt)
+    const path = chargePathCheck(charger, pose, units);
     this.history.record();
     this.store.updateUnit(chargerId, { x: pose.x, y: pose.y, rotation: pose.rotation });
     this.store.setCharge(c.id, { ...c, status: 'rolled', success: true });
-    const touching = ` – ${pose.contacts} models in base contact`;
-    this.events.onAction(chargerId, `charges ${target.info.name} in the ${pose.side}${touching}`);
+    const touching = ` – ${pose.chargerContacts} of your front rank and ${pose.targetContacts} enemy models in base contact`;
+    this.events.onAction(chargerId, `charges ${target.info.name} in the ${pose.side}${touching} · ${path.note}`);
   }
 
   cancelCharge(chargerId: string): void {

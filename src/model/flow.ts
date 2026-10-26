@@ -186,7 +186,8 @@ export type ContactPose = {
   x: number; y: number; rotation: number; side: string;
   /** Modelle beider Seiten in Basekontakt */
   contacts: number;
-  /** davon Modelle der angegriffenen Einheit */
+  /** davon Modelle im ersten Glied des Angreifers bzw. der angegriffenen Einheit */
+  chargerContacts: number;
   targetContacts: number;
   /** Seitliche Verschiebung gegenüber „gerade hinein“ (Zoll) */
   shift: number;
@@ -225,9 +226,9 @@ function frontBases(u: UnitState, units: Record<string, UnitState>): Interval[] 
 
 /**
  * Anlegestellen an allen vier Kanten des Ziels (Front, Rücken, Flanken), bündig an der Kante.
- * Nach der Charge-Regel ("as many models as possible ... into base contact"): der Angreifer geht gerade hinein und
- * wird nur so weit seitlich verschoben, bis möglichst viele Modelle der angegriffenen Einheit Basekontakt haben –
- * eine gerade eben berührte Base zählt. Die Kante, auf deren Seite der Angreifer steht, kommt zuerst.
+ * Nach der Charge-Regel ("as many models as possible within its front rank into base contact"): der Angreifer geht
+ * gerade hinein und wird nur so weit seitlich verschoben, bis möglichst viele Modelle seines ersten Glieds (danach:
+ * der angegriffenen Einheit) Basekontakt haben – eine gerade eben berührte Base zählt. Die Kante, auf deren Seite der Angreifer steht, kommt zuerst.
  */
 export function contactPoses(charger: UnitState, target: UnitState, units: Record<string, UnitState>): ContactPose[] {
   const me = unitFootprint(charger, units);
@@ -264,16 +265,18 @@ export function contactPoses(charger: UnitState, target: UnitState, units: Recor
       // Berühren zählt schon, wenn eine Base gerade eben anliegt
       const targetContacts = theirs.filter((t) => placed.some((m) => overlapLen(m, t) > EPS)).length;
       if (!targetContacts) continue;
-      const contacts = placed.filter((m) => theirs.some((t) => overlapLen(m, t) > EPS)).length + targetContacts;
+      const chargerContacts = placed.filter((m) => theirs.some((t) => overlapLen(m, t) > EPS)).length;
+      const contacts = chargerContacts + targetContacts;
       const lp = n.x === 0 ? { x: pos, y: (n.y * h) / 2 } : { x: (n.x * w) / 2, y: pos };
       const contact = toTable(target, lp.x, lp.y);
       all.push({ x: contact.x + wn.x * (me.h / 2), y: contact.y + wn.y * (me.h / 2), rotation, side, contacts, targetContacts,
-        shift: Math.abs(pos - start) });
+        chargerContacts, shift: Math.abs(pos - start) });
     }
   }
-  // Kante, auf deren Seite der Angreifer steht, zuerst. Je Kante: möglichst viele Modelle der angegriffenen Einheit
-  // in Basekontakt (eine gerade eben berührte Base zählt), dann so wenig seitlich verschieben wie möglich – maximiert
-  // ist, sobald die letzte nötige Base berührt wird (blockierte Lagen überspringt der Aufrufer)
+  // Kante, auf deren Seite der Angreifer steht, zuerst. Je Kante nach der Charge-Regel: (1) möglichst viele Modelle
+  // im ersten Glied des Angreifers in Basekontakt, dann möglichst viele der angegriffenen Einheit (eine gerade eben
+  // berührte Base zählt), (2) dann so wenig seitlich verschieben wie möglich – maximiert ist, sobald die letzte nötige
+  // Base berührt wird (blockierte Lagen überspringt der Aufrufer)
   const nx = Math.abs(p.x) / (w / 2);
   const ny = Math.abs(p.y) / (h / 2);
   const facing = ny >= nx ? (p.y < 0 ? 'front' : 'rear') : (p.x < 0 ? 'left flank' : 'right flank');
@@ -282,7 +285,7 @@ export function contactPoses(charger: UnitState, target: UnitState, units: Recor
   const order = ['front', 'rear', 'left flank', 'right flank']
     .sort((a, b) => Number(b === facing) - Number(a === facing) || nearest(a) - nearest(b));
   return all.sort((a, b) => order.indexOf(a.side) - order.indexOf(b.side)
-    || b.targetContacts - a.targetContacts || a.shift - b.shift || dist(a) - dist(b));
+    || b.chargerContacts - a.chargerContacts || b.targetContacts - a.targetContacts || a.shift - b.shift || dist(a) - dist(b));
 }
 
 /** Angreifer um eine Strecke direkt auf das Ziel zu bewegen (fehlgeschlagener Angriff). */
@@ -303,4 +306,25 @@ export function fleeFrom(target: UnitState, charger: UnitState, dist: number): {
   const dy = target.y - charger.y;
   const len = Math.hypot(dx, dy) || 1;
   return { x: target.x + (dx / len) * dist, y: target.y + (dy / len) * dist, rotation: Math.atan2(dx, -dy) };
+}
+
+/**
+ * Charge-Regel 3: Ein Angreifer geht so gerade wie möglich vorwärts und darf unterwegs nur einmal schwenken.
+ * Das gelingt, wenn der Kontaktpunkt (neue Frontmitte) im vorderen Sichtbereich des Angreifers liegt (zwischen den
+ * 45°-Linien von seinen vorderen Ecken). Ergebnis: ob das so ist, und wie weit geschwenkt werden muss.
+ */
+export function chargePathCheck(charger: UnitState, end: { x: number; y: number; rotation: number },
+  units: Record<string, UnitState>): { ok: boolean; note: string } {
+  const { w, h } = unitFootprint(charger, units);
+  const to = toTable({ ...charger, ...end }, 0, -h / 2);
+  const local = toLocal(charger, to);
+  // Einheitskoordinaten: x nach rechts, vorwärts = −y (gemessen von der Frontmitte)
+  const sideways = local.x;
+  const forward = -(local.y + h / 2);
+  if (forward < -EPS || Math.abs(sideways) - w / 2 > forward + EPS) {
+    return { ok: false, note: '⚠ the target point is outside the front arc – one wheel and a straight move cannot reach it' };
+  }
+  if (Math.abs(sideways) <= 0.05) return { ok: true, note: 'straight ahead' };
+  const deg = Math.round((Math.atan2(Math.abs(sideways), Math.max(forward, EPS)) * 180) / Math.PI);
+  return { ok: true, note: `one wheel of about ${deg}° ${sideways > 0 ? 'right' : 'left'}, then straight ahead` };
 }
