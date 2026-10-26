@@ -11,7 +11,7 @@ import type { History } from '../model/history';
 import { currentPhase } from '../model/phases';
 import type { Point, UnitState } from '../model/types';
 import { createTable } from './table';
-import { GUIDE_COLOR, OK_COLOR, PPI, STRAY_COLOR } from './theme';
+import { GUIDE_COLOR, OK_COLOR, PPI, STRAY_COLOR, UPRIGHT } from './theme';
 import { UnitView } from './unitView';
 
 const DRAG_THRESHOLD = 3; // Pixel, ab denen ein Klick als Ziehen gilt
@@ -156,9 +156,21 @@ export class Board {
   }
 
   select(unitId: string | null): void {
+    const before = this.selectedId;
     this.selectedId = unitId;
     if (unitId && this.tools.selectedId) this.tools.select(null);
-    this.syncAll();
+    // Nur die alte und die neue Auswahl neu zeichnen; angeschlossene Charaktere zeichnet ihre Einheit
+    const units = this.store.state.units;
+    const redraw = new Set<string>();
+    for (const id of [before, unitId]) {
+      const u = id ? units[id] : undefined;
+      if (!u) continue;
+      redraw.add(u.id);
+      if (u.joinedTo && units[u.joinedTo]) redraw.add(u.joinedTo);
+    }
+    for (const id of redraw) this.syncUnit(units[id]);
+    this.drawRanges();
+    this.drawCharges();
     this.events.onSelect(unitId);
   }
 
@@ -574,7 +586,8 @@ export class Board {
    */
   private keepTextUpright(node: Container): void {
     for (const child of node.children) {
-      if (child instanceof Text) {
+      // Schilder (Name mit Plakette, Trefferzähler) als Ganzes um ihre Mitte drehen, damit nichts auseinanderfällt
+      if (child.label === UPRIGHT || child instanceof Text) {
         const m = child.worldTransform;
         if (Math.cos(Math.atan2(m.b, m.a)) < -0.01) child.rotation += Math.PI;
       } else if (child.children?.length) this.keepTextUpright(child as Container);

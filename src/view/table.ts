@@ -36,8 +36,11 @@ export function createTable(widthIn: number, heightIn: number): Container {
     blades.moveTo(x, y).lineTo(x + Math.cos(a) * len, y + Math.sin(a) * len);
   }
   blades.stroke({ width: 0.6, color: 0x6f8f55, alpha: 0.18 });
-  patches.mask = table.clone();
-  layer.addChild(patches.mask, patches, blades);
+  // Flecken und Halme gemeinsam auf die Tischfläche begrenzen
+  const grass = new Container();
+  grass.addChild(patches, blades);
+  grass.mask = table.clone();
+  layer.addChild(grass.mask, grass);
 
   const grid = new Graphics();
   for (let x = 0; x <= widthIn; x++) grid.moveTo(x * PPI, 0).lineTo(x * PPI, H);

@@ -2,7 +2,7 @@ import { Circle, Container, Graphics, Rectangle, Text } from 'pixi.js';
 import { isDestroyed } from '../model/score';
 import { isSkirmish, type UnitLayout } from '../model/store';
 import type { UnitState } from '../model/types';
-import { PLAYER_COLORS, PPI, STRAY_COLOR } from './theme';
+import { PLAYER_COLORS, PPI, STRAY_COLOR, UPRIGHT } from './theme';
 
 const ARC_LENGTH = 10; // Zoll, Länge der Bogenlinien
 const HANDLE_OFFSET = 1.4; // Zoll vor der Front
@@ -120,7 +120,10 @@ export class UnitView extends Container {
     const tx = u.x * PPI;
     const ty = u.y * PPI;
     const jump = Math.hypot(tx - this.x, ty - this.y) > 0.3 * PPI || Math.abs(u.rotation - this.rotation) > 0.02;
-    if (animate && this.placed && jump) {
+    const g = this.glide;
+    if (animate && this.placed && g && g.tx === tx && g.ty === ty && g.tr === u.rotation) {
+      // Gleitet schon dorthin (z. B. neu gezeichnet wegen Auswahl): nicht von vorn beginnen
+    } else if (animate && this.placed && jump) {
       this.glide = { fx: this.x, fy: this.y, fr: this.rotation, tx, ty, tr: u.rotation, t0: performance.now() };
     } else {
       this.glide = null;
@@ -274,6 +277,8 @@ export class UnitView extends Container {
    */
   private namePlaque(u: UnitState, maxWidth: number): Container {
     const plaque = new Container();
+    // In der gedrehten Ansicht wird das Schild als Ganzes um seine Mitte gedreht
+    plaque.label = UPRIGHT;
     const status = isDestroyed(u) ? 'destroyed' : u.status === 'fledOff' ? 'fled' : u.status === 'fleeing' ? 'FLEEING' : '';
     const name = new Text({
       text: u.info.name,

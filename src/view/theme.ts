@@ -27,3 +27,6 @@ export const GUIDE_COLOR = 0xe0b44c;
 /** Plänkler außerhalb von 1″ bzw. ungültige Position */
 export const STRAY_COLOR = 0xf0603e;
 export const OK_COLOR = 0x8fca7a;
+
+/** Kennzeichen für Schilder, die in der gedrehten Ansicht als Ganzes aufrecht gehalten werden (Board.keepTextUpright) */
+export const UPRIGHT = 'upright';

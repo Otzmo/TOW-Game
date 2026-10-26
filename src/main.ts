@@ -40,6 +40,11 @@ async function start(): Promise<void> {
     autoDensity: true,
   });
   document.getElementById('app')!.appendChild(app.canvas);
+  // Pixi zeichnet Texte nur einmal: Cinzel muss geladen sein, bevor Tisch und Schilder entstehen (höchstens 1,5 s warten)
+  await Promise.race([
+    Promise.all([document.fonts.load('700 10px Cinzel'), document.fonts.load('400 10px Cinzel')]).catch(() => undefined),
+    new Promise((resolve) => setTimeout(resolve, 1500)),
+  ]);
 
   const state: GameState = {
     table: { width: 72, height: 48 },

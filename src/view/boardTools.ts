@@ -6,7 +6,7 @@ import { currentPhase } from '../model/phases';
 import { isJoined, unitLayout, type Store } from '../model/store';
 import type { BoardObject, Point } from '../model/types';
 import { ObjectView } from './objectView';
-import { GUIDE_COLOR, OK_COLOR, PLAYER_COLORS, PPI, STRAY_COLOR } from './theme';
+import { GUIDE_COLOR, OK_COLOR, PLAYER_COLORS, PPI, STRAY_COLOR, UPRIGHT } from './theme';
 
 /** Auswählen und Ziehen, Messen, Sichtlinie prüfen, einen Punkt markieren (Ping) oder ein neues Objekt setzen. */
 export type Tool = 'select' | 'measure' | 'sight' | 'ping' | { place: string };
@@ -79,7 +79,9 @@ export class BoardTools {
     store.subscribe((state, change) => {
       if (change.objectId) this.syncObject(change.objectId);
       if (change.loaded) this.syncAll();
-      if (change.objectId || change.unitId || change.loaded || change.replacedOwner || (!change.meta && !change.log && !change.chargeId && !change.promptId)) this.drawHits();
+      // Nur reine Meta-, Log-, Charge- oder Abfrage-Änderungen lassen die Treffer unberührt
+      const sharedOnly = (change.meta || change.log || change.chargeId || change.promptId) && !(change.objectId || change.unitId || change.loaded || change.replacedOwner);
+      if (!sharedOnly) this.scheduleHits();
       if (change.meta || change.loaded || change.objectId) this.drawZones();
       if (change.meta) this.showShared();
       void state;
@@ -244,6 +246,18 @@ export class BoardTools {
    * Schablonen: Modelle darunter markieren – ganz getroffen kräftig, teilweise getroffen blass – und an jeder
    * Schablone zählen, z. B. „7 models (3 partial)“. Vernichtete, geflohene und Einheiten im Hinterhalt zählen nicht.
    */
+  /** Treffer höchstens einmal pro Bild neu zählen: beim Ziehen kommt sonst jede Mausbewegung einzeln an */
+  private scheduleHits(): void {
+    if (this.hitsQueued) return;
+    this.hitsQueued = true;
+    requestAnimationFrame(() => {
+      this.hitsQueued = false;
+      this.drawHits();
+    });
+  }
+
+  private hitsQueued = false;
+
   private drawHits(): void {
     const g = this.hitGraphics;
     g.clear();
@@ -281,9 +295,14 @@ export class BoardTools {
         style: { fontFamily: 'system-ui', fontSize: 12, fontWeight: '800', fill: 0xfff1a8, stroke: { color: 0x3a1000, width: 4 } },
         resolution: 4,
       });
+      // Schild sitzt in einem Halter in der Schablonenmitte: in der gedrehten Ansicht dreht sich der Halter
+      // als Ganzes, so steht die Zahl weiter über der Schablone statt auf ihr
+      const holder = new Container({ label: UPRIGHT });
+      holder.position.set(o.x * PPI, o.y * PPI);
       label.anchor.set(0.5, 1);
-      label.position.set(o.x * PPI, (o.y - Math.max(o.w, o.h) / 2) * PPI - 6);
-      this.hitLabels.addChild(label);
+      label.position.set(0, -(Math.max(o.w, o.h) / 2) * PPI - 6);
+      holder.addChild(label);
+      this.hitLabels.addChild(holder);
     }
   }
 
