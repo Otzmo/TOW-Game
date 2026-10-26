@@ -113,6 +113,7 @@
         <button data-import="p1"><span class="dot p1"></span>Load army</button>
         <button data-import="p2"><span class="dot p2"></span>Load army</button>
       </div>
+      <button id="setup-auto" class="wide" title="Battlefield, roll-offs, deployment and first turn are all generated at random">🎲 Randomise the rest of the setup</button>
     </section>
     <section id="setup-gen">
       <div id="setup-options"></div>
@@ -132,7 +133,10 @@
     </section>
     <div class="setup-confirm">
       <p class="meta" id="setup-blocker"></p>
-      <button id="setup-confirm" class="primary wide">Confirm ✓</button>
+      <div class="setup-nav">
+        <button id="setup-back" title="Back to the previous setup step">‹ Back</button>
+        <button id="setup-confirm" class="primary">Confirm ✓</button>
+      </div>
     </div>
   </aside>
   <aside class="sheet" id="sheet-log" hidden>

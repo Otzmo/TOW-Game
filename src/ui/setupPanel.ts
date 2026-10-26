@@ -2,11 +2,11 @@ import {
   DEPLOYMENTS, deploymentZones, generateBattlefield, MISSIONS, missionByKey, SCORING_RULES, TERRAIN_RULES,
 } from '../model/battlefield';
 import { roll } from '../model/flow';
-import { moveToNoMansLand } from '../model/noMansLand';
+import { deployRandomly, moveToNoMansLand } from '../model/noMansLand';
 import { playerName } from '../model/players';
 import type { History } from '../model/history';
 import { OBJECT_TYPES, pointInPolygon } from '../model/objects';
-import { currentPhase, currentSub } from '../model/phases';
+import { currentPhase, currentSub, subLabel } from '../model/phases';
 import { isJoined, type Store } from '../model/store';
 import type { LogEntry, PlayerId, SetupState, UnitState } from '../model/types';
 import { openedSheet, openSheet } from './sheets';
@@ -41,6 +41,8 @@ export class SetupPanel {
     $('setup-options').innerHTML = this.optionsHtml();
     $('sheet-battlefield').onclick = (e) => this.onClick(e);
     $('setup-confirm').onclick = () => this.confirm();
+    $('setup-back').onclick = () => this.back();
+    $('setup-auto').onclick = () => this.autoSetup();
     let lastKey = '';
     store.subscribe((state, c) => {
       if (!c.meta && !c.loaded && !c.objectId && !c.unitId && !c.replacedOwner) return;
@@ -77,6 +79,61 @@ export class SetupPanel {
     // Ging es nicht weiter (z. B. Rückfrage zu Plänklern links), bleibt der Schritt offen
     const now = this.store.state.meta;
     if (currentPhase(now) === 'setup' && currentSub(now) === step) openSheet('battlefield');
+  }
+
+  /** Einen Aufbauschritt zurück (das Popup des vorigen Schritts öffnet sich) */
+  private back(): void {
+    const { meta } = this.store.state;
+    const step = currentSub(meta);
+    if (currentPhase(meta) !== 'setup' || step === 0 || this.seat() === 'spectator') return;
+    this.store.setMeta({ sub: step - 1 });
+    this.log({ kind: 'turn', text: `Setup: back to ${subLabel(this.store.state.meta)}` });
+  }
+
+  /**
+   * Rest der Aufstellung auswürfeln: Schlachtfeld, beide Roll-offs samt Wahl, Zonenwahl, Aufstellung beider
+   * Armeen zufällig in ihren Zonen und der erste Zug – danach beginnt die Schlacht.
+   */
+  private autoSetup(): void {
+    const { meta } = this.store.state;
+    if (currentPhase(meta) !== 'setup' || this.seat() === 'spectator') return;
+    const missing = currentSub(meta) === SETUP_STEPS.armies ? this.blocker() : null;
+    if (missing) {
+      $('setup-blocker').textContent = missing;
+      return;
+    }
+    const coin = <T,>(a: T, b: T): T => (Math.random() < 0.5 ? a : b);
+    this.history.record();
+    // Schlachtfeld mit den angehakten Optionen
+    if (!meta.setup?.deployment) this.randomise();
+    // Roll-off Angreifer/Verteidiger: beide würfeln, Sieger wählt zufällig
+    const r1 = this.rollPair();
+    const defender = coin(r1.winner, other(r1.winner));
+    this.setSetup({ rollOff: r1.rolls, rollWinner: r1.winner, defender, swapZones: coin(false, true), zoneChosen: true });
+    this.log({ kind: 'roll', dice: [[r1.rolls.p1, r1.rolls.p2]], text: `Roll-off for Attacker / Defender: ${r1.rolls.p1} : ${r1.rolls.p2} – Player ${defender === 'p1' ? 1 : 2} is the Defender` });
+    // Aufstellung: jede Armee zufällig in ihrer Zone
+    deployRandomly(this.store);
+    const finishedFirst = coin<PlayerId>('p1', 'p2');
+    this.setSetup({ finished: { p1: true, p2: true }, finishedFirst });
+    // Roll-off für den ersten Zug (+1 für den, der zuerst fertig war)
+    const r2 = this.rollPair(finishedFirst);
+    const firstPlayer = coin(r2.winner, other(r2.winner));
+    this.setSetup({ firstRoll: r2.rolls, firstWinner: r2.winner, firstPlayer });
+    this.log({ kind: 'roll', dice: [[r2.rolls.p1, r2.rolls.p2]], text: `Roll-off for the first turn: ${r2.rolls.p1} : ${r2.rolls.p2} – ${playerName(firstPlayer)} has the first turn` });
+    // Zum letzten Schritt springen und bestätigen: die Schlacht beginnt
+    this.store.setMeta({ sub: SETUP_STEPS.firstTurn });
+    openSheet(null);
+    this.onNext();
+  }
+
+  /** Roll-off ohne Gleichstand (bonus = +1 für einen Spieler) */
+  private rollPair(bonus?: PlayerId | null): { rolls: Record<PlayerId, number>; winner: PlayerId } {
+    for (;;) {
+      const [a, b] = roll(2);
+      const p1 = a + (bonus === 'p1' ? 1 : 0);
+      const p2 = b + (bonus === 'p2' ? 1 : 0);
+      if (p1 !== p2) return { rolls: { p1, p2 }, winner: p1 > p2 ? 'p1' : 'p2' };
+    }
   }
 
   /** Was dem Bestätigen noch im Weg steht; die Zonenwahl bestätigt der Knopf selbst. */
@@ -246,6 +303,8 @@ export class SetupPanel {
     confirm.textContent = ['Armies loaded ✓', 'Confirm battlefield ✓', 'Confirm Attacker & Defender ✓', 'Confirm Defender zone ✓',
       'Deployment finished ✓', 'Scouts & Vanguard done ✓', 'Start Battle ✓'][step] ?? 'Confirm ✓';
     confirm.disabled = !!blocked || this.seat() === 'spectator';
+    ($('setup-back') as HTMLButtonElement).disabled = !inSetup || step <= 0 || this.seat() === 'spectator';
+    ($('setup-auto') as HTMLButtonElement).disabled = this.seat() === 'spectator';
     $('setup-blocker').textContent = blocked ?? '';
     $('setup-result').innerHTML = s.deployment
       ? `<p><b>Deployment:</b> ${esc(DEPLOYMENTS[s.deployment])}</p>` +

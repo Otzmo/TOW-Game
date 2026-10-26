@@ -117,3 +117,62 @@ export function moveToNoMansLand(store: Store, owners: PlayerId[] = ['p1', 'p2']
   const poses = noMansLandPoses(units, table, meta.setup, objects, owners);
   for (const [id, pose] of Object.entries(poses)) store.updateUnit(id, pose);
 }
+
+/**
+ * Zufällige Aufstellung: jede Einheit an eine zufällige freie Stelle in der eigenen Aufstellungszone,
+ * nicht auf Gelände, Missionszielen oder anderen Einheiten; Blick zur gegnerischen Zone (auf 90° gerundet).
+ * Einheiten im Hinterhalt und angeschlossene Charaktere bleiben, wo sie sind. Ohne Platz: Niemandsland.
+ */
+export function deployRandomly(store: Store, owners: PlayerId[] = ['p1', 'p2']): void {
+  const { units, table, meta, objects } = store.state;
+  const zones = deploymentZones(meta.setup);
+  if (!zones) return;
+  const cols = Math.round(table.width / CELL);
+  const rows = Math.round(table.height / CELL);
+  const obstacles = Object.values(objects).filter((o) => o.kind === 'terrain' || o.type === 'objective').map(objectPolygon);
+  const centre = (poly: Point[]) => ({ x: poly.reduce((s, p) => s + p.x, 0) / poly.length, y: poly.reduce((s, p) => s + p.y, 0) / poly.length });
+  for (const owner of owners) {
+    const zone = zones[owner];
+    const enemy = centre(zones[owner === 'p1' ? 'p2' : 'p1']);
+    // Frei: Zellmitte in der eigenen Zone, nicht in Gelände oder Missionszielen
+    const blocked = new Uint8Array(cols * rows);
+    for (let j = 0; j < rows; j++) {
+      for (let i = 0; i < cols; i++) {
+        const c = { x: (i + 0.5) * CELL, y: (j + 0.5) * CELL };
+        if (!pointInPolygon(c, zone) || obstacles.some((p) => pointInPolygon(c, p))) blocked[j * cols + i] = 1;
+      }
+    }
+    const mark = (x0: number, y0: number, x1: number, y1: number) => {
+      for (let j = Math.max(0, Math.floor(y0 / CELL)); j <= Math.min(rows - 1, Math.floor(y1 / CELL)); j++) {
+        for (let i = Math.max(0, Math.floor(x0 / CELL)); i <= Math.min(cols - 1, Math.floor(x1 / CELL)); i++) blocked[j * cols + i] = 1;
+      }
+    };
+    const free = (x0: number, y0: number, w: number, d: number) => {
+      if (x0 < 0 || y0 < 0 || x0 + w > table.width || y0 + d > table.height) return false;
+      for (let j = Math.floor(y0 / CELL); j <= Math.ceil((y0 + d) / CELL) - 1; j++) {
+        for (let i = Math.floor(x0 / CELL); i <= Math.ceil((x0 + w) / CELL) - 1; i++) if (blocked[j * cols + i]) return false;
+      }
+      return true;
+    };
+    // Große Einheiten zuerst, sonst ist für sie kein Platz mehr
+    const list = Object.values(units).filter((u) => u.owner === owner && !isJoined(u, units) && !u.ambush)
+      .map((u) => ({ u, fp: unitFootprint({ ...u, rotation: 0 }, units) }))
+      .sort((a, b) => b.fp.w * b.fp.h - a.fp.w * a.fp.h);
+    for (const { u, fp } of list) {
+      // Blickrichtung zur gegnerischen Zone, auf 0°/90°/180°/270° gerundet
+      const zc = centre(zone);
+      const rotation = Math.round(Math.atan2(enemy.x - zc.x, -(enemy.y - zc.y)) / (Math.PI / 2)) * (Math.PI / 2);
+      const sideways = Math.abs(Math.sin(rotation)) > 0.5;
+      const w = (sideways ? fp.h : fp.w) + GAP * 2;
+      const d = (sideways ? fp.w : fp.h) + GAP * 2;
+      const spots: Point[] = [];
+      for (let y0 = 0; y0 + d <= table.height; y0 += 1) {
+        for (let x0 = 0; x0 + w <= table.width; x0 += 1) if (free(x0, y0, w, d)) spots.push({ x: x0, y: y0 });
+      }
+      if (!spots.length) continue;
+      const s = spots[Math.floor(Math.random() * spots.length)];
+      mark(s.x, s.y, s.x + w - 0.01, s.y + d - 0.01);
+      store.updateUnit(u.id, { x: s.x + w / 2, y: s.y + d / 2, rotation });
+    }
+  }
+}

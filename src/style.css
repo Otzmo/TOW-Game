@@ -681,3 +681,8 @@ body:not(.battle) #ambush-btn { display: none; }
   font-size: calc(10px * var(--ui)); font-weight: 700; line-height: 1.5; color: var(--muted); border: 1px solid var(--line);
 }
 #sidebar button.primary[data-key]::after, #sidebar button.on[data-key]::after { color: #1a1a1a; border-color: rgba(0, 0, 0, .35); }
+/* Aufstellung: Zurück und Bestätigen nebeneinander; Rest auswürfeln unter „Load army“ */
+.setup-nav { display: flex; gap: 6px; }
+.setup-nav #setup-confirm { flex: 1; }
+#setup-back:disabled { opacity: .4; cursor: not-allowed; }
+#setup-auto { margin-top: 8px; }
