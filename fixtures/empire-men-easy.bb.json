@@ -1,0 +1,383 @@
+{
+  "id": "1e56e1a9-e309-4214-bc9f-419ca2ef5cd7",
+  "name": "Men Easy",
+  "builderEditedAt": "2026-10-26T08:13:58.268Z",
+  "factionId": "tow/empire-of-man",
+  "forceTemplateId": "tow/empire-of-man/grand-army",
+  "ruleset": {
+    "gameSystemId": "the-old-world",
+    "gameVersionId": "tow-1.5.3"
+  },
+  "compositionRuleIds": [
+    "tow/german-comp",
+    "tow/german-comp-gamechanger",
+    "tow/german-comp-faction-pack"
+  ],
+  "pointsLimit": 2000,
+  "units": [
+    {
+      "id": "02a2cade-d3a9-4516-b45e-65c34781eb9f",
+      "unitEntryId": "tow/empire-of-man/state-troops",
+      "quantity": 23,
+      "selectedOptions": [
+        {
+          "groupId": "state-troops-default-armour",
+          "optionId": "light-armour"
+        },
+        {
+          "groupId": "state-troops-weapons",
+          "optionId": "hand-weapons"
+        },
+        {
+          "groupId": "state-troops-command",
+          "optionId": "musician"
+        },
+        {
+          "groupId": "state-troops-command",
+          "optionId": "standard-bearer"
+        },
+        {
+          "groupId": "state-troops-command",
+          "optionId": "sergeant"
+        },
+        {
+          "groupId": "state-troops-shields",
+          "optionId": "shields"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "8d0713d5-ac75-4d78-bf60-eac405916015",
+      "unitEntryId": "tow/empire-of-man/state-troops",
+      "quantity": 25,
+      "selectedOptions": [
+        {
+          "groupId": "state-troops-default-armour",
+          "optionId": "light-armour"
+        },
+        {
+          "groupId": "state-troops-weapons",
+          "optionId": "hand-weapons"
+        },
+        {
+          "groupId": "state-troops-command",
+          "optionId": "musician"
+        },
+        {
+          "groupId": "state-troops-command",
+          "optionId": "standard-bearer"
+        },
+        {
+          "groupId": "state-troops-command",
+          "optionId": "sergeant"
+        },
+        {
+          "groupId": "state-troops-shields",
+          "optionId": "shields"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "3d3de934-4c73-4376-abc1-904dd407747a",
+      "unitEntryId": "tow/empire-of-man/state-troops",
+      "quantity": 25,
+      "selectedOptions": [
+        {
+          "groupId": "state-troops-default-armour",
+          "optionId": "light-armour"
+        },
+        {
+          "groupId": "state-troops-weapons",
+          "optionId": "hand-weapons"
+        },
+        {
+          "groupId": "state-troops-command",
+          "optionId": "musician"
+        },
+        {
+          "groupId": "state-troops-command",
+          "optionId": "standard-bearer"
+        },
+        {
+          "groupId": "state-troops-command",
+          "optionId": "sergeant"
+        },
+        {
+          "groupId": "state-troops-shields",
+          "optionId": "shields"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "eab02b03-e3b7-4719-bcfe-e318d1932561",
+      "unitEntryId": "tow/empire-of-man/empire-archers",
+      "quantity": 25,
+      "selectedOptions": [
+        {
+          "groupId": "empire-archers-default-equipment",
+          "optionId": "hand-weapons-warbows"
+        },
+        {
+          "groupId": "empire-archers-unit-options",
+          "optionId": "fire-and-flee"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "2b8f257b-eee9-4070-ab00-bf6ccf6e4b08",
+      "unitEntryId": "tow/empire-of-man/great-cannon",
+      "quantity": 1,
+      "selectedOptions": [
+        {
+          "groupId": "great-cannon-default-equipment",
+          "optionId": "great-cannon-hand-weapons"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "eae65d46-d99b-420c-b8c2-78cad01f3be6",
+      "unitEntryId": "tow/empire-of-man/mortar",
+      "quantity": 1,
+      "selectedOptions": [
+        {
+          "groupId": "mortar-default-equipment",
+          "optionId": "mortar-hand-weapons"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "0d51d2c2-dda6-4edb-b002-554be054cccd",
+      "unitEntryId": "tow/empire-of-man/general-of-the-empire",
+      "quantity": 1,
+      "selectedOptions": [
+        {
+          "groupId": "general-of-the-empire-weapon",
+          "optionId": "hand-weapon"
+        },
+        {
+          "groupId": "general-of-the-empire-mount",
+          "optionId": "on-foot"
+        },
+        {
+          "groupId": "general-of-the-empire-armour",
+          "optionId": "full-plate-armour"
+        },
+        {
+          "groupId": "general-of-the-empire-shield",
+          "optionId": "shield"
+        },
+        {
+          "groupId": "general-of-the-empire-general",
+          "optionId": "general"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "ba4ad5a4-390d-4777-bd44-53404076b757",
+      "unitEntryId": "tow/empire-of-man/wizard-lord",
+      "quantity": 1,
+      "selectedOptions": [
+        {
+          "groupId": "wizard-lord-default-equipment",
+          "optionId": "hand-weapon"
+        },
+        {
+          "groupId": "wizard-lord-mount",
+          "optionId": "on-foot"
+        },
+        {
+          "groupId": "wizard-lord-wizard-level",
+          "optionId": "level-4-wizard"
+        },
+        {
+          "groupId": "wizard-lord-lore",
+          "optionId": "lore-of-battle-magic"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "c8090b33-e30f-42cb-9a2f-a08f7949d47a",
+      "unitEntryId": "tow/empire-of-man/wizard-lord",
+      "quantity": 1,
+      "selectedOptions": [
+        {
+          "groupId": "wizard-lord-default-equipment",
+          "optionId": "hand-weapon"
+        },
+        {
+          "groupId": "wizard-lord-mount",
+          "optionId": "on-foot"
+        },
+        {
+          "groupId": "wizard-lord-wizard-level",
+          "optionId": "level-4-wizard"
+        },
+        {
+          "groupId": "wizard-lord-lore",
+          "optionId": "lore-of-battle-magic"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "68550382-6204-4baa-bc2d-d360337c9262",
+      "unitEntryId": "tow/empire-of-man/captain-of-the-empire",
+      "quantity": 1,
+      "selectedOptions": [
+        {
+          "groupId": "captain-of-the-empire-weapon",
+          "optionId": "hand-weapon"
+        },
+        {
+          "groupId": "captain-of-the-empire-mount",
+          "optionId": "on-foot"
+        },
+        {
+          "groupId": "captain-of-the-empire-shield",
+          "optionId": "shield"
+        },
+        {
+          "groupId": "captain-of-the-empire-bsb",
+          "optionId": "battle-standard-bearer"
+        },
+        {
+          "groupId": "captain-of-the-empire-armour",
+          "optionId": "full-plate-armour"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "85d66171-795c-4d21-9e0c-cfdb2aa3ba81",
+      "unitEntryId": "tow/empire-of-man/empire-archers",
+      "quantity": 25,
+      "selectedOptions": [
+        {
+          "groupId": "empire-archers-default-equipment",
+          "optionId": "hand-weapons-warbows"
+        },
+        {
+          "groupId": "empire-archers-unit-options",
+          "optionId": "fire-and-flee"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "22501cd6-f391-424e-b7ea-325d51bbc703",
+      "unitEntryId": "tow/empire-of-man/empire-knights",
+      "quantity": 5,
+      "selectedOptions": [
+        {
+          "groupId": "empire-knights-default-armour",
+          "optionId": "heavy-armour-barding"
+        },
+        {
+          "groupId": "empire-knights-command",
+          "optionId": "standard-bearer"
+        },
+        {
+          "groupId": "empire-knights-command",
+          "optionId": "musician"
+        },
+        {
+          "groupId": "empire-knights-command",
+          "optionId": "preceptor"
+        },
+        {
+          "groupId": "empire-knights-weapons",
+          "optionId": "lances"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "9e4f6c1d-a982-47e8-b1e4-733947e9cbf2",
+      "unitEntryId": "tow/empire-of-man/empire-knights",
+      "quantity": 5,
+      "selectedOptions": [
+        {
+          "groupId": "empire-knights-default-armour",
+          "optionId": "heavy-armour-barding"
+        },
+        {
+          "groupId": "empire-knights-command",
+          "optionId": "standard-bearer"
+        },
+        {
+          "groupId": "empire-knights-command",
+          "optionId": "musician"
+        },
+        {
+          "groupId": "empire-knights-command",
+          "optionId": "preceptor"
+        },
+        {
+          "groupId": "empire-knights-weapons",
+          "optionId": "lances"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "3ebb8497-8c0e-4ee4-a13d-09f117243a89",
+      "unitEntryId": "tow/empire-of-man/empire-knights",
+      "quantity": 5,
+      "selectedOptions": [
+        {
+          "groupId": "empire-knights-default-armour",
+          "optionId": "heavy-armour-barding"
+        },
+        {
+          "groupId": "empire-knights-command",
+          "optionId": "standard-bearer"
+        },
+        {
+          "groupId": "empire-knights-command",
+          "optionId": "musician"
+        },
+        {
+          "groupId": "empire-knights-command",
+          "optionId": "preceptor"
+        },
+        {
+          "groupId": "empire-knights-weapons",
+          "optionId": "lances"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "8f783345-c401-4016-b878-443456b318ab",
+      "unitEntryId": "tow/empire-of-man/mortar",
+      "quantity": 1,
+      "selectedOptions": [
+        {
+          "groupId": "mortar-default-equipment",
+          "optionId": "mortar-hand-weapons"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "7f637797-1296-4361-94b1-544b471bc4ba",
+      "unitEntryId": "tow/empire-of-man/great-cannon",
+      "quantity": 1,
+      "selectedOptions": [
+        {
+          "groupId": "great-cannon-default-equipment",
+          "optionId": "great-cannon-hand-weapons"
+        }
+      ],
+      "traitIds": []
+    }
+  ]
+}

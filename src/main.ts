@@ -162,11 +162,15 @@ async function start(): Promise<void> {
   showTable();
 
   if (import.meta.env.VITE_DEMO) {
-    // Demo-Build (z. B. als Artefakt): ohne Lobby, mit Beispielliste auf beiden Seiten
+    // Demo-Build (z. B. als Artefakt): ohne Lobby, Testarmeen Warriors of Chaos gegen Empire of Man
     document.getElementById('lobby')!.hidden = true;
-    const { default: list } = await import('../fixtures/turnier-wuppertal.bb.json');
+    const lists = {
+      p1: (await import('../fixtures/turnier-wuppertal.bb.json')).default,
+      p2: (await import('../fixtures/empire-men-easy.bb.json')).default,
+    };
     for (const owner of ['p1', 'p2'] as const) {
-      const result = await importBbList(list, owner, state.table);
+      const result = await importBbList(lists[owner], owner, state.table);
+      if (result.warnings.length) console.warn(`Import ${owner}:`, result.warnings);
       store.replacePlayerUnits(owner, result.units);
       moveToNoMansLand(store, [owner]);
       store.setMeta({ armies: { ...store.state.meta.armies, [owner]: { faction: result.factionName, list: result.listName } } });
