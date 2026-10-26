@@ -162,10 +162,10 @@ async function start(): Promise<void> {
   showTable();
 
   if (import.meta.env.VITE_DEMO) {
-    // Demo-Build (z. B. als Artefakt): ohne Lobby, Testarmeen Warriors of Chaos gegen Empire of Man
+    // Demo-Build (z. B. als Artefakt): ohne Lobby, auf beiden Seiten die Empire-Testliste
     document.getElementById('lobby')!.hidden = true;
     const lists = {
-      p1: (await import('../fixtures/turnier-wuppertal.bb.json')).default,
+      p1: (await import('../fixtures/empire-men-easy.bb.json')).default,
       p2: (await import('../fixtures/empire-men-easy.bb.json')).default,
     };
     for (const owner of ['p1', 'p2'] as const) {
