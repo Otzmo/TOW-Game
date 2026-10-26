@@ -100,7 +100,12 @@ export class Board {
     app.stage.addChild(this.world);
     // Drehpunkt ist die Tischmitte: so lässt sich die Ansicht für den zweiten Spieler um 180° drehen
     this.world.pivot.set((table.width * PPI) / 2, (table.height * PPI) / 2);
-    app.ticker.add(() => { if (this.viewRotated) this.keepTextUpright(this.world); });
+    app.ticker.add(() => {
+      if (this.viewRotated) this.keepTextUpright(this.world);
+      // Einheiten gleiten zur neuen Stelle, Auswahl und Flucht pulsieren
+      const now = performance.now();
+      for (const v of this.views.values()) v.tick(now);
+    });
     app.stage.eventMode = 'static';
     app.stage.hitArea = app.screen;
 
@@ -637,7 +642,9 @@ export class Board {
     // Angeschlossene Charaktere zeichnet ihre Einheit mit
     // Angeschlossene Charaktere zeichnet ihre Einheit mit; Einheiten im Hinterhalt stehen nicht auf dem Tisch
     view.visible = !isJoined(u, units) && !u.ambush;
-    if (view.visible) view.update(u, unitLayout(u, units), units, this.selectedId);
+    // Gleiten zur neuen Stelle, außer während man die Einheit selbst zieht
+    const dragging = !!this.drag && this.drag.type !== 'pan' && this.drag.unitId === u.id;
+    if (view.visible) view.update(u, unitLayout(u, units), units, this.selectedId, !dragging);
     if (this.showRanges && this.selectedId === u.id) this.drawRanges();
     // Angriffspfeile folgen bewegten Einheiten
     if (Object.values(this.store.state.charges).some((c) => c.charger === u.id || c.target === u.id)) this.drawCharges();

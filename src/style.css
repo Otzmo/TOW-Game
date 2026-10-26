@@ -1,10 +1,14 @@
 :root {
-  --bg: #16181a;
-  --panel: #202326;
-  --line: #34383c;
-  --text: #e8e6e3;
-  --muted: #9a9fa4;
-  --accent: #e0b44c;
+  /* Farbschema im Stil von The Old World: dunkles Leder, Pergament, Gold */
+  --bg: #120e0a;
+  --panel: #1f1810;
+  --line: #3f3222;
+  --text: #efe4cc;
+  --muted: #a8977a;
+  --accent: #d6a84a;
+  --btn: #2b2117;
+  --input: #140f0a;
+  --head: "Cinzel", Georgia, "Times New Roman", serif;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -54,7 +58,7 @@ details p { margin: 6px 0 2px; color: #cfcbc6; font-size: calc(13px * var(--ui))
 .row span.label { flex: 1; color: var(--muted); }
 .row button {
   width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--line);
-  background: #2a2e32; color: var(--text); font-size: calc(16px * var(--ui)); cursor: pointer;
+  background: var(--btn); color: var(--text); font-size: calc(16px * var(--ui)); cursor: pointer;
 }
 .row button:hover { border-color: var(--accent); }
 .row output { min-width: 28px; text-align: center; font-variant-numeric: tabular-nums; font-weight: 600; }
@@ -79,7 +83,7 @@ label.check { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; 
 #p-vp { margin: 8px 0 4px; padding: 10px 10px 2px; border: 1px solid var(--line); border-radius: 8px; }
 #p-vp .meta { margin: 0 0 8px; }
 #p-points {
-  width: 80px; font: inherit; text-align: right; color: var(--text); background: #15171a;
+  width: 80px; font: inherit; text-align: right; color: var(--text); background: var(--input);
   border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px;
 }
 button.wide { width: 100%; margin-top: 4px; }
@@ -87,7 +91,7 @@ button.wide { width: 100%; margin-top: 4px; }
 /* Linke kurze Tischkante: alle Hilfsmittel untereinander */
 #sidebar {
   position: fixed; top: 0; left: 0; bottom: 0; width: var(--side); display: flex; flex-direction: column; gap: 10px;
-  padding: 12px; overflow-y: auto; background: rgba(20, 22, 24, .94); border-right: 1px solid var(--line);
+  padding: 12px; overflow-y: auto; background: rgba(26, 20, 13, .97); border-right: 1px solid var(--line);
 }
 #sidebar button { width: 100%; text-align: left; padding: 6px 9px; font-size: calc(13px * var(--ui)); }
 #gamebar { display: flex; flex-direction: column; gap: 5px; font-size: calc(13px * var(--ui)); }
@@ -98,7 +102,7 @@ button.wide { width: 100%; margin-top: 4px; }
 
 
 .seg { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-.seg button { width: auto; height: auto; border: 0; border-radius: 0; padding: 5px 8px; font-size: calc(13px * var(--ui)); background: #2a2e32; white-space: nowrap; }
+.seg button { width: auto; height: auto; border: 0; border-radius: 0; padding: 5px 8px; font-size: calc(13px * var(--ui)); background: var(--btn); white-space: nowrap; }
 .seg button + button { border-left: 1px solid var(--line); }
 .seg button.on { background: var(--accent); color: #1a1a1a; font-weight: 600; }
 details .note { color: var(--muted); font-size: calc(12px * var(--ui)); font-weight: 400; margin-left: 6px; }
@@ -106,7 +110,7 @@ a { color: var(--accent); }
 
 #toolbar { display: flex; flex-direction: column; gap: 5px; padding-top: 10px; border-top: 1px solid var(--line); }
 button {
-  font: inherit; color: var(--text); background: #2a2e32; border: 1px solid var(--line);
+  font: inherit; color: var(--text); background: var(--btn); border: 1px solid var(--line);
   border-radius: 8px; padding: 7px 12px; cursor: pointer;
 }
 button:hover { border-color: var(--accent); }
@@ -150,7 +154,7 @@ table.preview tr.missing td { color: #f0a35e; }
 #lobby .join { display: flex; gap: 8px; }
 #lobby input {
   flex: 1; min-width: 0; font: inherit; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px;
+  color: var(--text); background: var(--input); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px;
 }
 #lobby input:focus { outline: none; border-color: var(--accent); }
 #lobby button:disabled { opacity: .45; cursor: not-allowed; }
@@ -201,7 +205,7 @@ body.placing canvas { cursor: crosshair; }
 .dice-form label { display: flex; flex-direction: column; gap: 3px; font-size: calc(12px * var(--ui)); color: var(--muted); min-width: 0; }
 .dice-form label.full { grid-column: 1 / -1; }
 .dice-form input, .dice-form select, .field input, #chat-input {
-  font: inherit; font-size: calc(13px * var(--ui)); color: var(--text); background: #15171a; border: 1px solid var(--line);
+  font: inherit; font-size: calc(13px * var(--ui)); color: var(--text); background: var(--input); border: 1px solid var(--line);
   border-radius: 6px; padding: 5px 7px; min-width: 0; width: 100%;
 }
 .dice-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
@@ -261,7 +265,7 @@ table.keys td:first-child { width: 46%; padding-right: 10px; }
 kbd {
   display: inline-block; min-width: 20px; padding: 1px 6px; margin: 1px 1px; border-radius: 5px; text-align: center;
   font: 600 12px/1.5 system-ui, sans-serif;
-  font-size: calc(12px * var(--ui)); color: var(--text); background: #2a2e32;
+  font-size: calc(12px * var(--ui)); color: var(--text); background: var(--btn);
   border: 1px solid var(--line); border-bottom-width: 2px;
 }
 
@@ -342,13 +346,13 @@ body.sheet-open .bottom-panel { display: none; }
 .prompt-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
 .prompt-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
 .prompt-form label { display: flex; flex-direction: column; gap: 3px; font-size: calc(12px * var(--ui)); color: var(--muted); }
-.prompt-form select { font: inherit; font-size: calc(13px * var(--ui)); color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 5px 7px; }
+.prompt-form select { font: inherit; font-size: calc(13px * var(--ui)); color: var(--text); background: var(--input); border: 1px solid var(--line); border-radius: 6px; padding: 5px 7px; }
 .prompt-checks { display: flex; gap: 14px; flex-wrap: wrap; font-size: calc(13px * var(--ui)); }
 .prompt-checks label { display: flex; align-items: center; gap: 6px; }
 .prompt-info { margin: 6px 0; font-size: calc(13px * var(--ui)); }
 #prompt-wait {
   position: fixed; top: 16px; left: calc(50% + var(--side) / 2); transform: translateX(-50%); margin: 0; z-index: 5;
-  padding: 7px 14px; border-radius: 999px; background: #2a2e32; border: 1px solid var(--line); color: var(--muted); font-size: calc(13px * var(--ui));
+  padding: 7px 14px; border-radius: 999px; background: var(--btn); border: 1px solid var(--line); color: var(--muted); font-size: calc(13px * var(--ui));
 }
 
 
@@ -358,7 +362,7 @@ body.sheet-open .bottom-panel { display: none; }
 :root { --right: 280px; }
 #dicebar {
   position: fixed; top: 0; right: 0; bottom: 0; width: var(--right); display: flex; flex-direction: column;
-  padding: 12px; overflow-y: auto; background: rgba(20, 22, 24, .94); border-left: 1px solid var(--line);
+  padding: 12px; overflow-y: auto; background: rgba(26, 20, 13, .97); border-left: 1px solid var(--line);
 }
 #dicebar > h3:first-child { margin-top: 0; }
 #dicebar .dice-form { grid-template-columns: 1fr 1fr; }
@@ -381,7 +385,7 @@ body.sheet-open .bottom-panel { display: none; }
   border: 1px solid var(--line); font-size: calc(10px * var(--ui));
 }
 #g-subs li.done { color: #6f747a; text-decoration: line-through; }
-#g-subs li.on { color: var(--text); background: #2a2e32; font-weight: 600; }
+#g-subs li.on { color: var(--text); background: var(--btn); font-weight: 600; }
 #g-subs li.on span { background: var(--accent); border-color: var(--accent); color: #1a1a1a; }
 
 @media (max-width: 900px) { :root { --right: 220px; } }
@@ -429,7 +433,7 @@ body.hide-left #sidebar { display: none; }
 
 #rightbar {
   position: fixed; top: 0; right: 0; bottom: 0; width: var(--right); display: flex; flex-direction: column;
-  background: rgba(20, 22, 24, .97); border-left: 1px solid var(--line); z-index: 2;
+  background: rgba(26, 20, 13, .98); border-left: 1px solid var(--line); z-index: 2;
   box-shadow: -8px 0 24px rgba(0, 0, 0, .45);
 }
 #right-top { position: relative; flex: 1 1 auto; min-height: 0; }
@@ -484,7 +488,7 @@ table.profile th, table.profile td { padding: 3px 2px; }
 #score-panel li.empty { color: var(--muted); border: 0; }
 #score-panel label { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; font-size: calc(13px * var(--ui)); margin-top: 4px; }
 #score-panel input[type="number"] {
-  width: 80px; font: inherit; text-align: right; color: var(--text); background: #15171a;
+  width: 80px; font: inherit; text-align: right; color: var(--text); background: var(--input);
   border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; margin-left: auto;
 }
 #score-panel .note { margin: 10px 0 0; }
@@ -575,7 +579,7 @@ table.profile td[title] { cursor: help; }
 /* Würfel: Zielwert und Werkzeuge unter dem Ergebnis */
 .dice-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0 4px; }
 .dice-tools label { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; font-size: calc(12px * var(--ui)); color: var(--muted); }
-.dice-tools select { flex: 1; font: inherit; color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
+.dice-tools select { flex: 1; font: inherit; color: var(--text); background: var(--input); border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
 .dice-tools button:disabled { opacity: .4; cursor: not-allowed; }
 #d-result .dice-row { margin-top: 4px; }
 /* Geänderter Profilwert: anklickbar, zeigt die Regeln dahinter */
@@ -596,7 +600,7 @@ table.profile td[title] { cursor: help; }
 .wizard { padding: 6px 0 8px; border-bottom: 1px dashed var(--line); }
 .wizard p { margin: 0 0 4px; }
 .wizard-row { display: flex; gap: 6px; flex-wrap: wrap; }
-.wizard-row select { flex: 1 1 140px; font: inherit; font-size: calc(13px * var(--ui)); color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
+.wizard-row select { flex: 1 1 140px; font: inherit; font-size: calc(13px * var(--ui)); color: var(--text); background: var(--input); border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
 .wizard-row button { padding: 4px 10px; font-size: calc(13px * var(--ui)); }
 ul.spells, ul.destroyed { list-style: none; margin: 6px 0 0; padding: 0; }
 ul.spells li, ul.destroyed li { padding: 3px 0; display: flex; flex-wrap: wrap; gap: 0 8px; align-items: baseline; }
@@ -615,11 +619,11 @@ ul.spells .meta, ul.destroyed .meta { margin: 0; font-size: calc(12px * var(--ui
 #right-top > .sheet, #right-top > .bottom-panel { overflow-x: hidden; }
 /* Notizen (allgemein und je Einheit) */
 #notes-text, #p-note {
-  width: 100%; font: inherit; font-size: calc(13px * var(--ui)); color: var(--text); background: #15171a;
+  width: 100%; font: inherit; font-size: calc(13px * var(--ui)); color: var(--text); background: var(--input);
   border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; resize: vertical;
 }
 /* Lebenspunkte abziehen */
-.wound-apply input { width: 64px; font: inherit; text-align: right; color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
+.wound-apply input { width: 64px; font: inherit; text-align: right; color: var(--text); background: var(--input); border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
 .wound-apply .wide-btn { flex: 1; width: auto; height: auto; font-size: calc(13px * var(--ui)); padding: 5px 8px; }
 /* Würfeltabellen (z. B. Gaze of the Gods) */
 .roll-table { margin-top: 8px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; }
@@ -641,7 +645,7 @@ ul.spells .meta, ul.destroyed .meta { margin: 0; font-size: calc(12px * var(--ui
 /* Zauber: Anzahl, Auswahl nach dem Würfeln, von Hand hinzufügen */
 .wizard-row { margin-top: 4px; align-items: center; }
 .spell-count { display: flex; align-items: center; gap: 6px; font-size: calc(13px * var(--ui)); color: var(--muted); }
-.spell-count input { width: 52px; font: inherit; text-align: right; color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; }
+.spell-count input { width: 52px; font: inherit; text-align: right; color: var(--text); background: var(--input); border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; }
 .spell-choice { margin: 6px 0; padding: 6px 8px; border: 1px dashed var(--accent); border-radius: 6px; }
 .spell-choice .meta { margin: 0 0 4px; }
 .spell-choice button { margin-top: 6px; }
@@ -654,7 +658,7 @@ table.scoring th:first-child, table.scoring td:first-child { text-align: left; c
 table.scoring th { font-weight: 600; white-space: nowrap; }
 table.scoring tr.sum td { font-weight: 700; font-size: calc(17px * var(--ui)); color: var(--accent); border-bottom: 0; }
 table.scoring tr.sum td:first-child { color: var(--text); }
-table.scoring input { width: 70px; font: inherit; text-align: right; color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; }
+table.scoring input { width: 70px; font: inherit; text-align: right; color: var(--text); background: var(--input); border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; }
 .mission-line { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 10px 0 0; font-size: calc(13px * var(--ui)); color: var(--muted); }
 .mission-line b { color: var(--text); }
 .mission-line button { margin-left: auto; padding: 3px 10px; font-size: calc(12px * var(--ui)); }
@@ -693,3 +697,41 @@ body.spectator #new-game { display: none; }
 #view-toggles #toggle-rotate.on { border-color: var(--accent); color: var(--accent); }
 .charge-dist { font-size: calc(12px * var(--ui)); color: var(--muted); }
 .charge-dist b { color: var(--text); }
+/* Würfel: kurz rollen nach einem neuen Wurf, Sechsen glänzen */
+@keyframes dice-roll {
+  0% { transform: rotate(-200deg) scale(.4); opacity: 0; }
+  60% { transform: rotate(20deg) scale(1.15); opacity: 1; }
+  100% { transform: rotate(0) scale(1); }
+}
+#d-result.rolling .die { animation: dice-roll .45s cubic-bezier(.2, .8, .3, 1) both; }
+#d-result.rolling .die:nth-child(3n+1) { animation-delay: .03s; }
+#d-result.rolling .die:nth-child(3n+2) { animation-delay: .07s; }
+.die.six { box-shadow: 0 0 6px 1px rgba(255, 214, 120, .9); }
+
+/* ==== Optik: Old-World-Stil ==== */
+html, body { background: radial-gradient(ellipse at 50% 40%, #241b12 0%, var(--bg) 70%); }
+#sidebar { background: linear-gradient(180deg, #241b12 0%, #17110b 100%); box-shadow: 4px 0 18px rgba(0, 0, 0, .45); }
+#rightbar { background: linear-gradient(180deg, #221a11 0%, #160f0a 100%); }
+#right-top > .info-panel, #right-top > .bottom-panel, #right-top > .sheet { background: linear-gradient(180deg, #221a11 0%, #160f0a 100%); }
+h2, h3, h4, .sheet > h3, #g-round b, dialog h2, #lobby h1 { font-family: var(--head); letter-spacing: .04em; }
+h3 { color: var(--accent); }
+button { background: linear-gradient(180deg, #33281b 0%, var(--btn) 100%); border-color: #4a3a27; }
+button:hover { border-color: var(--accent); background: linear-gradient(180deg, #3d3020 0%, #2f2418 100%); }
+button.primary, #toolbox button.on, #bottom-tools button.on {
+  background: linear-gradient(180deg, #e3b85a 0%, #b98a34 100%); border-color: #f0cf7a; color: #1d140a;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
+}
+#g-round { color: var(--text); }
+/* Einheiten-Popup: Kopf mit Spielerfarbe, Abschnitte als Karten, Profil mit Streifen */
+.bottom-panel header { padding: 8px 10px; margin: -12px -14px 6px; background: linear-gradient(90deg, rgba(214, 168, 74, .14), transparent); border-bottom: 1px solid var(--line); }
+.bottom-panel h2 { font-family: var(--head); font-size: calc(18px * var(--ui)); color: #f6e7c4; }
+.bottom-panel .col, .bottom-panel .col.wide-col {
+  background: rgba(255, 240, 210, .035); border: 1px solid rgba(214, 168, 74, .15) !important; border-radius: 8px;
+  padding: 8px 10px !important; margin-top: 8px !important;
+}
+.bottom-panel .col > h3:first-child { margin-top: 0; }
+table.profile tbody tr:nth-child(odd) td { background: rgba(255, 240, 210, .05); }
+table.profile th { font-family: var(--head); color: var(--accent); }
+details { background: rgba(0, 0, 0, .15); border-color: rgba(214, 168, 74, .2); }
+.die { background: #f3e6c4; color: #1d140a; }
+.die.ok { background: var(--accent); }

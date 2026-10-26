@@ -132,7 +132,7 @@ export class GameBar {
       : `Round <b>${round}</b>/${ROUNDS} · Turn <b>${turnNumber(state.meta)}</b>/${ROUNDS * 2}
          <span class="turn-of"><span class="dot ${active}"></span>${playerName(active)}'s turn</span>`;
     const end = $('g-end') as HTMLButtonElement;
-    end.textContent = 'End turn';
+    end.textContent = '⏭ End turn';
     end.disabled = this.me === 'spectator' || !!gameOver;
 
     // Nach der Aufstellung: Armee laden, Gelände und Battlefield ausblenden (siehe CSS)
@@ -155,7 +155,7 @@ export class GameBar {
     const kills = (p: PlayerId) => victoryPoints(state, p).lines.filter((l) => l.label !== 'Mission points');
     const killTotal = (p: PlayerId) => kills(p).reduce((s, l) => s + l.vp, 0);
     const total = (p: PlayerId) => killTotal(p) + (missionVp?.[p] ?? 0);
-    $('score-btn').innerHTML = `Scoring <b>${total('p1')}</b> : <b>${total('p2')}</b>`;
+    $('score-btn').innerHTML = `★ Scoring <b>${total('p1')}</b> : <b>${total('p2')}</b>`;
     const head = (['p1', 'p2'] as const).map((p) => `<th><span class="dot ${p}"></span>${playerName(p)}</th>`).join('');
     // Kill points: Aufschlüsselung im Tooltip
     const killCell = (p: PlayerId) => `<td title="${escapeHtml(kills(p).map((l) => `${l.label}: ${l.vp}`).join('\n') || 'none yet')}">${killTotal(p)}</td>`;

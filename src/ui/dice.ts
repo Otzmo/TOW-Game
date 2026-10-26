@@ -41,6 +41,8 @@ export class DicePanel {
   private special = '';
   /** Ergebnis der Abweichungswürfel; useArrow = beim Hit gilt der kleine Pfeil */
   private scatter: { hit: boolean; angle: number; useArrow: boolean }[] = [];
+  /** Nach einem neuen Wurf rollen die Würfel kurz (nur dann, nicht bei jedem Neuzeichnen) */
+  private rolling = false;
 
   constructor(private publish: (entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>) => void) {
     select('d-target-value').innerHTML = '<option value="">– (no target)</option>' +
@@ -62,6 +64,7 @@ export class DicePanel {
       if (!this.dice.length) return;
       this.dice = this.kind === 'd3' ? this.dice.map(() => rnd(3)) : roll(this.dice.length);
       this.publish({ kind: 'roll', text: `${this.dice.length} ${KIND_NAMES[this.kind]} re-rolled`, dice: [this.dice] });
+      this.rolling = true;
       this.render();
     };
     // Hit-Seite angeklickt: stattdessen dem kleinen Pfeil folgen
@@ -100,6 +103,7 @@ export class DicePanel {
       this.scatter = r.map((x) => ({ ...x, useArrow: false }));
       this.publish({ kind: 'roll', text: `Scatter dice: ${r.map((s) => (s.hit ? 'Hit' : `${s.angle}°`)).join(', ')}` });
     }
+    this.rolling = true;
     this.render();
   }
 
@@ -119,6 +123,8 @@ export class DicePanel {
         + (this.scatter.some((x) => x.hit && !x.useArrow) ? '<p class="meta">HIT: click the die to use its small arrow if a hit is not possible.</p>' : '')
       : this.special ? `<div class="dice-row">${this.special}</div>`
       : '<p class="meta">Choose the dice and roll.</p>';
+    $('d-result').classList.toggle('rolling', this.rolling);
+    this.rolling = false;
     ($('d-keep') as HTMLButtonElement).disabled = t === null || !this.dice.length;
     ($('d-keep') as HTMLButtonElement).textContent = t === null ? 'Remove dice below target' : `Remove dice below ${t}+`;
     ($('d-reroll') as HTMLButtonElement).disabled = !this.dice.length;
@@ -128,7 +134,7 @@ export class DicePanel {
 }
 
 export function diceHtml(dice: number[], success = 7): string {
-  return dice.map((d) => `<span class="die${d >= success ? ' ok' : ''}">${d}</span>`).join('');
+  return dice.map((d) => `<span class="die${d >= success ? ' ok' : ''}${d === 6 ? ' six' : ''}">${d}</span>`).join('');
 }
 
 function escapeHtml(s: string): string {

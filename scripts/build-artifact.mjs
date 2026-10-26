@@ -26,6 +26,7 @@ const body = /<body>([\s\S]*)<\/body>/.exec(html)[1]
 
 // Die Artefakt-Hülle liefert doctype, head und body selbst
 const page = `<title>TOW Tabletop</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
 <style>
 :root { color-scheme: dark; }
 ${css}
