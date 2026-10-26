@@ -26,21 +26,28 @@ export class ImportDialog {
     });
     this.fileInput.onchange = () => {
       const file = this.fileInput.files?.[0];
-      if (file) this.load(file);
+      if (file) this.load(async () => JSON.parse(await file.text()));
     };
+    // Beispielarmee (Empire-Testliste): erst beim Klick geladen, gleiche Vorschau wie eine eigene Datei
+    document.querySelectorAll<HTMLButtonElement>('[data-sample]').forEach((btn) => {
+      btn.onclick = () => {
+        this.owner = btn.dataset.sample as PlayerId;
+        this.load(async () => (await import('../../fixtures/empire-men-easy.bb.json')).default);
+      };
+    });
     $('import-confirm').onclick = () => this.confirm();
     $('import-cancel').onclick = () => this.dialog.close();
   }
 
-  private async load(file: File): Promise<void> {
+  /** @param read liefert die Armeeliste (JSON aus New Recruit / Old World Builder) */
+  private async load(read: () => Promise<unknown>): Promise<void> {
     this.pending = null;
     $('import-confirm').hidden = true;
     $('import-title').textContent = `Army for ${playerName(this.owner)}`;
     $('import-body').innerHTML = '<p class="meta">Loading …</p>';
     this.dialog.showModal();
     try {
-      const json = JSON.parse(await file.text());
-      const result = await importBbList(json, this.owner, this.store.state.table);
+      const result = await importBbList(await read(), this.owner, this.store.state.table);
       this.pending = result;
       this.renderPreview(result);
       $('import-confirm').hidden = false;

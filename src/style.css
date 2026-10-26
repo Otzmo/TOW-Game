@@ -514,7 +514,7 @@ table.profile th, table.profile td { padding: 3px 2px; }
 
 
 /* Nach der Aufstellung: Armee laden, Gelände und Battlefield ausblenden */
-body.battle [data-import], body.battle #toolbox [data-sheet="battlefield"] { display: none; }
+body.battle [data-import], body.battle [data-sample], body.battle #toolbox [data-sheet="battlefield"] { display: none; }
 /* In der Aufstellung führen die Popups durch die Schritte; „Next“ links gibt es dann nicht */
 body:not(.battle) #g-end { display: none; }
 

@@ -194,8 +194,8 @@ async function start(): Promise<void> {
   new Lobby(store, (me) => {
     seat = me;
     gate.seat = me;
-    document.querySelectorAll<HTMLElement>('[data-import]').forEach((btn) => {
-      btn.hidden = btn.dataset.import !== me;
+    document.querySelectorAll<HTMLElement>('[data-import], [data-sample]').forEach((btn) => {
+      btn.hidden = (btn.dataset.import ?? btn.dataset.sample) !== me;
     });
     gameBar.setOnlinePlayer(me);
     if (me === 'spectator') {
