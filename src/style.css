@@ -633,3 +633,17 @@ ul.spells .meta, ul.destroyed .meta { margin: 0; font-size: calc(12px * var(--ui
 .mission-row ul { margin: 4px 0; padding-left: 18px; font-size: calc(12px * var(--ui)); color: var(--muted); }
 .mission-row p { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 4px 0; }
 .mission-row button { margin-left: auto; padding: 3px 10px; }
+
+/* Linke Spalte so schmal wie möglich: genau so breit wie ihr längster Text (main.ts überträgt die Breite nach --side) */
+#sidebar { width: max-content; max-width: 40vw; padding: 8px 6px; gap: 6px; }
+#sidebar button { padding: 5px 8px; white-space: nowrap; }
+#g-round { white-space: nowrap; }
+/* Zauber: Anzahl, Auswahl nach dem Würfeln, von Hand hinzufügen */
+.wizard-row { margin-top: 4px; align-items: center; }
+.spell-count { display: flex; align-items: center; gap: 6px; font-size: calc(13px * var(--ui)); color: var(--muted); }
+.spell-count input { width: 52px; font: inherit; text-align: right; color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; }
+.spell-choice { margin: 6px 0; padding: 6px 8px; border: 1px dashed var(--accent); border-radius: 6px; }
+.spell-choice .meta { margin: 0 0 4px; }
+.spell-choice button { margin-top: 6px; }
+.spell-remove { padding: 0 6px; border: 0; background: none; color: var(--muted); font-size: calc(15px * var(--ui)); line-height: 1; }
+.spell-remove:hover { color: #f0603e; }

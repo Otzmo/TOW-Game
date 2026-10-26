@@ -124,6 +124,12 @@ async function start(): Promise<void> {
     };
   };
   const showTable = () => board.fitView();
+  // Die linke Spalte ist so breit wie ihr Inhalt; Fenster und Hinweise richten sich nach dieser Breite
+  const sidebar = document.getElementById('sidebar')!;
+  new ResizeObserver(() => {
+    document.documentElement.style.setProperty('--side', `${Math.ceil(sidebar.getBoundingClientRect().width)}px`);
+    showTable();
+  }).observe(sidebar);
   // Schriftfaktor für die Oberfläche: 1280 px ≈ 0,93, 1920 px ≈ 1,13
   const scaleUi = () => document.documentElement.style.setProperty('--ui',
     String(Math.min(1.2, Math.max(0.85, 0.55 + window.innerWidth * 0.0003)).toFixed(3)));
