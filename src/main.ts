@@ -10,6 +10,7 @@ import type { GameState, LogEntry } from './model/types';
 import type { Seat } from './net/room';
 import { DestroyedPanel } from './ui/destroyed';
 import { DiceLog, DicePanel } from './ui/dice';
+import { NotesPanel } from './ui/notes';
 import { SpellsPanel } from './ui/spells';
 import { PromptCenter } from './ui/prompts';
 import { SetupPanel } from './ui/setupPanel';
@@ -102,6 +103,7 @@ async function start(): Promise<void> {
   new DicePanel((entry) => addLog(entry));
   new SpellsPanel(store, history, () => seat, (entry) => addLog(entry));
   new DestroyedPanel(store, (id) => board.select(id));
+  new NotesPanel(store);
   new DiceLog(store);
   new SyncWarning();
   // Spalten links/rechts ein- und ausblenden; danach den Tisch neu einpassen

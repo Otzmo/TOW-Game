@@ -113,7 +113,7 @@ export class UnitView extends Container {
     const status = isDestroyed(u) ? ' · destroyed' : u.status === 'fledOff' ? ' · fled'
       : u.status === 'fleeing' ? ' · FLEEING' : '';
     const name = new Text({
-      text: `${u.info.name} (${u.models})${status}`,
+      text: `${u.info.name} (${u.info.startModels && u.info.startModels > 1 ? `${u.models}/${u.info.startModels}` : u.models})${status}`,
       style: { fontFamily: 'system-ui', fontSize: 11, fontWeight: '700', fill: 0xffffff, stroke: { color: 0x000000, width: 3.5 } },
       resolution: 8,
     });

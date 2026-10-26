@@ -218,6 +218,7 @@ export async function importBbList(
     // Punkte: Grundkosten × Modelle + Optionen + Gegenstände
     let points = (src?.cost ?? 0) * q;
     for (const o of entry.selectedOptions) points += optionCost(src?.options ?? [], o.optionId, o.groupId, q) ?? 0;
+    const mountPoints = mountOpt ? optionCost(src?.options ?? [], mountOpt.optionId, mountOpt.groupId, q) ?? 0 : 0;
     if (src && src.cost == null) warnings.push(`${src.name}: no points cost found – please enter it in the unit bar.`);
 
     const items: RuleRef[] = entry.traitIds.map((id) => {
@@ -269,6 +270,7 @@ export async function importBbList(
       isBsb: entry.selectedOptions.some((o) => o.optionId === 'battle-standard-bearer'),
       startModels: q,
       woundsPerModel: Number.parseInt(src?.profile[0]?.values[5] ?? '1', 10) || 1,
+      mount: mount ? { name: mount.name, points: mountPoints } : null,
       url: src?.url,
     };
 

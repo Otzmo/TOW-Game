@@ -44,6 +44,7 @@
       <button data-sheet="templates">Templates ▸</button>
       <hr>
       <button data-sheet="log">Log <span id="log-badge" hidden></span></button>
+      <button data-sheet="notes" title="General notes for both players">Notes</button>
       <hr>
       <button id="save-game">Save</button>
       <button id="load-game">Load</button>
@@ -141,6 +142,9 @@
   </aside>
   <aside class="sheet wide-sheet" id="sheet-keys" hidden><h3>Keyboard shortcuts</h3><div id="keys-list"></div></aside>
   <aside class="sheet" id="sheet-mission" hidden><h3>Mission</h3><div id="mission-info"></div></aside>
+  <aside class="sheet" id="sheet-notes" hidden><h3>Notes</h3>
+    <textarea id="notes-text" rows="14" placeholder="General notes – both players see them"></textarea>
+    <p class="meta">Saved automatically. Notes on a single unit are in its popup.</p></aside>
   <aside class="sheet" id="sheet-spells" hidden><h3>Spells</h3><div id="spells-list"></div></aside>
   <aside class="sheet" id="sheet-destroyed" hidden><h3>Destroyed units</h3><div id="destroyed-list"></div></aside>
   <!-- Untere lange Tischkante: ausgewähltes Objekt (Gelände, Marker, Schablone) -->
@@ -187,6 +191,7 @@
           <tbody id="p-profile"></tbody>
         </table>
         <div id="p-profile-info"></div>
+        <div id="p-tables"></div>
       </section>
 
       <section class="col wide-col">
@@ -231,13 +236,17 @@
                 data-status="fledOff">Fled</button><button data-status="destroyed">Destroyed</button>
             </div>
           </div>
-          <div class="row" id="p-wounds-row"><span class="label">Wounds</span>
-            <button data-wound="lose">−</button><output id="p-wounds"></output><button data-wound="heal">+</button></div>
+          <div class="row" id="p-wounds-row"><span class="label">Wounds left</span>
+            <button data-wound="lose" title="Lose 1 wound">−</button><output id="p-wounds"></output><button data-wound="heal" title="Restore 1 wound">+</button></div>
+          <div class="row wound-apply"><input id="p-wound-n" type="number" min="1" max="200" value="1" inputmode="numeric">
+            <button id="p-wound-apply" class="wide-btn">Remove wounds</button></div>
           <label class="check" id="p-captured-row"><input type="checkbox" id="p-captured"> Standard captured by the enemy</label>
           <div class="row"><span class="label">Points cost</span>
             <input id="p-points" type="number" min="0" step="1" inputmode="numeric"></div>
           <p class="meta" id="p-vp-value"></p>
         </div>
+        <h3>Notes</h3>
+        <textarea id="p-note" rows="3" placeholder="Notes on this unit (both players see them)"></textarea>
       </section>
     </div>
   </aside>

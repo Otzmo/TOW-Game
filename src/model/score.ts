@@ -20,15 +20,35 @@ export const BSB_BONUS = 50;
 export const STANDARD_BONUS = 50;
 export const BREAK_BONUS = 500;
 
-/** Lebenspunkte eines Einzelmodells insgesamt und verbleibend. */
+/**
+ * Zusätzliche Werte durch ein Reittier: Profilzeilen nach der ersten, deren Wert "(+N)" lautet
+ * (z. B. Daemonic Mount W "(+1)", Manticore W "(+4)"), gelten für den Reiter.
+ * @param stat Spalte im Profil (0 = M … 8 = Ld)
+ */
+export function mountBonus(u: UnitState, stat: number): { delta: number; source: string } | null {
+  for (const row of u.info.profile.slice(1)) {
+    const m = /^\(\+(\d+)\)$/.exec((row.values[stat] ?? '').trim());
+    if (m) return { delta: Number(m[1]), source: row.name };
+  }
+  return null;
+}
+
+/** Lebenspunkte je Modell (mit Reittier) */
+export const woundsPerModel = (u: UnitState) => (u.info.woundsPerModel ?? 1) + (mountBonus(u, 5)?.delta ?? 0);
+
+/**
+ * Lebenspunkte: bei Einzelmodellen des Modells, bei Einheiten aller Modelle zusammen
+ * (verlorene Lebenspunkte zählen nur am angeschlagenen Modell).
+ */
 export function wounds(u: UnitState): { total: number; left: number } {
-  const total = u.info.woundsPerModel ?? 1;
+  const per = woundsPerModel(u);
+  const total = per * Math.max(1, u.models);
   return { total, left: Math.max(0, total - (u.woundsLost ?? 0)) };
 }
 
 /** Ist die Einheit vernichtet (Status oder alle Lebenspunkte verloren)? */
 export function isDestroyed(u: UnitState): boolean {
-  return u.status === 'destroyed' || (u.models === 1 && (u.info.startModels ?? 1) === 1 && wounds(u).left === 0);
+  return u.status === 'destroyed' || wounds(u).left === 0;
 }
 
 /** Ist die Einheit auf 25 % ihrer Anfangsstärke oder weniger geschrumpft? */

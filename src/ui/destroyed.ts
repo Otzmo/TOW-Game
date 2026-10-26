@@ -1,4 +1,5 @@
 import { playerName } from '../model/players';
+import { isDestroyed } from '../model/score';
 import type { Store } from '../model/store';
 import type { UnitState } from '../model/types';
 
@@ -20,10 +21,10 @@ export class DestroyedPanel {
   }
 
   private render(): void {
-    const gone = Object.values(this.store.state.units).filter((u) => u.status === 'destroyed' || u.status === 'fledOff');
+    const gone = Object.values(this.store.state.units).filter((u) => isDestroyed(u) || u.status === 'fledOff');
     $('destroyed-count').textContent = gone.length ? `(${gone.length})` : '';
     const row = (u: UnitState) => `<li><button class="rule-link" data-unit="${u.id}">${esc(u.info.name)}</button>
-      <span class="meta">${STATUS[u.status!]}${u.info.points ? ` · ${u.info.points} pts` : ''}</span></li>`;
+      <span class="meta">${STATUS[isDestroyed(u) ? 'destroyed' : u.status!]}${u.info.points ? ` · ${u.info.points} pts` : ''}</span></li>`;
     $('destroyed-list').innerHTML = (['p1', 'p2'] as const).map((p) => {
       const mine = gone.filter((u) => u.owner === p);
       const pts = mine.reduce((s, u) => s + (u.info.points ?? 0), 0);

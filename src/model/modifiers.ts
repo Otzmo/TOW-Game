@@ -1,4 +1,4 @@
-import type { RuleRef } from './types';
+import type { RuleRef, UnitState } from './types';
 
 /** Spalten des Profils: M WS BS S T W I A Ld */
 const STATS: Record<string, number> = {
@@ -63,6 +63,46 @@ export function statMods(sources: RuleRef[], gear = ''): StatMod[] {
           stat, delta: f.delta, situational: CONDITION_RE.test(before),
           replaces: /rather than/i.test(sentence), source: r.name, text: r.text ?? '',
         });
+      }
+    }
+  }
+  return mods;
+}
+
+export interface RollTable {
+  /** Name der Regel, z. B. "Gaze of the Gods" */
+  name: string;
+  rows: { n: number; title: string; text: string }[];
+}
+
+/** Würfeltabellen in den Regeln und Gegenständen einer Einheit ("D6 | Result", dann "1 | Titel: Text") */
+export function rollTables(u: UnitState): RollTable[] {
+  const tables: RollTable[] = [];
+  for (const r of [...u.info.rules, ...u.info.items]) {
+    if (!/\bD6\s*\|\s*Result\b/i.test(r.text ?? '')) continue;
+    const rows = [...(r.text ?? '').matchAll(/^(\d)\s*\|\s*([^:\n]+):\s*(.+)$/gm)]
+      .map((m) => ({ n: Number(m[1]), title: m[2].trim(), text: m[3].trim() }));
+    if (rows.length) tables.push({ name: r.name, rows });
+  }
+  return tables;
+}
+
+/**
+ * Profiländerungen durch gewählte Tabellenergebnisse (z. B. Gaze of the Gods 3: Iron Skin, +1 Toughness).
+ * Ein gewähltes Ergebnis gilt, bis es abgewählt wird – also dauerhaft im Profil.
+ */
+export function tableMods(u: UnitState): StatMod[] {
+  const mods: StatMod[] = [];
+  const tables = rollTables(u);
+  for (const key of u.tableResults ?? []) {
+    const [name, n] = [key.slice(0, key.lastIndexOf(':')), Number(key.slice(key.lastIndexOf(':') + 1))];
+    const row = tables.find((t) => t.name === name)?.rows.find((r) => r.n === n);
+    if (!row) continue;
+    const re = new RegExp(`([+-]\\d+) modifier to (?:both )?(?:their|its) (${STAT_NAMES})(?: and (${STAT_NAMES}))?`, 'gi');
+    for (const m of row.text.matchAll(re)) {
+      for (const stat of [m[2], m[3]].filter(Boolean)) {
+        mods.push({ stat: STATS[stat.toLowerCase()], delta: Number(m[1]), situational: false, replaces: false,
+          source: `${row.title} (${name})`, text: row.text });
       }
     }
   }

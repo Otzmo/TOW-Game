@@ -613,3 +613,17 @@ ul.spells .meta, ul.destroyed .meta { margin: 0; font-size: calc(12px * var(--ui
 /* Rechte Spalte: Würfelfenster einspaltig, nichts ragt seitlich heraus */
 #right-top > #sheet-dice:not([hidden]) { display: block; }
 #right-top > .sheet, #right-top > .bottom-panel { overflow-x: hidden; }
+/* Notizen (allgemein und je Einheit) */
+#notes-text, #p-note {
+  width: 100%; font: inherit; font-size: calc(13px * var(--ui)); color: var(--text); background: #15171a;
+  border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; resize: vertical;
+}
+/* Lebenspunkte abziehen */
+.wound-apply input { width: 64px; font: inherit; text-align: right; color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
+.wound-apply .wide-btn { flex: 1; width: auto; height: auto; font-size: calc(13px * var(--ui)); padding: 5px 8px; }
+/* Würfeltabellen (z. B. Gaze of the Gods) */
+.roll-table { margin-top: 8px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; }
+.roll-head { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+.roll-head button { padding: 3px 8px; font-size: calc(12px * var(--ui)); }
+.roll-table ul { list-style: none; margin: 6px 0 0; padding: 0; font-size: calc(12px * var(--ui)); }
+.roll-table li { padding: 2px 0; }

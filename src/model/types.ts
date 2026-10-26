@@ -43,6 +43,8 @@ export interface UnitInfo {
   startModels?: number;
   /** Lebenspunkte je Modell laut Profil */
   woundsPerModel?: number;
+  /** Reittier eines Charakters: Name und eigene Punktkosten */
+  mount?: { name: string; points: number } | null;
   url?: string;
 }
 
@@ -78,6 +80,8 @@ export interface UnitState {
   /** Zauberer: gewählte Lore (slug in spells.json) und ausgewürfelte Sprüche (slugs) */
   lore?: string | null;
   spells?: string[] | null;
+  /** Gewählte Ergebnisse von Würfeltabellen, z. B. "Gaze of the Gods:3" */
+  tableResults?: string[] | null;
   /** Unvollständiges letztes Glied: um so viele Plätze von links verschoben */
   rearOffset?: number;
   /** Eigene Notiz zu dieser Einheit */
@@ -104,6 +108,8 @@ export interface GameMeta {
   sub?: number;
   /** Missionspunkte, von Hand eingetragen */
   missionVp?: Partial<Record<PlayerId, number>>;
+  /** Allgemeine Notizen, für beide Spieler sichtbar */
+  notes?: string | null;
   /** Geladene Armee je Spieler (Fraktion und Listenname) */
   armies?: Partial<Record<PlayerId, { faction: string; list: string }>>;
 }

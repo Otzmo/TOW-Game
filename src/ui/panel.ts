@@ -5,8 +5,8 @@ import {
 } from '../model/store';
 import type { History } from '../model/history';
 import { armourInfo, loadWeapons, optionInfo, unitSaves, unitWeapons, visibleOptions, visibleRules, weaponRule } from '../model/gear';
-import { modifiedValue, statMods } from '../model/modifiers';
-import { hasStandard, unitVictoryPoints, wounds } from '../model/score';
+import { modifiedValue, rollTables, statMods, tableMods, type StatMod } from '../model/modifiers';
+import { hasStandard, mountBonus, unitVictoryPoints, wounds, woundsPerModel } from '../model/score';
 import type { RuleRef, UnitState, UnitStatus } from '../model/types';
 import { PLAYER_COLORS } from '../view/theme';
 import { currentPhase } from '../model/phases';
@@ -67,11 +67,16 @@ export class UnitPanel {
     };
     $('p-wounds-row').onclick = (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
-      const u = this.unit();
-      if (!btn || !u) return;
-      const lost = u.woundsLost ?? 0;
-      const total = wounds(u).total;
-      this.change({ woundsLost: btn.dataset.wound === 'lose' ? Math.min(total, lost + 1) : Math.max(0, lost - 1) });
+      if (btn) this.applyWounds(btn.dataset.wound === 'lose' ? 1 : -1);
+    };
+    $('p-wound-apply').onclick = () => {
+      const n = Math.max(1, Math.round(Number(($('p-wound-n') as HTMLInputElement).value) || 1));
+      this.applyWounds(n);
+    };
+    $('p-note').onchange = (e) => this.change({ note: (e.target as HTMLTextAreaElement).value.trim() || null });
+    $('p-tables').onclick = (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-table]');
+      if (btn) this.onTable(btn.dataset.table!, btn.dataset.row);
     };
     ($('p-captured') as HTMLInputElement).onchange = (e) => {
       this.change({ standardCaptured: (e.target as HTMLInputElement).checked });
@@ -154,6 +159,43 @@ export class UnitPanel {
   }
 
   /**
+   * Lebenspunkte abziehen (n > 0) oder zurückgeben (n < 0). Hat ein Modell alle Lebenspunkte verloren, wird es
+   * entfernt (das erste Glied bleibt stehen); beim letzten Modell bleibt es bei 0 Lebenspunkten.
+   */
+  private applyWounds(n: number): void {
+    const u = this.unit();
+    if (!u) return;
+    const per = woundsPerModel(u);
+    let models = u.models;
+    let lost = (u.woundsLost ?? 0) + n;
+    while (lost >= per && models > 1) {
+      models--;
+      lost -= per;
+    }
+    lost = Math.max(0, Math.min(per, lost));
+    const removed = u.models - models;
+    this.change(this.keepFront(u, { models, woundsLost: lost }));
+    if (n > 0) {
+      this.setLastAction(u.id, `lost ${n} wound${n === 1 ? '' : 's'}${removed ? ` – ${removed} model${removed === 1 ? '' : 's'} removed` : ''}`);
+    }
+  }
+
+  /** Würfeltabelle (z. B. Gaze of the Gods): würfeln oder ein Ergebnis an- bzw. abwählen */
+  private onTable(table: string, row?: string): void {
+    const u = this.unit();
+    if (!u) return;
+    const rows = rollTables(u).find((t) => t.name === table)?.rows ?? [];
+    let pick = row ? Number(row) : 0;
+    if (!row) {
+      pick = 1 + Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32 * rows.length);
+      this.setLastAction(u.id, `rolls ${pick} on ${table}: ${rows[pick - 1]?.title ?? ''}`);
+    }
+    const key = `${table}:${pick}`;
+    const now = u.tableResults ?? [];
+    this.change({ tableResults: row && now.includes(key) ? now.filter((k) => k !== key) : [...new Set([...now, key])] });
+  }
+
+  /**
    * Geschlossene Formation: Das erste Glied bleibt stehen, wenn sich Breite oder Modellzahl ändern;
    * die Einheit wächst bzw. schrumpft nach hinten.
    */
@@ -203,6 +245,17 @@ export class UnitPanel {
     this.setLastAction(u.id, form === 'skirmish' ? 'changed to skirmish formation' : 'changed to close order formation');
   }
 
+  /** Würfeltabellen wie Gaze of the Gods: Würfeln oder Ergebnis anklicken; gewählte Ergebnisse gelten im Profil */
+  private tablesHtml(u: UnitState): string {
+    const active = new Set(u.tableResults ?? []);
+    return rollTables(u).map((t) => `<div class="roll-table"><div class="roll-head"><b>${escapeHtml(t.name)}</b>
+        <button data-table="${escapeHtml(t.name)}" class="primary">🎲 Roll D6</button></div>
+      <ul>${t.rows.map((r) => {
+        const on = active.has(`${t.name}:${r.n}`);
+        return `<li><button class="rule-link${on ? ' on' : ''}" data-table="${escapeHtml(t.name)}" data-row="${r.n}" title="${escapeHtml(r.text)}">${r.n} · ${escapeHtml(r.title)}</button>${on ? ' <span class="ok">active</span>' : ''}</li>`;
+      }).join('')}</ul></div>`).join('');
+  }
+
   /** Angriff: ansagen (Distanz wird berechnet), dann mit einem Knopf die Angriffsbewegung ausführen */
   private chargeHtml(u: UnitState): string {
     const { units, charges, meta } = this.store.state;
@@ -231,11 +284,18 @@ export class UnitPanel {
     $('p-name').textContent = info.name;
     const base = `Base ${info.baseWidth}×${info.baseDepth} mm`;
     const warn = stray.size ? ` · <span class="warn-line">${stray.size} beyond ${SKIRMISH_GAP}″</span>` : '';
+    // Modellzahl jetzt / zu Beginn, z. B. 3/15
+    const start = info.startModels ?? u.models;
+    const count = start > 1 ? `<b>${u.models}/${start}</b> models` : `${u.models} model`;
+    const mount = info.mount ? ` · on ${escapeHtml(info.mount.name)} (${info.mount.points} pts)` : '';
     $('p-meta').innerHTML = joined
-      ? `${u.models} model · ${base}`
+      ? `${count} · ${base}${mount}`
       : skirmish
-        ? `${u.models} models · ${base} · Skirmish · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″${warn}`
-        : `${u.models} models · ${base} · formation ${cols} × ${ranks} · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″`;
+        ? `${count} · ${base} · Skirmish · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″${warn}`
+        : `${count} · ${base}${mount} · formation ${cols} × ${ranks} · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″`;
+    $('p-tables').innerHTML = this.tablesHtml(u);
+    const note = $('p-note') as HTMLTextAreaElement;
+    if (document.activeElement !== note) note.value = u.note ?? '';
     $('p-join').innerHTML = this.joinHtml(u.id);
     $('p-charge').innerHTML = this.chargeHtml(u);
     $('p-profile').innerHTML = this.profileHtml(u);
@@ -271,8 +331,6 @@ export class UnitPanel {
     document.querySelectorAll<HTMLButtonElement>('[data-status]').forEach((btn) => {
       btn.classList.toggle('on', (btn.dataset.status || null) === (u.status ?? null));
     });
-    const single = (info.startModels ?? u.models) === 1;
-    $('p-wounds-row').hidden = !single;
     const wd = wounds(u);
     $('p-wounds').textContent = `${wd.left}/${wd.total}`;
     $('p-captured-row').hidden = !hasStandard(u);
@@ -325,10 +383,17 @@ export class UnitPanel {
     const { info } = u;
     // Waffenregeln wie "Extra Attacks (+1)" gelten nur für den Träger und stehen in der Waffentabelle
     const mods = statMods([...visibleRules(info), ...info.items], [info.equipment, ...info.options].join(' · '));
+    // Reittier (W "(+1)" …) und Würfeltabellen wie Gaze of the Gods gelten nur für den Reiter bzw. Charakter (erste Zeile)
+    const mountMods: StatMod[] = [...tableMods(u)];
+    for (let i = 0; i < 9; i++) {
+      const b = mountBonus(u, i);
+      if (b) mountMods.push({ stat: i, delta: b.delta, situational: false, replaces: false, source: `Mount: ${b.source}`,
+        text: `Riding the ${b.source} adds ${b.delta} to this characteristic of the rider.` });
+    }
     const STAT_LABELS = ['M', 'WS', 'BS', 'S', 'T', 'W', 'I', 'A', 'Ld'];
     const sign = (d: number) => `${d > 0 ? '+' : ''}${d}`;
     return info.profile.map((r, row) => `<tr><td>${escapeHtml(r.name)}</td>${r.values.map((v, i) => {
-      const m = modifiedValue(v, i, mods);
+      const m = modifiedValue(v, i, row === 0 ? [...mods, ...mountMods] : mods);
       if (!m.changed && !m.situational) return `<td>${escapeHtml(v)}</td>`;
       const sit = m.situational ? `<span class="stat-sit">(${escapeHtml(m.situational)})</span>` : '';
       // Anklicken zeigt unter dem Profil, welche Regeln den Wert ändern und warum
