@@ -1,6 +1,7 @@
 import { Application } from 'pixi.js';
 import './style.css';
 import { importBbList } from './data/importer';
+import { deploymentZones, TABLE_H } from './model/battlefield';
 import { History } from './model/history';
 import { moveToNoMansLand } from './model/noMansLand';
 import { bindPlayerNames } from './model/players';
@@ -123,6 +124,10 @@ async function start(): Promise<void> {
   new SyncWarning();
   // Spalten links/rechts ein- und ausblenden; danach den Tisch neu einpassen
   const views = new ViewToggles(() => showTable());
+  // Ansicht von Hand um 180° drehen (z. B. offline am selben Bildschirm)
+  const rotateBtn = document.getElementById('toggle-rotate')!;
+  rotateBtn.onclick = () => board.setViewRotated(!board.viewRotated);
+  board.onViewRotate = (on) => rotateBtn.classList.toggle('on', on);
   new Shortcuts({ board, panel, gameBar, toolbox, history, views });
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
@@ -192,7 +197,26 @@ async function start(): Promise<void> {
       document.body.classList.add('spectator');
       board.readOnly = true;
     }
+    orientView();
   });
+
+  /**
+   * Online sieht jeder Spieler den Tisch von seiner Seite: die eigene Aufstellungszone unten (vor dem Würfeln der
+   * Zonen steht Spieler 2 oben, also wird für ihn gedreht). Neu ausgerichtet wird nur, wenn sich Platz oder Zonen
+   * ändern – eine Drehung von Hand bleibt sonst bestehen.
+   */
+  let orientedFor = '';
+  function orientView(): void {
+    if (seat !== 'p1' && seat !== 'p2') return;
+    const zones = deploymentZones(store.state.meta.setup);
+    const key = `${seat}|${zones ? JSON.stringify(zones[seat]) : ''}`;
+    if (key === orientedFor) return;
+    orientedFor = key;
+    const own = zones?.[seat];
+    const ownY = own ? own.reduce((s, p) => s + p.y, 0) / own.length : seat === 'p1' ? TABLE_H : 0;
+    board.setViewRotated(ownY < TABLE_H / 2);
+  }
+  store.subscribe((_, c) => { if (c.meta || c.loaded) orientView(); });
 }
 
 start();

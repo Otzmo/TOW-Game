@@ -96,6 +96,9 @@ export class Board {
   constructor(private app: Application, private store: Store, private history: History, private events: BoardEvents) {
     const { table } = store.state;
     app.stage.addChild(this.world);
+    // Drehpunkt ist die Tischmitte: so lässt sich die Ansicht für den zweiten Spieler um 180° drehen
+    this.world.pivot.set((table.width * PPI) / 2, (table.height * PPI) / 2);
+    app.ticker.add(() => { if (this.viewRotated) this.keepTextUpright(this.world); });
     app.stage.eventMode = 'static';
     app.stage.hitArea = app.screen;
 
@@ -529,6 +532,35 @@ export class Board {
     this.clampView();
   }
 
+  /** Ist die Ansicht um 180° gedreht? */
+  get viewRotated(): boolean {
+    return Math.abs(this.world.rotation) > 1;
+  }
+
+  /** Ansicht um 180° drehen (nur die Anzeige; Positionen bleiben für beide Spieler gleich) */
+  setViewRotated(on: boolean): void {
+    if (on === this.viewRotated) return;
+    this.world.rotation = on ? Math.PI : 0;
+    this.fitView();
+    this.onViewRotate(on);
+  }
+
+  /** Wird gerufen, wenn sich die Drehung der Ansicht ändert (für den Knopf) */
+  onViewRotate: (rotated: boolean) => void = () => {};
+
+  /**
+   * In der gedrehten Ansicht stünden Texte auf dem Kopf: jeden Text, der gerade kopfüber steht, um 180° drehen.
+   * Läuft bei jedem Bild; neu gezeichnete Texte werden so sofort wieder aufrecht.
+   */
+  private keepTextUpright(node: Container): void {
+    for (const child of node.children) {
+      if (child instanceof Text) {
+        const m = child.worldTransform;
+        if (Math.cos(Math.atan2(m.b, m.a)) < -0.01) child.rotation += Math.PI;
+      } else if (child.children?.length) this.keepTextUpright(child as Container);
+    }
+  }
+
   /** Ganzen Tisch zeigen, mittig zwischen den Spalten links und rechts. */
   fitView(): void {
     this.world.scale.set(this.minScale());
@@ -538,6 +570,7 @@ export class Board {
   /**
    * Tisch bleibt zwischen den Spalten: Passt er in eine Richtung ganz hinein, liegt er dort mittig;
    * ist er größer (hineingezoomt), lässt er sich nur so weit verschieben, dass keine Lücke zu den Spalten entsteht.
+   * world.position ist die Bildschirmstelle der Tischmitte (Drehpunkt), darum gilt das auch für die gedrehte Ansicht.
    */
   private clampView(): void {
     const a = this.viewArea();
@@ -546,8 +579,8 @@ export class Board {
     const { width, height } = this.store.state.table;
     const w = width * PPI * s;
     const h = height * PPI * s;
-    const x = w <= a.right - a.left ? (a.left + a.right - w) / 2 : Math.min(a.left, Math.max(a.right - w, this.world.x));
-    const y = h <= a.bottom - a.top ? (a.top + a.bottom - h) / 2 : Math.min(a.top, Math.max(a.bottom - h, this.world.y));
+    const x = w <= a.right - a.left ? (a.left + a.right) / 2 : Math.min(a.left + w / 2, Math.max(a.right - w / 2, this.world.x));
+    const y = h <= a.bottom - a.top ? (a.top + a.bottom) / 2 : Math.min(a.top + h / 2, Math.max(a.bottom - h / 2, this.world.y));
     this.world.position.set(x, y);
     // Zahlen und × der Maßbänder bleiben auf dem Bildschirm gleich groß
     this.tools?.showShared();
