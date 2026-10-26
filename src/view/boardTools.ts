@@ -403,7 +403,16 @@ export class BoardTools {
     for (const p of ['p1', 'p2'] as const) {
       const pts = zones[p];
       const colors = defender ? PLAYER_COLORS[p] : { fill: 0xb9b2a0, edge: 0xe8e6e3 };
-      g.poly(pts.flatMap((pt) => [pt.x * PPI, pt.y * PPI])).fill({ color: colors.fill, alpha: 0.2 }).stroke({ width: 2, color: colors.edge, alpha: 0.55 });
+      const flat = pts.flatMap((pt) => [pt.x * PPI, pt.y * PPI]);
+      g.poly(flat).fill({ color: colors.fill, alpha: 0.1 }).stroke({ width: 2, color: colors.edge, alpha: 0.6 });
+      // Schraffur in Spielerfarbe: gut lesbar, verdeckt aber kaum etwas
+      const hatch = new Graphics();
+      const mask = new Graphics().poly(flat).fill(0xffffff);
+      const span = (TABLE_W + TABLE_H) * PPI;
+      for (let k = -span; k < span; k += 1.2 * PPI) hatch.moveTo(k, 0).lineTo(k + TABLE_H * PPI, TABLE_H * PPI);
+      hatch.stroke({ width: 1.5, color: colors.edge, alpha: 0.13 });
+      hatch.mask = mask;
+      this.zoneLayer.addChild(mask, hatch);
       const c = { x: pts.reduce((s, q) => s + q.x, 0) / pts.length, y: pts.reduce((s, q) => s + q.y, 0) / pts.length };
       const role = (defender ?? 'p2') === p ? 'Defender' : 'Attacker';
       const name = `${role} zone`;
