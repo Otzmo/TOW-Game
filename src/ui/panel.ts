@@ -1,6 +1,7 @@
 import type { Store } from '../model/store';
 import {
-  canSkirmish, isJoined, isNonUnitChange, isSkirmish, joinedCharacters, SKIRMISH_GAP, spreadPositions, unitLayout,
+  canSkirmish, isJoined, isNonUnitChange, isSkirmish, joinedCharacters, rearFree, SKIRMISH_GAP, spreadPositions,
+  unitFootprint, unitLayout,
 } from '../model/store';
 import type { History } from '../model/history';
 import { armourInfo, loadWeapons, optionInfo, unitSaves, unitWeapons, visibleOptions, visibleRules, weaponRule } from '../model/gear';
@@ -8,6 +9,7 @@ import { modifiedValue, statMods } from '../model/modifiers';
 import { hasStandard, unitVictoryPoints, wounds } from '../model/score';
 import type { RuleRef, UnitState, UnitStatus } from '../model/types';
 import { PLAYER_COLORS } from '../view/theme';
+import { currentPhase } from '../model/phases';
 
 const $ = (id: string) => document.getElementById(id)!;
 
@@ -28,6 +30,10 @@ export interface PanelActions {
   select(unitId: string): void;
   detach(charId: string): void;
   showRanges(on: boolean): void;
+  /** Angriff ansagen (Ziel anklicken), ausführen bzw. zurücknehmen */
+  declareCharge(unitId: string): void;
+  chargeMove(unitId: string): void;
+  cancelCharge(unitId: string): void;
 }
 
 /** Seitenpanel mit allen Angaben zur ausgewählten Einheit. */
@@ -81,6 +87,14 @@ export class UnitPanel {
     document.querySelectorAll<HTMLButtonElement>('[data-form]').forEach((btn) => {
       btn.onclick = () => this.setFormation(btn.dataset.form as 'close' | 'skirmish');
     });
+    $('p-charge').onclick = (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-charge]');
+      const u = this.unit();
+      if (!btn || !u) return;
+      if (btn.dataset.charge === 'declare') actions.declareCharge(u.id);
+      if (btn.dataset.charge === 'move') actions.chargeMove(u.id);
+      if (btn.dataset.charge === 'cancel') actions.cancelCharge(u.id);
+    };
     $('p-join').onclick = (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
       if (!btn) return;
@@ -88,6 +102,7 @@ export class UnitPanel {
       if (btn.dataset.detach) actions.detach(btn.dataset.detach);
     };
     store.subscribe((_, change) => {
+      if (change.chargeId || change.meta) this.render();
       if (isNonUnitChange(change)) return;
       const { unitId, patch } = change;
       if (!unitId || unitId === this.unitId || (patch && 'joinedTo' in patch)) this.render();
@@ -125,11 +140,32 @@ export class UnitPanel {
     // Plänkler haben keine Glieder; die Breite gilt dort für "In Reihen ordnen"
     const cols = isSkirmish(u) ? Math.min(u.width, u.models) : unitLayout(u, units).cols;
     const max = isSkirmish(u) ? u.models : unitLayout(u, units).slots.length;
-    if ((act === 'w-' || act === 'w+') && !this.canMove(u.id)) return;
-    if (act === 'w-') this.change({ width: Math.max(1, cols - 1) });
-    if (act === 'w+') this.change({ width: Math.min(max, cols + 1) });
-    if (act === 'm-') this.change({ models: Math.max(1, u.models - 1) });
-    if (act === 'm+') this.change({ models: u.models + 1 });
+    if ((act === 'w-' || act === 'w+' || act === 'r-' || act === 'r+') && !this.canMove(u.id)) return;
+    if (act === 'w-') this.change(this.keepFront(u, { width: Math.max(1, cols - 1), rearOffset: 0 }));
+    if (act === 'w+') this.change(this.keepFront(u, { width: Math.min(max, cols + 1), rearOffset: 0 }));
+    if (act === 'm-') this.change(this.keepFront(u, { models: Math.max(1, u.models - 1) }));
+    if (act === 'm+') this.change(this.keepFront(u, { models: u.models + 1 }));
+    // Unvollständiges letztes Glied verschieben
+    if (act === 'r-' || act === 'r+') {
+      const free = rearFree(u, units);
+      const now = Math.min(u.rearOffset ?? 0, free);
+      this.change({ rearOffset: Math.max(0, Math.min(free, now + (act === 'r+' ? 1 : -1))) });
+    }
+  }
+
+  /**
+   * Geschlossene Formation: Das erste Glied bleibt stehen, wenn sich Breite oder Modellzahl ändern;
+   * die Einheit wächst bzw. schrumpft nach hinten.
+   */
+  private keepFront(u: UnitState, patch: Partial<UnitState>): Partial<UnitState> {
+    const units = this.store.state.units;
+    if (isSkirmish(u)) return patch;
+    const before = unitFootprint(u, units).h;
+    const after = unitFootprint({ ...u, ...patch }, units).h;
+    const shift = (after - before) / 2;
+    if (Math.abs(shift) < 1e-6) return patch;
+    // In Einheitsrichtung nach hinten (+y lokal)
+    return { ...patch, x: u.x - Math.sin(u.rotation) * shift, y: u.y + Math.cos(u.rotation) * shift };
   }
 
   /** Plänkler in Reihen mit 0,5″ Abstand aufstellen (Breite wie eingestellt). */
@@ -167,6 +203,20 @@ export class UnitPanel {
     this.setLastAction(u.id, form === 'skirmish' ? 'changed to skirmish formation' : 'changed to close order formation');
   }
 
+  /** Angriff: ansagen (Distanz wird berechnet), dann mit einem Knopf die Angriffsbewegung ausführen */
+  private chargeHtml(u: UnitState): string {
+    const { units, charges, meta } = this.store.state;
+    if (currentPhase(meta) === 'setup' || isJoined(u, units)) return '';
+    const c = charges[`charge-${u.id}`];
+    const target = c ? units[c.target] : undefined;
+    if (!c || !target) return '<div class="row-btns"><button data-charge="declare">⚔ Declare charge</button></div>';
+    const dist = c.distance != null ? `${c.distance.toFixed(1)}″` : '?';
+    return c.status === 'rolled'
+      ? `<p class="ok">Charged ${escapeHtml(target.info.name)} (${dist})</p>`
+      : `<p>Charge against <b>${escapeHtml(target.info.name)}</b>: distance <b>${dist}</b></p>
+         <div class="row-btns"><button data-charge="move" class="primary">Charge move</button><button data-charge="cancel">Cancel</button></div>`;
+  }
+
   private render(): void {
     const units = this.store.state.units;
     const u = this.unitId ? units[this.unitId] : undefined;
@@ -187,6 +237,7 @@ export class UnitPanel {
         ? `${u.models} models · ${base} · Skirmish · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″${warn}`
         : `${u.models} models · ${base} · formation ${cols} × ${ranks} · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″`;
     $('p-join').innerHTML = this.joinHtml(u.id);
+    $('p-charge').innerHTML = this.chargeHtml(u);
     $('p-profile').innerHTML = this.profileHtml(u);
     $('p-profile-info').innerHTML = this.infoBox('p');
     // Was oben schon erklärt ist (Waffen, Rettungswürfe, Optionen), steht unten nicht noch einmal
@@ -237,6 +288,9 @@ export class UnitPanel {
     });
     $('p-width').textContent = String(skirmish ? Math.min(u.width, u.models) : cols);
     $('p-models').textContent = String(u.models);
+    const free = rearFree(u, units);
+    $('p-rear-row').hidden = free === 0;
+    $('p-rear').textContent = `${Math.min(u.rearOffset ?? 0, free)}/${free}`;
     const last = this.lastAction.get(u.id);
     $('p-move').textContent = last ? `Last action: ${last}` : '';
   }

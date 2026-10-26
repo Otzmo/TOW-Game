@@ -78,6 +78,8 @@ export interface UnitState {
   /** Zauberer: gewählte Lore (slug in spells.json) und ausgewürfelte Sprüche (slugs) */
   lore?: string | null;
   spells?: string[] | null;
+  /** Unvollständiges letztes Glied: um so viele Plätze von links verschoben */
+  rearOffset?: number;
   /** Eigene Notiz zu dieser Einheit */
   note?: string | null;
 }

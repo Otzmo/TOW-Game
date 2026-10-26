@@ -225,11 +225,12 @@ function closeLayout(u: UnitState, units: Record<string, UnitState>): UnitLayout
     slots.push({ key: `m${m++}`, x: left + i * bw, y: top, w: bw, d: bd, label: k >= 0 ? u.info.command[k] : undefined });
   }
 
-  // Restliche Glieder, unvollständiges letztes Glied linksbündig
+  // Restliche Glieder; das unvollständige letzte Glied steht links oder dort, wohin es geschoben wurde
   let rest = u.models - front.length;
   for (let row = 1; rest > 0; row++) {
     const inRow = Math.min(cols, rest);
-    for (let i = 0; i < inRow; i++) slots.push({ key: `m${m++}`, x: left + i * bw, y: top + row * bd, w: bw, d: bd });
+    const offset = inRow < cols ? Math.max(0, Math.min(cols - inRow, u.rearOffset ?? 0)) * bw : 0;
+    for (let i = 0; i < inRow; i++) slots.push({ key: `m${m++}`, x: left + offset + i * bw, y: top + row * bd, w: bw, d: bd });
     rest -= inRow;
   }
 
@@ -327,6 +328,16 @@ export function recenter(u: UnitState, units: Record<string, UnitState>, positio
 }
 
 /** Fläche der Einheit in Zoll. */
+/** Freie Plätze im unvollständigen letzten Glied (0 = Glied voll oder nur ein Glied) */
+export function rearFree(u: UnitState, units: Record<string, UnitState> = {}): number {
+  if (isSkirmish(u)) return 0;
+  const { cols, ranks, slots } = unitLayout(u, units);
+  if (ranks < 2) return 0;
+  const lastY = Math.max(...slots.map((s) => s.y));
+  const inLast = slots.filter((s) => Math.abs(s.y - lastY) < 1e-6).length;
+  return Math.max(0, cols - inLast);
+}
+
 export function unitFootprint(u: UnitState, units: Record<string, UnitState> = {}) {
   const { cols, ranks, w, h } = unitLayout(u, units);
   return { cols, ranks, w, h };

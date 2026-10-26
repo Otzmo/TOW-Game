@@ -1,12 +1,12 @@
 import { Application, Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
 import { BoardTools } from './boardTools';
-import { frontCenter, REACTION_NAMES } from '../model/flow';
+import { alignToBases, chargeDistance, contactPoses, frontCenter } from '../model/flow';
 import {
   isJoined, isNonUnitChange, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
 } from '../model/store';
-import { keepApart, type Pose } from '../model/collision';
+import { keepApart, overlappingUnits, type Pose } from '../model/collision';
 import type { History } from '../model/history';
-import { currentPhase, currentSub, SUB_CHARGE_MOVES } from '../model/phases';
+import { currentPhase } from '../model/phases';
 import type { Point, UnitState } from '../model/types';
 import { createTable } from './table';
 import { GUIDE_COLOR, OK_COLOR, PPI, STRAY_COLOR } from './theme';
@@ -210,12 +210,50 @@ export class Board {
     return true;
   }
 
-  /** Pfeile für alle Angriffe: rot = angesagt, grün = gelungen, grau = gescheitert. */
+  /**
+   * Angriff ansagen: Distanz wird berechnet und als Pfeil für beide Spieler gezeigt; ausgeführt wird er
+   * mit chargeMove. Bis zum Ende der Runde bleibt der Pfeil stehen.
+   */
+  declareCharge(chargerId: string, targetId: string): void {
+    const { units } = this.store.state;
+    const charger = units[chargerId];
+    const target = units[targetId];
+    if (!charger || !target) return;
+    const distance = Math.round(chargeDistance(charger, target, units) * 10) / 10;
+    const id = `charge-${chargerId}`;
+    this.store.setCharge(id, { id, charger: chargerId, target: targetId, round: this.store.state.meta.round,
+      status: 'declared', distance });
+    this.events.onAction(chargerId, `declares a charge against ${target.info.name} – distance ${distance.toFixed(1)}″`);
+  }
+
+  /** Angriffsbewegung: an die zugewandte Kante des Ziels, bündig an den Base-Grenzen */
+  chargeMove(chargerId: string): void {
+    const { units, charges } = this.store.state;
+    const c = charges[`charge-${chargerId}`];
+    const charger = units[chargerId];
+    const target = c ? units[c.target] : undefined;
+    if (!c || !charger || !target || !this.canMove(chargerId)) return;
+    // Erste Kante, an der der Angreifer Platz hat (ohne andere Einheiten zu überlappen)
+    const pose = contactPoses(charger, target, units)
+      .find((p) => !overlappingUnits({ ...charger, x: p.x, y: p.y, rotation: p.rotation }, units).length);
+    if (!pose) {
+      this.events.onAction(chargerId, `cannot reach ${target.info.name}: no room at any edge`);
+      return;
+    }
+    this.history.record();
+    this.store.updateUnit(chargerId, { x: pose.x, y: pose.y, rotation: pose.rotation });
+    this.store.setCharge(c.id, { ...c, status: 'rolled', success: true });
+    this.events.onAction(chargerId, `charges ${target.info.name} in the ${pose.side}`);
+  }
+
+  cancelCharge(chargerId: string): void {
+    this.store.setCharge(`charge-${chargerId}`, null);
+  }
+
+  /** Pfeile für alle Angriffe dieser Runde: rot = angesagt, grün = ausgeführt. */
   private drawCharges(): void {
     this.chargeLayer.removeChildren().forEach((c) => c.destroy());
-    const { units, charges, meta } = this.store.state;
-    // Angriffe nur beim Ansagen und in den Angriffsbewegungen zeigen, danach nicht mehr
-    if (currentPhase(meta) !== 'movement' || currentSub(meta) > SUB_CHARGE_MOVES) return;
+    const { units, charges } = this.store.state;
     for (const c of Object.values(charges)) {
       const charger = units[c.charger];
       const target = units[c.target];
@@ -241,10 +279,8 @@ export class Board {
         return [p.x * PPI, p.y * PPI];
       });
       g.poly(corners).stroke({ width: 2, color, alpha: 0.9 });
-      const status = c.status === 'declared' ? 'awaiting reaction' : REACTION_NAMES[c.reaction ?? 'hold'];
-      const result = c.status === 'rolled' ? ` · ${c.range}″ ${c.success ? 'succeeds' : 'fails'}` : '';
       const label = new Text({
-        text: `⚔ Charge · ${status}${result}`,
+        text: `⚔ Charge${c.distance != null ? ` · ${c.distance.toFixed(1)}″` : ''}${c.status === 'rolled' ? ' · done' : ''}`,
         style: { fontFamily: 'system-ui', fontSize: 13, fontWeight: '700', fill: color, stroke: { color: 0x000000, width: 3.5 } },
         resolution: 6,
       });
@@ -313,7 +349,9 @@ export class Board {
         const along = n.x === 0 ? local.x - mid.x : local.y - mid.y;
         const out = (local.x - mid.x) * n.x + (local.y - mid.y) * n.y;
         if (Math.abs(along) > half + 0.5 || out < -0.5 || out > CHARGE_SNAP) continue;
-        const clamped = Math.max(-half, Math.min(half, along));
+        // Immer an den Base-Grenzen des Ziels anlegen
+        const step = (n.x === 0 ? t.info.baseWidth : t.info.baseDepth) / 25.4;
+        const clamped = alignToBases(along, half, step, me.w);
         const lp = n.x === 0 ? { x: mid.x + clamped, y: mid.y } : { x: mid.x, y: mid.y + clamped };
         const p = this.unitPoint(t, lp.x, lp.y);
         const c = Math.cos(t.rotation);
@@ -595,7 +633,17 @@ export class Board {
       return;
     }
     if (d.type === 'move') {
-      this.store.updateUnit(d.unitId, { x: p.x + d.ox, y: p.y + d.oy });
+      let x = p.x + d.ox;
+      let y = p.y + d.oy;
+      // Nach der Aufstellung geht es immer gerade vor oder zurück (außer Plänkler); Shift = frei
+      if (!isSkirmish(u) && currentPhase(this.store.state.meta) !== 'setup' && !e.shiftKey) {
+        const fx = Math.sin(d.srot);
+        const fy = -Math.cos(d.srot);
+        const along = (x - d.sx) * fx + (y - d.sy) * fy;
+        x = d.sx + fx * along;
+        y = d.sy + fy * along;
+      }
+      this.store.updateUnit(d.unitId, { x, y });
     } else if (d.swing) {
       // Ganze Einheit um die feste Ecke drehen
       const sw = d.swing;

@@ -63,6 +63,9 @@ async function start(): Promise<void> {
     select: (id) => board.select(id),
     detach: (id) => board.detachCharacter(id),
     showRanges: (on) => board.setShowRanges(on),
+    declareCharge: (id) => board.startChargePick(id, (target) => board.declareCharge(id, target)),
+    chargeMove: (id) => board.chargeMove(id),
+    cancelCharge: (id) => board.cancelCharge(id),
   });
   const objectPanel = new ObjectPanel(store, history, {
     close: () => board.tools.select(null),

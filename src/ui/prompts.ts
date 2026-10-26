@@ -3,7 +3,6 @@ import {
   leadershipOf, movementOf, REACTION_NAMES, reactionOptions, roll, statOf, toHitCombat, toHitShooting, toWound, wizardLevel,
 } from '../model/flow';
 import type { History } from '../model/history';
-import { currentPhase, currentSub, SUB_CHARGE_MOVES, SUB_DECLARE, subLabel } from '../model/phases';
 import { playerName } from '../model/players';
 import type { Store } from '../model/store';
 import type { Charge, ChargeReaction, LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
@@ -40,11 +39,10 @@ export class PromptCenter {
   private shownId: string | null = null;
 
   constructor(private store: Store, private history: History, private host: PromptHost) {
+    // Keine Phasen mehr: Angriffe laufen über die Einheit (ansagen, Angriffsbewegung); hier werden nur
+    // offene Aufforderungen aus älteren Spielständen gezeigt
     store.subscribe((state, c) => {
-      if (c.chargeId || c.promptId || c.loaded || c.meta) this.advanceCharges();
-      if (c.meta) this.clearOldCharges();
-      if (c.meta) this.closeExpiredChargeRolls();
-      if (c.chargeId || c.promptId || c.loaded || c.meta) this.render();
+      if (c.promptId || c.loaded) this.render();
       void state;
     });
     this.render();
@@ -140,65 +138,8 @@ export class PromptCenter {
 
   // --- Angriffsablauf ---------------------------------------------------------
 
-  /** Sobald alle Angriffe des Spielers am Zug eine Reaktion haben: Angriffswürfe verlangen. */
-  private advanceCharges(): void {
-    const { charges, meta } = this.store.state;
-    const seat = this.host.seat();
-    // Nur das Gerät des angreifenden Spielers legt die Folgeaufforderungen an (offline: dieses)
-    if (seat && seat !== meta.active) return;
-    const current = Object.values(charges).filter((c) => this.chargerOwner(c) === meta.active);
-    if (!current.length || current.some((c) => c.status === 'declared')) return;
-    if (currentPhase(meta) !== 'movement') return;
-    // Alle Reaktionen da: weiter zu den Angriffsbewegungen
-    if (currentSub(meta) === SUB_DECLARE) {
-      this.store.setMeta({ sub: SUB_CHARGE_MOVES });
-      this.host.log({ kind: 'turn', text: `All charge reactions chosen – ${subLabel(this.store.state.meta)}` });
-    }
-    if (currentSub(this.store.state.meta) !== SUB_CHARGE_MOVES) return;
-    for (const c of current) {
-      if (c.status !== 'reacted') continue;
-      const charger = this.store.state.units[c.charger];
-      const target = this.store.state.units[c.target];
-      if (!charger || !target) continue;
-      this.create('chargeRoll', charger.owner, target.owner, 'Charge roll',
-        `${charger.info.name} → ${target.info.name} (${REACTION_NAMES[c.reaction ?? 'hold']}).`,
-        { chargeId: c.id }, `roll-${c.id}`);
-    }
-  }
-
   private chargerOwner(c: Charge): PlayerId | undefined {
     return this.store.state.units[c.charger]?.owner;
-  }
-
-  /** Nach dem Zug sind die Angriffe erledigt. */
-  private clearOldCharges(): void {
-    const { charges, prompts, meta } = this.store.state;
-    const seat = this.host.seat();
-    // Aufräumen übernimmt das Gerät des Spielers am Zug (offline: dieses)
-    if (currentPhase(meta) !== 'strategy' || (seat && seat !== meta.active)) return;
-    for (const c of Object.values(charges)) {
-      if (this.chargerOwner(c) !== meta.active || c.round !== meta.round) this.store.setCharge(c.id, null);
-    }
-    for (const p of Object.values(prompts)) if (p.status === 'done' && p.acknowledged) this.store.setPrompt(p.id, null);
-  }
-
-  /** Nach den Angriffsbewegungen: offene Angriffswürfe und Angriffs-Ergebnisse schließen sich. */
-  private closeExpiredChargeRolls(): void {
-    const { meta, prompts } = this.store.state;
-    if (currentPhase(meta) === 'movement' && currentSub(meta) <= SUB_CHARGE_MOVES) return;
-    const seat = this.host.seat();
-    for (const p of Object.values(prompts)) {
-      // Schließen übernimmt das Gerät dessen, der hätte würfeln sollen (offline: dieses)
-      if (p.kind !== 'chargeRoll' || p.status !== 'open' || (seat && seat !== p.to)) continue;
-      this.store.setPrompt(p.id, null);
-      this.stage = {};
-    }
-    // Unbestätigte Ergebnisse von Reaktion und Angriffswurf gelten ebenfalls als gesehen
-    for (const p of Object.values(prompts)) {
-      if ((p.kind !== 'chargeRoll' && p.kind !== 'chargeReaction') || p.status !== 'done' || p.acknowledged) continue;
-      if (seat && seat !== p.from) continue;
-      this.store.setPrompt(p.id, { ...p, acknowledged: true });
-    }
   }
 
   // --- Anzeige ----------------------------------------------------------------

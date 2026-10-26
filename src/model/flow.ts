@@ -166,34 +166,58 @@ export function reactionOptions(state: GameState, charge: Charge): { key: Charge
   return options;
 }
 
-/** Punkt, an dem der Angreifer bündig an der ihm zugewandten Kante des Ziels steht. */
-export function contactPose(charger: UnitState, target: UnitState, units: Record<string, UnitState>):
-  { x: number; y: number; rotation: number; side: string } {
+/**
+ * Lage entlang einer Kante so runden, dass die Bases des Angreifers an den Base-Grenzen des Ziels anliegen.
+ * @param along Mitte des Angreifers entlang der Kante (0 = Kantenmitte)
+ * @param half halbe Kantenlänge
+ * @param step Base-Breite des Ziels entlang dieser Kante
+ * @param width Breite des Angreifers
+ */
+export function alignToBases(along: number, half: number, step: number, width: number): number {
+  if (step <= 0) return Math.max(-half, Math.min(half, along));
+  // Abstand der linken Kante des Angreifers vom Anfang der Zielkante, auf ganze Bases gerundet
+  const e = Math.round((along - width / 2 + half) / step) * step;
+  // Mindestens eine Base berührt die Kante
+  const clamped = Math.max(Math.min(0, step - width), Math.min(2 * half - step, e));
+  return clamped + width / 2 - half;
+}
+
+export type ContactPose = { x: number; y: number; rotation: number; side: string };
+
+/** Punkt, an dem der Angreifer bündig an der ihm zugewandten Kante des Ziels steht (an den Base-Grenzen). */
+export function contactPose(charger: UnitState, target: UnitState, units: Record<string, UnitState>): ContactPose {
+  return contactPoses(charger, target, units)[0];
+}
+
+/**
+ * Anlegestellen an allen vier Kanten des Ziels (Front, Rücken, Flanken), jeweils an den Base-Grenzen;
+ * zuerst die Kante, auf deren Seite der Angreifer steht, dann nach Abstand.
+ */
+export function contactPoses(charger: UnitState, target: UnitState, units: Record<string, UnitState>): ContactPose[] {
   const me = unitFootprint(charger, units);
   const { w, h } = unitFootprint(target, units);
+  const bw = target.info.baseWidth / 25.4;
+  const bd = target.info.baseDepth / 25.4;
   const p = toLocal(target, { x: charger.x, y: charger.y });
-  // Kante, auf deren Seite der Angreifer steht (Front, Rücken, Flanken)
-  const nx = Math.abs(p.x) / (w / 2);
-  const ny = Math.abs(p.y) / (h / 2);
-  let lp: Point;
-  let n: Point;
-  let side: string;
-  if (ny >= nx) {
-    const sign = p.y < 0 ? -1 : 1;
-    lp = { x: Math.max(-w / 2, Math.min(w / 2, p.x)), y: (sign * h) / 2 };
-    n = { x: 0, y: sign };
-    side = sign < 0 ? 'front' : 'rear';
-  } else {
-    const sign = p.x < 0 ? -1 : 1;
-    lp = { x: (sign * w) / 2, y: Math.max(-h / 2, Math.min(h / 2, p.y)) };
-    n = { x: sign, y: 0 };
-    side = sign < 0 ? 'left flank' : 'right flank';
-  }
-  const contact = toTable(target, lp.x, lp.y);
   const c = Math.cos(target.rotation);
   const s = Math.sin(target.rotation);
-  const wn = { x: n.x * c - n.y * s, y: n.x * s + n.y * c };
-  return { x: contact.x + wn.x * (me.h / 2), y: contact.y + wn.y * (me.h / 2), rotation: Math.atan2(-wn.x, wn.y), side };
+  const pose = (lp: Point, n: Point, side: string): ContactPose => {
+    const contact = toTable(target, lp.x, lp.y);
+    const wn = { x: n.x * c - n.y * s, y: n.x * s + n.y * c };
+    return { x: contact.x + wn.x * (me.h / 2), y: contact.y + wn.y * (me.h / 2), rotation: Math.atan2(-wn.x, wn.y), side };
+  };
+  const all = [
+    pose({ x: alignToBases(p.x, w / 2, bw, me.w), y: -h / 2 }, { x: 0, y: -1 }, 'front'),
+    pose({ x: alignToBases(p.x, w / 2, bw, me.w), y: h / 2 }, { x: 0, y: 1 }, 'rear'),
+    pose({ x: -w / 2, y: alignToBases(p.y, h / 2, bd, me.w) }, { x: -1, y: 0 }, 'left flank'),
+    pose({ x: w / 2, y: alignToBases(p.y, h / 2, bd, me.w) }, { x: 1, y: 0 }, 'right flank'),
+  ];
+  // Kante, auf deren Seite der Angreifer steht, zuerst
+  const nx = Math.abs(p.x) / (w / 2);
+  const ny = Math.abs(p.y) / (h / 2);
+  const facing = ny >= nx ? (p.y < 0 ? 'front' : 'rear') : (p.x < 0 ? 'left flank' : 'right flank');
+  const dist = (q: ContactPose) => Math.hypot(q.x - charger.x, q.y - charger.y);
+  return all.sort((a, b) => Number(b.side === facing) - Number(a.side === facing) || dist(a) - dist(b));
 }
 
 /** Angreifer um eine Strecke direkt auf das Ziel zu bewegen (fehlgeschlagener Angriff). */
