@@ -1,5 +1,6 @@
 import type { History } from '../model/history';
 import { OBJECT_TYPES, typesOfKind } from '../model/objects';
+import { moveToNoMansLand } from '../model/noMansLand';
 import type { Store } from '../model/store';
 import type { GameState, ObjectKind } from '../model/types';
 import type { BoardTools, Tool } from '../view/boardTools';
@@ -41,6 +42,7 @@ export class Toolbox {
       };
     });
 
+    $('new-game').onclick = () => this.newGame();
     $('save-game').onclick = () => this.save();
     $('load-game').onclick = () => this.openLoad();
     $('load-file').onchange = () => {
@@ -104,6 +106,27 @@ export class Toolbox {
       ($('load-confirm') as HTMLButtonElement).hidden = true;
     }
     dialog.showModal();
+  }
+
+  /**
+   * Neues Spiel: Die geladenen Armeen bleiben, werden aber zurückgesetzt (volle Modellzahl, keine Wunden,
+   * kein Status, keine Zauber) und ins Niemandsland gestellt; Schlachtfeld, Punkte, Log und Maßbänder sind leer,
+   * die Aufstellung beginnt bei Schritt 1. Online gilt das auch für den Gegner.
+   */
+  newGame(): void {
+    if (!window.confirm('Start a new game? The armies stay loaded, everything else is reset – online for your opponent too.')) return;
+    const { units, meta } = this.store.state;
+    const fresh = Object.fromEntries(Object.values(units).map((u) => [u.id, {
+      ...u, models: u.info.startModels ?? u.models, status: null, woundsLost: 0, standardCaptured: false,
+      joinedTo: null, ambush: null, lore: null, spells: null, tableResults: null, note: null, rearOffset: 0,
+    }]));
+    this.history.clear();
+    this.store.loadState({
+      units: fresh, objects: {}, log: [], charges: {}, prompts: {},
+      meta: { round: 1, active: 'p1', breakBonus: {}, phase: 'setup', sub: 0, setup: {}, armies: meta.armies, missionVp: {}, measures: {} },
+    });
+    moveToNoMansLand(this.store);
+    this.log('New game started – setup begins');
   }
 
   private load(): void {

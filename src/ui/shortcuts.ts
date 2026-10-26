@@ -45,7 +45,7 @@ const char = (...ks: string[]) => (e: KeyboardEvent) => plain(e) && ks.includes(
  * (nur wenn er gerade sichtbar und nicht gesperrt ist). Der Buchstabe steht auch auf dem Knopf.
  */
 const LEFT_KEYS: [selector: string, key: string, desc: string][] = [
-  ['#g-end', 'N', 'End round'],
+  ['#g-end', 'N', 'End turn'],
   ['#g-undo', 'U', 'Undo'],
   ['#g-redo', 'Y', 'Redo'],
   ['[data-tool="measure"]', 'M', 'Measuring tape (stays on the table)'],
@@ -57,6 +57,7 @@ const LEFT_KEYS: [selector: string, key: string, desc: string][] = [
   ['[data-sheet="templates"]', 'T', 'Templates'],
   ['[data-sheet="log"]', 'L', 'Log & chat'],
   ['[data-sheet="notes"]', 'J', 'Notes'],
+  ['#new-game', 'O', 'New game (same armies)'],
   ['#save-game', 'W', 'Save game'],
   ['#load-game', 'G', 'Load game'],
   ['[data-sheet="keys"]', 'V', 'Shortcuts (this list)'],
@@ -106,7 +107,6 @@ export class Shortcuts {
         run: (e) => board.rotateSelected((e.key.toLowerCase() === 'e' ? 1 : -1) * 15) },
       { group: 'Selection', keys: [['R']], desc: 'Show movement and charge ranges', match: letter('r'), run: () => panel.toggleRanges() },
       { group: 'Selection', keys: [['F']], desc: 'Toggle close order / skirmish', match: letter('f'), run: () => panel.toggleFormation() },
-      { group: 'Selection', keys: [['O']], desc: 'Arrange skirmishers in ranks (0.5″)', match: letter('o'), run: () => panel.arrangeInRanks() },
       { group: 'Selection', keys: [[','], ['.']], desc: 'Narrower / wider formation', match: char(',', '.'),
         run: (e) => panel.onFormation(e.key === ',' ? 'w-' : 'w+') },
       { group: 'Selection', keys: [['-'], ['+']], desc: 'Remove / add model', match: char('-', '+'),

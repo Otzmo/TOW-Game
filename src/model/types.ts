@@ -108,6 +108,8 @@ export interface GameMeta {
   phase?: 'setup' | 'strategy' | 'movement' | 'shooting' | 'combat';
   /** Unterphase (0–3), siehe PHASES in phases.ts */
   sub?: number;
+  /** Nach der letzten Runde (6) beendet */
+  gameOver?: boolean | null;
   /** Missionspunkte, von Hand eingetragen */
   missionVp?: Partial<Record<PlayerId, number>>;
   /** Allgemeine Notizen, für beide Spieler sichtbar */

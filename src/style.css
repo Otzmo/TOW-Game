@@ -686,3 +686,7 @@ body:not(.battle) #ambush-btn { display: none; }
 .setup-nav #setup-confirm { flex: 1; }
 #setup-back:disabled { opacity: .4; cursor: not-allowed; }
 #setup-auto { margin-top: 8px; }
+/* Runde, Zug und wer dran ist */
+#g-round { white-space: normal; line-height: 1.5; }
+#g-round .turn-of { display: flex; align-items: center; font-weight: 600; }
+body.spectator #new-game { display: none; }
