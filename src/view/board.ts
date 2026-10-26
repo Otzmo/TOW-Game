@@ -371,7 +371,7 @@ export class Board {
 
   /**
    * Angriff: Liegt die Frontmitte der Einheit nach dem Loslassen höchstens 1″ vor einer Kante einer
-   * gegnerischen Einheit, wird sie bündig und mittig an diese Kante angelegt.
+   * gegnerischen Einheit, wird sie an diese Kante angelegt – mit den meisten Modellen in Basekontakt.
    */
   private chargeSnap(unitId: string): string | null {
     const units = this.store.state.units;
@@ -406,10 +406,20 @@ export class Board {
       }
     }
     if (!best) return null;
+    // Charge-Regel: an dieser Kante so anlegen, dass möglichst viele Modelle beider Seiten Basekontakt haben
+    // (gleiche Wertung wie der Knopf „Charge move“); blockierte Lagen fallen weg
+    const bestSide = best.side;
+    const maxed = contactPoses(u, best.target, units)
+      .filter((q) => q.side === bestSide)
+      .find((q) => !overlappingUnits({ ...u, x: q.x, y: q.y, rotation: q.rotation }, units).length);
+    if (maxed) {
+      this.store.updateUnit(unitId, { x: maxed.x, y: maxed.y, rotation: maxed.rotation });
+      return `charges ${best.target.info.name} in the ${bestSide} – ${maxed.contacts} models in base contact`;
+    }
     // Eigene Front zeigt gegen die Außennormale der Zielkante; Mitte liegt eine halbe Tiefe dahinter
     const rotation = Math.atan2(-best.n.x, best.n.y);
     this.store.updateUnit(unitId, { x: best.p.x + best.n.x * (me.h / 2), y: best.p.y + best.n.y * (me.h / 2), rotation });
-    return `charges ${best.target.info.name} in the ${best.side}`;
+    return `charges ${best.target.info.name} in the ${bestSide}`;
   }
 
   /** Einheiten stehen nie übereinander: an Gegner anlegen oder zurück an den Start (siehe collision.ts). */
