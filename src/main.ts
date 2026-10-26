@@ -8,7 +8,9 @@ import { defaultTerrain } from './model/objects';
 import { Store } from './model/store';
 import type { GameState, LogEntry } from './model/types';
 import type { Seat } from './net/room';
+import { DestroyedPanel } from './ui/destroyed';
 import { DiceLog, DicePanel } from './ui/dice';
+import { SpellsPanel } from './ui/spells';
 import { PromptCenter } from './ui/prompts';
 import { SetupPanel } from './ui/setupPanel';
 import { GameBar } from './ui/gameBar';
@@ -65,7 +67,7 @@ async function start(): Promise<void> {
   const objectPanel = new ObjectPanel(store, history, {
     close: () => board.tools.select(null),
     remove: () => board.tools.removeSelected(),
-  });
+  }, (entry) => addLog(entry));
   const board: Board = new Board(app, store, history, {
     onSelect: (id) => panel.show(id),
     // Missionsziele: kein Fenster, nur der 6″-Kreis auf dem Tisch
@@ -95,6 +97,8 @@ async function start(): Promise<void> {
   setup.onNext = () => gameBar.requestNext();
   gameBar.refresh();
   new DicePanel((entry) => addLog(entry));
+  new SpellsPanel(store, history, () => seat, (entry) => addLog(entry));
+  new DestroyedPanel(store, (id) => board.select(id));
   new DiceLog(store);
   new SyncWarning();
   // Spalten links/rechts ein- und ausblenden; danach den Tisch neu einpassen

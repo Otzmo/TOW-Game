@@ -1,0 +1,1292 @@
+[
+ {
+  "name": "Lore of Athel Loren",
+  "slug": "lore-of-athel-loren",
+  "intro": "Wood Elf Mages have a unique relationship with the forest. They are a part of it, much like Dryads and Treemen, yet possessed of a greater sense of individuality. This bond allows them to commune with the forest, to entreat with it on behalf of their kin and, in times of war, to awaken it to their aid.\n\nA Wizard with the 'Lore of Athel Loren' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of Athel Loren Lore",
+  "spells": [
+   {
+    "name": "Tree Singing",
+    "slug": "tree-singing",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "15\"",
+    "text": "The melodious song of the Wizard rouses the forest spirits, awakening them from their deep slumber. In moments, fresh growth bursts from the fertile earth, reaching rapidly towards the heavens above.\n\nType | Magical Vortex\nCasting Value | 7+/9+\nRange | 15\"\n\nRemains in Play. If this spell is cast with a casting result of 7 or more, place a small (3\") blast template so that its central hole is within 15\" of the caster. If this spell is cast with a casting result of 9 or more, place a large (5\") blast template so that its central hole is within 15\" of the caster. Whilst in play, the template does not move and is treated as a woodland terrain feature. Enemy units treat these woods as dangerous terrain."
+   },
+   {
+    "name": "Forest Walker",
+    "slug": "forest-walker",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "24\"",
+    "text": "At the Wizard's bidding a hidden gateway into the Eternal Realms reveals itself. Beyond this lies a series of vaulted chambers, each leading to a similar portal; some nearby, other many leagues away.\n\nType | Conveyance\nCasting Value | 9+\nRange | 24\"\n\nThis spell can only target a friendly Wood Elf character that is completely within a woodland terrain feature. If the target is not fleeing, you may immediately remove it from the battlefield and replace it so that it is completely within a different wood anywhere on the battlefield, but not within 6\" of any enemy models. The target cannot move again during this Movement phase."
+   },
+   {
+    "name": "Flock of Doom (Wood Elves)",
+    "slug": "flock-of-doom-wood-elves",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "18\"",
+    "text": "With a mighty bellow, the Wizard summons forth a great flock of hawks and shrikes to strike at their enemies and drive them from their forest realm.\n\nType | Magic Missile\nCasting Value | 8+\nRange | 18\"\n\nPlace a small (3\") blast template so that its central hole is directly over the centre of the target enemy unit. Any enemy model whose base lies underneath the template risks being hit and suffering a single Strength 3 hit with an AP of -1."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Beasts",
+  "slug": "lore-of-beasts",
+  "intro": "Bray-Shamans are born into magic, and wield it with an instinctive ease. A palpable miasma of fell sorcery surrounds them and when their wrath is roused, reality itself is distorted and maimed. Tree roots twist and writhe at their passing, the undergrowth boils with unholy life and repugnant parasites scurry at their feet.\n\nA Wizard with the 'Lore of Beasts' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of Beasts Lore",
+  "spells": [
+   {
+    "name": "Viletide",
+    "slug": "viletide",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "15\"",
+    "text": "The Shaman calls to the creeping things that nest in the decaying undergrowth, creating a vile wave of spiders, centipedes and slugbeetles that swarm over the foe.\n\nType | Magic Missile\nCasting Value | 9+\nRange | 15\"\n\nThe target enemy unit suffers 5D6 Strength 1 hits, each with an AP of -2."
+   },
+   {
+    "name": "Devolve",
+    "slug": "devolve",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "15\"",
+    "text": "Delving into their enemies' minds, the Shaman magnifies the savage and animalistic parts of their psyche until they are no more than growling beasts.\n\nType | Magic Missile\nCasting Value | 8+\nRange | 15\"\n\nThe target enemy unit must immediately make a Leadership test. If this test is failed, it loses a number of Wounds equal to the amount by which it failed the test."
+   },
+   {
+    "name": "Mantle of Ghorok",
+    "slug": "mantle-of-ghorok",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "Self",
+    "text": "Ghorok was a legendary Minotaur, ferocious as a storm. When possessed by his spirit-mantle, a Shaman becomes a terror on the battlefield, though to summon his rage is not without risk.\n\nType | Enchantment\nCasting Value | 8+\nRange | Self\n\nUntil the end of this turn, the caster gains a +D6 modifier to their Strength and Attacks characteristics (to a maximum of 10). However, if a 6 is rolled, this modifier is lost and the caster instead loses a single Wound."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Chaos",
+  "slug": "lore-of-chaos",
+  "intro": "Chaos Sorcerers are gifted understanding of dark magic by the Ruinous Powers which they serve. Spells creep into their minds through dreams, visions, and the whispers of the Dark Gods themselves.\n\nA Wizard with the 'Lore of Chaos' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or the spell that corresponds to their Mark of Chaos listed below.\n\nLore of Chaos Lore",
+  "spells": [
+   {
+    "name": "Winds of Chaos",
+    "slug": "winds-of-chaos",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "21\"",
+    "text": "A cold and vicious gale blows from the Northern Wastes, carrying with it the laughter of Dark Gods.\n\nType | Hex\nCasting Value | 7+/9+\nRange | 21\"\n\nMark of Chaos Undivided only. If this spell is cast with a casting result of 7 or more, the target enemy unit suffers a -1 modifier to its Movement characteristic (to a minimum of 1). If this spell is cast with a casting result of 9 or more, the target enemy unit suffers a -2 modifier to its Movement characteristic (to a minimum of 1). This spell lasts until your next Start of Turn sub-phase."
+   },
+   {
+    "name": "Acquiescence",
+    "slug": "acquiescence",
+    "type": "Signature Spell",
+    "castingValue": 6,
+    "range": "12\"",
+    "text": "The enemy is humbled by the beauty of Slaanesh, letting their weapons fall limply to their sides.\n\nType | Hex\nCasting Value | 6+\nRange | 12\"\n\nMark of Slaanesh only. Until the end of the Combat phase, the target enemy unit becomes subject to the Strike Last special rule."
+   },
+   {
+    "name": "Fleshy Abundance",
+    "slug": "fleshy-abundance",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "Self",
+    "text": "Great wobbling mounds of fat spill out from beneath the armour of the Sorcerer and their comrades.\n\nType | Enchantment\nCasting Value | 7+\nRange | Self\n\nMark of Nurgle only. Remains in Play. Whilst this spell is in play, the caster and any unit they have joined gain a +1 modifier to their Toughness characteristic (to a maximum of 7)."
+   },
+   {
+    "name": "Blue Fire",
+    "slug": "blue-fire",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "18\"",
+    "text": "As the Sorcerer's hands draw strange runes in the air, their enemies are consumed by blue flames.\n\nType | Magic Missile\nCasting Value | 9+\nRange | 18\"\n\nMark of Tzeentch only. The target enemy unit suffers D6+3 Strength 4 hits, each with an AP of -2 and with the Flaming Attacks special rule."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Daemons",
+  "slug": "lore-of-daemons",
+  "intro": "A Daemon’s sorcerous powers – indeed its entire being – are fixed at the moment of creation. Daemons cannot grow, develop or learn as mortals can. Those Daemons steeped in the mysteries of magic were created with that knowledge and, though it rarely grows or diminishes, such power is a primal expression of the Dark Gods’ will.\n\nA Wizard with 'Lore of Daemons' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells that corresponds to their Daemonic Alignment listed below.\n\nLore of Daemons Lore",
+  "spells": [
+   {
+    "name": "Plague Wind",
+    "slug": "plague-wind",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "12\"",
+    "text": "A debilitating cloud of noxious air forms, swirling around the battlefield and infecting all it touches.\n\nType | Magical Vortex\nCasting Value | 7+\nRange | 12\"\n\nDaemons of Nurgle only. Remains in Play. Place a small (3\") blast template so that its central hole is within 12\" of the caster. Whilst in play, the template is treated as dangerous terrain. The template moves D6\" in a random direction during every Start of Turn sub-phase. Any unit (friend or foe, but not including Daemons of Nurgle) the moving template touches or moves over suffers a -1 modifier to its Toughness characteristic for the remainder of the turn."
+   },
+   {
+    "name": "Cacophonic Hymn",
+    "slug": "cacophonic-hymn",
+    "type": "Signature Spell",
+    "castingValue": 10,
+    "range": "12\"",
+    "text": "The Daemon's unnatural song peels away the enchantments that protect its enemies and its perverse melody boggles their wits.\n\nType | Hex\nCasting Value | 10+\nRange | 12\"\n\nDaemons of Slaanesh only. Remains in Play. If this spell is cast, the effects of any enchantment spell previously cast on the target unit immediately expire. In addition, whilst this spell is in play, the target unit becomes subject to the Stupidity special rule."
+   },
+   {
+    "name": "Pink Fire",
+    "slug": "pink-fire",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "18\"",
+    "text": "As the cackling Daemon prances and gestures, pink flames rise from the earth to envelope its enemies.\n\nType | Magic Missile\nCasting Value | 8+\nRange | 18\"\n\nDaemons of Tzeentch only. The target enemy unit suffers D3+3 Strength 3 hits, each with an AP of - and with the Flaming Attacks special rule."
+   },
+   {
+    "name": "Gift of Mutation",
+    "slug": "gift-of-mutation",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "12\"",
+    "text": "The Daemon cackles maniacally as the warping magic of Tzeentch flows through its enemies, sending waves of mutation through their minds and bodies.\n\nType | Hex\nCasting Value | 8+/12+\nRange | 12\"\n\nDaemons of Tzeentch only. If this spell is cast with a casting result of 8 or more, the target enemy unit suffers a -D3 modifier to one of the following characteristics (to a minimum of 1, chosen by the casting player). If this spell is cast with a casting result of 12 or more, the target enemy unit suffers a -D3 modifier to two of the following characteristics (to a minimum of 1, chosen by the casting player). This spell lasts until your next Start of Turn sub-phase:\n\n• Weapon Skill\n• Strength\n• Toughness"
+   }
+  ]
+ },
+ {
+  "name": "Lore of Gork",
+  "slug": "lore-of-gork",
+  "intro": "Surrounded by Boyz, Orc Shamans tap into the superstitious beliefs of their mates to conjure spells that are, much like the wildly gesticulating and gibbering Shamans themselves, flamboyant and rowdy, but brutal in their effects.\n\nA Wizard with the 'Lore of Gork' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of Gork Lore",
+  "spells": [
+   {
+    "name": "Brain Bursta",
+    "slug": "brain-bursta",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "Combat",
+    "text": "Channelling the violence of their peers, the Shaman projects it against their enemies in a brain-bursting wave.\n\nType | Assailment\nCasting Value | 9+\nRange | Combat\n\nA single enemy model the caster is engaged in combat with suffers a single Strength 6 hit with the Multiple Wounds (D3) special rule and with no armour or Regeneration saves permitted (Ward saves can be attempted as normal)."
+   },
+   {
+    "name": "Gaze of Gork",
+    "slug": "gaze-of-gork",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "5D6\"",
+    "text": "Gork gives the Shaman the ability to project beams of coruscating energy from their eyes, burning massive holes through everything they look at.\n\nType | Magic Missile\nCasting Value | 9+\nRange | 5D6\"\n\nDraw a straight line, 5D6\" in length, from the caster’s base edge. Any model (friend or foe) whose base falls under this line suffers a Strength 5 hit, with an AP of -3."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Hashut",
+  "slug": "lore-of-hashut",
+  "intro": "The Chaos Dwarfs study forge-craft, weapon making and the dark magics of Hashut himself in equal measure. Using this forbidden lore, they forge their terrible weapons and craft their arcane devices.\n\nA Wizard with the 'Lore of Hashut' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of Hashut Lore",
+  "spells": [
+   {
+    "name": "Curse of Hashut",
+    "slug": "curse-of-hashut",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "18\"",
+    "text": "Channelling the malediction that inflicts their own twisted body, the sorcerer turns the dark curse of Hashut upon their enemies, causing their bones to petrify and their flesh to grow grey and brittle, before crumbling to dust.\n\nType | Magic Missile\nCasting Value | 9+\nRange | 18\"\n\nThis spell can only target enemy characters. However, it may target any enemy character that is within range and that the caster can draw a line of sight to, regardless of the usual rules for targeting characters, and may even target an enemy character that has joined a unit or that is engaged in combat.\n\nThe target enemy character must immediately make a Toughness test. If this test is passed, it suffers D3 Strength 2 hits, each with an AP of -. If, however, this test is failed, it suffers D3+2 Strength 5 hits, with no armour or Regeneration saves permitted (Ward saves can be attempted as normal)."
+   },
+   {
+    "name": "Storm of Ash",
+    "slug": "storm-of-ash",
+    "type": "Signature Spell",
+    "castingValue": 10,
+    "range": "Self",
+    "text": "The sorcerer summons forth a hellish storm of choking hot ash, scalding and blinding anything and anyone unfortunate enough to be caught in its path.\n\nType | Hex\nCasting Value | 10+\nRange | Self\n\nUntil your next Start of Turn sub-phase, all enemy units suffer a -1 modifier to any rolls To Hit made whilst within 9\" of the caster's model (rolls of a natural 6 are unaffected)."
+   },
+   {
+    "name": "Flames of Hashut",
+    "slug": "flames-of-hashut",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "Combat",
+    "text": "The fiery breath of Hashut erupts around the sorcerer, engulfing their body and scorching their foes.\n\nType | Assailment\nCasting Value | 9+\nRange | Combat\n\nA single enemy unit the caster is engaged in combat with suffers D3+1 Strength 4 hits, each with an AP of -1. These hits have the Flaming Attacks special rule."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Lustria",
+  "slug": "lore-of-lustria",
+  "intro": "The Slann Mage-Priests are masters of magic able to wield tremendous power with almost contemptuous ease. With this power they are able to alter the environment around them and the fates of their loyal servants, summoning rains to wash away their foes, or calling upon the Winds of Magic to heal their champions.\n\nA Wizard with the 'Lore of Lustria' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of Lustria Lore",
+  "spells": [
+   {
+    "name": "Apotheosis",
+    "slug": "apotheosis",
+    "type": "Signature Spell",
+    "castingValue": 10,
+    "range": "24\"",
+    "text": "Waves of pure magic infuse the caster's ally, healing their wounds and giving them a palpable aura of power and dread.\n\nType | Enchantment\nCasting Value | 10+/12+\nRange | 24\"\n\nThis spell can only target friendly characters whose troop type is infantry or cavalry, but may target characters engaged in combat. If this spell is cast with a casting result of 10 or more, the target friendly model immediately regains D3 lost Wounds. If this spell is cast with a casting result of 12 or more, the target friendly model immediately regains D3+1 lost Wounds.\n\nIn addition, the target friendly character gains the Fear special rule. If they already have the Fear special rule, they instead gain the Terror special rule."
+   },
+   {
+    "name": "Monsoon",
+    "slug": "monsoon",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "15\"",
+    "text": "Without warning, an eight-winded storm breaks about the foe. Torrential rain drenches weapons and armour, loosening bowstrings and soaking black powder.\n\nType | Magical Vortex\nCasting Value | 8+\nRange | 15\"\n\nRemains in Play. Place a large (5\") blast template so that its central hole is within 15\" of the caster. Whilst in play, the template is treated as dangerous terrain over which no line of sight can be drawn. The template moves D6\" in a random direction during every Start of Turn sub-phase. Any enemy unit the moving template touches or moves over becomes 'drenched' for the remainder of the game.\n\nA drenched unit suffers a -1 To Hit modifier during the Shooting phase. A drenched model whose troop type is 'war machine' must roll a D6 before shooting. On a roll of 1, the model fails to shoot this turn."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Naggaroth",
+  "slug": "lore-of-naggaroth",
+  "intro": "Like their High Elf Kin, Dark Elves are skilled manipulators of the Winds of Magic. Yet where the power available to the Elves of Ulthuan is limited by their cautious approach, Dark Elves know no such limit, weaving high and dark magic with reckless abandon.\n\nA Wizard with the 'Lore of Naggaroth' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of Naggaroth Lore",
+  "spells": [
+   {
+    "name": "Cursing Word",
+    "slug": "cursing-word",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "12\"",
+    "text": "As the Sorceress utters a string of forbidden words and curses, the bodies of her enemies bend and buckle, wracked with waves of agony.\n\nType | Hex\nCasting Value | 9+\nRange | 12\"\n\nRemains in Play. Whilst this spell is in play, the target enemy unit suffers a -1 modifier to either its Weapon skill characteristic, or its Ballistic Skill characteristic (chosen by the casting Wizard’s controlling player, to minimum of 1). If this spell is cast, the effects of any other Hex previously cast on the target unit immediately expire."
+   },
+   {
+    "name": "Black Horror",
+    "slug": "black-horror",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "18\"",
+    "text": "The Sorceress tears the veil between reality and the æther, and a black cloud of roiling energy sweeps across the battlefield, trailing slimy tentacles that drag unfortunate victims to an unknown fate.\n\nType | Magical Vortex\nCasting Value | 9+\nRange | 18\"\n\nRemains in Play. Place a large (5\") blast template so that its central hole is within 18\" of the caster. Whilst in play, the template is treated as dangerous terrain. The template moves 2D6\" in a random direction during every Start of Turn sub-phase. Any enemy unit the moving template touches or moves over must immediately make D6 Strength tests. For each test that is failed, the unit loses a single Wound."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Nehekhara",
+  "slug": "lore-of-nehekhara",
+  "intro": "The magic of Nehekhara was perfected millennia ago and has remained unchanged in the long centuries since. The wording of every incantation used in the preservation and reanimating of the dead is recorded on dusty papyrus in the mysterious hieroglyphs of Nehekhara’s ancient language, to be uttered aloud in long, monotonous ritual.\n\nA Wizard with the 'Lore of Nehekhara' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of Nehekhara Lore",
+  "spells": [
+   {
+    "name": "Djaf's Incantation of Cursed Blades",
+    "slug": "djafs-incantation-of-cursed-blades",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "Self",
+    "text": "As the Liche Priest utters this ancient mantra, the weapons of the Nehekharan warriors gathered about them become imbued with the essence of Djaf, the jackal-headed god of the dead, who hungers for the souls of the living above all things.\n\nType | Enchantment\nCasting Value | 7+\nRange | Self\n\nUntil your next Start of Turn sub-phase, any friendly unit that has the Nehekharan Undead special rule and that is within the caster's Command range may re-roll any rolls To Hit of a natural 1."
+   },
+   {
+    "name": "Khsar's Incantation of the Desert Wind",
+    "slug": "khsars-incantation-of-the-desert-wind",
+    "type": "Signature Spell",
+    "castingValue": 6,
+    "range": "Self",
+    "text": "Harnessing the power of Khsar, god of the desert winds, the Liche Priest summons forth a sandstorm that engulfs the undying warriors of Nehekhara and carries them across the battlefield.\n\nType | Enchantment\nCasting Value | 6+/10+\nRange | Self\n\nIf this spell is cast with a casting result of 6 or more, a single friendly unit that has the Nehekharan Undead special rule and is within the caster's Command range gains the Reserve Move special rule. If this spell is cast with a casting result of 10 or more, every friendly unit that has the Nehekharan Undead special rule and is within the caster's Command range gains the Reserve Move special rule. This spell lasts until the end of this turn."
+   },
+   {
+    "name": "Usekhp's Incantation of Desiccation",
+    "slug": "usekhps-incantation-of-desiccation",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "15\"",
+    "text": "As the Liche Priest intones the curse of desiccation every syllable strips the moisture from their victims' bodies, sapping their strength and vitality.\n\nType | Hex\nCasting Value | 9+\nRange | 15\"\n\nUntil the end of this turn, the target enemy unit suffers a -1 modifier to its Strength and Toughness characteristics (to a minimum of 1). If this spell is cast, the effects of any other Hex previously cast on the target unit immediately expire."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Saphery",
+  "slug": "lore-of-saphery",
+  "intro": "While lesser races study magic in its corrupted, broken form, High Elf Mages harness its power as pure mystical energy. Within the White Tower, mages learn to smooth the tumultuous eddies of the Winds of Magic, bringing all eight together to create the silvery hue of pure magic.\n\nA Wizard with the 'Lore of Saphery' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of Saphery Lore",
+  "spells": [
+   {
+    "name": "Hand of Khaine",
+    "slug": "hand-of-khaine",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "Combat",
+    "text": "With a simple gesture, white light bursts forth from the Mage's outstretched hand, banishing the life force of the foe.\n\nType | Assailment\nCasting Value | 7+\nRange | Combat\n\nA single enemy model the caster is engaged in combat with suffers a single Strength 4 hit with no armour save permitted (Ward and Regeneration saves can be attempted as normal)."
+   },
+   {
+    "name": "Courage of Aenarion",
+    "slug": "courage-of-aenarion",
+    "type": "Signature Spell",
+    "castingValue": 10,
+    "range": "15\"",
+    "text": "The High Elf Mage draws upon the Winds of Magic to conjure glorious images of Aenarion in the minds of their allies. So inspired, already brave warriors are filled with the unbreakable courage of the first Phoenix King.\n\nType | Enchantment\nCasting Value | 10+\nRange | 15\"\n\nRemains in Play. Whilst this spell is in play, the target friendly unit gains the Unbreakable special rule. If this spell is cast, the effects of any other Enchantment previously cast on the target unit immediately expire. This spell may target a friendly unit engaged in combat."
+   },
+   {
+    "name": "Vaul's Unmaking",
+    "slug": "vauls-unmaking",
+    "type": "Signature Spell",
+    "castingValue": 11,
+    "range": "12\"",
+    "text": "Glowing swords grow dim, blood-warm chalices cool and enchanted scrolls crumble into dust, their magical energies drained as the Mage turns the fury of Vaul's forge upon the magical trappings of the enemy.\n\nType | Hex\nCasting Value | 11+\nRange | 12\"\n\nThis spell can only target enemy characters. However, it may target any enemy character that is within range and that the caster can draw a line of sight to, regardless of the usual rules for targeting characters, and may even target an enemy character that has joined a unit or that is engaged in combat.\n\nThe casting player chooses a single magic item carried by the target. This magic item is immediately 'unmade', rendering it completely useless. The chosen magic item cannot be used for the remainder of the game."
+   }
+  ]
+ },
+ {
+  "name": "Lore of the Great Maw",
+  "slug": "lore-of-the-great-maw",
+  "intro": "Emissaries of the Great Maw suck marrow from cracked bones or stuff huge chunks of raw meat into their mouths to aid their magical abilities. As they do, those around them feel replenished, the gnawing hunger that eternally chews at their guts subsiding.\n\nA Wizard with the 'Lore of the Great Maw' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of the Great Maw Lore",
+  "spells": [
+   {
+    "name": "Toothcracker",
+    "slug": "toothcracker",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "12\"",
+    "text": "Consuming a chunk of granite, the Butcher bestows the rock's resilience upon their brethren.\n\nType | Enchantment\nCasting Value | 7+/10+\nRange | 12\"\n\nIf this spell is cast with a casting result of 7 or more, the target friendly unit gains a +1 modifier to its Toughness characteristic (to a maximum of 10). If this spell is cast with a casting result of 10 or more, the target friendly unit gains a +2 modifier to its Toughness characteristic (to a maximum of 10). This spell lasts until the end of this turn."
+   },
+   {
+    "name": "Trollguts",
+    "slug": "trollguts",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "15\"",
+    "text": "Downing the repulsive innards of a Troll, the Butcher grants the beast's healing ability onto their companions.\n\nType | Enchantment\nCasting Value | 8+/11+\nRange | 15\"\n\nIf this spell is cast with a casting result of 8 or more, the target friendly unit gains the Regeneration (6+) special rule. If this spell is cast with a casting result of 11 or more, the target friendly unit gains the Regeneration (5+) special rule. This spell lasts until your next Start of Turn sub-phase."
+   }
+  ]
+ },
+ {
+  "name": "Lore of the Horned Rat",
+  "slug": "lore-of-the-horned-rat",
+  "intro": "Skaven believe all magic originates from the same source, their powerful and fickle god – the Horned Rat. In truth, the potent and destructive magic of the Skaven relies upon the manipulation of the Winds of Magic, without which even the most devout and cunning Skaven would be unable to weave the simplest spell.\n\nA Wizard with the 'Lore of the Horned Rat' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of the Horned Rat Lore",
+  "spells": [
+   {
+    "name": "Skitterleap",
+    "slug": "skitterleap",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "18\"",
+    "text": "With a puff of smoke and a loud pop of inrushing air, the Skaven Wizard disappears, only to reappear elsewhere on the battlefield.\n\nType | Conveyance\nCasting Value | 8+\nRange | 18\"\n\nThis spell can only target friendly characters whose Troop Type is infantry, but may target characters engaged in combat. You may immediately remove the target friendly character from the battlefield and replace it anywhere completely within 24\" of its original location, but not within 6\" of any enemy models. The target cannot move again during this Movement phase.\n\nNote that this spell allows a character to leave combat."
+   },
+   {
+    "name": "Warp Lightning",
+    "slug": "warp-lightning",
+    "type": "Signature Spell",
+    "castingValue": 10,
+    "range": "18\"",
+    "text": "The Skaven Wizard points a fleshy paw, from which bolts of greenish-black lightning arc outwards.\n\nType | Magic Missile\nCasting Value | 10+\nRange | 18\"\n\nThe target enemy unit suffers D3+1 Strength 5 hits, each with an AP of -3."
+   },
+   {
+    "name": "Cloud of Corruption",
+    "slug": "cloud-of-corruption",
+    "type": "Signature Spell",
+    "castingValue": 10,
+    "range": "9\"",
+    "text": "With a flourish of their palsied paws, the Skaven Wizard summons forth a stinking cloud of foul contagion.\n\nType | Magical Vortex\nCasting Value | 10+\nRange | 9\"\n\nRemains in Play. Place a small (3\") blast template so that its central hole is within 9\" of the caster. Whilst in play, the template is treated as dangerous terrain over which no line of sight can be drawn. Whilst within 3\" of one or more of these templates, enemy units suffer a -1 modifier to their Toughness characteristic (to a minimum of one)."
+   }
+  ]
+ },
+ {
+  "name": "Lore of the Lady",
+  "slug": "lore-of-the-lady",
+  "intro": "The magical powers of the Handmaidens of the Lady all resemble religious observance as much as they do sorcery. With hands clasped in devotion and rapturous joy upon her brow, a Damsel or Prophetess beseeches her goddess to protect and empower her dutiful followers.\n\nA Wizard with the 'Lore of the Lady' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of the Lady Lore",
+  "spells": [
+   {
+    "name": "The Lady's Gift",
+    "slug": "the-ladys-gift",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "12\"",
+    "text": "As the Damsel prays solemnly to the Lady of the Lake, silvery light emanates from her most ardent followers, knitting their wounds and gilding their armour.\n\nType | Enchantment\nCasting Value | 7+/10+\nRange | 12\"\n\nRemains in Play. If this spell is cast with a casting result of 7 or more, the target friendly unit gains the Regeneration (6+) special rule. If this spell is cast with a casting result of 10 or more, the target friendly unit gains the Regeneration (5+) special rule. This spell may target a friendly unit engaged in combat."
+   },
+   {
+    "name": "Burning Gaze",
+    "slug": "burning-gaze",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "5D6\"",
+    "text": "Beams of cleansing white light flow from the Damsel's eyes, searing all traces of evil from her sight.\n\nType | Magic Missile\nCasting Value | 9+\nRange | 5D6\"\n\nDraw a straight line, 5D6\" in length, from the caster's base edge. Any enemy model whose base falls under this line suffers a single Strength 4 hit with no armour save permitted (Ward and Regeneration saves can be attempted as normal)."
+   },
+   {
+    "name": "The Lady's Wrath",
+    "slug": "the-ladys-wrath",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "Self",
+    "text": "Enraged to see the lands of fair Bretonnia invaded by enemies, the Damsel invokes the wrath of the Lady of the Lake, strengthening the sword arms of her companions.\n\nType | Enchantment\nCasting Value | 9+\nRange | Self\n\nRemains in Play. Whilst this spell is in play, the caster, their mount and any unit they have joined gain a +1 modifier to their Strength characteristic (to a maximum of 10), and improve the Armour Piercing characteristic of their weapons by 1."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Undeath",
+  "slug": "lore-of-undeath",
+  "intro": "Mystery shrouds the study of Necromancy. To learn this dark art, an aspirant must find a willing tutor and become their apprentice, or acquire forbidden books rich in the secrets of undeath. It is this intrinsic mystery that drives Necromancers to become servants of the Vampire Counts, hoping to learn first-hand from the masters of undeath.\n\nA Wizard with the 'Lore of Undeath' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of Undeath Lore",
+  "spells": [
+   {
+    "name": "Vanhal's Danse Macabre",
+    "slug": "vanhals-danse-macabre",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "12\"",
+    "text": "Filled with magical energy, the Undead jerk forwards on the attack with tireless and unnatural speed.\n\nType | Enchantment\nCasting Value | 8+/12+\nRange | 12\"\n\nIf this spell is cast with a casting result of 8 or more, the target friendly unit gains a +D3 modifier to one of the following characteristics (to a maximum of 10). If this spell is cast with a casting result of 12 or more, the target friendly unit gains a +D3 modifier to two of the following characteristics (to a maximum of 10). This spell lasts until your next Start of Turn sub-phase.\n\n• Movement\n• Weapon Skill\n• Initiative"
+   },
+   {
+    "name": "Hellish Vigour",
+    "slug": "hellish-vigour",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "Self",
+    "text": "The caster invigorates their ghastly warriors, who advance upon the foe with uncanny vigour.\n\nType | Enchantment\nCasting Value | 7+/10+\nRange | Self\n\nIf this spell is cast with a casting result of 7 or more, a single friendly unit that has the Necromantic Undead special rule and is within the caster's Command range gains the Reserve Move special rule. If this spell is cast with a casting result of 10 or more, every friendly unit that has the Necromantic Undead special rule and is within the caster's Command range gains the Reserve Move special rule. This spell lasts until the end of this turn."
+   },
+   {
+    "name": "Raise Dead",
+    "slug": "raise-dead",
+    "type": "Signature Spell",
+    "castingValue": 10,
+    "range": "12\"",
+    "text": "One skilled in the dark arts of Necromancy can awaken mortal remains to reinforce the Undead legions under their control.\n\nType | Enchantment\nCasting Value | 10+\nRange | 12\"\n\nPlace a unit of 2D3 Risen Zombies on the battlefield anywhere completely within 12\" of this model, but not within 1\" of any enemy models. This unit cannot declare a charge during the turn in which it was raised:\n\nRisen Zombie (Chart)Troop Type: Regular Infantry\nBase Size: 25 x 25 mm\nUnit Size: 2D3\nEquipment: Hand weapons\nSpecial Rules: Necromantic Undead, Regeneration (6+), Skirmishers, The Newly Dead\n\nNote that Risen Zombies are not worth any Victory Points."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Yang",
+  "slug": "lore-of-yang",
+  "intro": "A Wizard with the 'Lore of Yang' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of Yang Lore",
+  "spells": [
+   {
+    "name": "Constellation of the Dragon",
+    "slug": "constellation-of-the-dragon",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "18\"",
+    "text": "Blazing starlight leaps from the Wizard's fingertips, dancing and forming a simulacrum of the constellation of the Dragon Emperor above the battlefield.\n\nType | Magic Missile\nCasting Value | 7+/11+\nRange | 18\"\n\nIf this spell is cast with a casting result of 7 or more, the target enemy unit suffers D6+1 Strength 4 hits, each with an AP of -. If this spell is cast with a casting result of 11 or more, the target enemy unit suffers 2D6+2 Strength 4 hits, each with an AP of -1."
+   },
+   {
+    "name": "Great Bastion",
+    "slug": "great-bastion",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "12\"",
+    "text": "With a word of power from the Wizard, the earth cracks and buckles as it is transformed into ramparts upon which gleaming battlements burn with celestial flame.\n\nType | Enchantment\nCasting Value | 9+\nRange | 12\"\n\nRemains in Play. The target friendly unit gains a 6+ Ward save against any wounds suffered. In addition, every model within the front rank of an enemy unit that ends its charge move in base contact with the target unit whilst this spell is in play must make a Dangerous Terrain test. Any Wounds lost are counted as 'unsaved wounds inflicted' when calculating the combat result. However, whilst this spell is in play the target unit cannot march or charge. This spell may target a friendly unit engaged in combat."
+   },
+   {
+    "name": "Might of Heaven & Earth",
+    "slug": "might-of-heaven-and-earth",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "Self",
+    "text": "Calling upon the elemental energies of earth and heaven, the Wizard and those around them become imbued with the pure power of the Yang.\n\nType | Enchantment\nCasting Value | 9+/12+\nRange | Self\n\nIf this spell is cast with a casting result of 9 or more, the caster, their mount and any unit they have joined, gain a +1 modifier to their Weapon Skill and Strength characteristics (to a maximum of 10), and gain the Flaming Attacks special rule. If this spell is cast with a casting result of 12 or more, all friendly units that are within the caster's Command range when this spell is cast gain a + 1 modifier to their Weapon Skill and Strength characteristics (to a maximum of 10), and gain the Flaming Attacks special rule. This spell lasts until the end of this turn."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Mork",
+  "slug": "lore-of-mork",
+  "intro": "Goblin Shamans delight in casting cunning curses upon their enemies. These petty charms are intended to disrupt and confuse the foe, leaving them vulnerable to sneaky attacks\n\nA Wizard with the 'Lore of Mork' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of Mork Lore",
+  "spells": [
+   {
+    "name": "Mork’s Curse",
+    "slug": "morks-curse",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "18\"",
+    "text": "The Shaman points a bony finger at the enemy and utters a curse. Almost immediately, buckles begin to break and rivets pop, causing armour plates to slip.\n\nType | Hex\nCasting Value | 7+\nRange | 18\"\n\nRemains in Play. Whilst this spell is in play, the target enemy unit must re-roll any Armour Save roll of a natural 6."
+   },
+   {
+    "name": "Itchy Nuisance",
+    "slug": "itchy-nuisance",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "15\"",
+    "text": "The Shaman begins vigorously scratching and cackling maniacally, their antics causing their enemies to feel uncomfortably hot and itchy.\n\nType | Hex\nCasting Value | 9+\nRange | 15\"\n\nUntil your next Start of Turn sub-phase, the target enemy unit suffers a -D3 modifier to its Toughness and Initiative characteristics (to a minimum of 1)."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Primal Magic",
+  "slug": "lore-of-primal-magic",
+  "intro": "In addition to the Lores of Magic detailed in the Warhammer: the Old World rulebook, some Wizards, especially those of a wild and chaotic nature, may know spells from the 'Primal Magic' Lore of Magic. As usual, if it is stated that a Wizard knows spells from one of a number of given Lores of Magic, you must choose one of these Lores when writing your muster list.\n\nLore of Primal Magic Lore",
+  "spells": [
+   {
+    "name": "Primordial Gloom",
+    "slug": "primordial-gloom",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "12\"",
+    "text": "As the Bray-Shaman bellows praise to the gods, the sky above darkens and the soil underfoot swarms with unclean creatures.\n\nType | Magical Vortex\nCasting Value | 9+\nRange | 12\"\n\nRemains in Play. Place a small (3\") blast template so that its central hole is within 12\" of the caster. Whilst in play, the template does not move and is treated as dangerous terrain. Whilst within 6\" of the template, enemy units suffer a -1 modifier to their Leadership characteristic (to a minimum of 2) and treat open ground as difficult terrain."
+   },
+   {
+    "name": "Call of the Wild",
+    "slug": "call-of-the-wild",
+    "type": "1",
+    "castingValue": 8,
+    "range": "12\"",
+    "text": "Filled with primal energy, the Children of Chaos move across the battlefield with unwholesome vigour.\n\nType | Conveyance\nCasting Value | 8+\nRange | 12\"\n\nThis spell can only target friendly models whose troop type is infantry or cavalry. Until the end of this turn, the target friendly unit gains the Reserve Move special rule."
+   },
+   {
+    "name": "In the Gloaming Wildwood",
+    "slug": "in-the-gloaming-wildwood",
+    "type": "2",
+    "castingValue": 10,
+    "range": "15\"",
+    "text": "The words of half-forgotten folk tales fill the enemy's minds, instilling them with a childlike fear of the dark forests.\n\nType | Hex\nCasting Value | 10+\nRange | 15\"\n\nRemains in Play. Whilst this spell is in play, the target enemy unit Fears all models in the caster's army (not including allies or mercenaries). Models in the caster's army that already have the Fear special rule cause Terror in the target unit instead. If this spell is cast, the effects of any other Hex previously cast on the target unit immediately expire."
+   },
+   {
+    "name": "Flock of Doom (Beastmen)",
+    "slug": "flock-of-doom-beastmen",
+    "type": "3",
+    "castingValue": 8,
+    "range": "Combat",
+    "text": "Summoned by the Bray-Shaman's cries, a flock of carrion birds descends upon the foe, striking at eyes and tearing through flesh.\n\nType | Assailment\nCasting Value | 8+\nRange | Combat\n\nPlace a small (3\") blast template so that its central hole is directly over the centre of a unit the caster is engaged in combat with. Once placed, the template will scatter D3+1\". Any enemy model whose base lies underneath the template's final position risks being hit and suffering a single Strength 3 hit with an AP of -. These hits have the Multiple Wounds (2) special rule."
+   },
+   {
+    "name": "Fury of the Beast",
+    "slug": "fury-of-the-beast",
+    "type": "4",
+    "castingValue": 9,
+    "range": "Self",
+    "text": "Driven by the Bray-Shaman's invocations, the Children of Chaos flow like a tide of violence over the enemy.\n\nType | Enchantment\nCasting Value | 9+\nRange | Self\n\nUntil the end of this turn, the caster and any unit they have joined gains the Fight in Extra Rank special rule."
+   },
+   {
+    "name": "Strangleroot",
+    "slug": "strangleroot",
+    "type": "5",
+    "castingValue": 8,
+    "range": "4D6\"",
+    "text": "The Bray-Shaman gestures towards the foe, summoning twisted and blackened roots to grasp and strangle its enemies.\n\nType | Magic Missile\nCasting Value | 8+\nRange | 4D6\"\n\nDraw a straight line, 4D6\" in length, from the caster's base edge. Any enemy model whose base falls under this line suffers D3 Strength 3 hits, each with an AP of -2."
+   },
+   {
+    "name": "'Neath The Shaden Wodespan",
+    "slug": "neath-the-shaden-wodespan",
+    "type": "6",
+    "castingValue": 10,
+    "range": "15\"",
+    "text": "Spectral forests loom above the battlefield, spreading creeping shadows that fill the enemy with dread.\n\nType | Magical Vortex\nCasting Value | 10+\nRange | 15\"\n\nRemains in Play. Place a large (5\") blast template so that its central hole is within 15\" of the caster. Whilst in play, the template does not move and is treated as dangerous terrain over which no line of sight can be drawn. Whilst within 6\" of the template, enemy units suffer a -2 modifier to their Ballistic Skill characteristic (to a minimum of 1). Any enemy unit that ends its movement within 3\" of the template must immediately make a Panic test. If this test is failed, the unit will flee directly away from the nearest enemy unit which is not itself fleeing."
+   }
+  ]
+ },
+ {
+  "name": "Lore of the Shadowlands",
+  "slug": "lore-of-the-shadowlands",
+  "intro": "In addition to the Lores of Battle Magic, Daemonology and Dark Magic listed on their profiles in Ravening Hordes, Sorcerers of Chaos may know spells from the 'Lore of the Shadowlands' Lore of Magic. As usual, you must choose one of these Lores the Sorcerer will know spells from when writing your muster list.\n\nLore of the Shadowlands Lore",
+  "spells": [
+   {
+    "name": "Maelstrom of Chaos",
+    "slug": "maelstrom-of-chaos",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "15\"",
+    "text": "The Sorcerer intones words of the Dark Tongue, summoning the breath of the gods from the dark skies above and gathering it about them before unleashing it upon their enemies.\n\nType | Magic Missile\nCasting Value | 7+\nRange | 15\"\n\nPlace a small (3\") blast template so that its central hole is directly over the centre of the target enemy unit. Once placed, the template will scatter D3+1\". Any enemy model whose base lies underneath the template risks being hit and suffering a single Strength 4 hit with an AP of -3."
+   },
+   {
+    "name": "Blackened Bolts",
+    "slug": "blackened-bolts",
+    "type": "1",
+    "castingValue": 8,
+    "range": "18\"",
+    "text": "With a gesture, the Sorcerer turns the tendrils of shadow that crawl about them into bolts of dark lightning.\n\nType | Magic Missile\nCasting Value | 8+\nRange | 18\"\n\nThe target enemy unit suffers 2D6 Strength 3 hits, each with an AP of -1. Any unit that suffers one or more unsaved wounds from this spell must make a Panic test as if it had taken heavy casualties."
+   },
+   {
+    "name": "Veil of Gloom",
+    "slug": "veil-of-gloom",
+    "type": "2",
+    "castingValue": 9,
+    "range": "15\"",
+    "text": "Shrouded by the lingering darkness of the Shadowlands, the Sorcerer summons the breath of the gods to dissipate the enemy's attacks.\n\nType | Enchantment\nCasting Value | 9+\nRange | 15\"\n\nUntil your next Start of Turn sub-phase, the target friendly unit gains a 4+ Ward save against any wounds suffered that were caused by a template, and a 5+ Ward save against any wounds suffered in the Shooting phase."
+   },
+   {
+    "name": "Vortex of Darkness",
+    "slug": "vortex-of-darkness",
+    "type": "3",
+    "castingValue": 10,
+    "range": "15\"",
+    "text": "A swirling tornado of screaming souls and inky-darkness rends and tears at those it passes, shredding flesh and spirit alike.\n\nType | Magical Vortex\nCasting Value | 10+\nRange | 15\"\n\nRemains in Play. Place a small (3\") blast template so that its central hole is within 15\" of the caster. Whilst in play, the template is treated as difficult terrain. The template scatters D6\" during every Start of Turn sub-phase. Any unit (friend or foe) that moves through the template, or that the template moves over, suffers 3D6 Strength 2 hits, with no armour saves allowed (Ward and Regeneration saves can be attempted as normal)."
+   },
+   {
+    "name": "Shadowed Assailants",
+    "slug": "shadowed-assailants",
+    "type": "4",
+    "castingValue": 8,
+    "range": "Combat",
+    "text": "At the Sorcerer's command, the enemy's own shadows turn upon them, clawing at flesh with talons of darkness.\n\nType | Assailment\nCasting Value | 8+\nRange | Combat\n\nA single enemy unit the caster is engaged in combat with suffers 3D6 Strength 1 hits, with no armour or Regeneration save permitted (Ward saves can be attempted as normal)."
+   },
+   {
+    "name": "Crawling Mists",
+    "slug": "crawling-mists",
+    "type": "5",
+    "castingValue": 6,
+    "range": "Self",
+    "text": "The Sorcerer manipulates the cloying fog of the Shadowlands to cloak the movements of their allies and hasten their advance.\n\nType | Conveyance\nCasting Value | 6+/9+\nRange | Self\n\nIf this spell is cast with a casting result of 6 or more, a single friendly unit within 6\" of the caster gains the Reserve Move special rule. If this spell is cast with a casting result of 9 or more, every friendly unit within 6\" of the caster gains the Reserve Move special rule. This spell lasts until the end of this turn."
+   },
+   {
+    "name": "Chains of Darkness",
+    "slug": "chains-of-darkness",
+    "type": "6",
+    "castingValue": 8,
+    "range": "18\"",
+    "text": "Shadowy ichor materialises about the foe, solidifying into blackened shackles that weigh heavy upon their limbs.\n\nType | Hex\nCasting Value | 8+\nRange | 18\"\n\nUntil your next Start of Turn sub-phase, the target enemy unit suffers a -1 modifier to its Movement (to a minimum of 1) and Leadership characteristics (to a minimum of 2)."
+   }
+  ]
+ },
+ {
+  "name": "Lore of the Wilds",
+  "slug": "lore-of-the-wilds",
+  "intro": "In addition to the Lores of Magic detailed in the Warhammer: the Old World rulebook, some Wizards, especially those who dwell within the borders of the Old World's ancient forests, may know spells from the Lore of the Wilds Lore of Magic. As usual, if it is stated that a Wizard knows spells from one of a number of given Lores of Magic, you must choose one of these Lores when writing your muster list.\n\nLore of the Wilds Lore",
+  "spells": [
+   {
+    "name": "Swirling Mists",
+    "slug": "swirling-mists",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "Self",
+    "text": "The beguiling mist that has turned about many travellers can be called upon to shroud the forces of Athel Loren from prying eyes.\n\nType | Enchantment\nCasting Value | 8+\nRange | Self\n\nUntil your next Start of Turn sub-phase, any enemy model that directs a shooting attack at the caster, or any unit they have joined, must re-roll any rolls To Hit of a natural 6."
+   },
+   {
+    "name": "Fury of Athel Loren",
+    "slug": "fury-of-athel-loren",
+    "type": "1",
+    "castingValue": 9,
+    "range": "18\"",
+    "text": "The caster summons forth writhing vines and briars from the ground to slash and strangle those who seek to harm Athel Loren and its inhabitants.\n\nType | Magic Missile\nCasting Value | 9+\nRange | 18\"\n\nThe target enemy unit suffers D3+1 Strength 6 hits, each with an AP of -2 and the Multiple Wounds (2) special rule."
+   },
+   {
+    "name": "Ariel's Blessing",
+    "slug": "ariels-blessing",
+    "type": "2",
+    "castingValue": 9,
+    "range": "10\"",
+    "text": "Channelling the power of the Mage Queen herself, the caster surrounds their allies in a healing golden light.\n\nType | Enchantment\nCasting Value | 9+\nRange | 10\"\n\nUntil your next Start of Turn sub-phase, the target friendly unit gains the Regeneration (5+) special rule."
+   },
+   {
+    "name": "Spiteful Torrent",
+    "slug": "spiteful-torrent",
+    "type": "3",
+    "castingValue": 10,
+    "range": "15\"",
+    "text": "Swarms of Spites and forest insects erupt from the casters' staff, racing across the battlefield as a writhing mass that bites and stings all within reach.\n\nType | Magical Vortex\nCasting Value | 10+\nRange | 15\"\n\nRemains in Play. Place a small (3\") blast template so that its central hole is within 15\" of the caster. Whilst in play, the template is treated as difficult terrain. The template scatters D6\" during every Start of Turn sub-phase. Any enemy unit that moves through the template, or that the template moves over, suffers 3D6 Strength 2 hits, each with an AP of -1."
+   },
+   {
+    "name": "Durthu's Wrath",
+    "slug": "durthus-wrath",
+    "type": "4",
+    "castingValue": 9,
+    "range": "Combat",
+    "text": "Having witnessed untold destruction within his homeland, Durthu's rage echoes through Athel Loren and can be drawn upon by those who act in harmony with the forest.\n\nType | Assailment\nCasting Value | 9+\nRange | Combat\n\nEach model in the fighting rank of a unit that the caster is engaged with must immediately make an Initiative test. Each model that fails this test suffers D3 Strength 4 hits, with no armour save permitted (Ward and Regeneration saves can be attempted as normal)."
+   },
+   {
+    "name": "Hidden Pathways",
+    "slug": "hidden-pathways",
+    "type": "5",
+    "castingValue": 8,
+    "range": "12\"",
+    "text": "The forests of Athel Loren can be compelled to hurry the passage of those who act with its best interests at heart.\n\nType | Conveyance\nCasting Value | 8+\nRange | 12\"\n\nUntil your next Start of Turn sub-phase, the target friendly unit gains the Reserve Move special rule and may perform a Quick Turn, even if it would not normally be able to do so."
+   },
+   {
+    "name": "Sapping Blight",
+    "slug": "sapping-blight",
+    "type": "6",
+    "castingValue": 9,
+    "range": "12\"",
+    "text": "As roots draw water from the earth, so too can the mages of Athel Loren sap the lifeforce from their foes.\n\nType | Hex\nCasting Value | 9+\nRange | 12\"\n\nUntil your next Start of Turn sub-phase, the target enemy unit suffers a -D3 modifier to its Strength characteristic (to a minimum of 1). This spell may target an enemy unit engaged in combat. If this spell is cast, the effects of any other Hex previously cast on the target unit immediately expire."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Yin",
+  "slug": "lore-of-yin",
+  "intro": "A Wizard with the 'Lore of Yin' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nLore of Yin Lore",
+  "spells": [
+   {
+    "name": "Spirits of Wind & Shadow",
+    "slug": "spirits-of-wind-and-shadow",
+    "type": "Signature Spell",
+    "castingValue": 10,
+    "range": "15\"",
+    "text": "Elemental spirits descend upon the foe, enveloping them in a whirlwind of flickering shapes and ghostly gales.\n\nAs they try to advance, those afflicted find themselves waylaid by the grasping talons of unseen spirits and buffeted by spectral winds.\n\nType | Hex\nCasting Value | 10+\nRange | 15\"\n\nUntil your next Start of Turn sub-phase, the target enemy unit becomes subject to the Random Movement (D6) special rule."
+   },
+   {
+    "name": "Accursed Mirror",
+    "slug": "accursed-mirror",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "15\"",
+    "text": "The Wizard creates a magical barrier of shifting darkness and howling wind around the enemy. This barrier snatches the enemy's missiles from the air and swallows the tips of their spears, instantly turning the lethal power of these weapons back upon their bearers.\n\nType | Hex\nCasting Value | 9+\nRange | 15\"\n\nUntil your next Start of Turn sub-phase, any rolls To Hit of a natural 1 made by the target enemy unit during either the Shooting phase or the Combat phase result in a Strength 3 hit with an AP of -1 which must be resolved against the target enemy unit. This spell may target an enemy unit engaged in combat."
+   },
+   {
+    "name": "Ancestral Warriors",
+    "slug": "ancestral-warriors",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "Combat",
+    "text": "TK\n\nType | Assailment\nCasting Value | 7+/11+\nRange | Combat\n\nIf this spell is cast with a casting result of 7 or more, a single enemy unit the caster is engaged in combat with suffers 2D3 Strength 2 hits, each with an AP of -. If this spell is cast with a casting result of 11 or more, the target enemy unit suffers 2D6 Strength 4 hits, each with an AP of -1. This spell has the Armour Bane (2) special rule."
+   }
+  ]
+ },
+ {
+  "name": "Battle Magic",
+  "slug": "battle-magic",
+  "intro": "Unlike many Wizards who spend long hours in darkened rooms studying their arcane arts by candlelight, practitioners of Battle Magic tend to be hardy individuals, as at home on the battlefield as they are in their libraries. This is because, unlike other lores that may be studied, Battle Magic is openly offensive and tailored towards use upon the field of battle (which, given the Lore's name, should come as no surprise), and it is here that masters of the Lore hone their skill.\n\nPractitioners of Battle Magic are favoured by cunning generals all across the Old World and beyond, and their services are often in high demand. Many an opposing army has been undone by devastating fireballs cast from afar, found a cloying mist obscuring their view, their path blocked by a bend in the river that was not there before, or their courage sapped as arrows fell upon them with supernatural accuracy.\n\nThose that wield Battle Magic will draw their power from whichever of the Winds of Magic suits their purpose. They grasp at the red wind, summoning forth fire from the air to rain upon the enemy, the green wind to armour themselves with the strength of oak, the grey wind to cow and demoralise their foe, and more besides. To a Battle Mage, the incorporeal dangers of harnessing several Winds of Magic at once are of little concern – what matters most is turning the tide and ensuring swift victory.\n\nBattle Magic Lore",
+  "spells": [
+   {
+    "name": "Hammerhand",
+    "slug": "hammerhand",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "Combat",
+    "text": "As the Battle Mage chants an invocation, their fists become like hammers, falling upon their foes with great and terrible power.\n\nType | Assailment\nCasting Value | 7+\nRange | Combat\n\nA single enemy unit the caster is engaged in combat with suffers 2D3 Strength 4 hits, each with an AP of -2."
+   },
+   {
+    "name": "Fireball",
+    "slug": "fireball",
+    "type": "1",
+    "castingValue": 8,
+    "range": "24\"",
+    "text": "With a snap of the fingers, the Battle Mage summons forth a roiling ball of magical flame and hurls it at a nearby foe.\n\nType | Magic Missile\nCasting Value | 8+\nRange | 24\"\n\nThe target enemy unit suffers 2D6 Strength 4 hits, each with an AP of -. This spell has the Flaming Attacks special rule."
+   },
+   {
+    "name": "Curse of Arrow Attraction",
+    "slug": "curse-of-arrow-attraction",
+    "type": "2",
+    "castingValue": 7,
+    "range": "21\"",
+    "text": "With a cry and a flourish, the Battle Mage curses an enemy, causing missiles to seek them out with almost sentient awareness.\n\nType | Hex\nCasting Value | 7+\nRange | 21\"\n\nUntil your next Start of Turn sub-phase, you may re-roll any rolls To Hit of a natural 1 when shooting at the target enemy unit."
+   },
+   {
+    "name": "Pillar of Fire",
+    "slug": "pillar-of-fire",
+    "type": "3",
+    "castingValue": 9,
+    "range": "12\"",
+    "text": "The Battle Mage conjures a fireball which quickly grows to become a towering pillar. Loosed from their grasp, it advances towards the enemy.\n\nType | Magical Vortex\nCasting Value | 9+\nRange | 12\"\n\nRemains in Play. Place a small (3\") blast template so that its central hole is within 12\" of the caster. Whilst in play, the template is treated as difficult terrain. The template scatters D6\" during every Start of Turn sub-phase. Any enemy unit that moves through the template, or that the template moves over, suffers D3+3 Strength 3 hits, each with an AP of -2. These hits have the Flaming Attacks special rule."
+   },
+   {
+    "name": "Arcane Urgency",
+    "slug": "arcane-urgency",
+    "type": "4",
+    "castingValue": 9,
+    "range": "15\"",
+    "text": "As the Battle Mage's allies march, time around them slows, allowing them to cover great distance in the blink of an eye.\n\nType | Conveyance\nCasting Value | 9+\nRange | 15\"\n\nIf the target friendly unit is not fleeing and has already moved during this Movement phase, it may immediately move again."
+   },
+   {
+    "name": "Oaken Shield",
+    "slug": "oaken-shield",
+    "type": "5",
+    "castingValue": 7,
+    "range": "Self",
+    "text": "The Battle Mage summons a mighty spectral oak around themselves and their allies, protecting them from the weapons of their enemies.\n\nType | Enchantment\nCasting Value | 7+\nRange | Self\n\nUntil your next Start of Turn sub-phase, the caster and any unit they have joined gain a 5+ Ward save against any wounds suffered."
+   },
+   {
+    "name": "Curse of Cowardly Flight",
+    "slug": "curse-of-cowardly-flight",
+    "type": "6",
+    "castingValue": 8,
+    "range": "15\"",
+    "text": "As the war drums beat, the Battle Mage reaches into the minds of the enemy, tapping into their fears and weakening their intestinal fortitude.\n\nType | Hex\nCasting Value | 8+\nRange | 15\"\n\nThe target enemy unit must immediately make a Panic test. If the target unit automatically passes any Panic tests it is required to make for any reason, it must still make this test and, should it fail, it will Give Ground."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Troll Magic",
+  "slug": "lore-of-troll-magic",
+  "intro": "In addition to the Lores of Magic detailed in the Warhammer: the Old World rulebook, some Wizards, especially those with an affinity for Trolls, may know spells from the Lore of Troll Magic. As usual, if it is stated that a Wizard knows spells from one of a number of given Lores of Magic, you must choose one of these Lores when writing your muster list.\n\nLore of Troll Magic Lore",
+  "spells": [
+   {
+    "name": "Big Smartz",
+    "slug": "big-smartz",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "Self",
+    "text": "Gesturing lazily with a crooked staff, the caster enhances and sharpens the minds of those nearby, giving them a clearer look upon the world.\n\nType | Enchantment\nCasting Value | 8+\nRange | Self\n\nRemains in Play. Whilst this spell is in play, friendly units within the Command range of this model may re-roll any failed Stupidity tests. Additionally, if a friendly unit within the Command range of this model when this spell is cast failed its Stupidity test during the Start of Turn sub-phase of the same turn, it may immediately make this test again."
+   },
+   {
+    "name": "Acidic Bile",
+    "slug": "acidic-bile",
+    "type": "1",
+    "castingValue": 8,
+    "range": "10\"",
+    "text": "Spitting a guttural incantation, the caster launches a ball of sickly green and yellow Troll vomit toward the enemy, scorching flesh and dissolving armour.\n\nType | Magic Missile\nCasting Value | 8+\nRange | 18\"\n\nPlace a small (3\") blast template so that its central hole is directly over the centre of the target enemy unit. Once placed, the template will scatter D3+1\". Any enemy model whose base lies underneath the template's final position risks being hit and suffering a Strength 3 hit with an AP of -2."
+   },
+   {
+    "name": "Troll Brainz",
+    "slug": "troll-brainz",
+    "type": "2",
+    "castingValue": 9,
+    "range": "15\"",
+    "text": "Under the beguiling influence of this crude magic, even the most experienced warriors can quickly find themselves hopelessly confused and at a loss for what to do.\n\nType | Hex\nCasting Value | 9+\nRange | 15\"\n\nRemains in Play. Whilst this spell is in play, the target enemy unit becomes subject to the Stupidity special rule and reduces their Leadership characteristic by 1."
+   },
+   {
+    "name": "Ravenous Recourse",
+    "slug": "ravenous-recourse",
+    "type": "3",
+    "castingValue": 8,
+    "range": "Self",
+    "text": "Through arcane means or by simply being reminded how hungry they are, the assembled Trolls race forward with a sudden burst of vigour.\n\nType | Conveyance\nCasting Value | 8+\nRange | Self\n\nUntil the end of this turn, all friendly units that have the Stupidity special rule and are within 12\" of the caster gain a +2 modifier to their Movement characteristic."
+   },
+   {
+    "name": "Foetid Whirlpool",
+    "slug": "foetid-whirlpool",
+    "type": "4",
+    "castingValue": 9,
+    "range": "18\"",
+    "text": "A deluge of foul swamp water and unmentionable waste is spun into a swirling tornado and unleashed onto the battlefield.\n\nType | Magical Vortex\nCasting Value | 9+\nRange | 18\"\n\nRemains in Play. Place a small (3\") blast template so that its central hole is within 18\" of the caster. Whilst in play, the template is treated as difficult terrain. The template scatters D6\" during every  Start of Turn sub-phase. Any enemy unit that moves through the template, or that the template moves over, suffers D3+3 Strength 4 hits, each with an AP of -3."
+   },
+   {
+    "name": "Torrent of Filth",
+    "slug": "torrent-of-filth",
+    "type": "5",
+    "castingValue": 7,
+    "range": "Combat",
+    "text": "With an almighty belch, the caster heaves a stream of burning bile across their foes as the battlelines clash.\n\nType | Assailment\nCasting Value | 7+\nRange | Combat\n\nPlace a flame template so that the narrow end touches the caster's base edge and the broad end is over a unit they are engaged in combat with. Any model (friend or foe) whose base lies underneath the template risks being hit and suffering a single Strength 3 hit with an AP of -2."
+   },
+   {
+    "name": "Rapid Regeneration",
+    "slug": "rapid-regeneration",
+    "type": "6",
+    "castingValue": 8,
+    "range": "12\"",
+    "text": "Drawing on the regenerative properties of theTrolls, the caster channels that enhanced healing towards those in harm's way.\n\nType | Enchantment\nCasting Value | 8+\nRange | 12\"\n\nUntil the end of your next Start of Turn sub-phase, the target friendly unit gains the Flammable and Regeneration (5+) special rules."
+   }
+  ]
+ },
+ {
+  "name": "Daemonology",
+  "slug": "daemonology",
+  "intro": "When a denizen of the Old World thinks of Daemons, they imagine the nightmare servants of the Chaos powers. Yet the pantheon of daemonic beings is far greater than this. Within the Realm of Chaos there dwells an infinite number of creatures that owe no allegiance to the Ruinous Powers. Such creatures often manifest within the mortal realm, some masquerading as elemental sprites, mischievous spirits of house and hearth, others possessing a host and bending it to their will.\n\nIn truth, denizens of the Old World think of Daemons rarely, fearful that doing so might summon them forth! In this superstitious belief, Daemonologists are not like others. Through rituals and invocations shared and perfected within secretive covens, they endeavour to summon forth the most powerful of Daemons, hoping to entrap them and bind them to their will. Some use props in their craft, binding daemonic servants into mundane items such as books, oil lamps, staffs, even weapons of war. Thus bound, a Daemon becomes subservient to the Wizard that summoned it and must comply with its master's wishes. Yet Daemons are ever dishonest, their words and deeds selfish and cruel. Consequently, most Daemonologists quickly fall foul of the very beings they believed they had mastered.\n\nFor all their mysticism and ritual, their secret orders and wealth of arcane knowledge, Daemonologists are not the enlightened seekers of truth many believe themselves to be. They are mere slaves to the powers they seek to master – there are no champions of Chaos, only the lost and the damned.\n\nDaemonology Lore",
+  "spells": [
+   {
+    "name": "The Summoning",
+    "slug": "the-summoning",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "18\"",
+    "text": "From the Realm of Chaos, the Daemonologist summons forth daemonic beasts to strike at their foes.\n\nType | Magic Missile\nCasting Value | 9+\nRange | 18\"\n\nThe target enemy unit suffers 2D6 Strength 4 hits, each with an AP of -1."
+   },
+   {
+    "name": "Steed of Shadows",
+    "slug": "steed-of-shadows",
+    "type": "1",
+    "castingValue": 8,
+    "range": "15\"",
+    "text": "Coal-black daemonic steeds materialise from the air, bearing warriors aloft on wings of shadow.\n\nType | Conveyance\nCasting Value | 8+\nRange | 15\"\n\nThis spell can only target friendly models whose troop type is infantry. If the target friendly unit is not fleeing and has not already moved during this Movement phase, it gains the Fly (12) special rule until your next Start of Turn sub-phase."
+   },
+   {
+    "name": "Gathering Darkness",
+    "slug": "gathering-darkness",
+    "type": "2",
+    "castingValue": 9,
+    "range": "12\"",
+    "text": "At the Daemonologist's command, strange forms gather about the foe, their whispered taunts draining the enemy's courage.\n\nType | Hex\nCasting Value | 9+\nRange | 12\"\n\nUntil your next Start of Turn sub-phase, the target enemy unit suffers a -2 modifier to its Initiative characteristic (to a minimum of 1), a -2 modifier to its Leadership characteristic (to a minimum of 2) and cannot use their General's Inspiring Presence special rule. This spell may target an enemy unit engaged in combat."
+   },
+   {
+    "name": "Daemonic Familiars",
+    "slug": "daemonic-familiars",
+    "type": "3",
+    "castingValue": 8,
+    "range": "Combat",
+    "text": "The Daemonologist's many familiars fall upon the foe, slashing and biting with incorporeal claws and teeth.\n\nType | Assailment\nCasting Value | 8+\nRange | Combat\n\nA single enemy unit the caster is engaged in combat with suffers 2D6 Strength 2 hits, with no armour save permitted (Ward and Regeneration saves can be attempted as normal)."
+   },
+   {
+    "name": "Daemonic Vessel",
+    "slug": "daemonic-vessel",
+    "type": "4",
+    "castingValue": 9,
+    "range": "Self",
+    "text": "At the Daemonologist's bidding, otherworldly entities rush forth to take possession of their allies, filling their bodies with unnatural ferocity.\n\nType | Enchantment\nCasting Value | 9+\nRange | Self\n\nUntil the end of this turn, the caster, their mount and any unit they have joined, gain a +1 modifier to their Strength and Attacks characteristics (to a maximum of 10), and improve the Armour Piercing characteristic of their weapons by 1."
+   },
+   {
+    "name": "Vortex of Chaos",
+    "slug": "vortex-of-chaos",
+    "type": "5",
+    "castingValue": 8,
+    "range": "15\"",
+    "text": "A swirling tear in reality opens, through which daemonic beasts grasp at those that venture too close.\n\nType | Magical Vortex\nCasting Value | 8+\nRange | 15\"\n\nRemains in Play. Place a small (3\") blast template so that its central hole is within 15\" of the caster. Whilst in play, the template is treated as difficult terrain. The template scatters D6\" during every Start of Turn sub-phase. Any unit (friend or foe) that moves through the template, or that the template moves over, suffers D6+1 Strength 3 hits, each with an AP of -."
+   },
+   {
+    "name": "Daemonic Vigour",
+    "slug": "daemonic-vigour",
+    "type": "6",
+    "castingValue": 9,
+    "range": "15\"",
+    "text": "As the Daemonologist mutters verses aloud from a proscribed text, their allies fill with a daemonic vitality.\n\nType | Enchantment\nCasting Value | 9+\nRange | 15\"\n\nUntil the end of this turn, the target friendly unit gains a +1 modifier to its Movement, Toughness and Initiative characteristics (to a maximum of 10)."
+   }
+  ]
+ },
+ {
+  "name": "Dark Magic",
+  "slug": "dark-magic",
+  "intro": "With the collapse of the polar gates, Chaos came into the world. As it did, the pure and refined magic harnessed by the Old Ones came into contact with its influence for the first time within the mortal realm. Almost immediately, the corrupting power of Chaos began to work upon it as surely as it did the bodies and minds of mortals. Twisted and warped by Chaos, the unseen strands of colour that composed pure magic merged and bled into one another, causing the Winds of Magic to grow blackened and ever more unstable.\n\nAmongst the Elves of Ulthuan, there were those drawn to this phenomenon. Sensing a raw source of power, magic which could be mastered more easily, they began to experiment with its use. Quickly, most learned the dangers – that magic corrupted by Chaos would quickly corrupt those that sought to master it – yet there were those that persisted.\n\nToday, Dark Magic still torments the world. Wherever the touch of Chaos is felt most strongly, the Winds of Magic twist and coalesce into dark, roiling clouds. Many Wizards feel compelled to study and use Dark Magic, wielding it with careless abandon, enraptured by its potency and the apparent ease of its mastery. Yet those that dabble with Dark Magic are fools, for Dark Magic is like nothing so much as the raw stuff of chaos, and its use is a path to certain damnation and eternal servitude.\n\nDark Magic Lore",
+  "spells": [
+   {
+    "name": "Doombolt",
+    "slug": "doombolt",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "24\"",
+    "text": "At the Dark Mage's bidding, a bolt of black lightning tears from the heavens and stabs at the earth.\n\nType | Magic Missile\nCasting Value | 8+\nRange | 24\"\n\nPlace a small (3\") blast template so that its central hole is directly over the centre of the target enemy unit. Any enemy model whose base lies underneath the template risks being hit and suffering a single Strength 3 hit with an AP of -2."
+   },
+   {
+    "name": "Word of Pain",
+    "slug": "word-of-pain",
+    "type": "1",
+    "castingValue": 10,
+    "range": "18\"",
+    "text": "The Dark Mage chants incomprehensible syllables, each more torturous than the last.\n\nType | Hex\nCasting Value | 10+\nRange | 18\"\n\nUntil your next Start of Turn sub-phase, the target enemy unit suffers a -1 modifier to its Strength and Toughness characteristics (to a minimum of 1). This spell may target an enemy unit engaged in combat."
+   },
+   {
+    "name": "Stream of Corruption",
+    "slug": "stream-of-corruption",
+    "type": "2",
+    "castingValue": 8,
+    "range": "Combat",
+    "text": "From the fingertips of the Dark Mage corrupted magic flows, flaying the flesh of the enemy.\n\nType | Assailment\nCasting Value | 8+\nRange | Combat\n\nPlace a flame template so that the narrow end touches the caster's base edge and the broad end is over a unit they are engaged in combat with. Any model (friend or foe) whose base lies underneath the template risks being hit and suffering a single Strength 3 hit with an AP of -1."
+   },
+   {
+    "name": "Infernal Gateway",
+    "slug": "infernal-gateway",
+    "type": "3",
+    "castingValue": 9,
+    "range": "12\"",
+    "text": "The Dark Mage reveals a hidden passageway through the Realm of Chaos.\n\nType | Conveyance\nCasting Value | 9+\nRange | 12\"\n\nThis spell can only target friendly characters, but may target characters engaged in combat. If the target friendly character is not fleeing, you may immediately remove it from the battlefield and replace it anywhere within 12\" of its original location, but not within 6\" of any enemy models.\n\nNote that this spell allows a character to leave combat."
+   },
+   {
+    "name": "Phantasmagoria",
+    "slug": "phantasmagoria",
+    "type": "4",
+    "castingValue": 9,
+    "range": "12\"",
+    "text": "Dark visions beset the enemy ranks, driving warriors into blind panic or suicidal rage.\n\nType | Magical Vortex\nCasting Value | 9+\nRange | 12\"\n\nRemains in Play. Place a small (3\") blast template so that its central hole is within 12\" of the caster. Whilst in play, the template does not move and is treated as dangerous terrain. Enemy units that end their movement within 12\" of the template must immediately make a Panic test. Those that fail will Fall Back in Good Order or flee directly away from the template. Those that pass (or that do not have to make the test) become subject to the Impetuous special rule whilst they remain within 12\" of the template."
+   },
+   {
+    "name": "Battle Lust",
+    "slug": "battle-lust",
+    "type": "5",
+    "castingValue": 9,
+    "range": "12\"",
+    "text": "The builds within those near to the Dark Mage, filling them with a terrible lust for bloodshed.\n\nType | Enchantment\nCasting Value | 9+\nRange | 12\"\n\nUntil the end of this turn, the target friendly unit gains the Frenzy and Hatred (all enemies) special rules."
+   },
+   {
+    "name": "Soul Eater",
+    "slug": "soul-eater",
+    "type": "6",
+    "castingValue": 7,
+    "range": "Combat",
+    "text": "The Dark Mage reaches out a taloned hand to tear at the very soul of their enemy.\n\nType | Assailment\nCasting Value | 7+\nRange | Combat\n\nA single enemy model the caster is engaged in combat with suffers a single Strength 3 hit with the Multiple Wounds (3) special rule and with no armour save permitted (Ward and Regeneration saves can be attempted as normal)."
+   }
+  ]
+ },
+ {
+  "name": "Elementalism",
+  "slug": "elementalism",
+  "intro": "Wizards that study Elementalism will often hide their art from the uneducated masses, for the powers they wield can easily be mistaken for darker arts such as Daemonology or Necromancy, summoning as they do elemental spirits from the ætheric netherworld. But for all the suspicion that haunts their study, their abilities are often in great demand. Many a farming community has sought out the aid of an Elementalist to end a period of drought; their ability to summon rain from a clear sky the difference between a prosperous and a failed harvest. Many a ship's captain will seek an Elementalist's services for long and dangerous voyages, hoping that their charms can deliver favourable winds and settle a restless ocean.\n\nStill other Elementalists conceal their craft behind a more mundane façade. Many a skilled blacksmith or farrier secretly manipulates the red wind to heat their forge and the iron that glows within it by arcane means, producing works of great wonder. Other Elementalists prefer to turn their magical powers to a different, more scientific purpose, melding arcane knowledge of the yellow wind and study of natural philosophy within the halls of academia to study alchemy.\n\nIn battle, the powers an Elementalist wields are a considerable blessing, able as they are to disrupt the enemy lines, entrench and defend their own, and even cause the weapons of allies to burn with the heat of their forging whilst the armour of their foes crumbles to rust.\n\nElementalism Lore",
+  "spells": [
+   {
+    "name": "Storm Call",
+    "slug": "storm-call",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "12\"",
+    "text": "The Elementalist channels the fury of a storm towards their foes, causing strong winds and icy rains to batter against them.\n\nType | Hex\nCasting Value | 7+\nRange | 12\"\n\nUntil your next Start of Turn sub-phase, the target enemy unit suffers a -1 modifier to its Movement and Initiative characteristics (to a minimum of 1). If this spell is cast, the effects of any other Hex previously cast on the target unit immediately expire."
+   },
+   {
+    "name": "Flaming Sword",
+    "slug": "flaming-sword",
+    "type": "1",
+    "castingValue": 7,
+    "range": "Combat",
+    "text": "With a simple gesture, the Elementalist summons a great, flaming sword with which to strike at their enemies.\n\nType | Assailment\nCasting Value | 7+\nRange | Combat\n\nA single enemy unit the caster is engaged in combat with suffers D6+1 Strength 3 hits, each with an AP of -. These hits have the Flaming Attacks special rule."
+   },
+   {
+    "name": "Plague of Rust",
+    "slug": "plague-of-rust",
+    "type": "2",
+    "castingValue": 9,
+    "range": "21\"",
+    "text": "As the Elementalist utters a curse, the armour of the enemy loses its lustre, corroding and crumbling from their bodies.\n\nType | Hex\nCasting Value | 9+\nRange | 21\"\n\nUntil your next Start of Turn sub-phase, the target enemy unit suffers a -2 modifier to its armour value. This spell may target an enemy unit engaged in combat."
+   },
+   {
+    "name": "Summon Elemental Spirit",
+    "slug": "summon-elemental-spirit",
+    "type": "3",
+    "castingValue": 9,
+    "range": "15\"",
+    "text": "The Elementalist summons forth a powerful spirit of earth, wind, water or fire to do their bidding.\n\nType | Magical Vortex\nCasting Value | 9+\nRange | 15\"\n\nRemains in Play. Place a small (3\") blast template so that its central hole is within 15\" of the caster. Whilst in play, the template is treated as difficult terrain over which no line of sight can be drawn. The template scatters D6\" during every Start of Turn sub-phase. Any enemy unit that moves through the template, or that the template moves over, suffers D3+3 Strength 4 hits, each with an AP of -1."
+   },
+   {
+    "name": "Earthen Ramparts",
+    "slug": "earthen-ramparts",
+    "type": "4",
+    "castingValue": 9,
+    "range": "15\"",
+    "text": "At the Elementalist's summoning, mighty earthen ramparts rise up about their allies.\n\nType | Enchantment\nCasting Value | 9+\nRange | 15\"\n\nUntil your next Start of Turn sub-phase, the target friendly unit gains a 5+ Ward save against any wounds suffered and counts as being behind a defended low linear obstacle if charged. However, whilst this spell is in play the target unit cannot march or charge."
+   },
+   {
+    "name": "Wind Blast",
+    "slug": "wind-blast",
+    "type": "5",
+    "castingValue": 8,
+    "range": "15\"",
+    "text": "A mighty wind rips enemy warriors from their regiments, dashing them against the hard earth.\n\nType | Magic Missile\nCasting Value | 8+\nRange | 15\"\n\nThe target enemy unit suffers D3+3 Strength 5 hits, each with an AP of -1. Once these hits have been resolved, the unit must Give Ground."
+   },
+   {
+    "name": "Travel Mystical Pathway",
+    "slug": "travel-mystical-pathway",
+    "type": "6",
+    "castingValue": 10,
+    "range": "9\"",
+    "text": "Tapping into the power of the Geomantic Web, the Elementalist opens a portal through which their allies can travel.\n\nType | Conveyance\nCasting Value | 10+\nRange | 9\"\n\nIf the target friendly unit is not fleeing and has not already moved during this Movement phase, you may immediately remove it from the battlefield and replace it anywhere completely within 12\" of its original location, but not within 6\" of any enemy models. The target friendly unit cannot move again during this Movement phase."
+   }
+  ]
+ },
+ {
+  "name": "High Magic",
+  "slug": "high-magic",
+  "intro": "With the collapse of the polar gates, a torrent of magic was unleashed, the gentle clouds of silvery light becoming gusting gales and swirling storms. Upon completion of the Elves' great ritual – performed to lessen the magic flooding the world – the arcane works of the Old Ones shattered, causing the silver light of magic to fragment, revealing the kaleidoscopic Winds of Magic.\n\nStudents of High Magic study each of these winds closely, becoming intimately familiar with their properties and potential over long years. With mastery of each wind, the mage edges closer to understanding High Magic and, eventually, becomes able to draw all of the winds together, crafting High Magic.\n\nThis may seem similar to the use of Dark Magic, similar even to the lesser Lores of Magic. It is not. Where other Wizards grasp clumsily at the Winds of Magic, or warp them into darker hues, High Mages carefully bring all eight winds together, seeking the silvery light of pure magic and crafting spells of such sublime potency that lesser Wizards are struck dumb to witness. A simple fireball cast by a Battle Mage may burn hot with the power of the red wind, but one conjured by a High Mage will burn incandescently bright, searing the world and blinding all that gaze upon it. Such is the power of High Magic.\n\nHigh Magic Lore",
+  "spells": [
+   {
+    "name": "Drain Magic",
+    "slug": "drain-magic",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "Self",
+    "text": "As the High Mage draws the Winds of Magic to themselves, other Wizards find themselves struggling to access their powers.\n\nType | Hex\nCasting Value | 9+\nRange | Self\n\nRemains in Play. Whilst this spell is in play, enemy Wizards that are within 24\" of the caster's model when attempting to cast a spell must increase that spell's casting value by 2."
+   },
+   {
+    "name": "Walk Between Worlds",
+    "slug": "walk-between-worlds",
+    "type": "1",
+    "castingValue": 10,
+    "range": "Self",
+    "text": "The High Mage causes their allies to drift in and out of reality, enabling them to pass through terrain as if it was not there.\n\nType | Conveyance\nCasting Value | 10+\nRange | Self\n\nUntil your next Start of Turn sub-phase, the caster and any unit they have joined gain the Ethereal and Reserve Move special rules."
+   },
+   {
+    "name": "Fiery Convocation",
+    "slug": "fiery-convocation",
+    "type": "2",
+    "castingValue": 10,
+    "range": "18\"",
+    "text": "At the High Mage's bidding, a roiling storm of fire erupts within the midst of the enemy line.\n\nType | Magic Missile\nCasting Value | 10+\nRange | 18\"\n\nPlace a large (5\") blast template so that its central hole is directly over the centre of the target enemy unit. Once placed, the template will scatter D3+1\". Any enemy model whose base lies underneath the template's final position risks being hit and suffering a Strength 4 hit with an AP of -2. These hits have the Flaming Attacks special rule."
+   },
+   {
+    "name": "Tempest",
+    "slug": "tempest",
+    "type": "3",
+    "castingValue": 9,
+    "range": "12\"",
+    "text": "The High Mage summons forth a tempest of rain and sleet, the centre of which is all but impenetrable.\n\nType | Magical Vortex\nCasting Value | 9+\nRange | 12\"\n\nRemains in Play. Place a small (3\") blast template so that its central hole is within 12\" of the caster. Whilst in play, the template does not move and is treated as dangerous terrain. Whilst within 6\" of the template, enemy units treat open ground as difficult terrain and difficult terrain as dangerous terrain."
+   },
+   {
+    "name": "Corporeal Unmaking",
+    "slug": "corporeal-unmaking",
+    "type": "4",
+    "castingValue": 8,
+    "range": "Combat",
+    "text": "The physical forms of the High Mage's enemies begin to unravel, turning to dust on the wind.\n\nType | Assailment\nCasting Value | 8+\nRange | Combat\n\nA single enemy unit the caster is engaged in combat with suffers D3 Strength 5 hits, with no armour or Regeneration saves permitted (Ward saves can be attempted as normal)."
+   },
+   {
+    "name": "Fury of Khaine",
+    "slug": "fury-of-khaine",
+    "type": "5",
+    "castingValue": 9,
+    "range": "12\"",
+    "text": "The High Mage beseeches Khaine, God of Murder, to bestow his fury on the High Mage's allies.\n\nType | Enchantment\nCasting Value | 9+\nRange | 12\"\n\nUntil the end of this turn, the target friendly unit gains the Extra Attacks (+1) special rule. This spell may target a friendly unit engaged in combat."
+   },
+   {
+    "name": "Shield of Saphery",
+    "slug": "shield-of-saphery",
+    "type": "6",
+    "castingValue": 8,
+    "range": "18\"",
+    "text": "White light bursts forth from the High Mage's outstretched hands, clinging to armour and arcing overhead to form a protective barrier around their allies.\n\nType | Enchantment\nCasting Value | 8+\nRange | 18\"\n\nUntil the end of this turn, the target friendly unit gains a 5+ Ward save against any wounds suffered. If this spell is cast, the effects of any other Enchantment previously cast on the target unit immediately expire."
+   }
+  ]
+ },
+ {
+  "name": "Illusion",
+  "slug": "illusion",
+  "intro": "Many Illusionists travel the Old World, manipulating the innocent and subjecting the unwary to their will. Others find shelter within the entourage of a powerful lord or lady, masquerading as entertainers before courtiers and guests. Almost all maintain a pretence of stagecraft in everything they do, carefully crafted charms working to befuddle the minds of those around them, lulling an audience into an almost trancelike state in which the Illusionist's victims remain convinced that, no matter how overt the magic practiced before their eyes, they are witnessing a simple mummers act.\n\nBehind this pretence, Illusionists practise a profane art which thrives upon deceit and misdirection. They work the Winds of Magic in subtle ways, crafting mirage images that fill the mind with counterfeit memories and imposter emotions. It is by these means that Illusionists are able to manipulate those around them, bending them to their will, causing them to react to realities that are not, in fact, real.\n\nIllusion is, perhaps, the most dangerous of lores, both for those that practise it as well as those that witness it. A careless Illusionist can find themselves drawn into their own deceits, the Winds of Magic entrapping them and pulling their mind into a world that does not truly exist.\n\nIllusion Lore",
+  "spells": [
+   {
+    "name": "Glittering Robe",
+    "slug": "glittering-robe",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "Self",
+    "text": "Shimmering light radiates from the Illusionist's garb, dazzling and confounding the enemy.\n\nType | Enchantment\nCasting Value | 8+\nRange | Self\n\nUntil your next Start of Turn sub-phase, enemy units suffer a -1 modifier to any rolls To Hit made against the caster and any unit they have joined. If this spell is cast, the effects of any other Enchantment previously cast on any of the affected models immediately expire."
+   },
+   {
+    "name": "Mind Razor",
+    "slug": "mind-razor",
+    "type": "1",
+    "castingValue": 7,
+    "range": "15\"",
+    "text": "Torturous illusion grips the enemy. Only those with the strongest of wills can resist.\n\nType | Magic Missile\nCasting Value | 7+\nRange | 15\"\n\nThe target enemy unit must immediately make a Leadership test. If this test is passed, it suffers D3 Strength 3 hits, each with an AP of -. If, however, this test is failed, it suffers D3+3 Strength 4 hits, each with an AP of -3."
+   },
+   {
+    "name": "Shimmering Dragon",
+    "slug": "shimmering-dragon",
+    "type": "2",
+    "castingValue": 8,
+    "range": "12\"",
+    "text": "An incorporeal Dragon materialises over the battlefield, stooping low to bear aloft a mighty champion.\n\nType | Conveyance\nCasting Value | 8+\nRange | 12\"\n\nThis spell can only target friendly characters. If the target friendly character is not fleeing and has not already moved during this Movement phase, it gains the Fly (10) special rule until the end of this turn."
+   },
+   {
+    "name": "Column of Crystal",
+    "slug": "column-of-crystal",
+    "type": "3",
+    "castingValue": 10,
+    "range": "9\"",
+    "text": "The Illusionist conjures forth an illusory column of crystal. All that see it believe it to be utterly impenetrable.\n\nType | Magical Vortex\nCasting Value | 10+\nRange | 9\"\n\nRemains in Play. Place a large (5\") blast template so that its central hole is within 9\" of the caster. Whilst in play, the template does not move and is treated as impassable terrain over which no line of sight can be drawn."
+   },
+   {
+    "name": "Confounding Convocation",
+    "slug": "confounding-convocation",
+    "type": "4",
+    "castingValue": 8,
+    "range": "9\"",
+    "text": "The enemy is bombarded by wild and disorienting images and dancing lights that render them all but blind to the world around them.\n\nType | Hex\nCasting Value | 8+\nRange | 9\"\n\nRemains in Play. Whilst this spell is in play, the target enemy unit becomes subject to the Stupidity special rule."
+   },
+   {
+    "name": "Spectral Doppelganger",
+    "slug": "spectral-doppelganger",
+    "type": "5",
+    "castingValue": 9,
+    "range": "Combat",
+    "text": "Like the surface of a mirror struck a mighty blow, the Illusionist's image fractures, revealing myriad doppelganger likenesses.\n\nType | Assailment\nCasting Value | 9+\nRange | Combat\n\nA single enemy unit the caster is engaged in combat with suffers 2D6 hits, resolved using the characteristics and special rules of the caster and of any weapon they carry."
+   },
+   {
+    "name": "Miasmic Mirage",
+    "slug": "miasmic-mirage",
+    "type": "6",
+    "castingValue": 10,
+    "range": "15\"",
+    "text": "Around the feet of the enemy, the earth itself shifts and blurs, causing warriors to trip and stumble upon half-imagined obstacles.\n\nType | Hex\nCasting Value | 10+\nRange | 15\"\n\nUntil your next Start of Turn sub-phase, the target enemy unit suffers a -2 modifier to its Movement characteristic (to a minimum of 1) and cannot march or charge. If this spell is cast, the effects of any other Hex previously cast on the target unit immediately expire."
+   }
+  ]
+ },
+ {
+  "name": "Necromancy",
+  "slug": "necromancy",
+  "intro": "Necromancers make use of the darker Winds of Magic, the purple wind of death and the grey wind of shadow most often, melding them with the green wind of life and the amber wind of beasts. From these disparate strands of ætheric power they craft charms and incantations that grant them a power to reach beyond death's embrace. With this power, Necromancers summon spirits and commune with the dead, channelling the spirits of the departed that they may speak with the living.\n\nStill others take their study further into the dark, dallying with the blackest of magics, the raw power of chaos. Some utilise foul warpstone to enhance their control of this writhing, evil force, using the wicked material to draw bleak power ever more closely about their withered forms, channelling this dark energy into the husks of dead things and crafting vile unlife from cold, lifeless corpses pulled from the dark earth.\n\nFor every Necromancer gainfully employed in spiritualism, communing with the souls of departed loved ones, there is certain to be another skulking in graveyards and mausoleums, disturbing the dead and seeking to extend their own life by means magical and profane. This is why Necromancers are so untrusted and unloved – for honest and good citizens of the Old World can never be sure just how deep into the shadows a Necromancer has delved.\n\nNecromancy Lore",
+  "spells": [
+   {
+    "name": "The Dwellers Below",
+    "slug": "the-dwellers-below",
+    "type": "Signature Spell",
+    "castingValue": 7,
+    "range": "Combat",
+    "text": "Beneath the enemy the cold dirt parts, revealing spectral hands that reach to grasp at the foe and pull them into the underworld.\n\nType | Assailment\nCasting Value | 7+\nRange | Combat\n\nPlace a small (3\") blast template so that its central hole is directly over the centre of a unit the caster is engaged in combat with. Once placed, the template will scatter D3+1\". Any enemy model whose base lies underneath the template's final position risks being hit and suffering a single Strength 3 hit with an AP of -."
+   },
+   {
+    "name": "Deathly Cabal",
+    "slug": "deathly-cabal",
+    "type": "1",
+    "castingValue": 8,
+    "range": "Self",
+    "text": "From beyond the veil of death, unquiet spirits gather protectively around the Necromancer, their presence causing the foe to recoil in fear and dread.\n\nType | Enchantment\nCasting Value | 8+\nRange | Self\n\nUntil your next Start of Turn sub-phase, the caster and any unit they have joined gain a 6+ Ward save against any wounds suffered that were caused by a non-magical enemy attack. In addition, whilst this spell is in play, the affected models gain the Fear special rule. If they already have the Fear special rule, they instead gain the Terror special rule."
+   },
+   {
+    "name": "Unquiet Spirits",
+    "slug": "unquiet-spirits",
+    "type": "2",
+    "castingValue": 8,
+    "range": "15\"",
+    "text": "Evil spirits gather around the enemy, their spectral talons creeping beneath armour to tear at flesh.\n\nType | Magic Missile\nCasting Value | 8+\nRange | 15\"\n\nThe target enemy unit suffers 3D6 Strength 2 hits, with no armour save permitted (Ward and Regeneration saves can be attempted as normal)."
+   },
+   {
+    "name": "Spiritual Vortex",
+    "slug": "spiritual-vortex",
+    "type": "3",
+    "castingValue": 10,
+    "range": "12\"",
+    "text": "The Necromancer gestures and dark energy swirls, opening a vortex into the realm of Morr, god of death.\n\nType | Magical Vortex\nCasting Value | 10+\nRange | 12\"\n\nRemains in Play. Place a large (5\") blast template so that its central hole is within 12\" of the caster. Whilst in play, the template does not move and is treated as dangerous terrain. Whilst within 8\" of one or more Spiritual Vortexes, enemy units suffer a -1 modifier to their Leadership characteristic (to a minimum of 2) and cannot use their General's Inspiring Presence special rule."
+   },
+   {
+    "name": "Curse of Years",
+    "slug": "curse-of-years",
+    "type": "4",
+    "castingValue": 9,
+    "range": "15\"",
+    "text": "As dead things draw near, they feed hungrily upon the vital energy of the living, ageing them rapidly.\n\nType | Hex\nCasting Value | 9+\nRange | 15\"\n\nUntil your next Start of Turn sub-phase, the target enemy unit suffers a -1 modifier to its Movement, Weapon Skill and Toughness characteristics (to a minimum of 1). If this spell is cast, the effects of any other Hex previously cast on the target unit immediately expire."
+   },
+   {
+    "name": "Spectral Steed",
+    "slug": "spectral-steed",
+    "type": "5",
+    "castingValue": 9,
+    "range": "12\"",
+    "text": "As the Necromancer chants words of dark power, a ghostly steed forms from the night air.\n\nType | Conveyance\nCasting Value | 9+\nRange | 12\"\n\nRemains in Play. This spell can only target friendly characters whose troop type is infantry. Whilst this spell is in play, the target friendly character gains the Ethereal and Fly (10) special rules."
+   },
+   {
+    "name": "Spirit Leech",
+    "slug": "spirit-leech",
+    "type": "6",
+    "castingValue": 8,
+    "range": "18\"",
+    "text": "Chill winds gust and long shadows gather, sapping the enemy's will and sowing seeds of dread.\n\nType | Hex\nCasting Value | 8+\nRange | 18\"\n\nUntil the end of this turn, the target enemy unit suffers a -2 modifier to its Leadership characteristic (to a minimum of 2) and cannot use their General's Inspiring Presence special rule. This spell may target an enemy unit engaged in combat."
+   }
+  ]
+ },
+ {
+  "name": "Waaagh! Magic",
+  "slug": "waaagh-magic",
+  "intro": "The power of Orc and Goblin Shamans does not come primarily from the Winds of Magic, but from the raw Waaagh! magic radiated by their kind. A potent force barely understood by mages of other races, Waaagh! magic can consume the Winds of Magic, absorbing them and deadening the mage-sight of other Wizards. As Orcs and Goblins rush into battle, the Waaagh! rises in great storms that spring forth to drown entire regions, before draining away once more, leaving only wisps of magical potential behind.\n\nAn Orc or Goblin Shaman, blessed by Gork (or possibly Mork) can focus the Waaagh! through the power of their mind (such as it is), casting spells as brutal and cunning as Gork and Mork themselves. These shamans have been known to burst the skulls of their foes, to shoot beams of crackling green death from their beady eyes or to summon almighty green appendages from the skies to punch and kick the enemy.\n\nYet with great power comes great peculiarity, and shamans are a most peculiar breed. Constant exposure to the raw Waaagh! and the will of their gods causes Orcs and Goblins to become somewhat unhinged. Consequently, their shamans are prone to drifting into trances, breaking uncontrollably into spasmodic dancing, and talking animatedly to unseen entities. Of course, for the average Orc or Goblin, such behaviour is a bonus – after all, how can one be impressed by a Wizard that doesn't act the part?\n\nWaaagh! Magic Lore",
+  "spells": [
+   {
+    "name": "Fist of Gork (or Mork)",
+    "slug": "fist-of-gork-or-mork",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "Combat",
+    "text": "In response to the Shaman's frantic hopping and gesticulating, a great green fist materialises from the air and wallops the foe!\n\nType | Assailment\nCasting Value | 8+\nRange | Combat\n\nPlace a large (5\") blast template so that its central hole is directly over the centre of a unit the caster is engaged in combat with. Once placed, the template will scatter D3\"+1. Any model (friend or foe) whose base lies underneath the template's final position risks being hit and suffering a single Strength 4 hit with an AP of -1."
+   },
+   {
+    "name": "Vindictive Glare",
+    "slug": "vindictive-glare",
+    "type": "1",
+    "castingValue": 8,
+    "range": "21\"",
+    "text": "Their brows furrowed and their teeth clenched, the Shaman's glare is so intense that their enemies visibly wither.\n\nType | Magic Missile\nCasting Value | 8+\nRange | 21\"\n\nThe target enemy unit suffers a single Strength 7 hit with the Multiple Wounds (D3) special rule and with no armour save permitted (Ward and Regeneration saves can be attempted as normal). This spell may target an enemy unit engaged in combat."
+   },
+   {
+    "name": "Hand of Mork (or Gork)",
+    "slug": "hand-of-mork-or-gork",
+    "type": "2",
+    "castingValue": 7,
+    "range": "18\"",
+    "text": "A huge green hand appears from above and, with great care, flicks a hero across the battlefield.\n\nType | Conveyance\nCasting Value | 7+\nRange | 18\"\n\nThis spell can only target friendly characters, but may target characters engaged in combat. You may immediately remove the target friendly character from the battlefield and replace it anywhere within 2D6\" of its original location, but not within 3\" of any enemy models. However, if a double 1 is rolled, the character lands badly and loses a single Wound.\n\nNote that this spell allows a character to leave combat."
+   },
+   {
+    "name": "Bad Moon Rizin'",
+    "slug": "bad-moon-rizin",
+    "type": "3",
+    "castingValue": 10,
+    "range": "15\"",
+    "text": "The Shaman summons a great pale moon above the battlefield. Trembling under its baleful gaze, the enemy can barely lift their weapons!\n\nType | Hex\nCasting Value | 10+\nRange | 15\"\n\nUntil the end of this turn, the target enemy unit suffers a -D3 modifier to its Weapon Skill and Initiative characteristics (to a minimum of 1)."
+   },
+   {
+    "name": "Evil Sun Shinin'",
+    "slug": "evil-sun-shinin",
+    "type": "4",
+    "castingValue": 9,
+    "range": "Self",
+    "text": "The sun is out and there's an enemy army over there – it's a great day for a battle! 'Ave at it Boyz!\n\nType | Enchantment\nCasting Value | 9+\nRange | Self\n\nUntil your next Start of Turn sub-phase, friendly units that are within the caster's Command range may re-roll any rolls To Hit of a natural 1, and improve the Armour Piercing characteristic of their weapons by 1."
+   },
+   {
+    "name": "'Ere We Go!",
+    "slug": "ere-we-go",
+    "type": "5",
+    "castingValue": 8,
+    "range": "Self",
+    "text": "The Shaman begins a simple chant which is quickly and enthusiastically taken up by their friends.\n\nType | Enchantment\nCasting Value | 8+\nRange | Self\n\nAny friendly unit that is within the caster's Command range during the Declare Charges & Charge Reactions sub-phase of this turn increases its maximum possible charge range by 3\" and, when it makes a Charge roll, may apply a +D3 modifier to the result."
+   },
+   {
+    "name": "Foot of Gork (or Mork)",
+    "slug": "foot-of-gork-or-mork",
+    "type": "6",
+    "castingValue": 8,
+    "range": "15\"",
+    "text": "There's a massive green foot on the battlefield and it seems to be moving!\n\nType | Magical Vortex\nCasting Value | 8+\nRange | 15\"\n\nRemains in Play. Place a large (5\") blast template so that its central hole is within 15\" of the caster. Whilst in play, the template is treated as difficult terrain. The template scatters 2D6\" during every Start of Turn sub-phase. Any unit (friend or foe) that moves through the template, or that the template moves over, suffers D3+3 Strength 5 hits, each with an AP of -1."
+   }
+  ]
+ },
+ {
+  "name": "Lore of Hashut (Renegade)",
+  "slug": "lore-of-hashut-renegade",
+  "intro": "The Chaos Dwarfs study forge-craft, weapon making and the dark magics of Hashut himself in equal measure. Using this forbidden lore, they forge their terrible weapons and craft their arcane devices.\n\nA Wizard with the 'Lore of Hashut' special rule may discard one of their randomly generated spells as normal. When they do so, they may select instead either the signature spell of their chosen Lore of Magic, or one of the spells listed below.\n\nCurse of HashutStorm of Ash (Renegade)Flames of Hashut (Renegade)",
+  "spells": [
+   {
+    "name": "Curse of Hashut",
+    "slug": "curse-of-hashut",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "18\"",
+    "text": "Channelling the malediction that inflicts their own twisted body, the sorcerer turns the dark curse of Hashut upon their enemies, causing their bones to petrify and their flesh to grow grey and brittle, before crumbling to dust.\n\nType | Magic Missile\nCasting Value | 9+\nRange | 18\"\n\nThis spell can only target enemy characters. However, it may target any enemy character that is within range and that the caster can draw a line of sight to, regardless of the usual rules for targeting characters, and may even target an enemy character that has joined a unit or that is engaged in combat.\n\nThe target enemy character must immediately make a Toughness test. If this test is passed, it suffers D3 Strength 2 hits, each with an AP of -. If, however, this test is failed, it suffers D3+2 Strength 5 hits, with no armour or Regeneration saves permitted (Ward saves can be attempted as normal)."
+   },
+   {
+    "name": "Storm of Ash (Renegade)",
+    "slug": "storm-of-ash-renegade",
+    "type": "Signature Spell",
+    "castingValue": 9,
+    "range": "Self",
+    "text": "The sorcerer summons forth a hellish storm of choking hot ash, scalding and blinding anything and anyone unfortunate enough to be caught in its path.\n\nType | Hex\nCasting Value | 9+\nRange | Self\n\nUntil your next Start of Turn sub-phase, all enemy units suffer a -1 modifier to any rolls To Hit made whilst within 9\" of the caster's model (rolls of a natural 6 are unaffected)."
+   },
+   {
+    "name": "Flames of Hashut (Renegade)",
+    "slug": "flames-of-hashut-renegade",
+    "type": "Signature Spell",
+    "castingValue": 8,
+    "range": "Combat",
+    "text": "The fiery breath of Hashut erupts around the sorcerer, engulfing their body and scorching their foes.\n\nType | Assailment\nCasting Value | 8+\nRange | Combat\n\nA single enemy unit the caster is engaged in combat with suffers D3+1 Strength 4 hits, each with an AP of -1. These hits have the Flaming Attacks special rule."
+   }
+  ]
+ }
+]

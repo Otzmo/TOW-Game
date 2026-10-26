@@ -75,6 +75,11 @@ export interface UnitState {
   standardCaptured?: boolean;
   /** Bei Einzelmodellen: verlorene Lebenspunkte */
   woundsLost?: number;
+  /** Zauberer: gewählte Lore (slug in spells.json) und ausgewürfelte Sprüche (slugs) */
+  lore?: string | null;
+  spells?: string[] | null;
+  /** Eigene Notiz zu dieser Einheit */
+  note?: string | null;
 }
 
 export interface Point {

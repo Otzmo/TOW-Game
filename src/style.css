@@ -585,3 +585,31 @@ table.profile td[title] { cursor: help; }
 /* Fenster Mission: gewürfelte Missionen mit Beschreibung */
 #sheet-mission h4 { margin: 10px 0 4px; }
 #sheet-mission .mission-rule { margin: 4px 0; white-space: pre-line; color: var(--muted); }
+
+/* Unten links: Zauber und vernichtete Einheiten */
+#bottom-tools { margin-top: auto; display: flex; flex-direction: column; gap: 4px; padding-top: 10px; border-top: 1px solid var(--line); }
+#bottom-tools button.on { background: var(--accent); color: #1a1a1a; border-color: var(--accent); font-weight: 600; }
+#destroyed-count { color: #f0a35e; font-weight: 700; }
+#sheet-spells section + section, #sheet-destroyed section + section { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); }
+#sheet-spells h4, #sheet-destroyed h4 { margin: 0 0 6px; display: flex; align-items: center; gap: 6px; }
+#sheet-spells h4 .meta, #sheet-destroyed h4 .meta { margin: 0 0 0 auto; }
+.wizard { padding: 6px 0 8px; border-bottom: 1px dashed var(--line); }
+.wizard p { margin: 0 0 4px; }
+.wizard-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.wizard-row select { flex: 1 1 140px; font: inherit; font-size: calc(13px * var(--ui)); color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; }
+.wizard-row button { padding: 4px 10px; font-size: calc(13px * var(--ui)); }
+ul.spells, ul.destroyed { list-style: none; margin: 6px 0 0; padding: 0; }
+ul.spells li, ul.destroyed li { padding: 3px 0; display: flex; flex-wrap: wrap; gap: 0 8px; align-items: baseline; }
+ul.spells .meta, ul.destroyed .meta { margin: 0; font-size: calc(12px * var(--ui)); }
+.spell-text { flex-basis: 100%; margin: 4px 0; white-space: pre-line; color: #cfcbc6; font-size: calc(12px * var(--ui)); }
+/* Würfel: Artillerie- und Abweichungswürfel */
+.dice-tools .wide-tool { grid-column: 1 / -1; }
+.die.die-art { width: auto; min-width: 22px; padding: 0 5px; background: #d9c38a; }
+.die.die-art.misfire { background: #f0603e; color: #fff; }
+.die.die-hit { width: auto; padding: 0 5px; background: #8fca7a; }
+.die.die-arrow span { display: inline-block; font-size: calc(15px * var(--ui)); line-height: 1; }
+.scatter-arrow { display: inline-block; font-weight: 700; }
+#o-rules-row h3 { margin: 6px 0 4px; }
+/* Rechte Spalte: Würfelfenster einspaltig, nichts ragt seitlich heraus */
+#right-top > #sheet-dice:not([hidden]) { display: block; }
+#right-top > .sheet, #right-top > .bottom-panel { overflow-x: hidden; }

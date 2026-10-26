@@ -5,26 +5,44 @@ import type { LogEntry } from '../model/types';
 const $ = (id: string) => document.getElementById(id)!;
 const select = (id: string) => $(id) as HTMLSelectElement;
 
-const d6 = () => 1 + Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32 * 6);
+const rnd = (sides: number) => 1 + Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32 * sides);
+const d6 = () => rnd(6);
 const roll = (n: number) => Array.from({ length: n }, d6);
 
+/** Würfelarten: normale W6, W3, Artilleriewürfel und Abweichungswürfel */
+export type DieKind = 'd6' | 'd3' | 'artillery' | 'scatter';
+const KIND_NAMES: Record<DieKind, string> = { d6: 'D6', d3: 'D3', artillery: 'Artillery dice', scatter: 'Scatter dice' };
+
+/** Artilleriewürfel: 2, 4, 6, 8, 10 oder Misfire (0) */
+export const artilleryDie = (): number => [2, 4, 6, 8, 10, 0][d6() - 1];
+/** Abweichungswürfel: auf 2 von 6 Seiten "Hit", sonst ein Pfeil in eine zufällige Richtung (Grad, 0 = nach oben) */
+export const scatterDie = (): { hit: boolean; angle: number } =>
+  d6() <= 2 ? { hit: true, angle: 0 } : { hit: false, angle: Math.floor(rnd(360)) - 1 };
+
+/** Text für einen Artillerie- bzw. Abweichungswürfel */
+export const artilleryText = (v: number) => (v === 0 ? 'Misfire!' : String(v));
+export const scatterHtml = (s: { hit: boolean; angle: number }) => s.hit
+  ? '<span class="die die-hit">HIT</span>'
+  : `<span class="die die-arrow" title="${s.angle}°"><span style="transform: rotate(${s.angle}deg)">↑</span></span>`;
+
 /**
- * Würfel, allgemein und an keine Aktion gebunden: Anzahl D6 würfeln, danach (auch nachträglich)
- * einen Zielwert wie 4+ wählen, die Würfel darunter entfernen und die übrigen neu würfeln.
+ * Würfel, allgemein und an keine Aktion gebunden: Anzahl und Art (D6, D3, Artillerie, Abweichung) wählen
+ * und würfeln. Bei D6/D3 danach (auch nachträglich) einen Zielwert wie 4+ wählen, die Würfel darunter
+ * entfernen und die übrigen neu würfeln. "Clear all dice" leert den Tisch.
  */
 export class DicePanel {
-  /** Aktueller Würfelpool */
+  /** Aktueller Würfelpool (D6/D3) */
   private dice: number[] = [];
+  private kind: DieKind = 'd6';
+  /** Ergebnis von Artillerie- und Abweichungswürfeln */
+  private special = '';
 
   constructor(private publish: (entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>) => void) {
     select('d-target-value').innerHTML = '<option value="">– (no target)</option>' +
       [2, 3, 4, 5, 6].map((n) => `<option value="${n}">${n}+</option>`).join('');
-    $('d-roll').onclick = () => {
-      const count = Math.max(1, Math.min(100, Math.round(Number(($('d-count') as HTMLInputElement).value) || 1)));
-      this.dice = roll(count);
-      this.publish({ kind: 'roll', text: `${count} D6`, dice: [this.dice] });
-      this.render();
-    };
+    select('d-kind').innerHTML = (Object.keys(KIND_NAMES) as DieKind[])
+      .map((k) => `<option value="${k}">${KIND_NAMES[k]}</option>`).join('');
+    $('d-roll').onclick = () => this.rollNow();
     select('d-target-value').onchange = () => this.render();
     $('d-keep').onclick = () => {
       const t = this.target();
@@ -37,10 +55,35 @@ export class DicePanel {
     };
     $('d-reroll').onclick = () => {
       if (!this.dice.length) return;
-      this.dice = roll(this.dice.length);
-      this.publish({ kind: 'roll', text: `${this.dice.length} D6 re-rolled`, dice: [this.dice] });
+      this.dice = this.kind === 'd3' ? this.dice.map(() => rnd(3)) : roll(this.dice.length);
+      this.publish({ kind: 'roll', text: `${this.dice.length} ${KIND_NAMES[this.kind]} re-rolled`, dice: [this.dice] });
       this.render();
     };
+    $('d-clear').onclick = () => {
+      this.dice = [];
+      this.special = '';
+      this.render();
+    };
+    this.render();
+  }
+
+  private rollNow(): void {
+    const count = Math.max(1, Math.min(100, Math.round(Number(($('d-count') as HTMLInputElement).value) || 1)));
+    this.kind = select('d-kind').value as DieKind;
+    this.dice = [];
+    this.special = '';
+    if (this.kind === 'd6' || this.kind === 'd3') {
+      this.dice = this.kind === 'd3' ? Array.from({ length: count }, () => rnd(3)) : roll(count);
+      this.publish({ kind: 'roll', text: `${count} ${KIND_NAMES[this.kind]}`, dice: [this.dice] });
+    } else if (this.kind === 'artillery') {
+      const r = Array.from({ length: count }, artilleryDie);
+      this.special = r.map((v) => `<span class="die die-art${v === 0 ? ' misfire' : ''}">${artilleryText(v)}</span>`).join('');
+      this.publish({ kind: 'roll', text: `Artillery dice: ${r.map(artilleryText).join(', ')}` });
+    } else {
+      const r = Array.from({ length: count }, scatterDie);
+      this.special = r.map(scatterHtml).join('');
+      this.publish({ kind: 'roll', text: `Scatter dice: ${r.map((s) => (s.hit ? 'Hit' : `${s.angle}°`)).join(', ')}` });
+    }
     this.render();
   }
 
@@ -54,13 +97,15 @@ export class DicePanel {
     const ok = t === null ? null : this.dice.filter((d) => d >= t).length;
     const sum = this.dice.reduce((s, d) => s + d, 0);
     $('d-result').innerHTML = this.dice.length
-      ? `<p class="dice-sum">${this.dice.length} D6${ok === null ? ` · total ${sum}` : ` · <b>${ok}</b> on ${t}+`}</p>
+      ? `<p class="dice-sum">${this.dice.length} ${KIND_NAMES[this.kind]}${ok === null ? ` · total ${sum}` : ` · <b>${ok}</b> on ${t}+`}</p>
          <div class="dice-row">${diceHtml([...this.dice].sort((a, b) => b - a), t ?? 7)}</div>`
-      : '<p class="meta">Enter the number of dice and roll.</p>';
+      : this.special ? `<div class="dice-row">${this.special}</div>`
+      : '<p class="meta">Choose the dice and roll.</p>';
     ($('d-keep') as HTMLButtonElement).disabled = t === null || !this.dice.length;
     ($('d-keep') as HTMLButtonElement).textContent = t === null ? 'Remove dice below target' : `Remove dice below ${t}+`;
     ($('d-reroll') as HTMLButtonElement).disabled = !this.dice.length;
     ($('d-reroll') as HTMLButtonElement).textContent = this.dice.length ? `Re-roll ${this.dice.length} dice` : 'Re-roll dice';
+    ($('d-clear') as HTMLButtonElement).disabled = !this.dice.length && !this.special;
   }
 }
 

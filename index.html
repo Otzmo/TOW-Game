@@ -51,6 +51,11 @@
       <button data-sheet="keys" title="All keyboard shortcuts (?)">Shortcuts</button>
       <button data-sheet="mission" title="Rolled deployment and missions with their rules">Mission</button>
     </nav>
+    <!-- Unten links: Zauber und vernichtete Einheiten, getrennt voneinander -->
+    <nav id="bottom-tools" aria-label="Spells and destroyed units">
+      <button data-sheet="spells" title="Generate and show the spells of all wizards">✦ Spells</button>
+      <button data-sheet="destroyed" title="All destroyed units">☠ Destroyed <span id="destroyed-count"></span></button>
+    </nav>
   </aside>
   <!-- Rechte Spalte: nur Popups (Einheit, Objekt, Fenster, Aufforderungen, Hinweise); leer = ausgeblendet -->
   <aside id="rightbar">
@@ -61,7 +66,8 @@
     <aside class="sheet" id="sheet-dice" hidden><div id="dicebar">
       <h3>Dice</h3>
       <div class="dice-form">
-        <label>Number of D6 <input id="d-count" type="number" min="1" max="100" value="10"></label>
+        <label>Number <input id="d-count" type="number" min="1" max="100" value="10"></label>
+        <label>Dice <select id="d-kind"></select></label>
       </div>
       <button id="d-roll" class="primary wide">Roll</button>
       <div id="d-result"></div>
@@ -69,6 +75,7 @@
         <label>Target <select id="d-target-value"></select></label>
         <button id="d-keep">Remove dice below target</button>
         <button id="d-reroll">Re-roll dice</button>
+        <button id="d-clear" class="wide-tool">Clear all dice</button>
       </div>
       <h3>Dice log</h3>
       <ol id="dice-log"></ol>
@@ -134,6 +141,8 @@
   </aside>
   <aside class="sheet wide-sheet" id="sheet-keys" hidden><h3>Keyboard shortcuts</h3><div id="keys-list"></div></aside>
   <aside class="sheet" id="sheet-mission" hidden><h3>Mission</h3><div id="mission-info"></div></aside>
+  <aside class="sheet" id="sheet-spells" hidden><h3>Spells</h3><div id="spells-list"></div></aside>
+  <aside class="sheet" id="sheet-destroyed" hidden><h3>Destroyed units</h3><div id="destroyed-list"></div></aside>
   <!-- Untere lange Tischkante: ausgewähltes Objekt (Gelände, Marker, Schablone) -->
   <aside id="obj-panel" class="bottom-panel" hidden>
     <header>
@@ -142,6 +151,10 @@
       <button id="o-close" class="close" aria-label="Close">×</button>
     </header>
     <div class="cols">
+      <div class="field" id="o-scatter-row"><span>Scatter (a 1 is a direct hit)</span>
+        <div class="row-btns"><button data-scatter="1" class="primary">🎲 Scatter D6</button><button data-scatter="2" class="primary">🎲 Scatter 2D6</button></div>
+        <div id="o-scatter-result"></div></div>
+      <div class="field" id="o-rules-row"></div>
       <label class="field">Label <input id="o-label" type="text" maxlength="40"></label>
       <div class="size-row" id="o-size-row">
         <label class="field">Width ″ <input id="o-w" type="number" min="0.5" step="0.5"></label>

@@ -23,7 +23,7 @@ export class Toolbox {
     document.querySelectorAll<HTMLButtonElement>('[data-tool]').forEach((btn) => {
       btn.onclick = () => tools.setTool(btn.dataset.tool as Tool);
     });
-    document.querySelectorAll<HTMLButtonElement>('#toolbox [data-sheet]').forEach((btn) => {
+    document.querySelectorAll<HTMLButtonElement>('#toolbox [data-sheet], #bottom-tools [data-sheet]').forEach((btn) => {
       btn.onclick = () => toggleSheet(btn.dataset.sheet!);
     });
     tools.onToolChange = (tool) => this.showTool(tool);
