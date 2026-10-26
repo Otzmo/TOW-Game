@@ -123,8 +123,8 @@ export class Shortcuts {
       // Ansicht
       { group: 'View', keys: [['PgUp'], ['PgDn']], desc: 'Zoom in / out (also mouse wheel)',
         match: (e) => plain(e) && (e.key === 'PageUp' || e.key === 'PageDown'),
-        run: (e) => board.zoomBy(e.key === 'PageUp' ? 1.25 : 1 / 1.25) },
-      { group: 'View', keys: [['Home']], desc: 'Show the whole table', match: (e) => plain(e) && e.key === 'Home', run: () => board.fitView() },
+        run: (e) => board.camera.zoomBy(e.key === 'PageUp' ? 1.25 : 1 / 1.25) },
+      { group: 'View', keys: [['Home']], desc: 'Show the whole table', match: (e) => plain(e) && e.key === 'Home', run: () => board.camera.fit() },
     ];
 
     window.addEventListener('keydown', (e) => this.onKey(e));

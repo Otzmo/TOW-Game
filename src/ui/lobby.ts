@@ -1,5 +1,6 @@
 import type { Store } from '../model/store';
-import { isOnlineAvailable, normalizeCode, OnlineRoom, type Seat } from '../net/room';
+import type { OnlineRoom } from '../net/onlineRoom';
+import { isOnlineAvailable, loadOnlineRoom, normalizeCode, type Seat } from '../net/room';
 
 const $ = (id: string) => document.getElementById(id)!;
 
@@ -17,8 +18,8 @@ export class Lobby {
       this.message('Online play is not set up yet (Firebase configuration missing).');
     }
 
-    create.onclick = () => this.run(() => OnlineRoom.create(this.store));
-    join.onclick = () => this.run(() => OnlineRoom.join(input.value, this.store));
+    create.onclick = () => this.run(async () => (await loadOnlineRoom()).create(this.store));
+    join.onclick = () => this.run(async () => (await loadOnlineRoom()).join(input.value, this.store));
     input.onkeydown = (e) => { if (e.key === 'Enter') join.click(); };
     $('lobby-offline').onclick = () => { $('lobby').hidden = true; };
 

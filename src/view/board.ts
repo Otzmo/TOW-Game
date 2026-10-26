@@ -1,7 +1,9 @@
 import { Application, Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
 import { BoardTools } from './boardTools';
+import { Camera } from './camera';
+import { drawCharges as paintCharges, drawRanges as paintRanges } from './overlays';
 import {
-  alignToBases, chargePathCheck, chargeTravel, contactPoses, frontCenter, minChargeDistance,
+  alignToBases, chargePathCheck, chargeTravel, contactPoses, minChargeDistance, toLocal, toTable,
 } from '../model/flow';
 import {
   isJoined, isNonUnitChange, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
@@ -11,7 +13,7 @@ import type { History } from '../model/history';
 import { currentPhase } from '../model/phases';
 import type { Point, UnitState } from '../model/types';
 import { createTable } from './table';
-import { GUIDE_COLOR, OK_COLOR, PPI, STRAY_COLOR, UPRIGHT } from './theme';
+import { GUIDE_COLOR, OK_COLOR, PPI, STRAY_COLOR } from './theme';
 import { UnitView } from './unitView';
 
 const DRAG_THRESHOLD = 3; // Pixel, ab denen ein Klick als Ziehen gilt
@@ -45,15 +47,6 @@ type Drag =
   | UnitDrag
   | ModelDrag;
 
-/** Bewegungswert der Einheit: erster Zahlenwert in der M-Spalte (bei Reitern der des Reittiers). */
-function movement(u: UnitState): number | null {
-  for (const row of u.info.profile) {
-    const m = Number.parseInt(row.values[0], 10);
-    if (Number.isFinite(m)) return m;
-  }
-  return null;
-}
-
 /** Winkel auf (−π, π] bringen. */
 const normAngle = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
 
@@ -70,6 +63,7 @@ const CHARGE_SNAP = 1;
 export class Board {
   readonly world = new Container();
   readonly tools: BoardTools;
+  readonly camera: Camera;
   private readonly unitLayer = new Container();
   private readonly rangeLayer = new Container();
   /** Angriffspfeile: wer wen angreift, mit Reaktion und Ergebnis */
@@ -95,13 +89,13 @@ export class Board {
   private moveRun: { unitId: string; total: number; round: number } | null = null;
   selectedId: string | null = null;
 
-  constructor(private app: Application, private store: Store, private history: History, private events: BoardEvents) {
+  constructor(app: Application, private store: Store, private history: History, private events: BoardEvents) {
     const { table } = store.state;
     app.stage.addChild(this.world);
     // Drehpunkt ist die Tischmitte: so lässt sich die Ansicht für den zweiten Spieler um 180° drehen
-    this.world.pivot.set((table.width * PPI) / 2, (table.height * PPI) / 2);
+    // Zahlen und × der Maßbänder bleiben nach jedem Zoomen auf dem Bildschirm gleich groß
+    this.camera = new Camera(app, this.world, table, () => this.tools?.showShared());
     app.ticker.add(() => {
-      if (this.viewRotated) this.keepTextUpright(this.world);
       // Einheiten gleiten zur neuen Stelle, Auswahl und Flucht pulsieren
       const now = performance.now();
       for (const v of this.views.values()) v.tick(now);
@@ -138,7 +132,6 @@ export class Board {
     app.stage.on('globalpointermove', (e) => this.onPointerMove(e));
     app.stage.on('pointerup', () => this.endDrag());
     app.stage.on('pointerupoutside', () => this.endDrag());
-    app.canvas.addEventListener('wheel', (e) => this.onWheel(e), { passive: false });
 
     store.subscribe((state, change) => {
       if (change.chargeId || change.loaded || change.meta) this.drawCharges();
@@ -197,7 +190,7 @@ export class Board {
     if (!c || !host || !this.canMove(charId)) return;
     const { h } = unitFootprint(host, units);
     const depth = c.info.baseDepth / 25.4;
-    const p = this.unitPoint(host, 0, -h / 2 - depth / 2 - 0.5);
+    const p = toTable(host, 0, -h / 2 - depth / 2 - 0.5);
     this.history.record();
     this.store.updateUnit(charId, { joinedTo: null, x: p.x, y: p.y, rotation: host.rotation });
     if (host.positions?.[charId]) {
@@ -324,84 +317,12 @@ export class Board {
 
   /** Pfeile für angesagte Angriffe; nach der Angriffsbewegung verschwindet der Pfeil. */
   private drawCharges(): void {
-    this.chargeLayer.removeChildren().forEach((c) => c.destroy());
-    const { units, charges } = this.store.state;
-    for (const c of Object.values(charges)) {
-      const charger = units[c.charger];
-      const target = units[c.target];
-      if (!charger || !target || c.status === 'rolled') continue;
-      const a = frontCenter(charger, units);
-      // Nächster Punkt auf der Fläche des Ziels
-      const { w, h } = unitFootprint(target, units);
-      const local = this.toUnitLocal(target, a);
-      const b = this.unitPoint(target, Math.max(-w / 2, Math.min(w / 2, local.x)), Math.max(-h / 2, Math.min(h / 2, local.y)));
-      const color = c.success === true ? OK_COLOR : c.success === false ? 0x9a9fa4 : STRAY_COLOR;
-      const g = new Graphics();
-      const ang = Math.atan2(b.y - a.y, b.x - a.x);
-      const head = 1.1;
-      g.moveTo(a.x * PPI, a.y * PPI).lineTo(b.x * PPI, b.y * PPI).stroke({ width: 3, color, alpha: 0.95 });
-      g.poly([
-        b.x * PPI, b.y * PPI,
-        (b.x - head * Math.cos(ang - 0.45)) * PPI, (b.y - head * Math.sin(ang - 0.45)) * PPI,
-        (b.x - head * Math.cos(ang + 0.45)) * PPI, (b.y - head * Math.sin(ang + 0.45)) * PPI,
-      ]).fill(color);
-      // Ziel umranden
-      const corners = [[-1, -1], [1, -1], [1, 1], [-1, 1]].flatMap(([sx, sy]) => {
-        const p = this.unitPoint(target, (sx * w) / 2 + sx * 0.15, (sy * h) / 2 + sy * 0.15);
-        return [p.x * PPI, p.y * PPI];
-      });
-      g.poly(corners).stroke({ width: 2, color, alpha: 0.9 });
-      const label = new Text({
-        text: `⚔ Charge${chargeRange(c)}`,
-        style: { fontFamily: 'system-ui', fontSize: 13, fontWeight: '700', fill: color, stroke: { color: 0x000000, width: 3.5 } },
-        resolution: 6,
-      });
-      label.anchor.set(0.5);
-      label.position.set(((a.x + b.x) / 2) * PPI, ((a.y + b.y) / 2) * PPI - 8);
-      this.chargeLayer.addChild(g, label);
-    }
+    paintCharges(this.chargeLayer, this.store.state);
   }
 
-  /**
-   * Reichweiten der ausgewählten Einheit als Abstand um ihre Fläche:
-   * Bewegung (M), Marsch (2 × M) und größte mögliche Angriffsreichweite (M + 6, Swiftstride +3, Battle Hunger +2).
-   */
+  /** Bewegungs- und Angriffsreichweiten der ausgewählten Einheit (wenn eingeschaltet) */
   private drawRanges(): void {
-    this.rangeLayer.removeChildren().forEach((c) => c.destroy());
-    const units = this.store.state.units;
-    let u = this.selectedId ? units[this.selectedId] : undefined;
-    if (u?.joinedTo && units[u.joinedTo]) u = units[u.joinedTo];
-    if (!this.showRanges || !u) return;
-    const m = movement(u);
-    if (!m) return;
-    // Regeln der Einheit, ihres Reittiers und angeschlossener Charaktere
-    const all = [u, ...Object.values(units).filter((c) => c.joinedTo === u!.id)];
-    const has = (re: RegExp) => all.some((x) => [...x.info.rules, ...x.info.items].some((r) => re.test(r.name)));
-    const base = m + 6;
-    const extras: [string, number][] = [];
-    if (has(/swiftstride/i)) extras.push(['Swiftstride', 3]);
-    if (has(/battle hunger/i)) extras.push(['Battle Hunger', 2]);
-    const charge = base + extras.reduce((s, [, d]) => s + d, 0);
-    const { w, h } = unitFootprint(u, units);
-    const c = new Container();
-    c.position.set(u.x * PPI, u.y * PPI);
-    c.rotation = u.rotation;
-    const g = new Graphics();
-    c.addChild(g);
-    const ranges: [number, string, number][] = [[m, `Move ${m}″`, 0xffffff], [2 * m, `March ${2 * m}″`, 0x9ab4d8],
-      [base, `Charge max. ${base}″ (M+6)`, 0xf0a35e]];
-    // Swiftstride und Battle Hunger verlängern den Angriff: eigener Ring mit Aufschlüsselung
-    if (extras.length) ranges.push([charge, `With ${extras.map(([n, d]) => `${n} +${d}`).join(', ')}: ${charge}″`, STRAY_COLOR]);
-    for (const [d, text, color] of ranges) {
-      const D = d * PPI;
-      g.roundRect((-w / 2) * PPI - D, (-h / 2) * PPI - D, w * PPI + 2 * D, h * PPI + 2 * D, D)
-        .stroke({ width: 1.5, color, alpha: 0.7 });
-      const t = new Text({ text, style: { fontFamily: 'system-ui', fontSize: 12, fontWeight: '600', fill: color, stroke: { color: 0x000000, width: 3 } }, resolution: 6 });
-      t.anchor.set(0.5, 1);
-      t.position.set(0, (-h / 2) * PPI - D - 1);
-      c.addChild(t);
-    }
-    this.rangeLayer.addChild(c);
+    paintRanges(this.rangeLayer, this.store.state, this.showRanges ? this.selectedId : null);
   }
 
   /**
@@ -412,7 +333,7 @@ export class Board {
     const units = this.store.state.units;
     const u = units[unitId];
     const me = unitFootprint(u, units);
-    const front = this.unitPoint(u, 0, -me.h / 2);
+    const front = toTable(u, 0, -me.h / 2);
     let best: { dist: number; target: UnitState; p: Point; n: Point; side: string } | null = null;
     for (const t of Object.values(units)) {
       if (t.owner === u.owner || isJoined(t, units) || t.status === 'destroyed' || t.status === 'fledOff') continue;
@@ -424,7 +345,7 @@ export class Board {
         ['left flank', { x: -w / 2, y: 0 }, { x: -1, y: 0 }, h / 2],
         ['right flank', { x: w / 2, y: 0 }, { x: 1, y: 0 }, h / 2],
       ];
-      const local = this.toUnitLocal(t, front);
+      const local = toLocal(t, front);
       for (const [side, mid, n, half] of edges) {
         const along = n.x === 0 ? local.x - mid.x : local.y - mid.y;
         const out = (local.x - mid.x) * n.x + (local.y - mid.y) * n.y;
@@ -433,7 +354,7 @@ export class Board {
         const step = (n.x === 0 ? t.info.baseWidth : t.info.baseDepth) / 25.4;
         const clamped = alignToBases(along, half, step, me.w);
         const lp = n.x === 0 ? { x: mid.x + clamped, y: mid.y } : { x: mid.x, y: mid.y + clamped };
-        const p = this.unitPoint(t, lp.x, lp.y);
+        const p = toTable(t, lp.x, lp.y);
         const c = Math.cos(t.rotation);
         const s = Math.sin(t.rotation);
         const wn = { x: n.x * c - n.y * s, y: n.x * s + n.y * c };
@@ -468,20 +389,6 @@ export class Board {
     return fix.note;
   }
 
-  /**
-   * Freier Bereich für den Tisch in Bildschirmpixeln (zwischen der Spalte links und der Spalte rechts,
-   * abzüglich Platz für die Zoll-Leisten). Kommt aus main.ts.
-   */
-  viewArea: () => { left: number; top: number; right: number; bottom: number } = () =>
-    ({ left: 0, top: 0, right: this.app.screen.width, bottom: this.app.screen.height });
-
-  /** Kleinster Zoom: der ganze Tisch passt in den freien Bereich. */
-  private minScale(): number {
-    const a = this.viewArea();
-    const { width, height } = this.store.state.table;
-    return Math.min((a.right - a.left) / (width * PPI), (a.bottom - a.top) / (height * PPI));
-  }
-
   // --- Aktionen für Tastenkürzel -----------------------------------------------
 
   /** Ausgewählte Einheit (ein angeschlossener Charakter bewegt seine Einheit) */
@@ -506,7 +413,7 @@ export class Board {
     const u = this.movableUnit();
     if (!u || !this.canMove(u.id)) return;
     this.history.record();
-    const p = this.unitPoint(u, right, -forward);
+    const p = toTable(u, right, -forward);
     this.store.updateUnit(u.id, { x: p.x, y: p.y });
     const apart = this.separate(u.id, { x: u.x, y: u.y, rotation: u.rotation });
     const dist = Math.hypot(forward, right);
@@ -542,81 +449,6 @@ export class Board {
     const i = list.findIndex((u) => u.id === this.selectedId);
     const next = list[(i + dir + list.length) % list.length] ?? list[0];
     this.select(next.id);
-  }
-
-  /** Um die Mitte des freien Bereichs zoomen. */
-  zoomBy(factor: number): void {
-    const a = this.viewArea();
-    const mx = (a.left + a.right) / 2;
-    const my = (a.top + a.bottom) / 2;
-    const s = this.world.scale.x;
-    const ns = Math.min(8, Math.max(this.minScale(), s * factor));
-    const wx = (mx - this.world.x) / s;
-    const wy = (my - this.world.y) / s;
-    this.world.scale.set(ns);
-    this.world.position.set(mx - wx * ns, my - wy * ns);
-    this.clampView();
-  }
-
-  /** Ansicht verschieben (Bildschirmpixel), bleibt an den Leisten. */
-  panBy(dx: number, dy: number): void {
-    this.world.position.set(this.world.x + dx, this.world.y + dy);
-    this.clampView();
-  }
-
-  /** Ist die Ansicht um 180° gedreht? */
-  get viewRotated(): boolean {
-    return Math.abs(this.world.rotation) > 1;
-  }
-
-  /** Ansicht um 180° drehen (nur die Anzeige; Positionen bleiben für beide Spieler gleich) */
-  setViewRotated(on: boolean): void {
-    if (on === this.viewRotated) return;
-    this.world.rotation = on ? Math.PI : 0;
-    this.fitView();
-    this.onViewRotate(on);
-  }
-
-  /** Wird gerufen, wenn sich die Drehung der Ansicht ändert (für den Knopf) */
-  onViewRotate: (rotated: boolean) => void = () => {};
-
-  /**
-   * In der gedrehten Ansicht stünden Texte auf dem Kopf: jeden Text, der gerade kopfüber steht, um 180° drehen.
-   * Läuft bei jedem Bild; neu gezeichnete Texte werden so sofort wieder aufrecht.
-   */
-  private keepTextUpright(node: Container): void {
-    for (const child of node.children) {
-      // Schilder (Name mit Plakette, Trefferzähler) als Ganzes um ihre Mitte drehen, damit nichts auseinanderfällt
-      if (child.label === UPRIGHT || child instanceof Text) {
-        const m = child.worldTransform;
-        if (Math.cos(Math.atan2(m.b, m.a)) < -0.01) child.rotation += Math.PI;
-      } else if (child.children?.length) this.keepTextUpright(child as Container);
-    }
-  }
-
-  /** Ganzen Tisch zeigen, mittig zwischen den Spalten links und rechts. */
-  fitView(): void {
-    this.world.scale.set(this.minScale());
-    this.clampView();
-  }
-
-  /**
-   * Tisch bleibt zwischen den Spalten: Passt er in eine Richtung ganz hinein, liegt er dort mittig;
-   * ist er größer (hineingezoomt), lässt er sich nur so weit verschieben, dass keine Lücke zu den Spalten entsteht.
-   * world.position ist die Bildschirmstelle der Tischmitte (Drehpunkt), darum gilt das auch für die gedrehte Ansicht.
-   */
-  private clampView(): void {
-    const a = this.viewArea();
-    const s = Math.max(this.world.scale.x, this.minScale());
-    this.world.scale.set(s);
-    const { width, height } = this.store.state.table;
-    const w = width * PPI * s;
-    const h = height * PPI * s;
-    const x = w <= a.right - a.left ? (a.left + a.right) / 2 : Math.min(a.left + w / 2, Math.max(a.right - w / 2, this.world.x));
-    const y = h <= a.bottom - a.top ? (a.top + a.bottom) / 2 : Math.min(a.top + h / 2, Math.max(a.bottom - h / 2, this.world.y));
-    this.world.position.set(x, y);
-    // Zahlen und × der Maßbänder bleiben auf dem Bildschirm gleich groß
-    this.tools?.showShared();
   }
 
   private syncUnit(u: UnitState): void {
@@ -681,8 +513,8 @@ export class Board {
     let swing: Swing | undefined;
     if (type === 'swing') {
       const { w, h } = unitFootprint(u, units);
-      const pivot = this.unitPoint(u, (pivotSide * w) / 2, -h / 2);
-      const corner = this.unitPoint(u, (-pivotSide * w) / 2, -h / 2);
+      const pivot = toTable(u, (pivotSide * w) / 2, -h / 2);
+      const corner = toTable(u, (-pivotSide * w) / 2, -h / 2);
       swing = { px: pivot.x, py: pivot.y, cx: corner.x, cy: corner.y,
         startAngle: Math.atan2(p.y - pivot.y, p.x - pivot.x), front: w };
     }
@@ -709,7 +541,7 @@ export class Board {
     const startPositions: Record<string, Point> = {};
     for (const s of layout.slots) startPositions[s.key] = { x: s.x + s.w / 2, y: s.y + s.d / 2 };
     this.history.record();
-    this.drag = { type: 'model', unitId, key, start: startPositions[key], startPointer: this.toUnitLocal(u, this.toInches(e)),
+    this.drag = { type: 'model', unitId, key, start: startPositions[key], startPointer: toLocal(u, this.toInches(e)),
       startPositions, startStray: layout.stray.size, gx: e.global.x, gy: e.global.y, moved: false };
     const select = charId ?? unitId;
     this.select(select);
@@ -747,14 +579,13 @@ export class Board {
     }
 
     if (d.type === 'pan') {
-      this.world.position.set(d.wx + e.global.x - d.gx, d.wy + e.global.y - d.gy);
-      this.clampView();
+      this.camera.moveTo(d.wx + e.global.x - d.gx, d.wy + e.global.y - d.gy);
       return;
     }
     const u = this.store.state.units[d.unitId];
     const p = this.toInches(e);
     if (d.type === 'model') {
-      const lp = this.toUnitLocal(u, p);
+      const lp = toLocal(u, p);
       const pos = { x: d.start.x + lp.x - d.startPointer.x, y: d.start.y + lp.y - d.startPointer.y };
       this.store.updateUnit(d.unitId, { positions: { ...d.startPositions, ...u.positions, [d.key]: pos } });
       this.drawModelGuide(d);
@@ -827,7 +658,7 @@ export class Board {
       const c = units[d.unitId];
       if (isSkirmish(target)) {
         // Bei Plänklern steht der Charakter dort, wo er losgelassen wurde
-        const positions = { ...this.currentPositions(target), [c.id]: this.toUnitLocal(target, c) };
+        const positions = { ...this.currentPositions(target), [c.id]: toLocal(target, c) };
         this.store.updateUnit(target.id, recenter(target, { ...units, [c.id]: { ...c, joinedTo: target.id } }, positions));
       }
       this.store.updateUnit(d.unitId, { joinedTo: target.id });
@@ -867,8 +698,8 @@ export class Board {
     const u = units[d.unitId];
     const layout = unitLayout(u, units);
     const end = u.positions?.[d.key] ?? d.start;
-    const a = this.unitPoint(u, d.start.x, d.start.y);
-    const b = this.unitPoint(u, end.x, end.y);
+    const a = toTable(u, d.start.x, d.start.y);
+    const b = toTable(u, end.x, end.y);
     const near = nearestGap(layout.slots, d.key);
     const tooFar = layout.stray.size > d.startStray;
     this.guide.clear();
@@ -962,45 +793,9 @@ export class Board {
     this.moveLabel.position.set(u.x * PPI, u.y * PPI - Math.max(view.w, view.h) / 2 - 2 * PPI);
   }
 
-  private onWheel(e: WheelEvent): void {
-    e.preventDefault();
-    const f = e.deltaY < 0 ? 1.12 : 1 / 1.12;
-    const ns = Math.min(8, Math.max(this.minScale(), this.world.scale.x * f));
-    const r = this.app.canvas.getBoundingClientRect();
-    const mx = e.clientX - r.left;
-    const my = e.clientY - r.top;
-    const wx = (mx - this.world.x) / this.world.scale.x;
-    const wy = (my - this.world.y) / this.world.scale.y;
-    this.world.scale.set(ns);
-    this.world.position.set(mx - wx * ns, my - wy * ns);
-    this.clampView();
-  }
-
-  /** Tischpunkt (Zoll) in Einheitskoordinaten umrechnen (Front = −y). */
-  private toUnitLocal(u: UnitState, p: Point): Point {
-    const c = Math.cos(-u.rotation);
-    const s = Math.sin(-u.rotation);
-    const dx = p.x - u.x;
-    const dy = p.y - u.y;
-    return { x: dx * c - dy * s, y: dx * s + dy * c };
-  }
-
-  /** Punkt in Einheitskoordinaten (Zoll, Front = −y) auf den Tisch umrechnen. */
-  private unitPoint(u: UnitState, lx: number, ly: number): { x: number; y: number } {
-    const c = Math.cos(u.rotation);
-    const s = Math.sin(u.rotation);
-    return { x: u.x + lx * c - ly * s, y: u.y + lx * s + ly * c };
-  }
-
   private toInches(e: FederatedPointerEvent): { x: number; y: number } {
     const p = this.world.toLocal(e.global);
     return { x: p.x / PPI, y: p.y / PPI };
   }
 }
 
-/** „· 7.3–8.1″“: kleinste Charge-Distanz bis zur Distanz mit maximiertem Kontakt */
-function chargeRange(c: { distance?: number | null; maxDistance?: number | null }): string {
-  if (c.distance == null) return '';
-  const max = c.maxDistance != null && c.maxDistance > c.distance + 0.05 ? `–${c.maxDistance.toFixed(1)}` : '';
-  return ` · ${c.distance.toFixed(1)}${max}″`;
-}

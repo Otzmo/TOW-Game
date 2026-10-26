@@ -108,13 +108,15 @@ export function wizardLevel(u: UnitState): number {
 
 // --- Angriffe -----------------------------------------------------------------
 
-function toLocal(u: UnitState, p: Point): Point {
+/** Tischpunkt (Zoll) in Einheitskoordinaten umrechnen (Front = −y). */
+export function toLocal(u: UnitState, p: Point): Point {
   const c = Math.cos(-u.rotation);
   const s = Math.sin(-u.rotation);
   return { x: (p.x - u.x) * c - (p.y - u.y) * s, y: (p.x - u.x) * s + (p.y - u.y) * c };
 }
 
-function toTable(u: UnitState, lx: number, ly: number): Point {
+/** Punkt in Einheitskoordinaten (Zoll, Front = −y) auf den Tisch umrechnen. */
+export function toTable(u: UnitState, lx: number, ly: number): Point {
   const c = Math.cos(u.rotation);
   const s = Math.sin(u.rotation);
   return { x: u.x + lx * c - ly * s, y: u.y + lx * s + ly * c };

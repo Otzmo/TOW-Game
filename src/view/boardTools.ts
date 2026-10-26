@@ -1,9 +1,10 @@
 import { Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
 import type { History } from '../model/history';
-import { newObject, OBJECT_TYPES, objectPolygon, pointInPolygon, segmentHitsPolygon } from '../model/objects';
+import { newObject, OBJECT_TYPES, objectPolygon, segmentHitsPolygon } from '../model/objects';
+import { basesOnTable, templateHits } from '../model/templates';
 import { CENTRE_CIRCLE, circleBlocksDeployment, deploymentZones, TABLE_H, TABLE_W } from '../model/battlefield';
 import { currentPhase } from '../model/phases';
-import { isJoined, unitLayout, type Store } from '../model/store';
+import type { Store } from '../model/store';
 import type { BoardObject, Point } from '../model/types';
 import { ObjectView } from './objectView';
 import { GUIDE_COLOR, OK_COLOR, PLAYER_COLORS, PPI, STRAY_COLOR, UPRIGHT } from './theme';
@@ -265,28 +266,11 @@ export class BoardTools {
     const { units, objects } = this.store.state;
     const templates = Object.values(objects).filter((o) => o.kind === 'template');
     if (!templates.length) return;
-    // Alle Bases auf dem Tisch als Vierecke
-    const bases: Point[][] = [];
-    for (const u of Object.values(units)) {
-      if (isJoined(u, units) || u.ambush || u.status === 'destroyed' || u.status === 'fledOff') continue;
-      const c = Math.cos(u.rotation);
-      const s = Math.sin(u.rotation);
-      for (const sl of unitLayout(u, units).slots) {
-        bases.push([[sl.x, sl.y], [sl.x + sl.w, sl.y], [sl.x + sl.w, sl.y + sl.d], [sl.x, sl.y + sl.d]]
-          .map(([lx, ly]) => ({ x: u.x + lx * c - ly * s, y: u.y + lx * s + ly * c })));
-      }
-    }
+    const bases = basesOnTable(units);
     for (const o of templates) {
-      const poly = objectPolygon(o);
-      let full = 0;
-      let partial = 0;
-      for (const b of bases) {
-        const inside = b.filter((p) => pointInPolygon(p, poly)).length;
-        const touched = inside > 0 || pointInPolygon(poly[0], b) || b.some((p, i) => segmentHitsPolygon(p, b[(i + 1) % 4], poly));
-        if (!touched) continue;
-        const whole = inside === 4;
-        if (whole) full++; else partial++;
-        g.poly(b.flatMap((p) => [p.x * PPI, p.y * PPI])).fill({ color: 0xffd040, alpha: whole ? 0.55 : 0.22 })
+      const { full, partial, hits } = templateHits(o, bases);
+      for (const { corners, whole } of hits) {
+        g.poly(corners.flatMap((p) => [p.x * PPI, p.y * PPI])).fill({ color: 0xffd040, alpha: whole ? 0.55 : 0.22 })
           .stroke({ width: whole ? 1.5 : 1, color: 0xfff1a8, alpha: whole ? 0.9 : 0.5 });
       }
       if (!full && !partial) continue;

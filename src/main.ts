@@ -131,14 +131,14 @@ async function start(): Promise<void> {
   const views = new ViewToggles(() => showTable());
   // Ansicht von Hand um 180° drehen (z. B. offline am selben Bildschirm)
   const rotateBtn = document.getElementById('toggle-rotate')!;
-  rotateBtn.onclick = () => board.setViewRotated(!board.viewRotated);
-  board.onViewRotate = (on) => rotateBtn.classList.toggle('on', on);
+  rotateBtn.onclick = () => board.camera.setRotated(!board.camera.rotated);
+  board.camera.onRotate = (on) => rotateBtn.classList.toggle('on', on);
   new Shortcuts({ board, panel, gameBar, toolbox, history, views });
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
   // Ganzen Tisch zeigen, auch nach jedem Armeeimport
   // Freier Bereich zwischen der Spalte links und der (immer sichtbaren) Popup-Spalte rechts
-  board.viewArea = () => {
+  board.camera.viewArea = () => {
     const margin = 34; // Platz für die Zoll-Leisten
     const left = document.getElementById('sidebar')!;
     return {
@@ -148,7 +148,7 @@ async function start(): Promise<void> {
       bottom: app.screen.height - margin,
     };
   };
-  const showTable = () => board.fitView();
+  const showTable = () => board.camera.fit();
   // Die linke Spalte ist so breit wie ihr Inhalt; Fenster und Hinweise richten sich nach dieser Breite
   const sidebar = document.getElementById('sidebar')!;
   new ResizeObserver(() => {
@@ -219,7 +219,7 @@ async function start(): Promise<void> {
     orientedFor = key;
     const own = zones?.[seat];
     const ownY = own ? own.reduce((s, p) => s + p.y, 0) / own.length : seat === 'p1' ? TABLE_H : 0;
-    board.setViewRotated(ownY < TABLE_H / 2);
+    board.camera.setRotated(ownY < TABLE_H / 2);
   }
   store.subscribe((_, c) => { if (c.meta || c.loaded) orientView(); });
 }
