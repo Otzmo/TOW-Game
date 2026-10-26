@@ -695,13 +695,20 @@ export class Board {
     if (d.type === 'move') {
       let x = p.x + d.ox;
       let y = p.y + d.oy;
-      // Nach der Aufstellung geht es immer gerade vor oder zurück (außer Plänkler); Shift = frei
+      // Nach der Aufstellung geht es gerade: vor/zurück oder seitwärts, je nachdem, wohin mehr gezogen wird
+      // (Plänkler frei; Shift = frei)
       if (!isSkirmish(u) && currentPhase(this.store.state.meta) !== 'setup' && !e.shiftKey) {
         const fx = Math.sin(d.srot);
         const fy = -Math.cos(d.srot);
         const along = (x - d.sx) * fx + (y - d.sy) * fy;
-        x = d.sx + fx * along;
-        y = d.sy + fy * along;
+        const side = (x - d.sx) * -fy + (y - d.sy) * fx;
+        if (Math.abs(along) >= Math.abs(side)) {
+          x = d.sx + fx * along;
+          y = d.sy + fy * along;
+        } else {
+          x = d.sx - fy * side;
+          y = d.sy + fx * side;
+        }
       }
       this.store.updateUnit(d.unitId, { x, y });
     } else if (d.swing) {
