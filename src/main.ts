@@ -12,6 +12,7 @@ import { DestroyedPanel } from './ui/destroyed';
 import { DiceLog, DicePanel } from './ui/dice';
 import { NotesPanel } from './ui/notes';
 import { SpellsPanel } from './ui/spells';
+import { openSheet } from './ui/sheets';
 import { PromptCenter } from './ui/prompts';
 import { SetupPanel } from './ui/setupPanel';
 import { GameBar } from './ui/gameBar';
@@ -73,9 +74,17 @@ async function start(): Promise<void> {
     remove: () => board.tools.removeSelected(),
   }, (entry) => addLog(entry));
   const board: Board = new Board(app, store, history, {
-    onSelect: (id) => panel.show(id),
+    // Einheit angeklickt: ihr Fenster erscheint immer (ein anderes offenes Fenster tritt zurück)
+    onSelect: (id) => {
+      if (id) openSheet(null);
+      panel.show(id);
+    },
     // Missionsziele: kein Fenster, nur der 6″-Kreis auf dem Tisch
-    onSelectObject: (id) => objectPanel.show(id && store.state.objects[id]?.type === 'objective' ? null : id),
+    onSelectObject: (id) => {
+      const objective = !!id && store.state.objects[id]?.type === 'objective';
+      if (id && !objective) openSheet(null);
+      objectPanel.show(objective ? null : id);
+    },
     onAction: (id, text) => {
       panel.setLastAction(id, text);
       const name = store.state.units[id]?.info.name ?? '';

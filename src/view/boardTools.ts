@@ -13,8 +13,7 @@ export type Tool = 'select' | 'measure' | 'sight' | 'ping' | { place: string };
 
 /** Kennung dieses Geräts: eigenes Maßband nicht doppelt zeichnen */
 const DEVICE = Math.random().toString(36).slice(2, 10);
-/** So lange bleiben Maßband (nach dem Loslassen) und Ping sichtbar (ms) */
-const MEASURE_LINGER = 4000;
+/** So lange bleibt ein Ping sichtbar (ms) */
 const PING_TIME = 5000;
 
 const DRAG_THRESHOLD = 3;
@@ -60,7 +59,6 @@ export class BoardTools {
   private readonly pingGraphics = new Graphics();
   private shownMeasure = 0;
   private shownPing = 0;
-  private measureTimer = 0;
   private lastSent = 0;
   private drag: ObjectDrag | null = null;
   tool: Tool = 'select';
@@ -135,7 +133,6 @@ export class BoardTools {
       this.select(obj.id);
       return true;
     }
-    if (this.selectedId) this.select(null);
     return false;
   }
 
@@ -176,14 +173,11 @@ export class BoardTools {
     if (!d) return false;
     this.drag = null;
     if (!('a' in d) && !d.moved) this.history.dropIfUnchanged();
-    if ('a' in d && d.moved) {
-      this.sendMeasure(d.type, d.a, d.b);
-      // Kurz stehen lassen, dann für beide ausblenden
-      clearTimeout(this.measureTimer);
-      const ts = this.store.state.meta.measure?.ts;
-      this.measureTimer = window.setTimeout(() => {
-        if (this.store.state.meta.measure?.ts === ts) this.store.setMeta({ measure: null });
-      }, MEASURE_LINGER);
+    if ('a' in d) {
+      // Das Maßband bleibt als Markierung auf dem Tisch liegen (für beide), bis neu gemessen oder Esc gedrückt wird
+      if (d.moved) this.sendMeasure(d.type, d.a, d.b);
+      this.setTool('select');
+      this.showShared();
     }
     return true;
   }
@@ -194,10 +188,18 @@ export class BoardTools {
     this.store.setMeta({ measure: { type, a, b, by: DEVICE, ts: this.lastSent } });
   }
 
-  /** Maßband des Mitspielers und Pings zeigen (eigenes Maßband zeichnet drawMeasure direkt) */
+  /** Liegendes Maßband entfernen (für beide). true = es lag eins */
+  clearMeasure(): boolean {
+    if (!this.store.state.meta.measure) return false;
+    this.store.setMeta({ measure: null });
+    return true;
+  }
+
+  /** Liegendes Maßband und Pings zeigen; während man selbst misst, zeichnet drawMeasure direkt */
   private showShared(): void {
     const { measure, ping } = this.store.state.meta;
-    if (!measure || measure.by === DEVICE) {
+    const measuring = !!this.drag && 'a' in this.drag;
+    if (!measure || (measuring && measure.by === DEVICE)) {
       if (this.shownMeasure) {
         this.remoteGraphics.clear();
         this.remoteLabel.text = '';
@@ -278,7 +280,7 @@ export class BoardTools {
     this.drag = type === 'move'
       ? { type, id, ox: o.x - p.x, oy: o.y - p.y, gx: e.global.x, gy: e.global.y, moved: false }
       : { type, id, gx: e.global.x, gy: e.global.y, moved: false };
-    if (this.selectedId !== id) this.select(id);
+    this.select(id);
   }
 
   // --- Maßband und Sichtlinie -------------------------------------------------

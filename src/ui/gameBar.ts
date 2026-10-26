@@ -4,7 +4,6 @@ import { victoryPoints } from '../model/score';
 import { isSkirmish, unitLayout, type Store } from '../model/store';
 import type { GameMeta, LogKind, PlayerId } from '../model/types';
 
-import { missionStatus } from '../model/mission';
 import { playerName } from '../model/players';
 
 type Step = Pick<GameMeta, 'phase' | 'sub' | 'active' | 'round'>;
@@ -26,10 +25,6 @@ export class GameBar {
     $('g-confirm-no').onclick = () => { $('g-confirm').hidden = true; };
     $('g-undo').onclick = () => history.undo();
     $('g-redo').onclick = () => history.redo();
-    $('score-panel').onclick = (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-score]');
-      if (btn) this.scoreMission(btn.dataset.score!);
-    };
     $('score-panel').onchange = (e) => {
       const box = e.target as HTMLInputElement;
       if (box.dataset.mission) {
@@ -70,7 +65,7 @@ export class GameBar {
     const round = meta.round;
     // Angriffe gelten nur für die Runde, in der sie angesagt wurden
     for (const id of Object.keys(this.store.state.charges)) this.store.setCharge(id, null);
-    this.store.setMeta({ round: round + 1, active: meta.setup?.firstPlayer ?? 'p1' });
+    this.store.setMeta({ round: round + 1, active: meta.setup?.firstPlayer ?? 'p1', measure: null });
     this.log('turn', `Round ${round} ends · Round ${round + 1} begins`);
   }
 
@@ -129,16 +124,6 @@ export class GameBar {
     this.renderScore();
   }
 
-  /** Mission werten: die Siegpunkte des aktuellen Stands kommen zu den Missionspunkten dazu */
-  private scoreMission(key: string): void {
-    if (this.me === 'spectator') return;
-    const status = missionStatus(this.store.state, playerName).find((m) => m.key === key);
-    if (!status) return;
-    const prev = this.store.state.meta.missionVp ?? {};
-    this.store.setMeta({ missionVp: { p1: (prev.p1 ?? 0) + status.vp.p1, p2: (prev.p2 ?? 0) + status.vp.p2 } });
-    this.log('turn', `${status.name} scored (round ${this.store.state.meta.round}): ${playerName('p1')} +${status.vp.p1}, ${playerName('p2')} +${status.vp.p2}`);
-  }
-
   /** Scoring: je Spieler Kill points (automatisch) + Mission points (eintragen oder per Knopf werten) = Summe */
   private renderScore(): void {
     const { state } = this.store;
@@ -154,16 +139,11 @@ export class GameBar {
     // Kill points: Aufschlüsselung im Tooltip
     const killCell = (p: PlayerId) => `<td title="${escapeHtml(kills(p).map((l) => `${l.label}: ${l.vp}`).join('\n') || 'none yet')}">${killTotal(p)}</td>`;
     const missionCell = (p: PlayerId) => `<td><input type="number" min="0" step="5" data-mission="${p}" value="${missionVp?.[p] ?? 0}"></td>`;
-    // Missionswertung kurz: aktueller Stand und Knopf, der ihn zu den Mission points addiert
-    const status = missionStatus(state, playerName).filter((m) => !m.manual);
-    const missionHtml = status.map((m) => `<p class="mission-line" title="${escapeHtml(m.lines.join('\n'))}">
-      ${escapeHtml(m.name)}: now <b>${m.vp.p1}</b> : <b>${m.vp.p2}</b>
-      <button data-score="${m.key}" ${this.me === 'spectator' ? 'disabled' : ''}>+ Score</button></p>`).join('');
     panel.innerHTML = `<h3>Scoring</h3>
       <table class="scoring"><thead><tr><th></th>${head}</tr></thead><tbody>
         <tr><td>Kill points</td>${killCell('p1')}${killCell('p2')}</tr>
         <tr><td>Mission points</td>${missionCell('p1')}${missionCell('p2')}</tr>
         <tr class="sum"><td>Total</td><td>${total('p1')}</td><td>${total('p2')}</td></tr>
-      </tbody></table>${missionHtml}`;
+      </tbody></table>`;
   }
 }

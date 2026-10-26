@@ -554,7 +554,7 @@ export class Board {
     e.stopPropagation();
     // Drehen und Schwenken sofort prüfen; Ziehen erst, wenn sich die Maus wirklich bewegt (Klick = nur ansehen)
     if (this.viewOnly || (type !== 'move' && !this.canMove(unitId))) {
-      if (this.selectedId !== selectId) this.select(selectId);
+      this.select(selectId);
       return;
     }
     const units = this.store.state.units;
@@ -573,7 +573,7 @@ export class Board {
       gx: e.global.x, gy: e.global.y, moved: type !== 'move', swing };
     const view = this.views.get(unitId);
     if (view && type === 'move') view.cursor = 'grabbing';
-    if (this.selectedId !== selectId) this.select(selectId);
+    this.select(selectId);
   }
 
   private startModelDrag(unitId: string, key: string, e: FederatedPointerEvent, charId?: string): void {
@@ -592,7 +592,7 @@ export class Board {
     this.drag = { type: 'model', unitId, key, start: startPositions[key], startPointer: this.toUnitLocal(u, this.toInches(e)),
       startPositions, startStray: layout.stray.size, gx: e.global.x, gy: e.global.y, moved: false };
     const select = charId ?? unitId;
-    if (this.selectedId !== select) this.select(select);
+    this.select(select);
   }
 
   /** Eigene Einheit unter dem Mittelpunkt eines frei bewegten Charakters, der er beitreten kann. */
@@ -679,10 +679,8 @@ export class Board {
     const d = this.drag;
     this.drag = null;
     if (!d) return;
-    if (d.type === 'pan') {
-      if (!d.moved) this.select(null);
-      return;
-    }
+    // Klick auf freien Tisch schließt nichts: offene Fenster bleiben, bis man sie schließt oder etwas anderes wählt
+    if (d.type === 'pan') return;
     const view = this.views.get(d.unitId);
     if (view) view.cursor = 'grab';
     this.guide.clear();
