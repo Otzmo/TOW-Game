@@ -4792,6 +4792,226 @@
    ],
    "text": "Containing sorcerous concoctions of sulphurous chemicals and the distilled essence of sundered fire-Daemons, Naptha bombs are unstable explosive flasks which shatter when thrown, unleashing a mass of seething flame.",
    "url": "https://tow.whfb.app/weapons-of-war/naptha-bombs-renegade"
+  },
+  "bolt-thrower": {
+   "slug": "bolt-thrower",
+   "name": "Bolt Thrower",
+   "profiles": [
+    {
+     "name": "Bolt Thrower",
+     "range": "48\"",
+     "strength": "6",
+     "ap": "-3",
+     "rules": [
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (2)",
+      "Through & Through"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Bolt Thrower\n\nBolt Thrower (Profile)Repeater Bolt Thrower\n\nRepeater Bolt Thrower (Profile)",
+   "url": "https://tow.whfb.app/war-machines/bolt-throwers"
+  },
+  "repeater-bolt-thrower": {
+   "slug": "repeater-bolt-thrower",
+   "name": "Repeater Bolt Thrower",
+   "profiles": [
+    {
+     "name": "Repeater Bolt Thrower",
+     "range": "48\"",
+     "strength": "6",
+     "ap": "-3",
+     "rules": [
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (2)",
+      "Rapid Fire",
+      "Through & Through"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Bolt Thrower\n\nBolt Thrower (Profile)Repeater Bolt Thrower\n\nRepeater Bolt Thrower (Profile)",
+   "url": "https://tow.whfb.app/war-machines/bolt-throwers"
+  },
+  "rapid-fire": {
+   "slug": "rapid-fire",
+   "name": "Rapid Fire",
+   "profiles": [
+    {
+     "name": "Rapid Fire",
+     "range": "48\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (1)",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Shots (D3+3)"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Instead of shooting normally, a repeater bolt thrower can ‘rapid fire’ a number of smaller bolts, with the profile given below. If this special rule is used, all shots must be at the same target.\n\nRapid Fire (Profile)",
+   "url": "https://tow.whfb.app/war-machines/rapid-fire"
+  },
+  "stone-thrower": {
+   "slug": "stone-thrower",
+   "name": "Stone Thrower",
+   "profiles": [
+    {
+     "name": "Stone Thrower",
+     "range": "12-60\"",
+     "strength": "4(8)",
+     "ap": "-1(-3)",
+     "rules": [
+      "Bombardment",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (D3+1)",
+      "Stone Thrower Misfire Table"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Stone Thrower (Profile)Notes: This weapon does not use its crew’s Ballistic Skill. Instead, it shoots using the Bombardment special rule. This weapon uses a 3\" blast template and the Stone Thrower Misfire table table. The Multiple Wounds (D3+1) special rule applies only to a single model whose base lies underneath the central hole of the blast template.",
+   "url": "https://tow.whfb.app/war-machines/stone-throwers"
+  },
+  "cannon": {
+   "slug": "cannon",
+   "name": "Cannon",
+   "profiles": [
+    {
+     "name": "Cannon",
+     "range": "48\"",
+     "strength": "8",
+     "ap": "-2",
+     "rules": [
+      "Armour Bane (2)",
+      "Cannon Fire",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (D3)",
+      "Black Powder Misfire Table"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "The following profiles represent the sizes of cannon most often seen:\n\nCannon\n\nCannon (Profile)Great Cannon\n\nGreat Cannon (Profile)Notes: Cannon (of any type) do not use their crew's Ballistic Skill. Instead, they shoot using the Cannon Fire special rule. This weapon uses the Black Powder Misfire table.",
+   "url": "https://tow.whfb.app/war-machines/cannon"
+  },
+  "great-cannon": {
+   "slug": "great-cannon",
+   "name": "Great Cannon",
+   "profiles": [
+    {
+     "name": "Great Cannon",
+     "range": "60\"",
+     "strength": "10",
+     "ap": "-3",
+     "rules": [
+      "Armour Bane (2)",
+      "Cannon Fire",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (D3+1)",
+      "Black Powder Misfire Table"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "The following profiles represent the sizes of cannon most often seen:\n\nCannon\n\nCannon (Profile)Great Cannon\n\nGreat Cannon (Profile)Notes: Cannon (of any type) do not use their crew's Ballistic Skill. Instead, they shoot using the Cannon Fire special rule. This weapon uses the Black Powder Misfire table.",
+   "url": "https://tow.whfb.app/war-machines/cannon"
+  },
+  "grapeshot": {
+   "slug": "grapeshot",
+   "name": "Grapeshot",
+   "profiles": [
+    {
+     "name": "Grapeshot",
+     "range": "12\"",
+     "strength": "4",
+     "ap": "-1",
+     "rules": [
+      "Cumbersome",
+      "Move or Shoot",
+      "Needs More Nails",
+      "Black Powder Misfire Table"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Instead of firing normally, cannon crew can opt to fire grapeshot. They do this by loading the gun with canisters filled with rusty nails, handgun bullets and other small projectiles – effectively creating a huge blunderbuss.\n\nGrapeshot (Profile)Notes: Cannon (of any type) do not use their crew’s Ballistic Skill when firing grapeshot. Instead, they shoot using the Needs More Nails special rule. This weapon uses the Black Powder Misfire table.",
+   "url": "https://tow.whfb.app/war-machines/grapeshot"
+  },
+  "organ-gun": {
+   "slug": "organ-gun",
+   "name": "Organ Gun",
+   "profiles": [
+    {
+     "name": "Organ Gun",
+     "range": "30\"",
+     "strength": "5",
+     "ap": "-1",
+     "rules": [
+      "Armour Bane (2)",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multi-Barrelled",
+      "Black Powder Misfire Table"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Organ Gun (Profile)Notes: This weapon uses the Black Powder Misfire table.",
+   "url": "https://tow.whfb.app/war-machines/organ-guns"
+  },
+  "mortar": {
+   "slug": "mortar",
+   "name": "Mortar",
+   "profiles": [
+    {
+     "name": "Mortar",
+     "range": "12-48\"",
+     "strength": "2(6)",
+     "ap": "-2(-3)",
+     "rules": [
+      "Armour Bane (1)",
+      "Bombardment",
+      "Cumbersome",
+      "Move or Shoot",
+      "Multiple Wounds (D3)",
+      "Black Powder Misfire Table"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Mortar (Profile)Notes: This weapon does not use its crew’s Ballistic Skill. Instead, it shoots like a stone thrower, using the Bombardment special rule. This weapon uses a 5\" blast template and the Black Powder Misfire table. The Multiple Wounds (D3) special rule applies only to a single model whose base lies underneath the central hole of the blast template.",
+   "url": "https://tow.whfb.app/war-machines/mortars"
+  },
+  "fire-thrower": {
+   "slug": "fire-thrower",
+   "name": "Fire Thrower",
+   "profiles": [
+    {
+     "name": "Fire Thrower",
+     "range": "12\"",
+     "strength": "5",
+     "ap": "-1",
+     "rules": [
+      "Column of Fire",
+      "Cumbersome",
+      "Flaming Attacks",
+      "Move or Shoot",
+      "Black Powder Misfire Table"
+     ],
+     "notes": ""
+    }
+   ],
+   "text": "Fire Thrower (Profile)Notes: Fire throwers do not use their crew's Ballistic Skill. Instead, they shoot using the Column of Fire special rule. This weapon uses the Black Powder Misfire table.",
+   "url": "https://tow.whfb.app/war-machines/fire-throwers"
   }
  },
  "rules": {
@@ -4888,8 +5108,8 @@
   "cannon-fire": {
    "slug": "cannon-fire",
    "name": "Cannon Fire",
-   "text": "",
-   "url": "https://tow.whfb.app/special-rules/cannon-fire"
+   "text": "1. Choose Target Point: Choose a point within both the war machine's line of sight and maximum range. This does not have to be an enemy model; it can be a point on the ground. Once you have chosen your target point, mark it with a small marker.\n\n2. Fire: Once the target point has been marked, roll an Artillery dice:\n\n• If a 'Misfire' is rolled, something has gone horribly wrong. Roll immediately on the appropriate Misfire table to determine exactly what.\n• If a number is rolled, move the target point marker that many inches, directly away from the cannon. This is the ‘strike point’ – the point at which the cannonball strikes the ground.\n\n3. Bounce: Unless the cannon misfired, the cannonball will bounce from the strike point, tearing through anything in its path. To determine how far the cannonball bounces, roll another Artillery dice:\n\n• If a 'Misfire' is rolled, the cannonball buries itself in the ground and comes to a rest.\n• If a number is rolled, the cannonball bounces, as shown in Fig 226.1. Measure the distance of the bounce from the strike point, directly away from the cannon.\n\n4. Determine Hits: Once the strike point and the distance of the bounce have been established, it is time to determine which models (if any) have been hit:\n\n• Any model whose base lies underneath the strike point is hit automatically.\n• Any model whose base lies under the path of the bouncing cannonball is hit automatically.\n\nHowever, should a cannonball bounce through a formed unit, it can hit a maximum of:\n\n• One model per rank, if the cannon lies in the unit’s front or rear arc.\n• One model per file, if the cannon lies in the unit’s flank arc. Models that lie fully beyond the distance of the bounce are not hit.\n\n5. Crunch: Sometimes, a bouncing cannonball will encounter something that stops it dead:\n\n• If the cannonball hits a model whose troop type is monstrous creature or behemoth, it stops immediately. No further models are hit.\n• If the path of the cannonball meets a hill, impassable terrain or a high linear obstacle, it stops immediately. No further models are hit.",
+   "url": "https://tow.whfb.app/war-machines/cannon-fire"
   },
   "cumbersome": {
    "slug": "cumbersome",
@@ -4966,8 +5186,8 @@
   "bombardment": {
    "slug": "bombardment",
    "name": "Bombardment",
-   "text": "",
-   "url": "https://tow.whfb.app/special-rules/bombardment"
+   "text": "When shooting with this weapon, work your way through the following steps:\n\n1. Choose Target: Choose an enemy unit that is within the war machine’s line of sight and between its minimum and maximum range to be the target and place the blast template so that its central hole is directly over the centre of that unit.\n\n2. Scatter: Once the template has been placed, it will scatter. Roll an Artillery dice and a Scatter dice:\n\n• If a 'Misfire' is rolled on the Artillery dice, something has gone horribly wrong. Roll immediately on the appropriate Misfire table to determine exactly what.\n• If a 'Hit!' is rolled on the Scatter dice, the shot has landed on target and the number shown on the Artillery dice is ignored.\n• If an arrow is rolled on the Scatter dice, move the template a number of inches equal to the roll of the Artillery dice in the direction the arrow points.\n\n3. Damage: Any model whose base lies underneath the template risks being hit:\n\n• A single model whose base lies underneath the central hole of the blast template is struck by the projectile and suffers a hit with higher Strength and Armour Piercing characteristics, as shown in brackets on the war machine's profile.\n• All other hits are resolved using the war machine's normal Strength and Armour Piercing characteristics.",
+   "url": "https://tow.whfb.app/war-machines/bombardment"
   },
   "immovable-object": {
    "slug": "immovable-object",
@@ -4990,8 +5210,8 @@
   "multi-barrelled": {
    "slug": "multi-barrelled",
    "name": "Multi-Barrelled",
-   "text": "",
-   "url": "https://tow.whfb.app/special-rules/multi-barrelled"
+   "text": "When shooting with an organ gun, roll two Artillery dice before making any rolls To Hit. The number of shots fired is equal to the total of both Artillery dice:\n\n• If a 'Misfire' is rolled on one of the Artillery dice, the complex firing mechanism displays one of its all too common faults. All shots fired from the organ gun this turn suffer an additional -1 To Hit modifier.\n• If a 'Misfire' is rolled on both of the Artillery dice, no shots are fired and a critical fault has occurred. Roll immediately on the appropriate Misfire table to determine exactly what.\n\nAfter determining the number of shots, roll To Hit for each as normal, using the crew's Ballistic Skill and applying all appropriate modifiers.",
+   "url": "https://tow.whfb.app/war-machines/multi-barrelled"
   },
   "thunderous-impact": {
    "slug": "thunderous-impact",
@@ -5008,8 +5228,8 @@
   "column-of-fire": {
    "slug": "column-of-fire",
    "name": "Column of Fire",
-   "text": "",
-   "url": "https://tow.whfb.app/special-rules/column-of-fire"
+   "text": "When shooting with a fire thrower, use the flame template, placing the narrow end so that it touches the model’s base edge anywhere along its front arc and the broad end so that it points towards the intended target. The template may then be moved a number of inches directly away from the fire thrower, up to its maximum range, measured from the narrow end of the template.\n\nNote that this does allow the broad end of the flame template to extend beyond the fire thrower’s maximum given Range.\n\nOnce the flame template has been placed, roll an Artillery dice:\n\n• If a 'Misfire' is rolled, something has gone horribly wrong. Roll immediately on the appropriate Misfire table to determine exactly what.\n• If a number is rolled, move the flame template that many inches, directly away from the fire thrower. This is where the column of fire shot from the weapon lands.\n\nAny model whose base lies underneath the template risks being hit.",
+   "url": "https://tow.whfb.app/war-machines/column-of-fire"
   },
   "quake": {
    "slug": "quake",
@@ -5056,14 +5276,86 @@
   "needs-more-nails": {
    "slug": "needs-more-nails",
    "name": "Needs More Nails",
-   "text": "",
-   "url": "https://tow.whfb.app/special-rules/needs-more-nails"
+   "text": "Loading a cannon with shrapnel is not a precise art. When firing grapeshot, check range and declare a target as normal, then roll an Artillery dice:\n\n• If a 'Misfire' is rolled, something has gone horribly wrong. Roll immediately on the appropriate Misfire table to determine exactly what.\n• If a number is rolled, the target unit suffers that many automatic hits.",
+   "url": "https://tow.whfb.app/war-machines/needs-more-nails"
   },
   "through-through": {
    "slug": "through-through",
    "name": "Through & Through",
-   "text": "",
-   "url": "https://tow.whfb.app/special-rules/through-through"
+   "text": "A bolt thrower shot can cut through several ranks of troops. If the target of a bolt thrower is a formed unit of any type (be it Close Order, Open Order and so on), and if the roll To Hit is successful, the shot causes:\n\n• One hit per rank (including the rear rank, even if it is incomplete), if the bolt thrower lies in the unit’s front or rear arc.\n• One hit per file, if the bolt thrower lies in the unit’s flank arc.\n\nHowever, a bolt can quickly lose power as it passes through armour and flesh. To represent this, the bolt thrower suffers a -1 modifier to its Strength characteristic for each hit after the first.\n\nNote that, should the Strength of a hit be reduced to 0, it has no effect and no further hits are caused.",
+   "url": "https://tow.whfb.app/war-machines/through-and-through"
+  },
+  "basing-war-machines": {
+   "slug": "basing-war-machines",
+   "name": "Basing War Machines",
+   "text": "Although war machines and their crew are treated as a single model, the models that represent the crew are most often based individually, separate to the war machine itself. Accordingly, a war machine’s profile will give a base size for both the war machine and its crew. The benefit of basing a war machine’s crew separately is that, for each Wound the crew loses, you can remove one of the crew models as a reminder.\n\nDuring deployment, the models representing a war machine’s crew should be positioned adjacent to and in base contact with it. Once placed, the models must remain in position, adjacent to their war machine. Individual crew models should be ignored for the purposes of measurement or when determining line of sight.\n\nHowever, many players like to base their war machines and crew together on a single large base, making of their war machines small dioramas that show the crew hard at work. This is perfectly acceptable.",
+   "url": "https://tow.whfb.app/war-machines/basing-war-machines"
+  },
+  "bolt-throwers": {
+   "slug": "bolt-throwers",
+   "name": "Bolt Throwers",
+   "text": "Bolt Thrower\n\nBolt Thrower (Profile)Repeater Bolt Thrower\n\nRepeater Bolt Thrower (Profile)",
+   "url": "https://tow.whfb.app/war-machines/bolt-throwers"
+  },
+  "rapid-fire": {
+   "slug": "rapid-fire",
+   "name": "Rapid Fire",
+   "text": "Instead of shooting normally, a repeater bolt thrower can ‘rapid fire’ a number of smaller bolts, with the profile given below. If this special rule is used, all shots must be at the same target.\n\nRapid Fire (Profile)",
+   "url": "https://tow.whfb.app/war-machines/rapid-fire"
+  },
+  "stone-throwers": {
+   "slug": "stone-throwers",
+   "name": "Stone Throwers",
+   "text": "Stone Thrower (Profile)Notes: This weapon does not use its crew’s Ballistic Skill. Instead, it shoots using the Bombardment special rule. This weapon uses a 3\" blast template and the Stone Thrower Misfire table table. The Multiple Wounds (D3+1) special rule applies only to a single model whose base lies underneath the central hole of the blast template.",
+   "url": "https://tow.whfb.app/war-machines/stone-throwers"
+  },
+  "indirect-fire": {
+   "slug": "indirect-fire",
+   "name": "Indirect Fire",
+   "text": "A weapon that shoots using the Bombardment special rule can do so even if it cannot draw a line of sight to its target by hurling a shot high into the sky, passing over intervening regiments and even terrain. However, such indirect fire is inaccurate at best, as the war machine’s crew have to guess where their foe lies, based upon information provided by scouts.\n\nIf you wish to fire indirectly, declare that you will do so before taking the war machine’s shot. An indirect shot does not require a line of sight to the target unit, but is otherwise treated as a normal shot.\n\nAn indirect shot is not as accurate as one where the crew can see their target:\n\n• If an arrow is rolled on the Scatter dice, resolve the scatter as normal.\n• If a 'Hit!' is rolled on the Scatter dice, the shot does not land on target (as would normally be the case) but merely scatters less – how much less depends greatly on the skill of the crew. Use the small arrow above the Hit! symbol to determine the direction of the scatter and move the template a number of inches equal to the roll of the Artillery dice minus the crew’s Ballistic Skill characteristic (to a minimum of zero).",
+   "url": "https://tow.whfb.app/war-machines/indirect-fire"
+  },
+  "stone-thrower-misfire-table": {
+   "slug": "stone-thrower-misfire-table",
+   "name": "Stone Thrower Misfire Table",
+   "text": "Stone Thrower Misfire Table (Chart)",
+   "url": "https://tow.whfb.app/war-machines/stone-thrower-misfire-table"
+  },
+  "cannon": {
+   "slug": "cannon",
+   "name": "Cannon",
+   "text": "The following profiles represent the sizes of cannon most often seen:\n\nCannon\n\nCannon (Profile)Great Cannon\n\nGreat Cannon (Profile)Notes: Cannon (of any type) do not use their crew's Ballistic Skill. Instead, they shoot using the Cannon Fire special rule. This weapon uses the Black Powder Misfire table.",
+   "url": "https://tow.whfb.app/war-machines/cannon"
+  },
+  "grapeshot": {
+   "slug": "grapeshot",
+   "name": "Grapeshot",
+   "text": "Instead of firing normally, cannon crew can opt to fire grapeshot. They do this by loading the gun with canisters filled with rusty nails, handgun bullets and other small projectiles – effectively creating a huge blunderbuss.\n\nGrapeshot (Profile)Notes: Cannon (of any type) do not use their crew’s Ballistic Skill when firing grapeshot. Instead, they shoot using the Needs More Nails special rule. This weapon uses the Black Powder Misfire table.",
+   "url": "https://tow.whfb.app/war-machines/grapeshot"
+  },
+  "organ-guns": {
+   "slug": "organ-guns",
+   "name": "Organ Guns",
+   "text": "Organ Gun (Profile)Notes: This weapon uses the Black Powder Misfire table.",
+   "url": "https://tow.whfb.app/war-machines/organ-guns"
+  },
+  "mortars": {
+   "slug": "mortars",
+   "name": "Mortars",
+   "text": "Mortar (Profile)Notes: This weapon does not use its crew’s Ballistic Skill. Instead, it shoots like a stone thrower, using the Bombardment special rule. This weapon uses a 5\" blast template and the Black Powder Misfire table. The Multiple Wounds (D3) special rule applies only to a single model whose base lies underneath the central hole of the blast template.",
+   "url": "https://tow.whfb.app/war-machines/mortars"
+  },
+  "fire-throwers": {
+   "slug": "fire-throwers",
+   "name": "Fire Throwers",
+   "text": "Fire Thrower (Profile)Notes: Fire throwers do not use their crew's Ballistic Skill. Instead, they shoot using the Column of Fire special rule. This weapon uses the Black Powder Misfire table.",
+   "url": "https://tow.whfb.app/war-machines/fire-throwers"
+  },
+  "black-powder-misfire-table": {
+   "slug": "black-powder-misfire-table",
+   "name": "Black Powder Misfire Table",
+   "text": "Black powder weapons are temperamental and prone to malfunctioning – often in spectacular fashion. Whenever a black powder weapon misfires (be it a cannon, organ gun, mortar, fire thrower, or something more exotic), roll on the table below and apply the result immediately:\n\nBlack Powder Misfire Table (Chart)",
+   "url": "https://tow.whfb.app/war-machines/black-powder-misfire-table"
   }
  }
 }
