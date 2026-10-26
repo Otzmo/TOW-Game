@@ -80,6 +80,8 @@ export interface UnitState {
   /** Zauberer: gewählte Lore (slug in spells.json) und ausgewürfelte Sprüche (slugs) */
   lore?: string | null;
   spells?: string[] | null;
+  /** Im Hinterhalt (Ambush): nicht auf dem Tisch, wird später aufgestellt */
+  ambush?: boolean | null;
   /** Gewählte Ergebnisse von Würfeltabellen, z. B. "Gaze of the Gods:3" */
   tableResults?: string[] | null;
   /** Unvollständiges letztes Glied: um so viele Plätze von links verschoben */

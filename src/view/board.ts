@@ -74,6 +74,8 @@ export class Board {
   private readonly chargeLayer = new Container();
   /** Zielauswahl beim Angriff ansagen: nächster Klick auf eine Einheit */
   private pickTarget: ((unitId: string) => void) | null = null;
+  /** Einheit aus dem Hinterhalt, die beim nächsten Klick auf den Tisch aufgestellt wird */
+  private placeUnit: string | null = null;
   /** Bewegungs- und Angriffsreichweiten der ausgewählten Einheit anzeigen */
   showRanges = false;
   private viewOnly = false;
@@ -112,6 +114,14 @@ export class Board {
       this.rangeLayer, this.unitLayer, this.chargeLayer, t.overlayLayer, t.toolLayer, this.moveLabel);
 
     app.stage.on('pointerdown', (e) => {
+      // Einheit aus dem Hinterhalt: dort aufstellen, wo geklickt wird
+      if (this.placeUnit) {
+        const id = this.placeUnit;
+        this.placeUnit = null;
+        document.getElementById('tool-hint')!.hidden = true;
+        this.placeFromAmbush(id, this.toInches(e));
+        return;
+      }
       if (this.tools.handleStageDown(e)) return;
       this.drag = { type: 'pan', gx: e.global.x, gy: e.global.y, wx: this.world.x, wy: this.world.y, moved: false };
     });
@@ -206,10 +216,34 @@ export class Board {
   }
 
   cancelPick(): boolean {
-    if (!this.pickTarget) return false;
+    if (!this.pickTarget && !this.placeUnit) return false;
     this.pickTarget = null;
+    this.placeUnit = null;
     document.getElementById('tool-hint')!.hidden = true;
     return true;
+  }
+
+  /** Einheit aus dem Hinterhalt aufstellen: der nächste Klick auf den Tisch bestimmt die Stelle */
+  startAmbushPlace(unitId: string): void {
+    const u = this.store.state.units[unitId];
+    if (!u?.ambush || !this.canMove(unitId)) return;
+    this.tools.setTool('select');
+    this.pickTarget = null;
+    this.placeUnit = unitId;
+    const hint = document.getElementById('tool-hint')!;
+    hint.textContent = `Ambush: click on the table to place ${u.info.name} · Esc to cancel`;
+    hint.hidden = false;
+  }
+
+  private placeFromAmbush(unitId: string, p: Point): void {
+    const u = this.store.state.units[unitId];
+    if (!u) return;
+    this.history.record();
+    this.store.updateUnit(unitId, { ambush: null, x: p.x, y: p.y });
+    // Landet sie auf einem Gegner, wird sie angelegt; auf einer eigenen Einheit bleibt der Hinweis im Log
+    const apart = this.separate(unitId, { x: p.x, y: p.y, rotation: u.rotation });
+    this.select(unitId);
+    this.events.onAction(unitId, `arrives from ambush${apart ? ` · ${apart}` : ''}`);
   }
 
   /**
@@ -541,7 +575,8 @@ export class Board {
       this.unitLayer.addChild(view);
     }
     // Angeschlossene Charaktere zeichnet ihre Einheit mit
-    view.visible = !isJoined(u, units);
+    // Angeschlossene Charaktere zeichnet ihre Einheit mit; Einheiten im Hinterhalt stehen nicht auf dem Tisch
+    view.visible = !isJoined(u, units) && !u.ambush;
     if (view.visible) view.update(u, unitLayout(u, units), units, this.selectedId);
     if (this.showRanges && this.selectedId === u.id) this.drawRanges();
     // Angriffspfeile folgen bewegten Einheiten

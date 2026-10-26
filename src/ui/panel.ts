@@ -34,6 +34,8 @@ export interface PanelActions {
   declareCharge(unitId: string): void;
   chargeMove(unitId: string): void;
   cancelCharge(unitId: string): void;
+  /** Einheit aus dem Hinterhalt aufstellen (nächster Klick auf den Tisch) */
+  placeAmbush(unitId: string): void;
 }
 
 /** Seitenpanel mit allen Angaben zur ausgewählten Einheit. */
@@ -99,6 +101,11 @@ export class UnitPanel {
       if (btn.dataset.charge === 'declare') actions.declareCharge(u.id);
       if (btn.dataset.charge === 'move') actions.chargeMove(u.id);
       if (btn.dataset.charge === 'cancel') actions.cancelCharge(u.id);
+      if (btn.dataset.charge === 'ambush' && this.canMove(u.id)) {
+        this.change({ ambush: !u.ambush });
+        this.setLastAction(u.id, u.ambush ? 'put in ambush' : 'back on the table');
+      }
+      if (btn.dataset.charge === 'place') actions.placeAmbush(u.id);
     };
     $('p-join').onclick = (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
@@ -259,7 +266,18 @@ export class UnitPanel {
   /** Angriff: ansagen (Distanz wird berechnet), dann mit einem Knopf die Angriffsbewegung ausführen */
   private chargeHtml(u: UnitState): string {
     const { units, charges, meta } = this.store.state;
-    if (currentPhase(meta) === 'setup' || isJoined(u, units)) return '';
+    if (isJoined(u, units)) return '';
+    // Hinterhalt: in der Aufstellung hinein- bzw. herausnehmen, danach von dort aufstellen
+    const ambusher = [...u.info.rules, ...u.info.items].some((r) => /ambush/i.test(r.name));
+    if (currentPhase(meta) === 'setup') {
+      return `<div class="row-btns"><button data-charge="ambush" class="${u.ambush ? 'primary' : ''}"
+        title="${ambusher ? 'This unit has the Ambushers special rule' : 'Keep this unit off the table and place it later'}">
+        ${u.ambush ? '✓ In ambush – back to the table' : `⌖ Put in ambush${ambusher ? ' (Ambushers)' : ''}`}</button></div>`;
+    }
+    if (u.ambush) {
+      return `<p class="warn">In ambush – not on the table yet.</p>
+        <div class="row-btns"><button data-charge="place" class="primary">⌖ Place on the table</button></div>`;
+    }
     const c = charges[`charge-${u.id}`];
     const target = c ? units[c.target] : undefined;
     if (!c || !target) return '<div class="row-btns"><button data-charge="declare">⚔ Declare charge</button></div>';

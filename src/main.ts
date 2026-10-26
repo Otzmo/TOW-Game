@@ -8,6 +8,7 @@ import { defaultTerrain } from './model/objects';
 import { Store } from './model/store';
 import type { GameState, LogEntry } from './model/types';
 import type { Seat } from './net/room';
+import { AmbushPanel } from './ui/ambush';
 import { DestroyedPanel } from './ui/destroyed';
 import { DiceLog, DicePanel } from './ui/dice';
 import { NotesPanel } from './ui/notes';
@@ -68,6 +69,7 @@ async function start(): Promise<void> {
     declareCharge: (id) => board.startChargePick(id, (target) => board.declareCharge(id, target)),
     chargeMove: (id) => board.chargeMove(id),
     cancelCharge: (id) => board.cancelCharge(id),
+    placeAmbush: (id) => board.startAmbushPlace(id),
   });
   const objectPanel = new ObjectPanel(store, history, {
     close: () => board.tools.select(null),
@@ -113,6 +115,10 @@ async function start(): Promise<void> {
   new SpellsPanel(store, history, () => seat, (entry) => addLog(entry));
   new DestroyedPanel(store, (id) => board.select(id));
   new NotesPanel(store);
+  new AmbushPanel(store, () => seat, {
+    place: (id) => board.startAmbushPlace(id),
+    select: (id) => board.select(id),
+  });
   new DiceLog(store);
   new SyncWarning();
   // Spalten links/rechts ein- und ausblenden; danach den Tisch neu einpassen

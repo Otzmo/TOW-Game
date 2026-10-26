@@ -54,7 +54,7 @@ function overlap(a: Point[], b: Point[]): boolean {
 export function overlappingUnits(u: UnitState, units: Record<string, UnitState>): UnitState[] {
   const mine = areas(u, units);
   return Object.values(units).filter((t) => t.id !== u.id && t.joinedTo !== u.id && !isJoined(t, units)
-    && t.status !== 'destroyed' && t.status !== 'fledOff'
+    && t.status !== 'destroyed' && t.status !== 'fledOff' && !t.ambush
     && areas(t, units).some((b) => mine.some((a) => overlap(a, b))));
 }
 

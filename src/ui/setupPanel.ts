@@ -295,7 +295,7 @@ export class SetupPanel {
           <div class="row-btns">${btn('zone-swap', 'Swap Attacker and Defender zones', this.mayAct(s.defender))}</div>`;
       case SETUP_STEPS.deploy: {
         const zones = deploymentZones(s);
-        const outside = zones ? Object.values(units).filter((u) => !isJoined(u, units) && !pointInPolygon(u, zones[u.owner])) : [];
+        const outside = zones ? Object.values(units).filter((u) => !isJoined(u, units) && !u.ambush && !pointInPolygon(u, zones[u.owner])) : [];
         return `<h4>Deploy Units</h4><p>Both players deploy all their units in their own zone. When you are done, click Ready. Whoever is ready first gets +1 to the roll-off for the first turn.</p>
           <div class="row-btns">${(['p1', 'p2'] as const).map((p) => btn(`finished-${p}`, `${playerName(p)}: ${s.finished?.[p] ? 'ready ✓' : 'Ready'}`, this.mayAct(p), !s.finished?.[p])).join('')}</div>
           ${outside.length ? `<p class="warn">Outside their deployment zone: ${outside.map((u) => esc(u.info.name)).join(', ')}</p>` : ''}`;

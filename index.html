@@ -53,6 +53,7 @@
     </nav>
     <!-- Unten links: Zauber und vernichtete Einheiten, getrennt voneinander -->
     <nav id="bottom-tools" aria-label="Spells and destroyed units">
+      <button data-sheet="ambush" id="ambush-btn" title="Units in ambush – place them on the table">⌖ Ambushers <span id="ambush-count"></span></button>
       <button data-sheet="spells" title="Generate and show the spells of all wizards">✦ Spells</button>
       <button data-sheet="destroyed" title="All destroyed units">☠ Destroyed <span id="destroyed-count"></span></button>
     </nav>
@@ -145,6 +146,7 @@
     <textarea id="notes-text" rows="14" placeholder="General notes – both players see them"></textarea>
     <p class="meta">Saved automatically. Notes on a single unit are in its popup.</p></aside>
   <aside class="sheet" id="sheet-spells" hidden><h3>Spells</h3><div id="spells-list"></div></aside>
+  <aside class="sheet" id="sheet-ambush" hidden><h3>Ambushers</h3><div id="ambush-list"></div></aside>
   <aside class="sheet" id="sheet-destroyed" hidden><h3>Destroyed units</h3><div id="destroyed-list"></div></aside>
   <!-- Untere lange Tischkante: ausgewähltes Objekt (Gelände, Marker, Schablone) -->
   <aside id="obj-panel" class="bottom-panel" hidden>

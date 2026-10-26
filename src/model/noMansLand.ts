@@ -45,7 +45,7 @@ export function noMansLandPoses(
   for (const p of polys) for (const v of p) mark(v.x, v.y, v.x, v.y);
   // Einheiten, die nicht neu gelegt werden (z. B. die Armee des Gegners), bleiben stehen und sperren ihren Platz
   for (const u of Object.values(units)) {
-    if (owners.includes(u.owner) || isJoined(u, units)) continue;
+    if (owners.includes(u.owner) || isJoined(u, units) || u.ambush) continue;
     const fp = unitFootprint(u, units);
     const c = Math.cos(u.rotation);
     const s = Math.sin(u.rotation);
@@ -75,7 +75,7 @@ export function noMansLandPoses(
   const mid = table.height / 2;
   const result: Record<string, Pose> = {};
   for (const owner of owners) {
-    const list = Object.values(units).filter((u) => u.owner === owner && !isJoined(u, units));
+    const list = Object.values(units).filter((u) => u.owner === owner && !isJoined(u, units) && !u.ambush);
     for (const u of list) {
       const fp = unitFootprint({ ...u, rotation: 0 }, units);
       const w = Math.max(fp.w, LABEL_W);
