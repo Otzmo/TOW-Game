@@ -200,8 +200,8 @@ export function contactPose(charger: UnitState, target: UnitState, units: Record
 
 type Interval = [number, number];
 const EPS = 0.01;
-/** So weit liegt eine gerade eben berührte Base an (Zoll, gut 1 mm) */
-const TOUCH_IN = 0.05;
+/** Zwei Bases berühren sich auch, wenn sie nur Kante an Kante liegen (Überdeckung 0) */
+const touches = (a: Interval, b: Interval) => overlapLen(a, b) >= -EPS / 2;
 const overlapLen = (a: Interval, b: Interval) => Math.min(a[1], b[1]) - Math.max(a[0], b[0]);
 
 /** Bases des Ziels an einer Kante, als Abschnitte entlang dieser Kante (Einheitskoordinaten des Ziels) */
@@ -228,7 +228,7 @@ function frontBases(u: UnitState, units: Record<string, UnitState>): Interval[] 
  * Anlegestellen an allen vier Kanten des Ziels (Front, Rücken, Flanken), bündig an der Kante.
  * Nach der Charge-Regel ("as many models as possible within its front rank into base contact"): der Angreifer geht
  * gerade hinein und wird nur so weit seitlich verschoben, bis möglichst viele Modelle seines ersten Glieds (danach:
- * der angegriffenen Einheit) Basekontakt haben – eine gerade eben berührte Base zählt. Die Kante, auf deren Seite der Angreifer steht, kommt zuerst.
+ * der angegriffenen Einheit) Basekontakt haben – auch Bases, die nur Kante an Kante liegen, zählen. Die Kante, auf deren Seite der Angreifer steht, kommt zuerst.
  */
 export function contactPoses(charger: UnitState, target: UnitState, units: Record<string, UnitState>): ContactPose[] {
   const me = unitFootprint(charger, units);
@@ -256,16 +256,16 @@ export function contactPoses(charger: UnitState, target: UnitState, units: Recor
     const candidates = new Set<number>([start]);
     for (const [l, r] of rel) {
       for (const [s0, e0] of theirs) {
-        candidates.add(s0 - r + TOUCH_IN);
-        candidates.add(e0 - l - TOUCH_IN);
+        candidates.add(s0 - r);
+        candidates.add(e0 - l);
       }
     }
     for (const pos of candidates) {
       const placed = rel.map(([l, r]): Interval => [pos + l, pos + r]);
-      // Berühren zählt schon, wenn eine Base gerade eben anliegt
-      const targetContacts = theirs.filter((t) => placed.some((m) => overlapLen(m, t) > EPS)).length;
+      // Berühren zählt schon, wenn zwei Bases nur Kante an Kante liegen
+      const targetContacts = theirs.filter((t) => placed.some((m) => touches(m, t))).length;
       if (!targetContacts) continue;
-      const chargerContacts = placed.filter((m) => theirs.some((t) => overlapLen(m, t) > EPS)).length;
+      const chargerContacts = placed.filter((m) => theirs.some((t) => touches(m, t))).length;
       const contacts = chargerContacts + targetContacts;
       const lp = n.x === 0 ? { x: pos, y: (n.y * h) / 2 } : { x: (n.x * w) / 2, y: pos };
       const contact = toTable(target, lp.x, lp.y);
@@ -274,8 +274,8 @@ export function contactPoses(charger: UnitState, target: UnitState, units: Recor
     }
   }
   // Kante, auf deren Seite der Angreifer steht, zuerst. Je Kante nach der Charge-Regel: (1) möglichst viele Modelle
-  // im ersten Glied des Angreifers in Basekontakt, dann möglichst viele der angegriffenen Einheit (eine gerade eben
-  // berührte Base zählt), (2) dann so wenig seitlich verschieben wie möglich – maximiert ist, sobald die letzte nötige
+  // im ersten Glied des Angreifers in Basekontakt, dann möglichst viele der angegriffenen Einheit (auch nur Kante an
+  // Kante zählt), (2) dann so wenig seitlich verschieben wie möglich – maximiert ist, sobald die letzte nötige
   // Base berührt wird (blockierte Lagen überspringt der Aufrufer)
   const nx = Math.abs(p.x) / (w / 2);
   const ny = Math.abs(p.y) / (h / 2);
