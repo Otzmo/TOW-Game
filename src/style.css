@@ -664,3 +664,7 @@ table.scoring th { overflow: hidden; text-overflow: ellipsis; }
 table.scoring input { width: 100%; max-width: 80px; }
 #score-panel, .mission-line { min-width: 0; }
 #right-top > #sheet-score:not([hidden]) { display: block; }
+/* Abweichungswürfel: Hit-Seite mit kleinem Pfeil, anklickbar */
+button.die.die-hit { border: 0; cursor: pointer; font: inherit; font-weight: 700; font-size: calc(11px * var(--ui)); gap: 2px; display: inline-flex; align-items: center; height: 22px; }
+button.die.die-hit:hover { outline: 2px solid var(--accent); }
+.small-arrow { display: inline-block; font-size: calc(10px * var(--ui)); line-height: 1; }

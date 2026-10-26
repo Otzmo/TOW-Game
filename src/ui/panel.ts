@@ -393,7 +393,9 @@ export class UnitPanel {
     const STAT_LABELS = ['M', 'WS', 'BS', 'S', 'T', 'W', 'I', 'A', 'Ld'];
     const sign = (d: number) => `${d > 0 ? '+' : ''}${d}`;
     return info.profile.map((r, row) => `<tr><td>${escapeHtml(r.name)}</td>${r.values.map((v, i) => {
-      const m = modifiedValue(v, i, row === 0 ? [...mods, ...mountMods] : mods);
+      // Regeln des Reiters (Extra Attacks, Frenzy …) gelten nicht für das Reittier
+      const mountRow = row > 0 && (info.mount ? r.name === info.mount.name : /^on /.test(info.troopType));
+      const m = modifiedValue(v, i, row === 0 ? [...mods, ...mountMods] : mountRow ? [] : mods);
       if (!m.changed && !m.situational) return `<td>${escapeHtml(v)}</td>`;
       const sit = m.situational ? `<span class="stat-sit">(${escapeHtml(m.situational)})</span>` : '';
       // Anklicken zeigt unter dem Profil, welche Regeln den Wert ändern und warum

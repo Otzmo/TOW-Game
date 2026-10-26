@@ -192,21 +192,21 @@ export class SpellsPanel {
         const dis = can ? '' : 'disabled';
         const known = (u.spells ?? []).map((slug) => this.spell(slug)).filter((s): s is Spell => !!s);
         const r = this.rolled.get(u.id);
-        const choose = r ? `<div class="spell-choice"><p class="meta">Tick the spells to keep, the others disappear:</p>
+        const choose = r ? `<div class="spell-choice"><p class="meta">Tick the spells to keep, then click „Selection done“ – the others disappear:</p>
             <ul class="spells">${r.slugs.map((slug) => this.spell(slug)).filter((s): s is Spell => !!s).map((s) =>
               spellLine(u, s, `<input type="checkbox" data-keep="${u.id}|${s.slug}" ${r.keep.has(s.slug) ? 'checked' : ''} ${dis}> `)).join('')}</ul>
-            <button data-act="keep" data-unit="${u.id}" class="primary" ${dis}>Keep selected ✓</button></div>` : '';
+            <button data-act="keep" data-unit="${u.id}" class="primary wide" ${dis}>Selection done ✓</button></div>` : '';
         return `<div class="wizard">
           <p><b>${esc(u.info.name)}</b> <span class="meta">Level ${wizardLevel(u)} Wizard${isJoined(u, this.store.state.units) ? ' · joined' : ''}</span></p>
           <div class="wizard-row"><select data-lore="${u.id}" ${dis}>${loreOptions(lore?.slug)}</select></div>
           <div class="wizard-row"><label class="spell-count">Spells <input type="number" min="1" max="6" data-count="${u.id}" value="${wizardLevel(u) || 1}" ${dis}></label>
             <button data-act="roll" data-unit="${u.id}" class="primary" ${can && lore ? '' : 'disabled'}>🎲 Roll spells</button></div>
           ${choose}
-          ${known.length ? `<ul class="spells">${known.map((s) => spellLine(u, s,
+          ${r ? '' : `${known.length ? `<ul class="spells">${known.map((s) => spellLine(u, s,
             can ? `<button class="spell-remove" data-act="remove" data-unit="${u.id}" data-spell="${s.slug}" title="Remove this spell">×</button> ` : '')).join('')}</ul>`
-            : r ? '' : '<p class="meta">No spells yet.</p>'}
+            : '<p class="meta">No spells yet.</p>'}
           <div class="wizard-row"><select data-add="${u.id}" ${dis}>${addOptions(lore)}</select>
-            <button data-act="add" data-unit="${u.id}" ${dis}>+ Add</button></div>
+            <button data-act="add" data-unit="${u.id}" ${dis}>+ Add</button></div>`}
         </div>`;
       }).join('') || '<p class="meta">No wizards.</p>') + '</section>';
     }).join('');

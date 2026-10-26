@@ -15,14 +15,17 @@ const KIND_NAMES: Record<DieKind, string> = { d6: 'D6', d3: 'D3', artillery: 'Ar
 
 /** Artilleriewürfel: 2, 4, 6, 8, 10 oder Misfire (0) */
 export const artilleryDie = (): number => [2, 4, 6, 8, 10, 0][d6() - 1];
-/** Abweichungswürfel: auf 2 von 6 Seiten "Hit", sonst ein Pfeil in eine zufällige Richtung (Grad, 0 = nach oben) */
-export const scatterDie = (): { hit: boolean; angle: number } =>
-  d6() <= 2 ? { hit: true, angle: 0 } : { hit: false, angle: Math.floor(rnd(360)) - 1 };
+/**
+ * Abweichungswürfel: auf 2 von 6 Seiten "Hit", sonst ein Pfeil in eine zufällige Richtung (Grad, 0 = nach oben).
+ * Auch die Hit-Seiten tragen einen kleinen Pfeil – er gilt, wenn ein Treffer nicht möglich ist.
+ */
+export const scatterDie = (): { hit: boolean; angle: number } => ({ hit: d6() <= 2, angle: rnd(360) - 1 });
 
 /** Text für einen Artillerie- bzw. Abweichungswürfel */
 export const artilleryText = (v: number) => (v === 0 ? 'Misfire!' : String(v));
-export const scatterHtml = (s: { hit: boolean; angle: number }) => s.hit
-  ? '<span class="die die-hit">HIT</span>'
+/** Hit-Seite mit kleinem Pfeil (anklickbar, wenn i gesetzt), sonst großer Pfeil */
+export const scatterHtml = (s: { hit: boolean; angle: number }, i?: number, useArrow = false) => s.hit && !useArrow
+  ? `<button class="die die-hit" ${i !== undefined ? `data-small-arrow="${i}"` : ''} title="Click to use the small arrow (when a hit is not possible)">HIT <span class="small-arrow" style="transform: rotate(${s.angle}deg)">↑</span></button>`
   : `<span class="die die-arrow" title="${s.angle}°"><span style="transform: rotate(${s.angle}deg)">↑</span></span>`;
 
 /**
@@ -34,8 +37,10 @@ export class DicePanel {
   /** Aktueller Würfelpool (D6/D3) */
   private dice: number[] = [];
   private kind: DieKind = 'd6';
-  /** Ergebnis von Artillerie- und Abweichungswürfeln */
+  /** Ergebnis von Artilleriewürfeln */
   private special = '';
+  /** Ergebnis der Abweichungswürfel; useArrow = beim Hit gilt der kleine Pfeil */
+  private scatter: { hit: boolean; angle: number; useArrow: boolean }[] = [];
 
   constructor(private publish: (entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>) => void) {
     select('d-target-value').innerHTML = '<option value="">– (no target)</option>' +
@@ -59,9 +64,19 @@ export class DicePanel {
       this.publish({ kind: 'roll', text: `${this.dice.length} ${KIND_NAMES[this.kind]} re-rolled`, dice: [this.dice] });
       this.render();
     };
+    // Hit-Seite angeklickt: stattdessen dem kleinen Pfeil folgen
+    $('d-result').onclick = (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-small-arrow]');
+      const x = btn ? this.scatter[Number(btn.dataset.smallArrow)] : undefined;
+      if (!x) return;
+      x.useArrow = true;
+      this.publish({ kind: 'roll', text: `Scatter dice: Hit – the small arrow is used instead (${x.angle}°)` });
+      this.render();
+    };
     $('d-clear').onclick = () => {
       this.dice = [];
       this.special = '';
+      this.scatter = [];
       this.render();
     };
     this.render();
@@ -72,6 +87,7 @@ export class DicePanel {
     this.kind = select('d-kind').value as DieKind;
     this.dice = [];
     this.special = '';
+    this.scatter = [];
     if (this.kind === 'd6' || this.kind === 'd3') {
       this.dice = this.kind === 'd3' ? Array.from({ length: count }, () => rnd(3)) : roll(count);
       this.publish({ kind: 'roll', text: `${count} ${KIND_NAMES[this.kind]}`, dice: [this.dice] });
@@ -81,7 +97,7 @@ export class DicePanel {
       this.publish({ kind: 'roll', text: `Artillery dice: ${r.map(artilleryText).join(', ')}` });
     } else {
       const r = Array.from({ length: count }, scatterDie);
-      this.special = r.map(scatterHtml).join('');
+      this.scatter = r.map((x) => ({ ...x, useArrow: false }));
       this.publish({ kind: 'roll', text: `Scatter dice: ${r.map((s) => (s.hit ? 'Hit' : `${s.angle}°`)).join(', ')}` });
     }
     this.render();
@@ -99,13 +115,15 @@ export class DicePanel {
     $('d-result').innerHTML = this.dice.length
       ? `<p class="dice-sum">${this.dice.length} ${KIND_NAMES[this.kind]}${ok === null ? ` · total ${sum}` : ` · <b>${ok}</b> on ${t}+`}</p>
          <div class="dice-row">${diceHtml([...this.dice].sort((a, b) => b - a), t ?? 7)}</div>`
+      : this.scatter.length ? `<div class="dice-row">${this.scatter.map((x, i) => scatterHtml(x, i, x.useArrow)).join('')}</div>`
+        + (this.scatter.some((x) => x.hit && !x.useArrow) ? '<p class="meta">HIT: click the die to use its small arrow if a hit is not possible.</p>' : '')
       : this.special ? `<div class="dice-row">${this.special}</div>`
       : '<p class="meta">Choose the dice and roll.</p>';
     ($('d-keep') as HTMLButtonElement).disabled = t === null || !this.dice.length;
     ($('d-keep') as HTMLButtonElement).textContent = t === null ? 'Remove dice below target' : `Remove dice below ${t}+`;
     ($('d-reroll') as HTMLButtonElement).disabled = !this.dice.length;
     ($('d-reroll') as HTMLButtonElement).textContent = this.dice.length ? `Re-roll ${this.dice.length} dice` : 'Re-roll dice';
-    ($('d-clear') as HTMLButtonElement).disabled = !this.dice.length && !this.special;
+    ($('d-clear') as HTMLButtonElement).disabled = !this.dice.length && !this.special && !this.scatter.length;
   }
 }
 

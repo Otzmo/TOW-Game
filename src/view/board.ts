@@ -87,6 +87,8 @@ export class Board {
   });
   private readonly views = new Map<string, UnitView>();
   private drag: Drag | null = null;
+  /** Zoll, die eine Einheit in dieser Runde nacheinander zurückgelegt hat (Schwenken + Bewegen) */
+  private moveRun: { unitId: string; total: number; round: number } | null = null;
   selectedId: string | null = null;
 
   constructor(private app: Application, private store: Store, private history: History, private events: BoardEvents) {
@@ -569,6 +571,8 @@ export class Board {
         startAngle: Math.atan2(p.y - pivot.y, p.x - pivot.x), front: w };
     }
     this.history.record();
+    // Neue Einheit oder neue Runde: das Zusammenzählen beginnt von vorn
+    if (this.moveRun && (this.moveRun.unitId !== unitId || this.moveRun.round !== this.store.state.meta.round)) this.moveRun = null;
     this.drag = { type, unitId, ox: u.x - p.x, oy: u.y - p.y, sx: u.x, sy: u.y, srot: u.rotation,
       gx: e.global.x, gy: e.global.y, moved: type !== 'move', swing };
     const view = this.views.get(unitId);
@@ -710,6 +714,9 @@ export class Board {
     const text = this.describe(d);
     const charge = d.type === 'move' ? this.chargeSnap(d.unitId) : null;
     const apart = this.separate(d.unitId, { x: d.sx, y: d.sy, rotation: d.srot });
+    // Zoll dieser Einheit weiter zusammenzählen (bis eine andere Einheit bewegt wird oder die Runde endet)
+    const run = this.moveRun?.unitId === d.unitId ? this.moveRun.total : 0;
+    this.moveRun = { unitId: d.unitId, total: run + this.dragInches(d), round: this.store.state.meta.round };
     const all = [text, charge, apart].filter(Boolean).join(' · ');
     if (all) this.events.onAction(d.unitId, all);
   }
@@ -758,20 +765,34 @@ export class Board {
     return positions;
   }
 
+  /** Zurückgelegte Zoll dieses Ziehens: beim Schwenken der Weg der äußeren Ecke, sonst die Strecke */
+  private dragInches(d: UnitDrag): number {
+    const u = this.store.state.units[d.unitId];
+    if (!u) return 0;
+    if (d.swing) return Math.abs(normAngle(u.rotation - d.srot)) * d.swing.front;
+    return Math.hypot(u.x - d.sx, u.y - d.sy);
+  }
+
+  /**
+   * Beschreibung des Ziehens. Wird dieselbe Einheit mehrmals hintereinander bewegt (z. B. schwenken, dann
+   * vorrücken), stehen die Zoll zusammengezählt dabei ("total").
+   */
   private describe(d: UnitDrag): string {
     const u = this.store.state.units[d.unitId];
     const turn = normAngle(u.rotation - d.srot);
     const deg = (turn * 180) / Math.PI;
+    const before = this.moveRun?.unitId === d.unitId ? this.moveRun.total : 0;
+    const total = (s: string) => (s && before > 0 ? `${s} · total ${(before + this.dragInches(d)).toFixed(1)}″` : s);
     if (d.swing) {
       // Gemessen wird der Weg der äußeren Ecke
       const arc = Math.abs(turn) * d.swing.front;
-      return Math.abs(deg) >= 0.5 ? `wheeled ${arc.toFixed(1)}″ (${Math.round(Math.abs(deg))}°)` : '';
+      return total(Math.abs(deg) >= 0.5 ? `wheeled ${arc.toFixed(1)}″ (${Math.round(Math.abs(deg))}°)` : '');
     }
     const dist = Math.hypot(u.x - d.sx, u.y - d.sy);
     const parts: string[] = [];
     if (dist >= 0.05) parts.push(`moved ${dist.toFixed(1)}″`);
     if (Math.abs(deg) >= 0.5) parts.push(`turned ${Math.round(deg)}°`);
-    return parts.join(' · ');
+    return total(parts.join(' · '));
   }
 
   /** Umriss der Startposition, Linie zur neuen Position und Distanzanzeige. */

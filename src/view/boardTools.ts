@@ -23,7 +23,9 @@ const CAUTION_COLOR = 0xe0b44c;
 type ObjectDrag =
   | { type: 'move'; id: string; ox: number; oy: number; gx: number; gy: number; moved: boolean }
   | { type: 'rotate' | 'size'; id: string; gx: number; gy: number; moved: boolean }
-  | { type: 'measure' | 'sight'; a: Point; b: Point; gx: number; gy: number; moved: boolean };
+  | { type: 'measure' | 'sight'; a: Point; b: Point; gx: number; gy: number; moved: boolean;
+    /** Liegendes Maßband anfassen: ein Ende oder die ganze Linie (from = Startpunkt des Zeigers) */
+    grab?: 'a' | 'line'; from?: Point; a0?: Point; b0?: Point };
 
 export interface ToolHost {
   /** Mauszeiger in Tischkoordinaten (Zoll) */
@@ -133,6 +135,20 @@ export class BoardTools {
       this.select(obj.id);
       return true;
     }
+    // Liegendes Maßband nachträglich verschieben: Ende anfassen = dieses Ende ziehen, Linie = ganzes Maßband
+    const m = this.store.state.meta.measure;
+    if (m && !this.readOnly) {
+      const near = 14 / (PPI * this.host.worldScale());
+      const base = { type: m.type, a: m.a, b: m.b, gx: e.global.x, gy: e.global.y, moved: false };
+      if (Math.hypot(p.x - m.b.x, p.y - m.b.y) <= near) this.drag = { ...base };
+      else if (Math.hypot(p.x - m.a.x, p.y - m.a.y) <= near) this.drag = { ...base, grab: 'a' };
+      else if (distToSegment(p, m.a, m.b) <= near * 0.7) this.drag = { ...base, grab: 'line', from: p, a0: m.a, b0: m.b };
+      if (this.drag) {
+        this.showShared();
+        this.drawMeasure(m.type, m.a, m.b);
+        return true;
+      }
+    }
     return false;
   }
 
@@ -143,7 +159,13 @@ export class BoardTools {
     d.moved = true;
     const p = this.host.toInches(e);
     if ('a' in d) {
-      d.b = p;
+      if (d.grab === 'line' && d.from && d.a0 && d.b0) {
+        const dx = p.x - d.from.x;
+        const dy = p.y - d.from.y;
+        d.a = { x: d.a0.x + dx, y: d.a0.y + dy };
+        d.b = { x: d.b0.x + dx, y: d.b0.y + dy };
+      } else if (d.grab === 'a') d.a = p;
+      else d.b = p;
       this.drawMeasure(d.type, d.a, d.b);
       // Für den Mitspieler: höchstens alle 150 ms senden
       if (Date.now() - this.lastSent > 150) this.sendMeasure(d.type, d.a, d.b);
@@ -375,4 +397,13 @@ export class BoardTools {
     const sel = this.selectedId ? this.store.state.objects[this.selectedId] : undefined;
     if (sel?.type === 'objective') g.circle(sel.x * PPI, sel.y * PPI, 6 * PPI).stroke({ width: 1.5, color: 0xe0b44c, alpha: 0.8 });
   }
+}
+
+/** Abstand eines Punktes zur Strecke a–b (Zoll) */
+function distToSegment(p: Point, a: Point, b: Point): number {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const len = dx * dx + dy * dy || 1;
+  const t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / len));
+  return Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy));
 }
