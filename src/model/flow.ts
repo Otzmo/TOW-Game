@@ -328,3 +328,33 @@ export function chargePathCheck(charger: UnitState, end: { x: number; y: number;
   const deg = Math.round((Math.atan2(Math.abs(sideways), Math.max(forward, EPS)) * 180) / Math.PI);
   return { ok: true, note: `one wheel of about ${deg}° ${sideways > 0 ? 'right' : 'left'}, then straight ahead` };
 }
+
+/**
+ * Kleinste Charge-Distanz: kürzester Abstand von der Front des Angreifers (ganze Frontbreite) zur Fläche des Ziels.
+ * So weit muss die Einheit mindestens kommen, um überhaupt Kontakt zu haben.
+ */
+export function minChargeDistance(charger: UnitState, target: UnitState, units: Record<string, UnitState>): number {
+  const me = unitFootprint(charger, units);
+  const { w, h } = unitFootprint(target, units);
+  let best = Infinity;
+  for (let i = 0; i <= 20; i++) {
+    const p = toLocal(target, toTable(charger, -me.w / 2 + (me.w * i) / 20, -me.h / 2));
+    best = Math.min(best, Math.hypot(Math.max(0, Math.abs(p.x) - w / 2), Math.max(0, Math.abs(p.y) - h / 2)));
+  }
+  return best;
+}
+
+/**
+ * Charge-Distanz bis zur maximierten Stellung: wie weit die vorderen Ecken des Angreifers dafür zurücklegen müssen
+ * (die weitere der beiden Ecken zählt, wie beim Schwenken die äußere Ecke).
+ */
+export function chargeTravel(charger: UnitState, end: { x: number; y: number; rotation: number },
+  units: Record<string, UnitState>): number {
+  const me = unitFootprint(charger, units);
+  const moved = { ...charger, ...end };
+  return Math.max(...[-1, 1].map((sx) => {
+    const a = toTable(charger, (sx * me.w) / 2, -me.h / 2);
+    const b = toTable(moved, (sx * me.w) / 2, -me.h / 2);
+    return Math.hypot(b.x - a.x, b.y - a.y);
+  }));
+}

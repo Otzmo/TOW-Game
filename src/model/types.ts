@@ -199,6 +199,8 @@ export interface Charge {
   dice?: number[] | null;
   range?: number | null;
   distance?: number | null;
+  /** Charge-Distanz bis zur Stellung mit maximiertem Kontakt */
+  maxDistance?: number | null;
   success?: boolean | null;
 }
 

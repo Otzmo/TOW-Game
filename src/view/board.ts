@@ -1,6 +1,8 @@
 import { Application, Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
 import { BoardTools } from './boardTools';
-import { alignToBases, chargeDistance, chargePathCheck, contactPoses, frontCenter } from '../model/flow';
+import {
+  alignToBases, chargePathCheck, chargeTravel, contactPoses, frontCenter, minChargeDistance,
+} from '../model/flow';
 import {
   isJoined, isNonUnitChange, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
 } from '../model/store';
@@ -258,11 +260,23 @@ export class Board {
     const charger = units[chargerId];
     const target = units[targetId];
     if (!charger || !target) return;
-    const distance = Math.round(chargeDistance(charger, target, units) * 10) / 10;
+    // Mindestens nötig für Kontakt, und nötig für die Stellung mit maximiertem Kontakt
+    const round1 = (v: number) => Math.round(v * 10) / 10;
+    const distance = round1(minChargeDistance(charger, target, units));
+    const pose = this.maximisedPose(charger, target);
+    const maxDistance = pose ? round1(chargeTravel(charger, pose, units)) : null;
     const id = `charge-${chargerId}`;
     this.store.setCharge(id, { id, charger: chargerId, target: targetId, round: this.store.state.meta.round,
-      status: 'declared', distance });
-    this.events.onAction(chargerId, `declares a charge against ${target.info.name} – distance ${distance.toFixed(1)}″`);
+      status: 'declared', distance, maxDistance });
+    this.events.onAction(chargerId, `declares a charge against ${target.info.name} – contact from ${distance.toFixed(1)}″`
+      + (maxDistance != null ? `, maximised at ${maxDistance.toFixed(1)}″` : ''));
+  }
+
+  /** Stellung mit maximiertem Kontakt, an der der Angreifer Platz hat (ohne andere Einheiten zu überlappen) */
+  private maximisedPose(charger: UnitState, target: UnitState) {
+    const { units } = this.store.state;
+    return contactPoses(charger, target, units)
+      .find((p) => !overlappingUnits({ ...charger, x: p.x, y: p.y, rotation: p.rotation }, units).length);
   }
 
   /** Angriffsbewegung: an die zugewandte Kante des Ziels, bündig an den Base-Grenzen */
@@ -273,8 +287,7 @@ export class Board {
     const target = c ? units[c.target] : undefined;
     if (!c || !charger || !target || !this.canMove(chargerId)) return;
     // Erste Kante, an der der Angreifer Platz hat (ohne andere Einheiten zu überlappen)
-    const pose = contactPoses(charger, target, units)
-      .find((p) => !overlappingUnits({ ...charger, x: p.x, y: p.y, rotation: p.rotation }, units).length);
+    const pose = this.maximisedPose(charger, target);
     if (!pose) {
       this.events.onAction(chargerId, `cannot reach ${target.info.name}: no room at any edge`);
       return;
@@ -322,7 +335,7 @@ export class Board {
       });
       g.poly(corners).stroke({ width: 2, color, alpha: 0.9 });
       const label = new Text({
-        text: `⚔ Charge${c.distance != null ? ` · ${c.distance.toFixed(1)}″` : ''}`,
+        text: `⚔ Charge${chargeRange(c)}`,
         style: { fontFamily: 'system-ui', fontSize: 13, fontWeight: '700', fill: color, stroke: { color: 0x000000, width: 3.5 } },
         resolution: 6,
       });
@@ -963,4 +976,11 @@ export class Board {
     const p = this.world.toLocal(e.global);
     return { x: p.x / PPI, y: p.y / PPI };
   }
+}
+
+/** „· 7.3–8.1″“: kleinste Charge-Distanz bis zur Distanz mit maximiertem Kontakt */
+function chargeRange(c: { distance?: number | null; maxDistance?: number | null }): string {
+  if (c.distance == null) return '';
+  const max = c.maxDistance != null && c.maxDistance > c.distance + 0.05 ? `–${c.maxDistance.toFixed(1)}` : '';
+  return ` · ${c.distance.toFixed(1)}${max}″`;
 }

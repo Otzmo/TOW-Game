@@ -282,10 +282,12 @@ export class UnitPanel {
     const target = c ? units[c.target] : undefined;
     if (!c || !target) return '<div class="row-btns"><button data-charge="declare">⚔ Declare charge</button></div>';
     const dist = c.distance != null ? `${c.distance.toFixed(1)}″` : '?';
+    const max = c.maxDistance != null ? `${c.maxDistance.toFixed(1)}″` : '?';
     return c.status === 'rolled'
       ? `<p class="ok">Charged ${escapeHtml(target.info.name)} (${dist})</p>
          <div class="row-btns"><button data-charge="cancel" title="Remove the charge marker, e.g. after Undo">Clear charge</button></div>`
-      : `<p>Charge against <b>${escapeHtml(target.info.name)}</b>: distance <b>${dist}</b></p>
+      : `<p>Charge against <b>${escapeHtml(target.info.name)}</b></p>
+         <p class="charge-dist">Contact from <b>${dist}</b> · maximised at <b>${max}</b></p>
          <div class="row-btns"><button data-charge="move" class="primary">Charge move</button><button data-charge="cancel">Cancel</button></div>`;
   }
 
