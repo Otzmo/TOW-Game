@@ -12,10 +12,7 @@
   <aside id="sidebar">
     <div id="gamebar">
       <span id="g-round"></span>
-      <ol id="g-phases"></ol>
-      <ol id="g-subs"></ol>
-      <button id="g-end" class="primary">Next ›</button>
-      <button id="g-repeat" hidden>↺</button>
+      <button id="g-end" class="primary">End round</button>
       <button id="g-undo" title="Undo (Ctrl+Z)" disabled>↶ Undo</button>
       <button id="g-redo" title="Redo (Ctrl+Y)" disabled>↷ Redo</button>
       <div id="g-confirm" hidden>
@@ -58,6 +55,7 @@
   <!-- Rechte Spalte: nur Popups (Einheit, Objekt, Fenster, Aufforderungen, Hinweise); leer = ausgeblendet -->
   <aside id="rightbar">
     <div id="right-top">
+    <p id="right-empty" class="meta">Click a unit to see its profile, rules and status here.</p>
   <!-- Siegpunkte (Killpoints und Missionspunkte) und Würfel als Fenster -->
     <aside class="sheet" id="sheet-score" hidden><div id="score-panel"></div></aside>
     <aside class="sheet" id="sheet-dice" hidden><div id="dicebar">
@@ -231,9 +229,7 @@
   </aside>
   <!-- Ein- und Ausblenden der Spalten -->
   <div id="view-toggles">
-    <button id="toggle-left" title="Show/hide left column ([)">⟨</button>
-    <button id="toggle-all" title="Hide/show all panels (H)">⛶</button>
-    <button id="toggle-right" title="Show/hide right column (])">⟩</button>
+    <button id="toggle-left" title="Show/hide left column (H)">⟨</button>
   </div>
   <p id="tool-hint" hidden></p>
   <p id="prompt-wait" hidden></p>

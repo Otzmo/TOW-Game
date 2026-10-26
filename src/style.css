@@ -414,16 +414,16 @@ body.sheet-open .bottom-panel { display: none; }
    Alles passt sich an die Fenstergröße an: Spaltenbreiten und Schriftgrößen wachsen mit dem Fenster,
    in den Spalten scrollt jeder Bereich für sich, nichts liegt fest übereinander. */
 :root {
-  --side: clamp(220px, 17vw, 330px);
+  --side: clamp(150px, 11vw, 220px);
   --right: clamp(280px, 24vw, 460px);
   /* Schriftfaktor: setzt main.ts je nach Fensterbreite (kleine Fenster kleiner, große Monitore größer) */
   --ui: 1;
   --lw: var(--side);
-  /* Die Popup-Spalte legt sich über den Tisch, sie verkleinert ihn nicht */
-  --rw: 0px;
+  /* Die Popup-Spalte rechts ist immer da; der Tisch liegt zwischen beiden Spalten */
+  --rw: var(--right);
 }
 body.hide-left { --lw: 0px; }
-body.hide-left #sidebar, body.hide-right #rightbar { display: none; }
+body.hide-left #sidebar { display: none; }
 
 #sidebar { width: var(--side); }
 
@@ -432,9 +432,9 @@ body.hide-left #sidebar, body.hide-right #rightbar { display: none; }
   background: rgba(20, 22, 24, .97); border-left: 1px solid var(--line); z-index: 2;
   box-shadow: -8px 0 24px rgba(0, 0, 0, .45);
 }
-/* Ohne offenes Popup ist die rechte Spalte nicht da */
-#rightbar:not(:has(> #right-top > :not([hidden]))) { display: none; }
 #right-top { position: relative; flex: 1 1 auto; min-height: 0; }
+/* Ohne offenes Popup: kurzer Hinweis, die Spalte bleibt stehen */
+#right-empty { margin: 0; padding: 16px 14px; }
 #right-top > .info-panel, #right-top > .bottom-panel, #right-top > .sheet {
   position: absolute; inset: 0; width: auto; height: auto; max-height: none; margin: 0; overflow-y: auto;
   border: 0; border-radius: 0; background: var(--panel); padding: 12px 14px;
@@ -547,7 +547,7 @@ body:not(.battle) #toolbox [data-sheet="score"], body:not(.battle) #toolbox [dat
 }
 #view-toggles:hover { opacity: 1; }
 #view-toggles button { padding: 2px 10px; font-size: calc(14px * var(--ui)); line-height: 1.4; background: rgba(42, 46, 50, .9); }
-body.hide-left #toggle-left, body.hide-right #toggle-right { border-color: var(--accent); color: var(--accent); }
+body.hide-left #toggle-left { border-color: var(--accent); color: var(--accent); }
 
 /* Einheiten-Popup: Waffen, Rettungswürfe und kompakter Regelbereich */
 table.weapons td.w-rules, table.weapons th:last-child { text-align: left; font-size: calc(11px * var(--ui)); }

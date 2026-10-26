@@ -66,9 +66,7 @@ export class Shortcuts {
       { group: 'General', keys: [['Ctrl', 'O']], desc: 'Load game', match: withCtrl('o'), run: () => toolbox.openLoad() },
       { group: 'General', keys: [['Esc']], desc: 'Stop tool, close sheet, then clear selection',
         match: (e) => e.key === 'Escape', whileTyping: true, run: (e) => this.escape(e) },
-      { group: 'View', keys: [['H']], desc: 'Hide / show all panels', match: letter('h'), run: () => views.toggleAll() },
-      { group: 'View', keys: [['[']], desc: 'Hide / show the left column', match: char('['), run: () => views.toggle('left') },
-      { group: 'View', keys: [[']']], desc: 'Hide / show the popup column on the right', match: char(']'), run: () => views.toggle('right') },
+      { group: 'View', keys: [['H'], ['[']], desc: 'Hide / show the left column', match: (e) => letter('h')(e) || char('[')(e), run: () => views.toggle('left') },
       { group: 'General', keys: [['?'], ['F1']], desc: 'Show these shortcuts',
         match: (e) => char('?')(e) || e.key === 'F1', run: () => toggleSheet('keys') },
 
@@ -93,6 +91,7 @@ export class Shortcuts {
         match: (e) => e.key === 'Enter' && plain(e) && !!targetEl(e)?.closest('#dicebar'),
         whileTyping: true, run: () => ($('d-roll') as HTMLButtonElement).click() },
       { group: 'Game', keys: [['P']], desc: 'Log', match: letter('p'), run: () => toggleSheet('log') },
+      { group: 'Game', keys: [['N']], desc: 'End round (after setup)', match: letter('n'), run: () => gameBar.endRound() },
       { group: 'Game', keys: [['C']], desc: 'Write a chat message', match: letter('c'), run: () => {
         openSheet('log');
         ($('chat-input') as HTMLInputElement).focus();
@@ -100,8 +99,6 @@ export class Shortcuts {
       { group: 'Game', keys: [['S']], desc: 'Victory Points (after setup)', match: letter('s'), run: () => {
         if (inBattle()) toggleSheet('score');
       } },
-      { group: 'Game', keys: [['N']], desc: 'Next sub-phase', match: letter('n'), run: () => gameBar.requestNext() },
-      { group: 'Game', keys: [['U']], desc: 'Shooting/Combat: next unit or next combat', match: letter('u'), run: () => gameBar.repeat() },
       { group: 'Game', keys: [['Tab'], ['Shift', 'Tab']], desc: 'Select next / previous unit',
         match: (e) => e.key === 'Tab' && plain(e), run: (e) => board.selectNext(e.shiftKey ? -1 : 1) },
 

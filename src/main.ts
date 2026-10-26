@@ -103,14 +103,14 @@ async function start(): Promise<void> {
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
   // Ganzen Tisch zeigen, auch nach jedem Armeeimport
-  // Freier Bereich rechts neben der Spalte links; die Popup-Spalte rechts legt sich bei Bedarf darüber
+  // Freier Bereich zwischen der Spalte links und der (immer sichtbaren) Popup-Spalte rechts
   board.viewArea = () => {
     const margin = 34; // Platz für die Zoll-Leisten
     const left = document.getElementById('sidebar')!;
     return {
       left: (views.hidden('left') ? 0 : left.getBoundingClientRect().right) + margin,
       top: margin,
-      right: app.screen.width - margin,
+      right: document.getElementById('rightbar')!.getBoundingClientRect().left - margin,
       bottom: app.screen.height - margin,
     };
   };
