@@ -647,3 +647,20 @@ ul.spells .meta, ul.destroyed .meta { margin: 0; font-size: calc(12px * var(--ui
 .spell-choice button { margin-top: 6px; }
 .spell-remove { padding: 0 6px; border: 0; background: none; color: var(--muted); font-size: calc(15px * var(--ui)); line-height: 1; }
 .spell-remove:hover { color: #f0603e; }
+/* Scoring: je Spieler Kill points + Mission points = Total */
+table.scoring { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: calc(14px * var(--ui)); }
+table.scoring th, table.scoring td { padding: 6px 4px; border-bottom: 1px solid var(--line); text-align: right; }
+table.scoring th:first-child, table.scoring td:first-child { text-align: left; color: var(--muted); }
+table.scoring th { font-weight: 600; white-space: nowrap; }
+table.scoring tr.sum td { font-weight: 700; font-size: calc(17px * var(--ui)); color: var(--accent); border-bottom: 0; }
+table.scoring tr.sum td:first-child { color: var(--text); }
+table.scoring input { width: 70px; font: inherit; text-align: right; color: var(--text); background: #15171a; border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; }
+.mission-line { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 10px 0 0; font-size: calc(13px * var(--ui)); color: var(--muted); }
+.mission-line b { color: var(--text); }
+.mission-line button { margin-left: auto; padding: 3px 10px; font-size: calc(12px * var(--ui)); }
+table.scoring { table-layout: fixed; }
+table.scoring th:first-child, table.scoring td:first-child { width: 34%; }
+table.scoring th { overflow: hidden; text-overflow: ellipsis; }
+table.scoring input { width: 100%; max-width: 80px; }
+#score-panel, .mission-line { min-width: 0; }
+#right-top > #sheet-score:not([hidden]) { display: block; }

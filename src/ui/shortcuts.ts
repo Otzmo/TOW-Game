@@ -97,7 +97,7 @@ export class Shortcuts {
         openSheet('log');
         ($('chat-input') as HTMLInputElement).focus();
       } },
-      { group: 'Game', keys: [['S']], desc: 'Victory Points (after setup)', match: letter('s'), run: () => {
+      { group: 'Game', keys: [['S']], desc: 'Scoring (after setup)', match: letter('s'), run: () => {
         if (inBattle()) toggleSheet('score');
       } },
       { group: 'Game', keys: [['Tab'], ['Shift', 'Tab']], desc: 'Select next / previous unit',

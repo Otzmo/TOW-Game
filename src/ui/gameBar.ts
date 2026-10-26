@@ -1,10 +1,9 @@
 import type { History } from '../model/history';
 import { currentPhase, nextSub, subLabel } from '../model/phases';
-import { armyPoints, victoryPoints } from '../model/score';
+import { victoryPoints } from '../model/score';
 import { isSkirmish, unitLayout, type Store } from '../model/store';
 import type { GameMeta, LogKind, PlayerId } from '../model/types';
 
-import { missionByKey } from '../model/battlefield';
 import { missionStatus } from '../model/mission';
 import { playerName } from '../model/players';
 
@@ -140,35 +139,31 @@ export class GameBar {
     this.log('turn', `${status.name} scored (round ${this.store.state.meta.round}): ${playerName('p1')} +${status.vp.p1}, ${playerName('p2')} +${status.vp.p2}`);
   }
 
-  /** Siegpunkte: Killpoints je Einheit, Missionswertung (aktueller Stand, per Knopf werten) und Missionspunkte */
+  /** Scoring: je Spieler Kill points (automatisch) + Mission points (eintragen oder per Knopf werten) = Summe */
   private renderScore(): void {
     const { state } = this.store;
     const panel = $('score-panel');
     // Nicht neu zeichnen, während dort eine Zahl eingegeben wird
     if (panel.contains(document.activeElement) && (document.activeElement as HTMLElement).tagName === 'INPUT') return;
-    const { missionVp, setup } = state.meta;
-    const score = { p1: victoryPoints(state, 'p1'), p2: victoryPoints(state, 'p2') };
-    $('score-btn').innerHTML = `Victory Points <b>${score.p1.total}</b> : <b>${score.p2.total}</b>`;
-    const missions = [missionByKey(setup?.missionTurn), missionByKey(setup?.missionGame)].filter(Boolean).map((m) => m!.name);
-    const status = missionStatus(state, playerName);
-    const missionHtml = status.length ? `<section class="mission-score"><h3>Mission scoring</h3>${status.map((m) => `
-      <div class="mission-row"><b>${escapeHtml(m.name)}</b> <span class="meta">${m.group === 'turn' ? 'end of each player turn' : 'end of the game'}</span>
-        <ul>${m.lines.map((l) => `<li>${escapeHtml(l)}</li>`).join('')}</ul>
-        ${m.manual ? '' : `<p>Now: ${playerName('p1')} <b>${m.vp.p1}</b> · ${playerName('p2')} <b>${m.vp.p2}</b>
-          <button data-score="${m.key}" class="primary" ${this.me === 'spectator' ? 'disabled' : ''}>Score ✓</button></p>`}</div>`).join('')}
-      <p class="meta">Scoring units: US 10+ (wounds of all models), no Fly, not fleeing.</p></section>` : '';
-    panel.innerHTML = `<h3>Victory Points</h3>` + missionHtml + (['p1', 'p2'] as const).map((p) => {
-      const kills = score[p].lines.filter((l) => l.label !== 'Mission points');
-      const killTotal = kills.reduce((s, l) => s + l.vp, 0);
-      const lines = kills.map((l) =>
-        `<li><span>${escapeHtml(l.label)}</span><b>${l.vp}</b></li>`).join('') || '<li class="empty">none yet</li>';
-      return `<section>
-        <h3><span class="dot ${p}"></span>${playerName(p)} <span class="vp">${score[p].total} VP</span></h3>
-        <p class="meta">Army ${armyPoints(state, p)} pts · Kill points ${killTotal} · Mission points ${missionVp?.[p] ?? 0}</p>
-        <ul>${lines}</ul>
-        <label>Mission points${missions.length ? ` (${escapeHtml(missions.join(' + '))})` : ''}
-          <input type="number" min="0" step="25" data-mission="${p}" value="${missionVp?.[p] ?? 0}"></label>
-      </section>`;
-    }).join('') + '<p class="meta note">Score as if the game ended now.</p>';
+    const { missionVp } = state.meta;
+    const kills = (p: PlayerId) => victoryPoints(state, p).lines.filter((l) => l.label !== 'Mission points');
+    const killTotal = (p: PlayerId) => kills(p).reduce((s, l) => s + l.vp, 0);
+    const total = (p: PlayerId) => killTotal(p) + (missionVp?.[p] ?? 0);
+    $('score-btn').innerHTML = `Scoring <b>${total('p1')}</b> : <b>${total('p2')}</b>`;
+    const head = (['p1', 'p2'] as const).map((p) => `<th><span class="dot ${p}"></span>${playerName(p)}</th>`).join('');
+    // Kill points: Aufschlüsselung im Tooltip
+    const killCell = (p: PlayerId) => `<td title="${escapeHtml(kills(p).map((l) => `${l.label}: ${l.vp}`).join('\n') || 'none yet')}">${killTotal(p)}</td>`;
+    const missionCell = (p: PlayerId) => `<td><input type="number" min="0" step="5" data-mission="${p}" value="${missionVp?.[p] ?? 0}"></td>`;
+    // Missionswertung kurz: aktueller Stand und Knopf, der ihn zu den Mission points addiert
+    const status = missionStatus(state, playerName).filter((m) => !m.manual);
+    const missionHtml = status.map((m) => `<p class="mission-line" title="${escapeHtml(m.lines.join('\n'))}">
+      ${escapeHtml(m.name)}: now <b>${m.vp.p1}</b> : <b>${m.vp.p2}</b>
+      <button data-score="${m.key}" ${this.me === 'spectator' ? 'disabled' : ''}>+ Score</button></p>`).join('');
+    panel.innerHTML = `<h3>Scoring</h3>
+      <table class="scoring"><thead><tr><th></th>${head}</tr></thead><tbody>
+        <tr><td>Kill points</td>${killCell('p1')}${killCell('p2')}</tr>
+        <tr><td>Mission points</td>${missionCell('p1')}${missionCell('p2')}</tr>
+        <tr class="sum"><td>Total</td><td>${total('p1')}</td><td>${total('p2')}</td></tr>
+      </tbody></table>${missionHtml}`;
   }
 }
