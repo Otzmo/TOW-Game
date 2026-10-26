@@ -13,8 +13,8 @@
     <div id="gamebar">
       <span id="g-round"></span>
       <button id="g-end" class="primary">End round</button>
-      <button id="g-undo" title="Undo (Ctrl+Z)" disabled>↶ Undo</button>
-      <button id="g-redo" title="Redo (Ctrl+Y)" disabled>↷ Redo</button>
+      <button id="g-undo" title="Undo" disabled>↶ Undo</button>
+      <button id="g-redo" title="Redo" disabled>↷ Redo</button>
       <div id="g-confirm" hidden>
         <span id="g-confirm-text"></span>
         <button id="g-confirm-yes" class="primary">Continue anyway</button>
@@ -33,12 +33,12 @@
     </div>
 
     <nav id="toolbox" aria-label="Tools">
-      <button data-tool="measure" title="Measuring tape: drag on the table (M)">Measure</button>
-      <button data-tool="ping" title="Mark a point on the table for both players (I, or Alt + click)">Ping</button>
-      <button data-sheet="score" id="score-btn" title="Scoring: kill points + mission points (S)">Scoring</button>
-      <button data-sheet="dice" title="Dice and dice log (W)">Dice</button>
+      <button data-tool="measure" title="Measuring tape: drag on the table">Measure</button>
+      <button data-tool="ping" title="Mark a point on the table for both players (also Alt + click)">Ping</button>
+      <button data-sheet="score" id="score-btn" title="Scoring: kill points + mission points">Scoring</button>
+      <button data-sheet="dice" title="Dice and dice log">Dice</button>
       <hr>
-      <button data-sheet="battlefield" title="Reopen the current setup step (A)">Setup ▸</button>
+      <button data-sheet="battlefield" title="Reopen the current setup step">Setup ▸</button>
       <button data-sheet="markers">Markers ▸</button>
       <button data-sheet="templates">Templates ▸</button>
       <hr>
@@ -48,7 +48,7 @@
       <button id="save-game">Save</button>
       <button id="load-game">Load</button>
       <input type="file" id="load-file" accept=".json,application/json" hidden>
-      <button data-sheet="keys" title="All keyboard shortcuts (?)">Shortcuts</button>
+      <button data-sheet="keys" title="All keyboard shortcuts">Shortcuts</button>
       <button data-sheet="mission" title="Rolled deployment and missions with their rules">Mission</button>
     </nav>
     <!-- Unten links: Zauber und vernichtete Einheiten, getrennt voneinander -->

@@ -32,85 +32,78 @@ interface Shortcut {
 const ctrl = (e: KeyboardEvent) => e.ctrlKey || e.metaKey;
 /** Element, auf dem die Taste gedrückt wurde (kann auch das Fenster sein) */
 const targetEl = (e: KeyboardEvent) => (e.target instanceof HTMLElement ? e.target : null);
-/** Nach der Aufstellung gibt es Gelände und Battlefield nicht mehr (siehe gameBar) */
-const inBattle = () => document.body.classList.contains('battle');
 const isTyping = (e: KeyboardEvent) => !!targetEl(e)?.closest('input, textarea, select');
 const plain = (e: KeyboardEvent) => !ctrl(e) && !e.altKey;
-/** Buchstabentaste ohne Strg/Alt; Umschalt optional bzw. verlangt */
-const letter = (k: string, shift: boolean | null = false) => (e: KeyboardEvent) =>
-  plain(e) && e.key.toLowerCase() === k && (shift === null || e.shiftKey === shift);
+/** Buchstabentaste ohne Strg/Alt/Umschalt */
+const letter = (k: string) => (e: KeyboardEvent) =>
+  plain(e) && !e.shiftKey && e.key.toLowerCase() === k;
 /** Zeichen, das Umschalt schon enthält (?, +) – Umschalt wird nicht geprüft */
 const char = (...ks: string[]) => (e: KeyboardEvent) => plain(e) && ks.includes(e.key);
-const withCtrl = (k: string, shift = false) => (e: KeyboardEvent) =>
-  ctrl(e) && !e.altKey && e.key.toLowerCase() === k && e.shiftKey === shift;
+
+/**
+ * Jeder Knopf der linken Spalte hat einen eigenen Buchstaben; die Taste klickt einfach den Knopf
+ * (nur wenn er gerade sichtbar und nicht gesperrt ist). Der Buchstabe steht auch auf dem Knopf.
+ */
+const LEFT_KEYS: [selector: string, key: string, desc: string][] = [
+  ['#g-end', 'N', 'End round'],
+  ['#g-undo', 'U', 'Undo'],
+  ['#g-redo', 'Y', 'Redo'],
+  ['[data-tool="measure"]', 'M', 'Measuring tape (stays on the table)'],
+  ['[data-tool="ping"]', 'P', 'Ping: mark a point for both players (also Alt + click)'],
+  ['#score-btn', 'S', 'Scoring'],
+  ['[data-sheet="dice"]', 'D', 'Dice'],
+  ['[data-sheet="battlefield"]', 'A', 'Setup (current step)'],
+  ['[data-sheet="markers"]', 'K', 'Markers'],
+  ['[data-sheet="templates"]', 'T', 'Templates'],
+  ['[data-sheet="log"]', 'L', 'Log & chat'],
+  ['[data-sheet="notes"]', 'J', 'Notes'],
+  ['#save-game', 'W', 'Save game'],
+  ['#load-game', 'G', 'Load game'],
+  ['[data-sheet="keys"]', 'V', 'Shortcuts (this list)'],
+  ['[data-sheet="mission"]', 'I', 'Mission'],
+  ['#ambush-btn', 'B', 'Ambushers'],
+  ['[data-sheet="spells"]', 'Z', 'Spells'],
+  ['[data-sheet="destroyed"]', 'C', 'Destroyed units'],
+];
 
 /** Alle Tastenkürzel an einer Stelle: steuert die Tasten und erzeugt die Legende. */
 export class Shortcuts {
   private readonly list: Shortcut[];
 
   constructor(private t: ShortcutTargets) {
-    const { board, panel, gameBar, toolbox, history, views } = t;
+    const { board, panel, views } = t;
     const tools = board.tools;
-    const nudge = (f: number, r: number) => (e: KeyboardEvent) => {
-      const step = e.shiftKey ? 0.1 : 1;
-      board.nudgeSelected(f * step, r * step);
-    };
     const status = (s: UnitStatus | null) => () => panel.change({ status: s });
 
+    // Jedes Kürzel ist genau eine Taste – keine Kombination mit Strg, Umschalt oder Alt
     this.list = [
       // Allgemein
-      { group: 'General', keys: [['Ctrl', 'Z']], desc: 'Undo', match: withCtrl('z'), run: () => history.undo() },
-      { group: 'General', keys: [['Ctrl', 'Y'], ['Ctrl', 'Shift', 'Z']], desc: 'Redo',
-        match: (e) => withCtrl('y')(e) || withCtrl('z', true)(e), run: () => history.redo() },
-      { group: 'General', keys: [['Ctrl', 'S']], desc: 'Save game', match: withCtrl('s'), run: () => toolbox.save() },
-      { group: 'General', keys: [['Ctrl', 'O']], desc: 'Load game', match: withCtrl('o'), run: () => toolbox.openLoad() },
-      { group: 'General', keys: [['Esc']], desc: 'Stop tool, close sheet, then clear selection',
+      { group: 'General', keys: [['Esc']], desc: 'Stop tool, close window, remove the measuring tape',
         match: (e) => e.key === 'Escape', whileTyping: true, run: (e) => this.escape(e) },
-      { group: 'View', keys: [['H'], ['[']], desc: 'Hide / show the left column', match: (e) => letter('h')(e) || char('[')(e), run: () => views.toggle('left') },
-      { group: 'General', keys: [['?'], ['F1']], desc: 'Show these shortcuts',
-        match: (e) => char('?')(e) || e.key === 'F1', run: () => toggleSheet('keys') },
+      { group: 'General', keys: [['F1']], desc: 'Show these shortcuts', match: (e) => plain(e) && e.key === 'F1', run: () => toggleSheet('keys') },
+      { group: 'General', keys: [['H']], desc: 'Hide / show the left column', match: letter('h'), run: () => views.toggle('left') },
 
-      // Werkzeuge
-      { group: 'Tools', keys: [['M']], desc: 'Measuring tape (after setup)', match: letter('m'), run: () => { if (inBattle()) tools.setTool('measure'); } },
-      { group: 'Tools', keys: [['I'], ['Alt', 'Click']], desc: 'Ping: mark a point for both players', match: letter('i'), run: () => tools.setTool('ping') },
-      { group: 'Tools', keys: [['G']], desc: 'Place terrain: Battlefield sheet (setup only)', match: letter('g'), run: () => { if (!inBattle()) toggleSheet('battlefield'); } },
-      { group: 'Tools', keys: [['K']], desc: 'Place markers (after setup)', match: letter('k'), run: () => { if (inBattle()) toggleSheet('markers'); } },
-      { group: 'Tools', keys: [['B']], desc: 'Templates (after setup)', match: letter('b'), run: () => { if (inBattle()) toggleSheet('templates'); } },
-      { group: 'Tools', keys: [['A']], desc: 'Battlefield & setup (setup only)', match: letter('a'), run: () => { if (!inBattle()) toggleSheet('battlefield'); } },
-
-      // Fenster und Spiel
-      { group: 'Game', keys: [['W']], desc: 'Dice (after setup): open and enter number', match: letter('w'), run: () => {
-        if (!inBattle()) return;
-        openSheet('dice');
-        const input = $('d-count') as HTMLInputElement;
-        input.focus();
-        input.select();
-      } },
-      { group: 'Game', keys: [['Enter']], desc: 'In the dice popup: roll',
+      // Linke Spalte: ein Buchstabe je Knopf
+      ...LEFT_KEYS.map(([selector, key, desc]): Shortcut => ({
+        group: 'Left column', keys: [[key]], desc, match: letter(key.toLowerCase()),
+        run: () => this.pressButton(selector),
+      })),
+      { group: 'Left column', keys: [['Enter']], desc: 'In the dice window: roll',
         match: (e) => e.key === 'Enter' && plain(e) && !!targetEl(e)?.closest('#dicebar'),
         whileTyping: true, run: () => ($('d-roll') as HTMLButtonElement).click() },
-      { group: 'Game', keys: [['P']], desc: 'Log', match: letter('p'), run: () => toggleSheet('log') },
-      { group: 'Game', keys: [['N']], desc: 'End round (after setup)', match: letter('n'), run: () => gameBar.endRound() },
-      { group: 'Game', keys: [['C']], desc: 'Write a chat message', match: letter('c'), run: () => {
-        openSheet('log');
-        ($('chat-input') as HTMLInputElement).focus();
-      } },
-      { group: 'Game', keys: [['S']], desc: 'Scoring (after setup)', match: letter('s'), run: () => {
-        if (inBattle()) toggleSheet('score');
-      } },
-      { group: 'Game', keys: [['Tab'], ['Shift', 'Tab']], desc: 'Select next / previous unit',
-        match: (e) => e.key === 'Tab' && plain(e), run: (e) => board.selectNext(e.shiftKey ? -1 : 1) },
 
       // Ausgewählte Einheit oder ausgewähltes Objekt
-      { group: 'Selection', keys: [['↑'], ['↓']], desc: '1″ forward / backward (Shift: 0.1″)',
-        match: (e) => plain(e) && (e.key === 'ArrowUp' || e.key === 'ArrowDown'),
-        run: (e) => nudge(e.key === 'ArrowUp' ? 1 : -1, 0)(e) },
-      { group: 'Selection', keys: [['←'], ['→']], desc: '1″ left / right (Shift: 0.1″)',
-        match: (e) => plain(e) && (e.key === 'ArrowLeft' || e.key === 'ArrowRight'),
-        run: (e) => nudge(0, e.key === 'ArrowRight' ? 1 : -1)(e) },
-      { group: 'Selection', keys: [['Q'], ['E']], desc: 'Turn 15° left / right (Shift: 1°)',
-        match: (e) => letter('q', null)(e) || letter('e', null)(e),
-        run: (e) => board.rotateSelected((e.key.toLowerCase() === 'e' ? 1 : -1) * (e.shiftKey ? 1 : 15)) },
+      { group: 'Selection', keys: [['Tab']], desc: 'Select the next unit',
+        match: (e) => e.key === 'Tab' && plain(e) && !e.shiftKey, run: () => board.selectNext(1) },
+      { group: 'Selection', keys: [['↑'], ['↓']], desc: '1″ forward / backward',
+        match: (e) => plain(e) && !e.shiftKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown'),
+        run: (e) => board.nudgeSelected(e.key === 'ArrowUp' ? 1 : -1, 0) },
+      { group: 'Selection', keys: [['←'], ['→']], desc: '1″ left / right',
+        match: (e) => plain(e) && !e.shiftKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight'),
+        run: (e) => board.nudgeSelected(0, e.key === 'ArrowRight' ? 1 : -1) },
+      { group: 'Selection', keys: [['Q'], ['E']], desc: 'Turn 15° left / right',
+        match: (e) => letter('q')(e) || letter('e')(e),
+        run: (e) => board.rotateSelected((e.key.toLowerCase() === 'e' ? 1 : -1) * 15) },
       { group: 'Selection', keys: [['R']], desc: 'Show movement and charge ranges', match: letter('r'), run: () => panel.toggleRanges() },
       { group: 'Selection', keys: [['F']], desc: 'Toggle close order / skirmish', match: letter('f'), run: () => panel.toggleFormation() },
       { group: 'Selection', keys: [['O']], desc: 'Arrange skirmishers in ranks (0.5″)', match: letter('o'), run: () => panel.arrangeInRanks() },
@@ -124,21 +117,33 @@ export class Shortcuts {
       { group: 'Selection', keys: [['X']], desc: 'Character leaves its unit', match: letter('x'), run: () => {
         if (board.selectedId) board.detachCharacter(board.selectedId);
       } },
-      { group: 'Selection', keys: [['Del'], ['Backspace']], desc: 'Remove terrain, marker or template',
-        match: (e) => plain(e) && (e.key === 'Delete' || e.key === 'Backspace'), run: () => tools.removeSelected() },
+      { group: 'Selection', keys: [['Del']], desc: 'Remove terrain, marker or template',
+        match: (e) => plain(e) && e.key === 'Delete', run: () => tools.removeSelected() },
 
       // Ansicht
       { group: 'View', keys: [['PgUp'], ['PgDn']], desc: 'Zoom in / out (also mouse wheel)',
         match: (e) => plain(e) && (e.key === 'PageUp' || e.key === 'PageDown'),
         run: (e) => board.zoomBy(e.key === 'PageUp' ? 1.25 : 1 / 1.25) },
       { group: 'View', keys: [['Home']], desc: 'Show the whole table', match: (e) => plain(e) && e.key === 'Home', run: () => board.fitView() },
-      { group: 'View', keys: [['Ctrl', '↑ ↓ ← →']], desc: 'Pan the view (when zoomed in)',
-        match: (e) => ctrl(e) && e.key.startsWith('Arrow'),
-        run: (e) => board.panBy({ ArrowLeft: 80, ArrowRight: -80 }[e.key] ?? 0, { ArrowUp: 80, ArrowDown: -80 }[e.key] ?? 0) },
     ];
 
     window.addEventListener('keydown', (e) => this.onKey(e));
+    // Buchstaben auf die Knöpfe der linken Spalte schreiben
+    for (const [selector, key] of LEFT_KEYS) document.querySelector<HTMLElement>(selector)?.setAttribute('data-key', key);
     this.renderLegend();
+  }
+
+  /** Knopf der linken Spalte drücken, falls er gerade sichtbar und nicht gesperrt ist */
+  private pressButton(selector: string): void {
+    const btn = document.querySelector<HTMLButtonElement>(selector);
+    if (!btn || btn.disabled || !btn.offsetParent) return;
+    btn.click();
+    // Würfel: gleich die Anzahl eingeben können
+    if (selector.includes('dice') && openedSheet() === 'dice') {
+      const input = $('d-count') as HTMLInputElement;
+      input.focus();
+      input.select();
+    }
   }
 
   private onKey(e: KeyboardEvent): void {

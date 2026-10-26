@@ -674,3 +674,10 @@ body:not(.battle) #ambush-btn { display: none; }
 #sheet-ambush section + section { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); }
 #sheet-ambush h4 { margin: 0 0 6px; display: flex; align-items: center; }
 #ambush-list li button[data-act="place"] { margin-left: auto; padding: 3px 10px; font-size: calc(12px * var(--ui)); }
+/* Tastenkürzel: Buchstabe rechts auf jedem Knopf der linken Spalte */
+:where(#sidebar) button[data-key] { display: flex; align-items: center; gap: 6px; }
+#sidebar button[data-key]::after {
+  content: attr(data-key); margin-left: auto; min-width: 16px; padding: 0 4px; border-radius: 4px; text-align: center;
+  font-size: calc(10px * var(--ui)); font-weight: 700; line-height: 1.5; color: var(--muted); border: 1px solid var(--line);
+}
+#sidebar button.primary[data-key]::after, #sidebar button.on[data-key]::after { color: #1a1a1a; border-color: rgba(0, 0, 0, .35); }
