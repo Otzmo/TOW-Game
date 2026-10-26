@@ -23,7 +23,7 @@ const CAUTION_COLOR = 0xe0b44c;
 type ObjectDrag =
   | { type: 'move'; id: string; ox: number; oy: number; gx: number; gy: number; moved: boolean }
   | { type: 'rotate' | 'size'; id: string; gx: number; gy: number; moved: boolean }
-  | { type: 'measure' | 'sight'; a: Point; b: Point; gx: number; gy: number; moved: boolean;
+  | { type: 'measure' | 'sight'; id: string; a: Point; b: Point; gx: number; gy: number; moved: boolean;
     /** Liegendes Maßband anfassen: ein Ende oder die ganze Linie (from = Startpunkt des Zeigers) */
     grab?: 'a' | 'line'; from?: Point; a0?: Point; b0?: Point };
 
@@ -51,15 +51,10 @@ export class BoardTools {
     resolution: 2,
   });
   private readonly views = new Map<string, ObjectView>();
-  /** Maßband des Mitspielers und Pings beider Spieler */
-  private readonly remoteGraphics = new Graphics();
-  private readonly remoteLabel = new Text({
-    text: '',
-    style: { fontFamily: 'system-ui', fontSize: 18, fontWeight: '700', fill: 0xffffff, stroke: { color: 0x000000, width: 4 } },
-    resolution: 2,
-  });
+  /** Liegende Maßbänder beider Spieler (je Linie, Zahl und ×) und Pings */
+  private readonly measureLayer = new Container();
   private readonly pingGraphics = new Graphics();
-  private shownMeasure = 0;
+  private shownMeasures = '';
   private shownPing = 0;
   private lastSent = 0;
   private drag: ObjectDrag | null = null;
@@ -72,8 +67,7 @@ export class BoardTools {
 
   constructor(private store: Store, private history: History, private host: ToolHost) {
     this.toolLabel.anchor.set(0.5, 1);
-    this.remoteLabel.anchor.set(0.5, 1);
-    this.toolLayer.addChild(this.remoteGraphics, this.remoteLabel, this.pingGraphics, this.toolGraphics, this.toolLabel);
+    this.toolLayer.addChild(this.measureLayer, this.pingGraphics, this.toolGraphics, this.toolLabel);
     store.subscribe((state, change) => {
       if (change.objectId) this.syncObject(change.objectId);
       if (change.loaded) this.syncAll();
@@ -123,7 +117,9 @@ export class BoardTools {
       return true;
     }
     if (this.tool === 'measure' || this.tool === 'sight') {
-      this.drag = { type: this.tool, a: p, b: p, gx: e.global.x, gy: e.global.y, moved: false };
+      // Jedes neue Maßband kommt dazu; die alten bleiben liegen
+      const id = `m${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
+      this.drag = { type: this.tool, id, a: p, b: p, gx: e.global.x, gy: e.global.y, moved: false };
       return true;
     }
     if (typeof this.tool === 'object') {
@@ -135,21 +131,34 @@ export class BoardTools {
       this.select(obj.id);
       return true;
     }
-    // Liegendes Maßband nachträglich verschieben: Ende anfassen = dieses Ende ziehen, Linie = ganzes Maßband
-    const m = this.store.state.meta.measure;
-    if (m && !this.readOnly) {
+    // Liegende Maßbänder: × löscht, Ende anfassen = dieses Ende ziehen, Linie = ganzes Maßband verschieben
+    if (!this.readOnly) {
       const near = 14 / (PPI * this.host.worldScale());
-      const base = { type: m.type, a: m.a, b: m.b, gx: e.global.x, gy: e.global.y, moved: false };
-      if (Math.hypot(p.x - m.b.x, p.y - m.b.y) <= near) this.drag = { ...base };
-      else if (Math.hypot(p.x - m.a.x, p.y - m.a.y) <= near) this.drag = { ...base, grab: 'a' };
-      else if (distToSegment(p, m.a, m.b) <= near * 0.7) this.drag = { ...base, grab: 'line', from: p, a0: m.a, b0: m.b };
-      if (this.drag) {
-        this.showShared();
-        this.drawMeasure(m.type, m.a, m.b);
-        return true;
+      for (const [id, m] of Object.entries(this.store.state.meta.measures ?? {}).reverse()) {
+        const x = this.deletePoint(m);
+        if (Math.hypot(p.x - x.x, p.y - x.y) <= near) {
+          this.removeMeasure(id);
+          return true;
+        }
+        const base = { type: m.type, id, a: m.a, b: m.b, gx: e.global.x, gy: e.global.y, moved: false };
+        if (Math.hypot(p.x - m.b.x, p.y - m.b.y) <= near) this.drag = { ...base };
+        else if (Math.hypot(p.x - m.a.x, p.y - m.a.y) <= near) this.drag = { ...base, grab: 'a' };
+        else if (distToSegment(p, m.a, m.b) <= near * 0.7) this.drag = { ...base, grab: 'line', from: p, a0: m.a, b0: m.b };
+        if (this.drag) {
+          this.showShared();
+          this.drawMeasure(m.type, m.a, m.b);
+          return true;
+        }
       }
     }
     return false;
+  }
+
+  /** Stelle des ×-Knopfs eines Maßbands: kurz hinter dem Endpunkt, in Bildschirmgröße gleich */
+  private deletePoint(m: { a: Point; b: Point }): Point {
+    const len = Math.hypot(m.b.x - m.a.x, m.b.y - m.a.y) || 1;
+    const off = 16 / (PPI * this.host.worldScale());
+    return { x: m.b.x + ((m.b.x - m.a.x) / len) * off, y: m.b.y + ((m.b.y - m.a.y) / len) * off };
   }
 
   handleMove(e: FederatedPointerEvent): boolean {
@@ -168,7 +177,7 @@ export class BoardTools {
       else d.b = p;
       this.drawMeasure(d.type, d.a, d.b);
       // Für den Mitspieler: höchstens alle 150 ms senden
-      if (Date.now() - this.lastSent > 150) this.sendMeasure(d.type, d.a, d.b);
+      if (Date.now() - this.lastSent > 150) this.sendMeasure(d.id, d.type, d.a, d.b);
       return true;
     }
     const o = this.store.state.objects[d.id];
@@ -196,40 +205,58 @@ export class BoardTools {
     this.drag = null;
     if (!('a' in d) && !d.moved) this.history.dropIfUnchanged();
     if ('a' in d) {
-      // Das Maßband bleibt als Markierung auf dem Tisch liegen (für beide), bis neu gemessen oder Esc gedrückt wird
-      if (d.moved) this.sendMeasure(d.type, d.a, d.b);
+      // Das Maßband bleibt als Markierung auf dem Tisch liegen (für beide), bis es über sein × gelöscht wird
+      if (d.moved) this.sendMeasure(d.id, d.type, d.a, d.b);
       this.setTool('select');
-      this.showShared();
+      this.showShared(true);
     }
     return true;
   }
 
-  private sendMeasure(type: 'measure' | 'sight', a: Point, b: Point): void {
+  private sendMeasure(id: string, type: 'measure' | 'sight', a: Point, b: Point): void {
     if (this.readOnly) return;
     this.lastSent = Date.now();
-    this.store.setMeta({ measure: { type, a, b, by: DEVICE, ts: this.lastSent } });
+    this.store.setMeta({ measures: { ...this.store.state.meta.measures, [id]: { type, a, b, by: DEVICE, ts: this.lastSent } } });
   }
 
-  /** Liegendes Maßband entfernen (für beide). true = es lag eins */
+  private removeMeasure(id: string): void {
+    const { [id]: _, ...rest } = this.store.state.meta.measures ?? {};
+    this.store.setMeta({ measures: rest });
+  }
+
+  /** Alle Maßbänder entfernen (für beide). true = es lag mindestens eins */
   clearMeasure(): boolean {
-    if (!this.store.state.meta.measure) return false;
-    this.store.setMeta({ measure: null });
+    if (!Object.keys(this.store.state.meta.measures ?? {}).length) return false;
+    this.store.setMeta({ measures: {} });
     return true;
   }
 
-  /** Liegendes Maßband und Pings zeigen; während man selbst misst, zeichnet drawMeasure direkt */
-  private showShared(): void {
-    const { measure, ping } = this.store.state.meta;
-    const measuring = !!this.drag && 'a' in this.drag;
-    if (!measure || (measuring && measure.by === DEVICE)) {
-      if (this.shownMeasure) {
-        this.remoteGraphics.clear();
-        this.remoteLabel.text = '';
-        this.shownMeasure = 0;
+  /**
+   * Liegende Maßbänder (mit ×) und Pings zeigen. Das Maßband, das man gerade selbst zieht, zeichnet
+   * drawMeasure direkt; es fehlt deshalb hier.
+   */
+  showShared(force = false): void {
+    const { measures, ping } = this.store.state.meta;
+    const dragging = this.drag && 'a' in this.drag ? this.drag.id : null;
+    const key = `${JSON.stringify(measures ?? {})}|${dragging}|${this.host.worldScale().toFixed(3)}`;
+    if (force || key !== this.shownMeasures) {
+      this.shownMeasures = key;
+      this.measureLayer.removeChildren().forEach((c) => c.destroy());
+      for (const [id, m] of Object.entries(measures ?? {})) {
+        if (id === dragging) continue;
+        const g = new Graphics();
+        const label = new Text({ text: '', style: this.toolLabel.style.clone(), resolution: 2 });
+        label.anchor.set(0.5, 1);
+        this.drawMeasure(m.type, m.a, m.b, g, label);
+        // × zum Löschen hinter dem Endpunkt
+        const x = this.deletePoint(m);
+        const s = 1 / this.host.worldScale();
+        g.circle(x.x * PPI, x.y * PPI, 8 * s).fill({ color: 0x2a2e32 }).stroke({ width: 1.5 * s, color: 0xf0603e });
+        g.moveTo(x.x * PPI - 3.5 * s, x.y * PPI - 3.5 * s).lineTo(x.x * PPI + 3.5 * s, x.y * PPI + 3.5 * s)
+          .moveTo(x.x * PPI + 3.5 * s, x.y * PPI - 3.5 * s).lineTo(x.x * PPI - 3.5 * s, x.y * PPI + 3.5 * s)
+          .stroke({ width: 2 * s, color: 0xf0603e });
+        this.measureLayer.addChild(g, label);
       }
-    } else if (measure.ts !== this.shownMeasure) {
-      this.shownMeasure = measure.ts;
-      this.drawMeasure(measure.type, measure.a, measure.b, this.remoteGraphics, this.remoteLabel);
     }
     if (ping && ping.ts !== this.shownPing && Date.now() - ping.ts < PING_TIME) {
       this.shownPing = ping.ts;

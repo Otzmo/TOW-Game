@@ -65,7 +65,7 @@ export class GameBar {
     const round = meta.round;
     // Angriffe gelten nur für die Runde, in der sie angesagt wurden
     for (const id of Object.keys(this.store.state.charges)) this.store.setCharge(id, null);
-    this.store.setMeta({ round: round + 1, active: meta.setup?.firstPlayer ?? 'p1', measure: null });
+    this.store.setMeta({ round: round + 1, active: meta.setup?.firstPlayer ?? 'p1' });
     this.log('turn', `Round ${round} ends · Round ${round + 1} begins`);
   }
 

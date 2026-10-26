@@ -164,7 +164,6 @@ export class Shortcuts {
     if (isTyping(e)) targetEl(e)?.blur();
     else if (board.cancelPick()) return;
     else if (board.tools.tool !== 'select') board.tools.setTool('select');
-    else if (board.tools.clearMeasure()) return;
     else if (openedSheet()) openSheet(null);
     else if (board.tools.selectedId) board.tools.select(null);
     else board.select(null);

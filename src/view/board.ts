@@ -539,6 +539,8 @@ export class Board {
     const x = w <= a.right - a.left ? (a.left + a.right - w) / 2 : Math.min(a.left, Math.max(a.right - w, this.world.x));
     const y = h <= a.bottom - a.top ? (a.top + a.bottom - h) / 2 : Math.min(a.top, Math.max(a.bottom - h, this.world.y));
     this.world.position.set(x, y);
+    // Zahlen und × der Maßbänder bleiben auf dem Bildschirm gleich groß
+    this.tools?.showShared();
   }
 
   private syncUnit(u: UnitState): void {

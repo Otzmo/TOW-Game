@@ -188,7 +188,8 @@ export class OnlineRoom {
       // Runde, Spieler am Zug, Aufstellungszonen und Siegpunkt-Boni
       onValue(ref(this.db, this.path('meta/game')), (s) => {
         const val = s.val() as GameMeta | null;
-        if (val) this.store.setMeta({ ...val, breakBonus: val.breakBonus ?? {} }, 'remote');
+        // Leere Felder fehlen in Firebase ganz: dann auch hier leeren (gelöschte Maßbänder, Notizen)
+        if (val) this.store.setMeta({ ...val, breakBonus: val.breakBonus ?? {}, measures: val.measures ?? {}, notes: val.notes ?? null, ping: val.ping ?? null }, 'remote');
       }, this.readFailed('meta')),
       this.store.subscribe((state, change) => this.onLocalChange(state, change)),
     );

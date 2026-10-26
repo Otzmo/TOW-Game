@@ -112,8 +112,8 @@ export interface GameMeta {
   missionVp?: Partial<Record<PlayerId, number>>;
   /** Allgemeine Notizen, für beide Spieler sichtbar */
   notes?: string | null;
-  /** Maßband bzw. Sichtlinie, die gerade jemand zieht (für beide sichtbar); by = Gerät */
-  measure?: { type: 'measure' | 'sight'; a: Point; b: Point; by: string; ts: number } | null;
+  /** Liegende Maßbänder (für beide sichtbar), bis sie gelöscht werden; by = Gerät */
+  measures?: Record<string, { type: 'measure' | 'sight'; a: Point; b: Point; by: string; ts: number }> | null;
   /** Markierter Punkt auf dem Tisch (Ping), für beide sichtbar */
   ping?: { x: number; y: number; by: string; ts: number } | null;
   /** Geladene Armee je Spieler (Fraktion und Listenname) */
