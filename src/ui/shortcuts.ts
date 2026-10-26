@@ -57,7 +57,7 @@ const LEFT_KEYS: [selector: string, key: string, desc: string][] = [
   ['[data-sheet="templates"]', 'T', 'Templates'],
   ['[data-sheet="log"]', 'L', 'Log & chat'],
   ['[data-sheet="notes"]', 'J', 'Notes'],
-  ['#new-game', 'O', 'New game (same armies)'],
+  ['#new-game', 'O', 'New game (deletes this game)'],
   ['#save-game', 'W', 'Save game'],
   ['#load-game', 'G', 'Load game'],
   ['[data-sheet="keys"]', 'V', 'Shortcuts (this list)'],
