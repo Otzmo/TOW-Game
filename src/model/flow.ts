@@ -188,17 +188,19 @@ export type ContactPose = {
   contacts: number;
   /** davon Modelle der angegriffenen Einheit */
   targetContacts: number;
-  /** Kleinste Überdeckung einer berührten Base (Zoll, höchstens eine halbe Base) */
-  firm: number;
+  /** Seitliche Verschiebung gegenüber „gerade hinein“ (Zoll) */
+  shift: number;
 };
 
-/** Punkt, an dem der Angreifer bündig an der ihm zugewandten Kante des Ziels steht (an den Base-Grenzen). */
+/** Punkt, an dem der Angreifer bündig an der ihm zugewandten Kante des Ziels steht (Kontakt maximiert). */
 export function contactPose(charger: UnitState, target: UnitState, units: Record<string, UnitState>): ContactPose {
   return contactPoses(charger, target, units)[0];
 }
 
 type Interval = [number, number];
 const EPS = 0.01;
+/** So weit liegt eine gerade eben berührte Base an (Zoll, gut 1 mm) */
+const TOUCH_IN = 0.05;
 const overlapLen = (a: Interval, b: Interval) => Math.min(a[1], b[1]) - Math.max(a[0], b[0]);
 
 /** Bases des Ziels an einer Kante, als Abschnitte entlang dieser Kante (Einheitskoordinaten des Ziels) */
@@ -222,61 +224,56 @@ function frontBases(u: UnitState, units: Record<string, UnitState>): Interval[] 
 }
 
 /**
- * Anlegestellen an allen vier Kanten des Ziels (Front, Rücken, Flanken), jeweils an den Base-Grenzen.
- * Nach der Charge-Regel ("as many models as possible ... into base contact"): je Kante zuerst die Lage mit den
- * meisten Modellen beider Seiten in Basekontakt, bei Gleichstand der kürzeste Weg. Die Kante, auf deren Seite
- * der Angreifer steht, kommt zuerst.
+ * Anlegestellen an allen vier Kanten des Ziels (Front, Rücken, Flanken), bündig an der Kante.
+ * Nach der Charge-Regel ("as many models as possible ... into base contact"): der Angreifer geht gerade hinein und
+ * wird nur so weit seitlich verschoben, bis möglichst viele Modelle der angegriffenen Einheit Basekontakt haben –
+ * eine gerade eben berührte Base zählt. Die Kante, auf deren Seite der Angreifer steht, kommt zuerst.
  */
 export function contactPoses(charger: UnitState, target: UnitState, units: Record<string, UnitState>): ContactPose[] {
   const me = unitFootprint(charger, units);
   const { w, h } = unitFootprint(target, units);
-  const bw = target.info.baseWidth / 25.4;
-  const bd = target.info.baseDepth / 25.4;
   const p = toLocal(target, { x: charger.x, y: charger.y });
   const c = Math.cos(target.rotation);
   const s = Math.sin(target.rotation);
   const mine = frontBases(charger, units);
-  const sides: [string, Point, number, number][] = [
-    ['front', { x: 0, y: -1 }, w / 2, bw], ['rear', { x: 0, y: 1 }, w / 2, bw],
-    ['left flank', { x: -1, y: 0 }, h / 2, bd], ['right flank', { x: 1, y: 0 }, h / 2, bd],
+  const sides: [string, Point][] = [
+    ['front', { x: 0, y: -1 }], ['rear', { x: 0, y: 1 }], ['left flank', { x: -1, y: 0 }], ['right flank', { x: 1, y: 0 }],
   ];
   const all: ContactPose[] = [];
-  for (const [side, n, half, step] of sides) {
+  for (const [side, n] of sides) {
     const theirs = edgeBases(target, units, side);
     const wn = { x: n.x * c - n.y * s, y: n.x * s + n.y * c };
     const rotation = Math.atan2(-wn.x, wn.y);
     // Richtung der Kante auf dem Tisch und wie die Front des Angreifers darauf liegt (gleich oder gespiegelt)
     const along = n.x === 0 ? { x: c, y: s } : { x: -s, y: c };
     const sign = Math.cos(rotation) * along.x + Math.sin(rotation) * along.y >= 0 ? 1 : -1;
-    // Lagen an den Base-Grenzen des Ziels: Kante des Angreifers auf einer Grenze, oder seine Mitte auf einer
-    // Grenze bzw. Base-Mitte (so kann ein breiteres Modell mittig zwischen zwei Bases stehen)
-    const candidates = new Set<number>();
-    const lo = Math.min(0, step - me.w);
-    for (let e = Math.ceil(lo / step) * step; e <= 2 * half - step + EPS; e += step) candidates.add(+(e + me.w / 2 - half).toFixed(4));
-    for (let k = 0; k * step <= 2 * half + EPS; k++) {
-      candidates.add(+(-half + k * step).toFixed(4));
-      if ((k + 0.5) * step < 2 * half) candidates.add(+(-half + (k + 0.5) * step).toFixed(4));
+    // Bases des Angreifers relativ zu seiner Mitte, so wie sie entlang der Kante liegen
+    const rel = mine.map(([a, b]): Interval => (sign > 0 ? [a, b] : [-b, -a]));
+    // Lagen entlang der Kante: wo der Angreifer gerade steht (gerade hinein) und die Stellen, an denen eine seiner
+    // Bases eine gegnerische Base gerade eben berührt bzw. gerade nicht mehr – dazwischen ändert sich nichts
+    const start = n.x === 0 ? p.x : p.y;
+    const candidates = new Set<number>([start]);
+    for (const [l, r] of rel) {
+      for (const [s0, e0] of theirs) {
+        candidates.add(s0 - r + TOUCH_IN);
+        candidates.add(e0 - l - TOUCH_IN);
+      }
     }
-    if (!candidates.size) candidates.add(0);
-    // Jede Lage mit der Zahl der Modelle beider Seiten in Basekontakt und wie fest der Kontakt ist
     for (const pos of candidates) {
-      const placed = mine.map(([a, b]): Interval => (sign > 0 ? [pos + a, pos + b] : [pos - b, pos - a]));
-      // Als Kontakt zählt eine Base erst, wenn mindestens ein Viertel von ihr anliegt (nur angekratzt zählt nicht)
-      const minContact = step / 4;
-      const touching = theirs.map((t) => Math.max(0, ...placed.map((m) => overlapLen(m, t)))).filter((o) => o >= minContact - EPS);
-      const targetContacts = touching.length;
+      const placed = rel.map(([l, r]): Interval => [pos + l, pos + r]);
+      // Berühren zählt schon, wenn eine Base gerade eben anliegt
+      const targetContacts = theirs.filter((t) => placed.some((m) => overlapLen(m, t) > EPS)).length;
       if (!targetContacts) continue;
-      const contacts = placed.filter((m) => theirs.some((t) => overlapLen(m, t) >= minContact - EPS)).length + targetContacts;
-      // Fester Kontakt: jede berührte Base mindestens zur Hälfte überdeckt (darüber gilt es als gleich gut)
-      const firm = Math.min(step / 2, ...touching);
+      const contacts = placed.filter((m) => theirs.some((t) => overlapLen(m, t) > EPS)).length + targetContacts;
       const lp = n.x === 0 ? { x: pos, y: (n.y * h) / 2 } : { x: (n.x * w) / 2, y: pos };
       const contact = toTable(target, lp.x, lp.y);
-      all.push({ x: contact.x + wn.x * (me.h / 2), y: contact.y + wn.y * (me.h / 2), rotation, side, contacts, targetContacts, firm });
+      all.push({ x: contact.x + wn.x * (me.h / 2), y: contact.y + wn.y * (me.h / 2), rotation, side, contacts, targetContacts,
+        shift: Math.abs(pos - start) });
     }
   }
   // Kante, auf deren Seite der Angreifer steht, zuerst. Je Kante: möglichst viele Modelle der angegriffenen Einheit
-  // in Basekontakt, dann fester Kontakt (keine Base nur angekratzt), dann der kürzeste Weg – also nicht weiter
-  // schieben als nötig (blockierte Lagen überspringt der Aufrufer)
+  // in Basekontakt (eine gerade eben berührte Base zählt), dann so wenig seitlich verschieben wie möglich – maximiert
+  // ist, sobald die letzte nötige Base berührt wird (blockierte Lagen überspringt der Aufrufer)
   const nx = Math.abs(p.x) / (w / 2);
   const ny = Math.abs(p.y) / (h / 2);
   const facing = ny >= nx ? (p.y < 0 ? 'front' : 'rear') : (p.x < 0 ? 'left flank' : 'right flank');
@@ -285,7 +282,7 @@ export function contactPoses(charger: UnitState, target: UnitState, units: Recor
   const order = ['front', 'rear', 'left flank', 'right flank']
     .sort((a, b) => Number(b === facing) - Number(a === facing) || nearest(a) - nearest(b));
   return all.sort((a, b) => order.indexOf(a.side) - order.indexOf(b.side)
-    || b.targetContacts - a.targetContacts || b.firm - a.firm || dist(a) - dist(b));
+    || b.targetContacts - a.targetContacts || a.shift - b.shift || dist(a) - dist(b));
 }
 
 /** Angreifer um eine Strecke direkt auf das Ziel zu bewegen (fehlgeschlagener Angriff). */
