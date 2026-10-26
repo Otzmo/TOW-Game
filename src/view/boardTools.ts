@@ -1,9 +1,9 @@
 import { Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
 import type { History } from '../model/history';
-import { newObject, OBJECT_TYPES, objectPolygon, segmentHitsPolygon } from '../model/objects';
+import { newObject, OBJECT_TYPES, objectPolygon, pointInPolygon, segmentHitsPolygon } from '../model/objects';
 import { CENTRE_CIRCLE, circleBlocksDeployment, deploymentZones, TABLE_H, TABLE_W } from '../model/battlefield';
 import { currentPhase } from '../model/phases';
-import type { Store } from '../model/store';
+import { isJoined, unitLayout, type Store } from '../model/store';
 import type { BoardObject, Point } from '../model/types';
 import { ObjectView } from './objectView';
 import { GUIDE_COLOR, OK_COLOR, PLAYER_COLORS, PPI, STRAY_COLOR } from './theme';
@@ -15,6 +15,8 @@ export type Tool = 'select' | 'measure' | 'sight' | 'ping' | { place: string };
 const DEVICE = Math.random().toString(36).slice(2, 10);
 /** So lange bleibt ein Ping sichtbar (ms) */
 const PING_TIME = 5000;
+/** So lange bleibt der Abweichungspfeil einer Schablone sichtbar (ms) */
+const FX_TIME = 4000;
 
 const DRAG_THRESHOLD = 3;
 const ROTATE_SNAP = Math.PI / 12;
@@ -51,9 +53,15 @@ export class BoardTools {
     resolution: 2,
   });
   private readonly views = new Map<string, ObjectView>();
+  /** Getroffene Modelle unter Schablonen und deren Zähler */
+  private readonly hitGraphics = new Graphics();
+  private readonly hitLabels = new Container();
   /** Liegende Maßbänder beider Spieler (je Linie, Zahl und ×) und Pings */
   private readonly measureLayer = new Container();
   private readonly pingGraphics = new Graphics();
+  /** Abweichungspfeil bzw. Aufblitzen beim Volltreffer einer Schablone */
+  private readonly fxGraphics = new Graphics();
+  private shownFx = 0;
   private shownMeasures = '';
   private shownPing = 0;
   private lastSent = 0;
@@ -67,10 +75,11 @@ export class BoardTools {
 
   constructor(private store: Store, private history: History, private host: ToolHost) {
     this.toolLabel.anchor.set(0.5, 1);
-    this.toolLayer.addChild(this.measureLayer, this.pingGraphics, this.toolGraphics, this.toolLabel);
+    this.toolLayer.addChild(this.hitGraphics, this.hitLabels, this.measureLayer, this.fxGraphics, this.pingGraphics, this.toolGraphics, this.toolLabel);
     store.subscribe((state, change) => {
       if (change.objectId) this.syncObject(change.objectId);
       if (change.loaded) this.syncAll();
+      if (change.objectId || change.unitId || change.loaded || change.replacedOwner || (!change.meta && !change.log && !change.chargeId && !change.promptId)) this.drawHits();
       if (change.meta || change.loaded || change.objectId) this.drawZones();
       if (change.meta) this.showShared();
       void state;
@@ -232,6 +241,53 @@ export class BoardTools {
   }
 
   /**
+   * Schablonen: Modelle darunter markieren – ganz getroffen kräftig, teilweise getroffen blass – und an jeder
+   * Schablone zählen, z. B. „7 models (3 partial)“. Vernichtete, geflohene und Einheiten im Hinterhalt zählen nicht.
+   */
+  private drawHits(): void {
+    const g = this.hitGraphics;
+    g.clear();
+    this.hitLabels.removeChildren().forEach((c) => c.destroy());
+    const { units, objects } = this.store.state;
+    const templates = Object.values(objects).filter((o) => o.kind === 'template');
+    if (!templates.length) return;
+    // Alle Bases auf dem Tisch als Vierecke
+    const bases: Point[][] = [];
+    for (const u of Object.values(units)) {
+      if (isJoined(u, units) || u.ambush || u.status === 'destroyed' || u.status === 'fledOff') continue;
+      const c = Math.cos(u.rotation);
+      const s = Math.sin(u.rotation);
+      for (const sl of unitLayout(u, units).slots) {
+        bases.push([[sl.x, sl.y], [sl.x + sl.w, sl.y], [sl.x + sl.w, sl.y + sl.d], [sl.x, sl.y + sl.d]]
+          .map(([lx, ly]) => ({ x: u.x + lx * c - ly * s, y: u.y + lx * s + ly * c })));
+      }
+    }
+    for (const o of templates) {
+      const poly = objectPolygon(o);
+      let full = 0;
+      let partial = 0;
+      for (const b of bases) {
+        const inside = b.filter((p) => pointInPolygon(p, poly)).length;
+        const touched = inside > 0 || pointInPolygon(poly[0], b) || b.some((p, i) => segmentHitsPolygon(p, b[(i + 1) % 4], poly));
+        if (!touched) continue;
+        const whole = inside === 4;
+        if (whole) full++; else partial++;
+        g.poly(b.flatMap((p) => [p.x * PPI, p.y * PPI])).fill({ color: 0xffd040, alpha: whole ? 0.55 : 0.22 })
+          .stroke({ width: whole ? 1.5 : 1, color: 0xfff1a8, alpha: whole ? 0.9 : 0.5 });
+      }
+      if (!full && !partial) continue;
+      const label = new Text({
+        text: `${full + partial} model${full + partial === 1 ? '' : 's'}${partial ? ` (${partial} partial)` : ''}`,
+        style: { fontFamily: 'system-ui', fontSize: 12, fontWeight: '800', fill: 0xfff1a8, stroke: { color: 0x3a1000, width: 4 } },
+        resolution: 4,
+      });
+      label.anchor.set(0.5, 1);
+      label.position.set(o.x * PPI, (o.y - Math.max(o.w, o.h) / 2) * PPI - 6);
+      this.hitLabels.addChild(label);
+    }
+  }
+
+  /**
    * Liegende Maßbänder (mit ×) und Pings zeigen. Das Maßband, das man gerade selbst zieht, zeichnet
    * drawMeasure direkt; es fehlt deshalb hier.
    */
@@ -262,6 +318,57 @@ export class BoardTools {
       this.shownPing = ping.ts;
       this.animatePing(ping.x, ping.y, ping.ts);
     }
+    const fx = this.store.state.meta.scatterFx;
+    if (fx && fx.ts !== this.shownFx && Date.now() - fx.ts < FX_TIME) {
+      this.shownFx = fx.ts;
+      this.animateFx(fx);
+    }
+  }
+
+  /**
+   * Schablone: nach der Abweichung ein gestrichelter Pfeil vom alten zum neuen Punkt und der alte Umriss als
+   * Geisterbild; beim Volltreffer blitzen goldene Ringe auf. Beides blendet nach einigen Sekunden aus.
+   */
+  private animateFx(fx: { from: Point; to: Point; r: number; hit: boolean; ts: number }): void {
+    const g = this.fxGraphics;
+    const frame = () => {
+      if (this.shownFx !== fx.ts) return;
+      const t = Date.now() - fx.ts;
+      g.clear();
+      if (t > FX_TIME) return;
+      const fade = 1 - t / FX_TIME;
+      const s = 1 / this.host.worldScale();
+      if (fx.hit) {
+        // Aufblitzen: helle Fläche, dann zwei Ringe nach außen
+        const k = Math.min(1, t / 900);
+        if (k < 1) {
+          g.circle(fx.to.x * PPI, fx.to.y * PPI, fx.r * PPI).fill({ color: 0xfff6c8, alpha: 0.6 * (1 - k) });
+          for (const d of [0, 0.35]) {
+            const q = Math.max(0, k - d);
+            g.circle(fx.to.x * PPI, fx.to.y * PPI, fx.r * PPI * (1 + q * 1.4)).stroke({ width: 3 * s, color: 0xffd040, alpha: 1 - q });
+          }
+        }
+      } else {
+        const a = { x: fx.from.x * PPI, y: fx.from.y * PPI };
+        const b = { x: fx.to.x * PPI, y: fx.to.y * PPI };
+        // Geisterbild am alten Punkt
+        g.circle(a.x, a.y, fx.r * PPI).stroke({ width: 1.5 * s, color: 0xffd27a, alpha: 0.6 * fade }).fill({ color: 0xffb03a, alpha: 0.08 * fade });
+        // gestrichelte Linie mit Pfeilspitze
+        const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+        const ux = (b.x - a.x) / len;
+        const uy = (b.y - a.y) / len;
+        for (let d = 0; d < len; d += 10 * s) {
+          const e = Math.min(len, d + 6 * s);
+          g.moveTo(a.x + ux * d, a.y + uy * d).lineTo(a.x + ux * e, a.y + uy * e);
+        }
+        const h = 10 * s;
+        g.moveTo(b.x, b.y).lineTo(b.x - ux * h - uy * h * 0.6, b.y - uy * h + ux * h * 0.6)
+          .moveTo(b.x, b.y).lineTo(b.x - ux * h + uy * h * 0.6, b.y - uy * h - ux * h * 0.6);
+        g.stroke({ width: 2 * s, color: 0xffd27a, alpha: fade });
+      }
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
   }
 
   /** Ping: pulsierende Ringe an der Stelle, einige Sekunden lang */

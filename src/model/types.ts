@@ -118,6 +118,8 @@ export interface GameMeta {
   measures?: Record<string, { type: 'measure' | 'sight'; a: Point; b: Point; by: string; ts: number }> | null;
   /** Markierter Punkt auf dem Tisch (Ping), für beide sichtbar */
   ping?: { x: number; y: number; by: string; ts: number } | null;
+  /** Letzte Abweichung einer Schablone (Pfeil vom alten zum neuen Punkt) bzw. Volltreffer (Aufblitzen), für beide sichtbar */
+  scatterFx?: { from: Point; to: Point; r: number; hit: boolean; ts: number } | null;
   /** Geladene Armee je Spieler (Fraktion und Listenname) */
   armies?: Partial<Record<PlayerId, { faction: string; list: string }>>;
 }

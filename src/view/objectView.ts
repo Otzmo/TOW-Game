@@ -1,4 +1,4 @@
-import { Circle, Container, Graphics, Text } from 'pixi.js';
+import { Circle, Container, FillGradient, Graphics, Text } from 'pixi.js';
 import { flameOutline, OBJECT_TYPES } from '../model/objects';
 import type { BoardObject } from '../model/types';
 import { hashSeed, PPI, seeded } from './theme';
@@ -46,10 +46,13 @@ export class ObjectView extends Container {
     g.clear();
     // Gelände: weicher Schatten unter dem Stück
     if (t.kind === 'terrain') g.roundRect(-W / 2 + 2, -H / 2 + 3, W, H, 4).fill({ color: 0x000000, alpha: 0.25 });
-    if (t.shape === 'rect') g.roundRect(-W / 2, -H / 2, W, H, t.kind === 'terrain' ? 4 : 0);
-    else if (t.shape === 'flame') g.poly(flameOutline(o.w, o.h).flatMap((p) => [p.x * PPI, p.y * PPI]));
-    else g.ellipse(0, 0, W / 2, H / 2);
-    g.fill({ color: t.fill, alpha: t.alpha }).stroke({ width: t.kind === 'template' ? 1.5 : 2, color: t.stroke, alpha: 0.9 });
+    if (t.kind === 'template') {
+      drawTemplate(g, t.shape === 'flame', W, H, selected);
+    } else {
+      if (t.shape === 'rect') g.roundRect(-W / 2, -H / 2, W, H, t.kind === 'terrain' ? 4 : 0);
+      else g.ellipse(0, 0, W / 2, H / 2);
+      g.fill({ color: t.fill, alpha: t.alpha }).stroke({ width: 2, color: t.stroke, alpha: 0.9 });
+    }
     // Gelände mit Struktur (Bäume, Dach, Höhenlinien …), innerhalb seiner Fläche
     this.detail.clear();
     this.detailMask.clear();
@@ -57,16 +60,15 @@ export class ObjectView extends Container {
       this.detailMask.roundRect(-W / 2, -H / 2, W, H, 4).fill(0xffffff);
       drawTerrainDetail(this.detail, o.type, W, H, hashSeed(o.id));
     }
-    // Schablonen: Mittelpunkt bzw. Mittellinie zum Ausrichten
-    if (t.kind === 'template') {
-      if (t.shape === 'flame') g.moveTo(0, -H / 2).lineTo(0, H / 2);
-      else g.moveTo(-3, 0).lineTo(3, 0).moveTo(0, -3).lineTo(0, 3);
-      g.stroke({ width: 1, color: t.stroke, alpha: 0.9 });
-    }
-
-    // Marker: Symbol im Kreis, eigener Text daneben; Gelände: Name in der Mitte
+    // Marker: Symbol im Kreis, eigener Text daneben; Gelände: Name in der Mitte; Schablonen: Größe am Rand
     const style = this.caption.style;
-    if (t.kind === 'marker' && !o.label) {
+    if (t.kind === 'template' && !o.label) {
+      this.caption.text = t.shape === 'flame' ? 'Flame' : `${o.w}″`;
+      style.fontSize = 10;
+      style.fill = 0xfff2d0;
+      style.stroke = { color: 0x5a1a00, width: 3 };
+      this.caption.position.set(0, H / 2 + 8);
+    } else if (t.kind === 'marker' && !o.label) {
       this.caption.text = t.icon ?? '';
       style.fontSize = Math.max(6, W * 0.55);
       style.fill = 0x111111;
@@ -194,5 +196,46 @@ function drawTerrainDetail(g: Graphics, type: string, W: number, H: number, seed
       g.fill({ color: 0xb4b3a8, alpha: 0.6 }).stroke({ width: 0.6, color: 0x3a3a34, alpha: 0.7 });
       break;
     }
+  }
+}
+
+/** Feuerfarben der Schablonen (einmal angelegt, von allen Schablonen geteilt) */
+const BLAST_GRADIENT = new FillGradient({
+  type: 'radial', center: { x: 0.5, y: 0.5 }, innerRadius: 0, outerCenter: { x: 0.5, y: 0.5 }, outerRadius: 0.5,
+  colorStops: [{ offset: 0, color: 0xfff1a8 }, { offset: 0.35, color: 0xffb03a }, { offset: 0.75, color: 0xe2501e }, { offset: 1, color: 0x8a1c0a }],
+  textureSpace: 'local',
+});
+const FLAME_GRADIENT = new FillGradient({
+  type: 'linear', start: { x: 0.5, y: 0 }, end: { x: 0.5, y: 1 },
+  colorStops: [{ offset: 0, color: 0xfff1a8 }, { offset: 0.3, color: 0xffb03a }, { offset: 0.75, color: 0xe2501e }, { offset: 1, color: 0x7a1808 }],
+  textureSpace: 'local',
+});
+
+/**
+ * Schablone: weicher Schein nach außen, Feuerverlauf (Explosion von der Mitte aus, Flamme von der Spitze her),
+ * Ringe bzw. Flammenzungen, Fadenkreuz bzw. Mittellinie. Beim Ziehen (ausgewählt) liegt ein Schatten darunter.
+ */
+function drawTemplate(g: Graphics, flame: boolean, W: number, H: number, lifted: boolean): void {
+  const outline = flame ? flameOutline(W / PPI, H / PPI).flatMap((p) => [p.x * PPI, p.y * PPI]) : null;
+  const shape = () => (outline ? g.poly(outline) : g.ellipse(0, 0, W / 2, H / 2));
+  if (lifted) {
+    if (outline) g.poly(outline.map((v, i) => v + (i % 2 ? 6 : 4))); else g.ellipse(4, 6, W / 2, H / 2);
+    g.fill({ color: 0x000000, alpha: 0.3 });
+  }
+  // Schein nach außen
+  for (const [w, a] of [[9, 0.07], [5, 0.12], [2.5, 0.2]] as const) shape().stroke({ width: w, color: 0xff8a2a, alpha: a });
+  shape().fill({ fill: flame ? FLAME_GRADIENT : BLAST_GRADIENT, alpha: 0.42 }).stroke({ width: 1.5, color: 0xffd27a, alpha: 0.95 });
+  if (flame) {
+    // Flammenzungen und Mittellinie zum Ausrichten
+    for (const dx of [-0.25, 0, 0.25]) {
+      g.moveTo(dx * W, H / 2 - W * 0.3).quadraticCurveTo(dx * W * 1.6, 0, dx * W * 0.4, -H / 2 + H * 0.12);
+    }
+    g.stroke({ width: 1, color: 0xfff1a8, alpha: 0.45 });
+    g.moveTo(0, -H / 2).lineTo(0, H / 2).stroke({ width: 1, color: 0xffffff, alpha: 0.7 });
+  } else {
+    // Ringe und Fadenkreuz
+    for (const f of [1 / 3, 2 / 3]) g.ellipse(0, 0, (W / 2) * f, (H / 2) * f).stroke({ width: 1, color: 0xfff1a8, alpha: 0.45 });
+    g.moveTo(-6, 0).lineTo(6, 0).moveTo(0, -6).lineTo(0, 6).stroke({ width: 1.5, color: 0xffffff, alpha: 0.95 });
+    g.circle(0, 0, 1.5).fill(0xffffff);
   }
 }

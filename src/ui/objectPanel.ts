@@ -71,6 +71,7 @@ export class ObjectPanel {
     if (dice.includes(1)) {
       this.lastScatter = `<p class="ok"><b>Direct hit!</b> (${dice.join(' + ')})</p>`;
       this.log({ kind: 'roll', dice: [dice], text: `${name}: direct hit` });
+      this.store.setMeta({ scatterFx: { from: { x: o.x, y: o.y }, to: { x: o.x, y: o.y }, r: Math.max(o.w, o.h) / 2, hit: true, ts: Date.now() } });
       this.render();
       return;
     }
@@ -78,7 +79,9 @@ export class ObjectPanel {
     const angle = rnd(360) - 1;
     const a = (angle * Math.PI) / 180;
     this.history.record();
+    const from = { x: o.x, y: o.y };
     this.store.updateObject(o.id, { x: o.x + Math.sin(a) * dist, y: o.y - Math.cos(a) * dist });
+    this.store.setMeta({ scatterFx: { from, to: { x: o.x, y: o.y }, r: Math.max(o.w, o.h) / 2, hit: false, ts: Date.now() } });
     this.lastScatter = `<p class="warn">Scatters <b>${dist}″</b> <span class="scatter-arrow" style="transform: rotate(${angle}deg)">↑</span> (${dice.join(' + ')})</p>`;
     this.log({ kind: 'roll', dice: [dice], text: `${name} scatters ${dist}″ (direction ${angle}°)` });
     this.render();
