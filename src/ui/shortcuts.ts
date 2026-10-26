@@ -74,6 +74,7 @@ export class Shortcuts {
       { group: 'Tools', keys: [['V']], desc: 'Select and drag', match: letter('v'), run: () => tools.setTool('select') },
       { group: 'Tools', keys: [['M']], desc: 'Measuring tape (after setup)', match: letter('m'), run: () => { if (inBattle()) tools.setTool('measure'); } },
       { group: 'Tools', keys: [['L']], desc: 'Line of sight (after setup)', match: letter('l'), run: () => { if (inBattle()) tools.setTool('sight'); } },
+      { group: 'Tools', keys: [['I'], ['Alt', 'Click']], desc: 'Ping: mark a point for both players', match: letter('i'), run: () => tools.setTool('ping') },
       { group: 'Tools', keys: [['G']], desc: 'Place terrain: Battlefield sheet (setup only)', match: letter('g'), run: () => { if (!inBattle()) toggleSheet('battlefield'); } },
       { group: 'Tools', keys: [['K']], desc: 'Place markers (after setup)', match: letter('k'), run: () => { if (inBattle()) toggleSheet('markers'); } },
       { group: 'Tools', keys: [['B']], desc: 'Templates (after setup)', match: letter('b'), run: () => { if (inBattle()) toggleSheet('templates'); } },

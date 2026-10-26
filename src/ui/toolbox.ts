@@ -10,6 +10,7 @@ const $ = (id: string) => document.getElementById(id)!;
 const HINTS: Record<string, string> = {
   measure: 'Measuring tape: drag on the table · Esc to stop',
   sight: 'Line of sight: drag from the viewer to the target · Esc to stop',
+  ping: 'Ping: click on the table – both players see the mark · Alt + click works any time',
 };
 
 const SAVE_FORMAT = 'tow-tabletop-save';

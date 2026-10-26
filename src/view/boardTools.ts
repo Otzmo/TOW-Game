@@ -8,8 +8,14 @@ import type { BoardObject, Point } from '../model/types';
 import { ObjectView } from './objectView';
 import { GUIDE_COLOR, OK_COLOR, PLAYER_COLORS, PPI, STRAY_COLOR } from './theme';
 
-/** Auswählen und Ziehen, Messen, Sichtlinie prüfen oder ein neues Objekt setzen. */
-export type Tool = 'select' | 'measure' | 'sight' | { place: string };
+/** Auswählen und Ziehen, Messen, Sichtlinie prüfen, einen Punkt markieren (Ping) oder ein neues Objekt setzen. */
+export type Tool = 'select' | 'measure' | 'sight' | 'ping' | { place: string };
+
+/** Kennung dieses Geräts: eigenes Maßband nicht doppelt zeichnen */
+const DEVICE = Math.random().toString(36).slice(2, 10);
+/** So lange bleiben Maßband (nach dem Loslassen) und Ping sichtbar (ms) */
+const MEASURE_LINGER = 4000;
+const PING_TIME = 5000;
 
 const DRAG_THRESHOLD = 3;
 const ROTATE_SNAP = Math.PI / 12;
@@ -44,6 +50,18 @@ export class BoardTools {
     resolution: 2,
   });
   private readonly views = new Map<string, ObjectView>();
+  /** Maßband des Mitspielers und Pings beider Spieler */
+  private readonly remoteGraphics = new Graphics();
+  private readonly remoteLabel = new Text({
+    text: '',
+    style: { fontFamily: 'system-ui', fontSize: 18, fontWeight: '700', fill: 0xffffff, stroke: { color: 0x000000, width: 4 } },
+    resolution: 2,
+  });
+  private readonly pingGraphics = new Graphics();
+  private shownMeasure = 0;
+  private shownPing = 0;
+  private measureTimer = 0;
+  private lastSent = 0;
   private drag: ObjectDrag | null = null;
   tool: Tool = 'select';
   /** Zuschauer: nur auswählen und messen */
@@ -54,11 +72,13 @@ export class BoardTools {
 
   constructor(private store: Store, private history: History, private host: ToolHost) {
     this.toolLabel.anchor.set(0.5, 1);
-    this.toolLayer.addChild(this.toolGraphics, this.toolLabel);
+    this.remoteLabel.anchor.set(0.5, 1);
+    this.toolLayer.addChild(this.remoteGraphics, this.remoteLabel, this.pingGraphics, this.toolGraphics, this.toolLabel);
     store.subscribe((state, change) => {
       if (change.objectId) this.syncObject(change.objectId);
       if (change.loaded) this.syncAll();
       if (change.meta || change.loaded || change.objectId) this.drawZones();
+      if (change.meta) this.showShared();
       void state;
     });
     this.syncAll();
@@ -96,6 +116,12 @@ export class BoardTools {
   /** Klick auf freien Tisch: Messen beginnen oder Objekt setzen. true = erledigt. */
   handleStageDown(e: FederatedPointerEvent): boolean {
     const p = this.host.toInches(e);
+    // Ping: mit dem Werkzeug oder Alt + Klick einen Punkt markieren, den beide sehen
+    if (this.tool === 'ping' || e.altKey) {
+      if (!this.readOnly) this.store.setMeta({ ping: { x: p.x, y: p.y, by: DEVICE, ts: Date.now() } });
+      if (this.tool === 'ping') this.setTool('select');
+      return true;
+    }
     if (this.tool === 'measure' || this.tool === 'sight') {
       this.drag = { type: this.tool, a: p, b: p, gx: e.global.x, gy: e.global.y, moved: false };
       return true;
@@ -122,6 +148,8 @@ export class BoardTools {
     if ('a' in d) {
       d.b = p;
       this.drawMeasure(d.type, d.a, d.b);
+      // Für den Mitspieler: höchstens alle 150 ms senden
+      if (Date.now() - this.lastSent > 150) this.sendMeasure(d.type, d.a, d.b);
       return true;
     }
     const o = this.store.state.objects[d.id];
@@ -148,7 +176,60 @@ export class BoardTools {
     if (!d) return false;
     this.drag = null;
     if (!('a' in d) && !d.moved) this.history.dropIfUnchanged();
+    if ('a' in d && d.moved) {
+      this.sendMeasure(d.type, d.a, d.b);
+      // Kurz stehen lassen, dann für beide ausblenden
+      clearTimeout(this.measureTimer);
+      const ts = this.store.state.meta.measure?.ts;
+      this.measureTimer = window.setTimeout(() => {
+        if (this.store.state.meta.measure?.ts === ts) this.store.setMeta({ measure: null });
+      }, MEASURE_LINGER);
+    }
     return true;
+  }
+
+  private sendMeasure(type: 'measure' | 'sight', a: Point, b: Point): void {
+    if (this.readOnly) return;
+    this.lastSent = Date.now();
+    this.store.setMeta({ measure: { type, a, b, by: DEVICE, ts: this.lastSent } });
+  }
+
+  /** Maßband des Mitspielers und Pings zeigen (eigenes Maßband zeichnet drawMeasure direkt) */
+  private showShared(): void {
+    const { measure, ping } = this.store.state.meta;
+    if (!measure || measure.by === DEVICE) {
+      if (this.shownMeasure) {
+        this.remoteGraphics.clear();
+        this.remoteLabel.text = '';
+        this.shownMeasure = 0;
+      }
+    } else if (measure.ts !== this.shownMeasure) {
+      this.shownMeasure = measure.ts;
+      this.drawMeasure(measure.type, measure.a, measure.b, this.remoteGraphics, this.remoteLabel);
+    }
+    if (ping && ping.ts !== this.shownPing && Date.now() - ping.ts < PING_TIME) {
+      this.shownPing = ping.ts;
+      this.animatePing(ping.x, ping.y, ping.ts);
+    }
+  }
+
+  /** Ping: pulsierende Ringe an der Stelle, einige Sekunden lang */
+  private animatePing(x: number, y: number, ts: number): void {
+    const g = this.pingGraphics;
+    const frame = () => {
+      if (this.shownPing !== ts) return;
+      const t = Date.now() - ts;
+      g.clear();
+      if (t > PING_TIME) return;
+      const s = 1 / this.host.worldScale();
+      for (let k = 0; k < 3; k++) {
+        const phase = ((t / 900) + k / 3) % 1;
+        g.circle(x * PPI, y * PPI, (6 + phase * 30) * s).stroke({ width: 3 * s, color: 0x4fd1ff, alpha: 1 - phase });
+      }
+      g.circle(x * PPI, y * PPI, 4 * s).fill(0x4fd1ff);
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
   }
 
   // --- Objekte ----------------------------------------------------------------
@@ -207,8 +288,7 @@ export class BoardTools {
     this.toolLabel.text = '';
   }
 
-  private drawMeasure(type: 'measure' | 'sight', a: Point, b: Point): void {
-    const g = this.toolGraphics;
+  private drawMeasure(type: 'measure' | 'sight', a: Point, b: Point, g = this.toolGraphics, label = this.toolLabel): void {
     const dist = Math.hypot(b.x - a.x, b.y - a.y);
     let color = GUIDE_COLOR;
     let text = `${dist.toFixed(1)}″`;
@@ -245,10 +325,10 @@ export class BoardTools {
       }
       g.stroke({ width: 1, color, alpha: 0.9 });
     }
-    this.toolLabel.text = text;
-    this.toolLabel.style.fill = color;
-    this.toolLabel.scale.set(1 / this.host.worldScale());
-    this.toolLabel.position.set(b.x * PPI, b.y * PPI - 8 / this.host.worldScale());
+    label.text = text;
+    label.style.fill = color;
+    label.scale.set(1 / this.host.worldScale());
+    label.position.set(b.x * PPI, b.y * PPI - 8 / this.host.worldScale());
   }
 
   // --- Aufstellungszonen ------------------------------------------------------

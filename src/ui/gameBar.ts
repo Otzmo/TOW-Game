@@ -5,6 +5,7 @@ import { isSkirmish, unitLayout, type Store } from '../model/store';
 import type { GameMeta, LogKind, PlayerId } from '../model/types';
 
 import { missionByKey } from '../model/battlefield';
+import { missionStatus } from '../model/mission';
 import { playerName } from '../model/players';
 
 type Step = Pick<GameMeta, 'phase' | 'sub' | 'active' | 'round'>;
@@ -14,7 +15,6 @@ const $ = (id: string) => document.getElementById(id)!;
 const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
-const other = (p: PlayerId): PlayerId => (p === 'p1' ? 'p2' : 'p1');
 
 /** Leiste oben: Runde, Spieler am Zug, Zug beenden, Rückgängig und Siegpunkte. */
 export class GameBar {
@@ -27,12 +27,13 @@ export class GameBar {
     $('g-confirm-no').onclick = () => { $('g-confirm').hidden = true; };
     $('g-undo').onclick = () => history.undo();
     $('g-redo').onclick = () => history.redo();
+    $('score-panel').onclick = (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-score]');
+      if (btn) this.scoreMission(btn.dataset.score!);
+    };
     $('score-panel').onchange = (e) => {
       const box = e.target as HTMLInputElement;
-      if (box.dataset.break) {
-        const breakBonus = { ...this.store.state.meta.breakBonus, [box.dataset.break]: box.checked };
-        this.store.setMeta({ breakBonus });
-      } else if (box.dataset.mission) {
+      if (box.dataset.mission) {
         const missionVp = { ...this.store.state.meta.missionVp, [box.dataset.mission]: Math.max(0, Math.round(Number(box.value) || 0)) };
         this.store.setMeta({ missionVp });
       }
@@ -129,17 +130,34 @@ export class GameBar {
     this.renderScore();
   }
 
-  /** Siegpunkte rechts: Killpoints je Einheit und Missionspunkte (von Hand) */
+  /** Mission werten: die Siegpunkte des aktuellen Stands kommen zu den Missionspunkten dazu */
+  private scoreMission(key: string): void {
+    if (this.me === 'spectator') return;
+    const status = missionStatus(this.store.state, playerName).find((m) => m.key === key);
+    if (!status) return;
+    const prev = this.store.state.meta.missionVp ?? {};
+    this.store.setMeta({ missionVp: { p1: (prev.p1 ?? 0) + status.vp.p1, p2: (prev.p2 ?? 0) + status.vp.p2 } });
+    this.log('turn', `${status.name} scored (round ${this.store.state.meta.round}): ${playerName('p1')} +${status.vp.p1}, ${playerName('p2')} +${status.vp.p2}`);
+  }
+
+  /** Siegpunkte: Killpoints je Einheit, Missionswertung (aktueller Stand, per Knopf werten) und Missionspunkte */
   private renderScore(): void {
     const { state } = this.store;
     const panel = $('score-panel');
     // Nicht neu zeichnen, während dort eine Zahl eingegeben wird
     if (panel.contains(document.activeElement) && (document.activeElement as HTMLElement).tagName === 'INPUT') return;
-    const { breakBonus, missionVp, setup } = state.meta;
+    const { missionVp, setup } = state.meta;
     const score = { p1: victoryPoints(state, 'p1'), p2: victoryPoints(state, 'p2') };
     $('score-btn').innerHTML = `Victory Points <b>${score.p1.total}</b> : <b>${score.p2.total}</b>`;
     const missions = [missionByKey(setup?.missionTurn), missionByKey(setup?.missionGame)].filter(Boolean).map((m) => m!.name);
-    panel.innerHTML = `<h3>Victory Points</h3>` + (['p1', 'p2'] as const).map((p) => {
+    const status = missionStatus(state, playerName);
+    const missionHtml = status.length ? `<section class="mission-score"><h3>Mission scoring</h3>${status.map((m) => `
+      <div class="mission-row"><b>${escapeHtml(m.name)}</b> <span class="meta">${m.group === 'turn' ? 'end of each player turn' : 'end of the game'}</span>
+        <ul>${m.lines.map((l) => `<li>${escapeHtml(l)}</li>`).join('')}</ul>
+        ${m.manual ? '' : `<p>Now: ${playerName('p1')} <b>${m.vp.p1}</b> · ${playerName('p2')} <b>${m.vp.p2}</b>
+          <button data-score="${m.key}" class="primary" ${this.me === 'spectator' ? 'disabled' : ''}>Score ✓</button></p>`}</div>`).join('')}
+      <p class="meta">Scoring units: US 10+ (wounds of all models), no Fly, not fleeing.</p></section>` : '';
+    panel.innerHTML = `<h3>Victory Points</h3>` + missionHtml + (['p1', 'p2'] as const).map((p) => {
       const kills = score[p].lines.filter((l) => l.label !== 'Mission points');
       const killTotal = kills.reduce((s, l) => s + l.vp, 0);
       const lines = kills.map((l) =>
@@ -148,8 +166,6 @@ export class GameBar {
         <h3><span class="dot ${p}"></span>${playerName(p)} <span class="vp">${score[p].total} VP</span></h3>
         <p class="meta">Army ${armyPoints(state, p)} pts · Kill points ${killTotal} · Mission points ${missionVp?.[p] ?? 0}</p>
         <ul>${lines}</ul>
-        <label><input type="checkbox" data-break="${p}" ${breakBonus[p] ? 'checked' : ''}>
-          ${playerName(other(p))}'s army is broken (+500)</label>
         <label>Mission points${missions.length ? ` (${escapeHtml(missions.join(' + '))})` : ''}
           <input type="number" min="0" step="25" data-mission="${p}" value="${missionVp?.[p] ?? 0}"></label>
       </section>`;

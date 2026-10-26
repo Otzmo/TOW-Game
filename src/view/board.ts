@@ -302,8 +302,14 @@ export class Board {
     if (!this.showRanges || !u) return;
     const m = movement(u);
     if (!m) return;
-    const has = (re: RegExp) => [...u.info.rules, ...u.info.items].some((r) => re.test(r.name));
-    const charge = m + 6 + (has(/swiftstride/i) ? 3 : 0) + (has(/battle hunger/i) ? 2 : 0);
+    // Regeln der Einheit, ihres Reittiers und angeschlossener Charaktere
+    const all = [u, ...Object.values(units).filter((c) => c.joinedTo === u!.id)];
+    const has = (re: RegExp) => all.some((x) => [...x.info.rules, ...x.info.items].some((r) => re.test(r.name)));
+    const base = m + 6;
+    const extras: [string, number][] = [];
+    if (has(/swiftstride/i)) extras.push(['Swiftstride', 3]);
+    if (has(/battle hunger/i)) extras.push(['Battle Hunger', 2]);
+    const charge = base + extras.reduce((s, [, d]) => s + d, 0);
     const { w, h } = unitFootprint(u, units);
     const c = new Container();
     c.position.set(u.x * PPI, u.y * PPI);
@@ -311,7 +317,9 @@ export class Board {
     const g = new Graphics();
     c.addChild(g);
     const ranges: [number, string, number][] = [[m, `Move ${m}″`, 0xffffff], [2 * m, `March ${2 * m}″`, 0x9ab4d8],
-      [charge, `Charge max. ${charge}″`, STRAY_COLOR]];
+      [base, `Charge max. ${base}″ (M+6)`, 0xf0a35e]];
+    // Swiftstride und Battle Hunger verlängern den Angriff: eigener Ring mit Aufschlüsselung
+    if (extras.length) ranges.push([charge, `With ${extras.map(([n, d]) => `${n} +${d}`).join(', ')}: ${charge}″`, STRAY_COLOR]);
     for (const [d, text, color] of ranges) {
       const D = d * PPI;
       g.roundRect((-w / 2) * PPI - D, (-h / 2) * PPI - D, w * PPI + 2 * D, h * PPI + 2 * D, D)
