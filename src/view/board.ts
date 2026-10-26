@@ -245,7 +245,8 @@ export class Board {
     this.history.record();
     this.store.updateUnit(chargerId, { x: pose.x, y: pose.y, rotation: pose.rotation });
     this.store.setCharge(c.id, { ...c, status: 'rolled', success: true });
-    this.events.onAction(chargerId, `charges ${target.info.name} in the ${pose.side}`);
+    const touching = ` – ${pose.contacts} models in base contact`;
+    this.events.onAction(chargerId, `charges ${target.info.name} in the ${pose.side}${touching}`);
   }
 
   cancelCharge(chargerId: string): void {

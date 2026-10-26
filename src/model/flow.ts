@@ -1,4 +1,4 @@
-import { unitFootprint } from './store';
+import { unitFootprint, unitLayout } from './store';
 import type { Charge, ChargeReaction, GameState, Point, UnitState } from './types';
 
 /** Regelabläufe: Angriffe, Würfe und Werte, die mehrere Aufforderungen gemeinsam brauchen. */
@@ -182,16 +182,42 @@ export function alignToBases(along: number, half: number, step: number, width: n
   return clamped + width / 2 - half;
 }
 
-export type ContactPose = { x: number; y: number; rotation: number; side: string };
+export type ContactPose = { x: number; y: number; rotation: number; side: string; /** Modelle beider Seiten in Basekontakt */ contacts: number };
 
 /** Punkt, an dem der Angreifer bündig an der ihm zugewandten Kante des Ziels steht (an den Base-Grenzen). */
 export function contactPose(charger: UnitState, target: UnitState, units: Record<string, UnitState>): ContactPose {
   return contactPoses(charger, target, units)[0];
 }
 
+type Interval = [number, number];
+const EPS = 0.01;
+const overlapLen = (a: Interval, b: Interval) => Math.min(a[1], b[1]) - Math.max(a[0], b[0]);
+
+/** Bases des Ziels an einer Kante, als Abschnitte entlang dieser Kante (Einheitskoordinaten des Ziels) */
+function edgeBases(u: UnitState, units: Record<string, UnitState>, side: string): Interval[] {
+  const { w, h, slots } = unitLayout(u, units);
+  const at = (a: number, b: number) => Math.abs(a - b) < EPS;
+  const list = side === 'front' ? slots.filter((s) => at(s.y, -h / 2)).map((s): Interval => [s.x, s.x + s.w])
+    : side === 'rear' ? slots.filter((s) => at(s.y + s.d, h / 2)).map((s): Interval => [s.x, s.x + s.w])
+    : side === 'left flank' ? slots.filter((s) => at(s.x, -w / 2)).map((s): Interval => [s.y, s.y + s.d])
+    : slots.filter((s) => at(s.x + s.w, w / 2)).map((s): Interval => [s.y, s.y + s.d]);
+  // Plänkler o. Ä.: die ganze Kante zählt als eine Base
+  const half = side === 'front' || side === 'rear' ? w / 2 : h / 2;
+  return list.length ? list : [[-half, half]];
+}
+
+/** Bases im ersten Glied des Angreifers (Einheitskoordinaten, x quer zur Front) */
+function frontBases(u: UnitState, units: Record<string, UnitState>): Interval[] {
+  const { w, h, slots } = unitLayout(u, units);
+  const list = slots.filter((s) => Math.abs(s.y + h / 2) < EPS).map((s): Interval => [s.x, s.x + s.w]);
+  return list.length ? list : [[-w / 2, w / 2]];
+}
+
 /**
- * Anlegestellen an allen vier Kanten des Ziels (Front, Rücken, Flanken), jeweils an den Base-Grenzen;
- * zuerst die Kante, auf deren Seite der Angreifer steht, dann nach Abstand.
+ * Anlegestellen an allen vier Kanten des Ziels (Front, Rücken, Flanken), jeweils an den Base-Grenzen.
+ * Nach der Charge-Regel ("as many models as possible ... into base contact"): je Kante zuerst die Lage mit den
+ * meisten Modellen beider Seiten in Basekontakt, bei Gleichstand der kürzeste Weg. Die Kante, auf deren Seite
+ * der Angreifer steht, kommt zuerst.
  */
 export function contactPoses(charger: UnitState, target: UnitState, units: Record<string, UnitState>): ContactPose[] {
   const me = unitFootprint(charger, units);
@@ -201,23 +227,44 @@ export function contactPoses(charger: UnitState, target: UnitState, units: Recor
   const p = toLocal(target, { x: charger.x, y: charger.y });
   const c = Math.cos(target.rotation);
   const s = Math.sin(target.rotation);
-  const pose = (lp: Point, n: Point, side: string): ContactPose => {
-    const contact = toTable(target, lp.x, lp.y);
-    const wn = { x: n.x * c - n.y * s, y: n.x * s + n.y * c };
-    return { x: contact.x + wn.x * (me.h / 2), y: contact.y + wn.y * (me.h / 2), rotation: Math.atan2(-wn.x, wn.y), side };
-  };
-  const all = [
-    pose({ x: alignToBases(p.x, w / 2, bw, me.w), y: -h / 2 }, { x: 0, y: -1 }, 'front'),
-    pose({ x: alignToBases(p.x, w / 2, bw, me.w), y: h / 2 }, { x: 0, y: 1 }, 'rear'),
-    pose({ x: -w / 2, y: alignToBases(p.y, h / 2, bd, me.w) }, { x: -1, y: 0 }, 'left flank'),
-    pose({ x: w / 2, y: alignToBases(p.y, h / 2, bd, me.w) }, { x: 1, y: 0 }, 'right flank'),
+  const mine = frontBases(charger, units);
+  const sides: [string, Point, number, number][] = [
+    ['front', { x: 0, y: -1 }, w / 2, bw], ['rear', { x: 0, y: 1 }, w / 2, bw],
+    ['left flank', { x: -1, y: 0 }, h / 2, bd], ['right flank', { x: 1, y: 0 }, h / 2, bd],
   ];
-  // Kante, auf deren Seite der Angreifer steht, zuerst
+  const all: ContactPose[] = [];
+  for (const [side, n, half, step] of sides) {
+    const theirs = edgeBases(target, units, side);
+    const wn = { x: n.x * c - n.y * s, y: n.x * s + n.y * c };
+    const rotation = Math.atan2(-wn.x, wn.y);
+    // Richtung der Kante auf dem Tisch und wie die Front des Angreifers darauf liegt (gleich oder gespiegelt)
+    const along = n.x === 0 ? { x: c, y: s } : { x: -s, y: c };
+    const sign = Math.cos(rotation) * along.x + Math.sin(rotation) * along.y >= 0 ? 1 : -1;
+    // Alle Lagen an den Base-Grenzen, bei denen mindestens eine Base die Kante berührt
+    const candidates: number[] = [];
+    const lo = Math.min(0, step - me.w);
+    for (let e = Math.ceil(lo / step) * step; e <= 2 * half - step + EPS; e += step) candidates.push(e + me.w / 2 - half);
+    if (!candidates.length) candidates.push(0);
+    // Jede Lage mit der Zahl der Modelle beider Seiten in Basekontakt
+    for (const pos of candidates) {
+      const placed = mine.map(([a, b]): Interval => (sign > 0 ? [pos + a, pos + b] : [pos - b, pos - a]));
+      const contacts = placed.filter((m) => theirs.some((t) => overlapLen(m, t) > EPS)).length
+        + theirs.filter((t) => placed.some((m) => overlapLen(m, t) > EPS)).length;
+      const lp = n.x === 0 ? { x: pos, y: (n.y * h) / 2 } : { x: (n.x * w) / 2, y: pos };
+      const contact = toTable(target, lp.x, lp.y);
+      all.push({ x: contact.x + wn.x * (me.h / 2), y: contact.y + wn.y * (me.h / 2), rotation, side, contacts });
+    }
+  }
+  // Kante, auf deren Seite der Angreifer steht, zuerst; je Kante die meisten Modelle in Kontakt, dann der kürzeste Weg
+  // (blockierte Lagen überspringt der Aufrufer)
   const nx = Math.abs(p.x) / (w / 2);
   const ny = Math.abs(p.y) / (h / 2);
   const facing = ny >= nx ? (p.y < 0 ? 'front' : 'rear') : (p.x < 0 ? 'left flank' : 'right flank');
   const dist = (q: ContactPose) => Math.hypot(q.x - charger.x, q.y - charger.y);
-  return all.sort((a, b) => Number(b.side === facing) - Number(a.side === facing) || dist(a) - dist(b));
+  const nearest = (side: string) => Math.min(...all.filter((q) => q.side === side).map(dist));
+  const order = ['front', 'rear', 'left flank', 'right flank']
+    .sort((a, b) => Number(b === facing) - Number(a === facing) || nearest(a) - nearest(b));
+  return all.sort((a, b) => order.indexOf(a.side) - order.indexOf(b.side) || b.contacts - a.contacts || dist(a) - dist(b));
 }
 
 /** Angreifer um eine Strecke direkt auf das Ziel zu bewegen (fehlgeschlagener Angriff). */
