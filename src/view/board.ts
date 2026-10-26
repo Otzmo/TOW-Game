@@ -287,14 +287,14 @@ export class Board {
     this.store.setCharge(`charge-${chargerId}`, null);
   }
 
-  /** Pfeile für alle Angriffe dieser Runde: rot = angesagt, grün = ausgeführt. */
+  /** Pfeile für angesagte Angriffe; nach der Angriffsbewegung verschwindet der Pfeil. */
   private drawCharges(): void {
     this.chargeLayer.removeChildren().forEach((c) => c.destroy());
     const { units, charges } = this.store.state;
     for (const c of Object.values(charges)) {
       const charger = units[c.charger];
       const target = units[c.target];
-      if (!charger || !target) continue;
+      if (!charger || !target || c.status === 'rolled') continue;
       const a = frontCenter(charger, units);
       // Nächster Punkt auf der Fläche des Ziels
       const { w, h } = unitFootprint(target, units);
@@ -317,7 +317,7 @@ export class Board {
       });
       g.poly(corners).stroke({ width: 2, color, alpha: 0.9 });
       const label = new Text({
-        text: `⚔ Charge${c.distance != null ? ` · ${c.distance.toFixed(1)}″` : ''}${c.status === 'rolled' ? ' · done' : ''}`,
+        text: `⚔ Charge${c.distance != null ? ` · ${c.distance.toFixed(1)}″` : ''}`,
         style: { fontFamily: 'system-ui', fontSize: 13, fontWeight: '700', fill: color, stroke: { color: 0x000000, width: 3.5 } },
         resolution: 6,
       });
