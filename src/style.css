@@ -350,6 +350,24 @@ body.sheet-open .bottom-panel { display: none; }
 .prompt-checks { display: flex; gap: 14px; flex-wrap: wrap; font-size: calc(13px * var(--ui)); }
 .prompt-checks label { display: flex; align-items: center; gap: 6px; }
 .prompt-info { margin: 6px 0; font-size: calc(13px * var(--ui)); }
+/* Beschuss und Nahkampf: Grundwert, Modifikatoren und nötiger Wurf vor dem Würfeln */
+.prompt-form input { font: inherit; font-size: calc(13px * var(--ui)); color: var(--text); background: var(--input); border: 1px solid var(--line); border-radius: 6px; padding: 5px 7px; }
+.prompt-form input:disabled { opacity: .7; }
+.atk-rules { margin: 6px 0 0; font-size: calc(12px * var(--ui)); color: var(--muted); }
+.atk-mods { margin-top: 10px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; gap: 4px; font-size: calc(13px * var(--ui)); }
+.atk-base { font-weight: 600; }
+.atk-mod { display: flex; align-items: center; gap: 8px; }
+.atk-mod .atk-label { flex: 1; }
+.atk-mod.minus b { color: #f0a35e; }
+.atk-mod.plus b { color: var(--ok, #8fca7a); }
+.atk-fixed { width: 16px; text-align: center; color: var(--muted); }
+.atk-del { background: none; border: 0; color: var(--muted); padding: 0 4px; font-size: calc(15px * var(--ui)); line-height: 1; }
+.atk-del:hover { color: var(--text); }
+.atk-add { display: flex; gap: 6px; margin-top: 4px; }
+.atk-add input { flex: 1; min-width: 0; font: inherit; color: var(--text); background: var(--input); border: 1px solid var(--line); border-radius: 6px; padding: 4px 7px; }
+.atk-add select { font: inherit; color: var(--text); background: var(--input); border: 1px solid var(--line); border-radius: 6px; padding: 4px; }
+.atk-need { margin-top: 4px; padding-top: 6px; border-top: 1px solid var(--line); }
+.atk-need b { color: var(--accent); font-size: calc(15px * var(--ui)); }
 #prompt-wait {
   position: fixed; top: 16px; left: calc(50% + var(--side) / 2); transform: translateX(-50%); margin: 0; z-index: 5;
   padding: 7px 14px; border-radius: 999px; background: var(--btn); border: 1px solid var(--line); color: var(--muted); font-size: calc(13px * var(--ui));

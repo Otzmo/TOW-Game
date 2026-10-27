@@ -10,6 +10,8 @@ import { hasStandard, mountBonus, unitVictoryPoints, wounds, woundsPerModel } fr
 import type { RuleRef, UnitState, UnitStatus } from '../model/types';
 import { PLAYER_COLORS } from '../view/theme';
 import { currentPhase } from '../model/phases';
+import type { AttackMode } from '../model/attack';
+import { weaponsFor } from './attackFlow';
 
 const $ = (id: string) => document.getElementById(id)!;
 
@@ -36,6 +38,8 @@ export interface PanelActions {
   cancelCharge(unitId: string): void;
   /** Einheit aus dem Hinterhalt aufstellen (nächster Klick auf den Tisch) */
   placeAmbush(unitId: string): void;
+  /** Beschuss bzw. Nahkampf: Ziel anklicken, dann Treffer- und Verwundungswurf */
+  attack(unitId: string, mode: AttackMode): void;
 }
 
 /** Seitenpanel mit allen Angaben zur ausgewählten Einheit. */
@@ -106,6 +110,8 @@ export class UnitPanel {
         this.setLastAction(u.id, u.ambush ? 'put in ambush' : 'back on the table');
       }
       if (btn.dataset.charge === 'place') actions.placeAmbush(u.id);
+      if (btn.dataset.charge === 'shoot') actions.attack(u.id, 'shooting');
+      if (btn.dataset.charge === 'fight') actions.attack(u.id, 'combat');
     };
     $('p-join').onclick = (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
@@ -264,7 +270,18 @@ export class UnitPanel {
   }
 
   /** Angriff: ansagen (Distanz wird berechnet), dann mit einem Knopf die Angriffsbewegung ausführen */
+  /** Angriff, Beschuss und Nahkampf; in der Aufstellung nur der Hinterhalt */
   private chargeHtml(u: UnitState): string {
+    const charge = this.chargeOnlyHtml(u);
+    const { meta } = this.store.state;
+    if (currentPhase(meta) === 'setup' || u.ambush) return charge;
+    // Beschuss nur mit Fernkampfwaffe (die Waffenliste kommt aus einer eigenen Datei, siehe loadWeapons)
+    const shoot = weaponsFor(u, 'shooting').length
+      ? '<button data-charge="shoot" title="Pick a target, then roll To Hit and To Wound">🏹 Shoot</button>' : '';
+    return `${charge}<div class="row-btns">${shoot}<button data-charge="fight" title="Pick a target, then roll To Hit and To Wound">🗡 Fight</button></div>`;
+  }
+
+  private chargeOnlyHtml(u: UnitState): string {
     const { units, charges, meta } = this.store.state;
     if (isJoined(u, units)) return '';
     // Hinterhalt: in der Aufstellung hinein- bzw. herausnehmen, danach von dort aufstellen

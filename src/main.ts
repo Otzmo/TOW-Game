@@ -76,6 +76,12 @@ async function start(): Promise<void> {
     chargeMove: (id) => board.chargeMove(id),
     cancelCharge: (id) => board.cancelCharge(id),
     placeAmbush: (id) => board.startAmbushPlace(id),
+    attack: (id, mode) => {
+      const owner = store.state.units[id]?.owner;
+      // Online würfelt nur der Besitzer der Einheit; offline jeder
+      if (!owner || (seat && seat !== owner)) return;
+      board.startChargePick(id, (target) => prompts.attacks.start(owner, id, target, mode), mode === 'shooting' ? 'Shooting' : 'Combat');
+    },
   });
   const objectPanel = new ObjectPanel(store, history, {
     close: () => board.tools.select(null),
@@ -106,8 +112,8 @@ async function start(): Promise<void> {
   panel.canMove = (id) => gate.allow(id);
   const gameBar = new GameBar(store, history, (kind, text) => addLog({ kind, text }));
   const toolbox = new Toolbox(store, history, board.tools, (text) => addLog({ kind: 'action', text }));
-  // Offene Aufforderungen aus älteren Spielständen anzeigen und abschließen (neue entstehen nicht mehr)
-  new PromptCenter(store, history, {
+  // Aufforderungen zwischen den Spielern: Beschuss und Nahkampf (Treffer, Verwundungen, Rettungswürfe)
+  const prompts = new PromptCenter(store, history, {
     seat: () => seat,
     log: (entry) => addLog(entry),
     allowMove: (id) => gate.grant(id),
