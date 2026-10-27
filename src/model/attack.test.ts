@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  armourBane, baseToHit, baseToWound, finalNeed, misses, needText, rollExpr, saveMods, shooters, shootingOptions, shootingRules,
+  armourBane, attackLines, baseToHit, baseToWound, finalNeed, lineToHit, misses, needText, rollExpr, saveMods, shooters, shootingOptions, shootingRules,
   successes, weaponAp, weaponRange, weaponStrength,
 } from './attack';
 import { shootingReroll, toHitCombat, toWound } from './flow';
@@ -87,6 +87,52 @@ describe('modifiers', () => {
     // BS 6: 2+, Fehlschüsse (die 1en) auf 6+ wiederholt
     expect(misses([1, 1, 3, 5], 2)).toBe(2);
     expect(successes([1, 1, 3, 5], 2, [], null, [6, 2], 6)).toBe(3);
+  });
+});
+
+describe('attack lines (one per profile)', () => {
+  // Empire Knights: Ritter, Preceptor (Champion), Barded Warhorse (Reittier, Ld "-")
+  const knights = {
+    ...testUnit('k', { models: 5, command: ['S', 'M', 'C'] }),
+    info: {
+      ...testUnit('k').info, command: ['S', 'M', 'C'], startModels: 5,
+      profile: [
+        { name: 'Empire Knight', values: ['-', '4', '3', '3', '3', '1', '3', '1', '8'] },
+        { name: 'Preceptor', values: ['-', '4', '3', '3', '3', '1', '3', '2', '8'] },
+        { name: 'Barded Warhorse', values: ['7', '3', '-', '3', '-', '-', '3', '1', '-'] },
+      ],
+    },
+  };
+
+  it('splits knights into riders, champion and horses in combat', () => {
+    const lines = attackLines(knights, byId(knights), 'combat');
+    expect(lines.map((l) => [l.label, l.models, l.count, l.mount])).toEqual([
+      ['Empire Knight', 4, 4, false], ['Preceptor', 1, 2, false], ['Barded Warhorse', 5, 5, true],
+    ]);
+    expect(lines[2]).toMatchObject({ ws: 3, s: 3 });
+  });
+
+  it('horses do not shoot; the champion shoots in the front rank', () => {
+    const lines = attackLines(knights, byId(knights), 'shooting');
+    expect(lines.map((l) => [l.label, l.count])).toEqual([['Empire Knight', 4], ['Preceptor', 1]]);
+  });
+
+  it('without the champion option the second row is not used', () => {
+    const plain = { ...knights, info: { ...knights.info, command: ['S'] } };
+    expect(attackLines(plain, byId(plain), 'combat').map((l) => l.label)).toEqual(['Empire Knight', 'Barded Warhorse']);
+  });
+
+  it('joined characters fight with their own profile', () => {
+    const general = { ...withProfile('g', ['4', '6', '5', '4', '4', '3', '6', '4', '9']), joinedTo: 'k', info: { ...withProfile('g', ['4', '6', '5', '4', '4', '3', '6', '4', '9']).info, name: 'General' } };
+    const lines = attackLines(knights, byId(knights, general), 'combat');
+    expect(lines.at(-1)).toMatchObject({ label: 'General', models: 1, count: 4, ws: 6, s: 4 });
+  });
+
+  it('to hit uses the line, e.g. WS 3 horses against WS 3', () => {
+    const lines = attackLines(knights, byId(knights), 'combat');
+    const target = withProfile('t', ['4', '3', '3', '3', '3', '1', '3', '1', '7']);
+    expect(lineToHit('combat', lines[2], target).need).toBe(4);
+    expect(lineToHit('combat', lines[0], target).need).toBe(3);
   });
 });
 

@@ -123,16 +123,78 @@ export function weaponRange(text: string): number | null {
   return /combat|n\/a/i.test(text) || !nums.length || /D\d/i.test(text) ? null : Math.max(...nums);
 }
 
-export function attackWeapon(p: WeaponProfile, u: UnitState): AttackWeapon {
+/** @param ownS Stärke des Modells, das die Waffe führt (sonst die der ersten Profilzeile) */
+export function attackWeapon(p: WeaponProfile, u: UnitState, ownS = statOf(u, 'S')): AttackWeapon {
   return {
-    name: p.name, range: weaponRange(p.range), strength: weaponStrength(p.strength, statOf(u, 'S')), ap: weaponAp(p.ap),
+    name: p.name, range: weaponRange(p.range), strength: weaponStrength(p.strength, ownS), ap: weaponAp(p.ap),
     rules: p.rules, raw: `S ${p.strength} · AP ${p.ap}`,
   };
 }
 
 /** Ohne passende Waffe: eigene Stärke, kein AP */
-export const bareHands = (u: UnitState): AttackWeapon =>
-  ({ name: 'Hand weapon', range: null, strength: statOf(u, 'S'), ap: 0, rules: [], raw: 'S S · AP -' });
+export const bareHands = (u: UnitState, ownS = statOf(u, 'S'), name = 'Hand weapon'): AttackWeapon =>
+  ({ name, range: null, strength: ownS, ap: 0, rules: [], raw: 'S S · AP -' });
+
+/** Wer in einem Angriff zuschlägt bzw. schießt: eine Zeile je Profil (Truppe, Champion, Reittier, Charakter) */
+export interface AttackLine {
+  key: string;
+  /** Einheit, zu der das Profil gehört (bei angeschlossenen Charakteren der Charakter) */
+  unitId: string;
+  label: string;
+  /** Profilzeile in dieser Einheit */
+  row: number;
+  /** Modelle mit diesem Profil */
+  models: number;
+  ws: number;
+  bs: number;
+  s: number;
+  a: number;
+  /** Reittier: kämpft mit eigenen Werten, schießt nicht */
+  mount: boolean;
+  /** Vorschlag für die Zahl der Attacken bzw. Schüsse (änderbar) */
+  count: number;
+}
+
+const rowStat = (u: UnitState, row: number, i: number) => {
+  const v = Number.parseInt(u.info.profile[row]?.values[i] ?? '', 10);
+  return Number.isFinite(v) ? v : 0;
+};
+
+/** Reittier-Zeile: ohne eigenen Moralwert (Ld "-"), es gilt der des Reiters */
+const isMountRow = (u: UnitState, row: number) => row > 0 && !/\d/.test(u.info.profile[row]?.values[8] ?? '');
+
+/**
+ * Profile einer Einheit, die angreifen: das Hauptprofil (ohne Champion), der Champion (wenn gewählt), Reittiere
+ * und angeschlossene Charaktere mit ihren Reittieren.
+ * Vorschlag Nahkampf: Modelle × Attacken; Beschuss: die Schützen aus shooters (Champion schießt im ersten Glied mit).
+ */
+export function attackLines(u: UnitState, units: Record<string, UnitState>, mode: AttackMode,
+  shots = (unit: UnitState) => shooters(unit, units, false, false)): AttackLine[] {
+  const lines: AttackLine[] = [];
+  const add = (unit: UnitState, row: number, models: number, label = unit.info.profile[row]?.name ?? unit.info.name) => {
+    const line: AttackLine = {
+      key: `${unit.id}:${row}`, unitId: unit.id, label, row, models,
+      ws: rowStat(unit, row, 1), bs: rowStat(unit, row, 2), s: rowStat(unit, row, 3), a: Math.max(1, rowStat(unit, row, 7)),
+      mount: isMountRow(unit, row), count: 0,
+    };
+    if (mode === 'shooting' && line.mount) return;
+    line.count = mode === 'combat' ? models * line.a : models;
+    lines.push(line);
+  };
+  const profile = u.info.profile;
+  const single = (u.info.startModels ?? u.models) === 1;
+  const champion = !single && u.info.command.includes('C') && profile.length > 1 && !isMountRow(u, 1) ? 1 : 0;
+  // Beschuss: Schützen im ersten Glied; der Champion ist einer davon
+  const troops = mode === 'shooting' ? Math.max(0, shots(u) - champion) : Math.max(0, u.models - champion);
+  add(u, 0, troops, profile[0]?.name ?? u.info.name);
+  if (champion) add(u, 1, 1);
+  profile.forEach((_, row) => { if (isMountRow(u, row)) add(u, row, u.models); });
+  for (const c of Object.values(units).filter((x) => x.joinedTo === u.id)) {
+    add(c, 0, 1, c.info.name);
+    c.info.profile.forEach((_, row) => { if (isMountRow(c, row)) add(c, row, 1, `${c.info.profile[row].name} (${c.info.name})`); });
+  }
+  return lines;
+}
 
 /**
  * Grundwert des Trefferwurfs mit Erklärung: Beschuss nach BS, Nahkampf nach WS gegen WS.
@@ -147,6 +209,16 @@ export function baseToHit(mode: AttackMode, a: UnitState, t: UnitState): { need:
   const ws = statOf(a, 'WS');
   const enemy = statOf(t, 'WS');
   return { need: toHitCombat(ws, enemy), why: `WS ${ws} vs WS ${enemy}`, reroll: null };
+}
+
+/** Trefferwurf einer Angriffszeile: Beschuss nach ihrem BS, Nahkampf ihr WS gegen das WS des Ziels */
+export function lineToHit(mode: AttackMode, line: AttackLine, t: UnitState): { need: number; why: string; reroll: number | null } {
+  if (mode === 'shooting') {
+    const reroll = shootingReroll(line.bs);
+    return { need: toHitShooting(line.bs), why: `BS ${line.bs}${reroll ? `, misses re-rolled on ${reroll}+` : ''}`, reroll };
+  }
+  const enemy = statOf(t, 'WS');
+  return { need: toHitCombat(line.ws, enemy), why: `WS ${line.ws} vs WS ${enemy}`, reroll: null };
 }
 
 /** Grundwert des Verwundungswurfs: Stärke gegen Widerstand */
