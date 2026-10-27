@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
-  armourBane, baseToHit, baseToWound, finalNeed, needText, rangeMods, saveMods, successes, weaponAp, weaponRange, weaponStrength,
+  armourBane, baseToHit, baseToWound, finalNeed, misses, needText, saveMods, shootingOptions, successes, weaponAp, weaponRange,
+  weaponStrength,
 } from './attack';
+import { shootingReroll, toHitCombat, toWound } from './flow';
 import { testUnit } from './testUnits';
 
 /** Einheit mit Profil M WS BS S T W I A Ld */
@@ -37,7 +39,7 @@ describe('base values', () => {
   const knight = withProfile('k', ['4', '4', '3', '4', '3', '1', '3', '1', '8']);
 
   it('shooting uses BS, combat compares WS', () => {
-    expect(baseToHit('shooting', archer, knight)).toEqual({ need: 4, why: 'BS 3' });
+    expect(baseToHit('shooting', archer, knight)).toEqual({ need: 4, why: 'BS 3', reroll: null });
     expect(baseToHit('combat', knight, archer).need).toBe(3);
     expect(baseToHit('combat', archer, knight).need).toBe(4);
   });
@@ -68,15 +70,47 @@ describe('modifiers', () => {
     expect(finalNeed(4, saveMods(-1, 'Handgun'), 'save').need).toBe(5);
   });
 
-  it('long range applies beyond half the range', () => {
-    expect(rangeMods(24, 13)).toHaveLength(1);
-    expect(rangeMods(24, 12)).toHaveLength(0);
-    expect(rangeMods(null, 30)).toHaveLength(0);
+  it('shooting modifiers are only offered: long range shows the distance but is not ticked', () => {
+    const far = shootingOptions(24, 13);
+    expect(far.map((m) => m.label)).toEqual(
+      ['Moving & Shooting', 'Long range', 'Stand & Shoot', 'Partial cover', 'Full cover', 'Target is skirmishers']);
+    expect(far.find((m) => m.label === 'Long range')?.hint).toContain('looks like long range');
+    expect(shootingOptions(24, 12).find((m) => m.label === 'Long range')?.hint).not.toContain('looks like');
+    expect(far.find((m) => m.label === 'Target is skirmishers')?.value).toBe(-1);
   });
 
-  it('counts successes, with the second roll after sixes', () => {
+  it('counts successes, with the second roll after sixes and BS 6+ re-rolls', () => {
     expect(successes([1, 4, 5, 6], 4)).toBe(3);
     expect(successes([6, 6, 3], 6, [4, 2], 4)).toBe(1);
     expect(successes([6, 6], null)).toBe(0);
+    // BS 6: 2+, Fehlschüsse (die 1en) auf 6+ wiederholt
+    expect(misses([1, 1, 3, 5], 2)).toBe(2);
+    expect(successes([1, 1, 3, 5], 2, [], null, [6, 2], 6)).toBe(3);
+  });
+});
+
+describe('charts from the quick reference', () => {
+  it('to hit in combat: 2+ with more than double the enemy WS', () => {
+    expect(toHitCombat(3, 1)).toBe(2);
+    expect(toHitCombat(5, 2)).toBe(2);
+    expect(toHitCombat(4, 2)).toBe(3);
+    expect(toHitCombat(10, 5)).toBe(3);
+    expect(toHitCombat(4, 4)).toBe(4);
+    expect(toHitCombat(4, 8)).toBe(4);
+    expect(toHitCombat(4, 9)).toBe(5);
+  });
+
+  it('BS 6 and more re-roll misses: 6+ at BS 6 down to 2+ at BS 10', () => {
+    expect(shootingReroll(5)).toBeNull();
+    expect(shootingReroll(6)).toBe(6);
+    expect(shootingReroll(8)).toBe(4);
+    expect(shootingReroll(10)).toBe(2);
+  });
+
+  it('to wound: impossible when Toughness is 6 or more above Strength', () => {
+    expect(toWound(1, 6)).toBe(6);
+    expect(toWound(1, 7)).toBe(7);
+    expect(toWound(4, 10)).toBe(7);
+    expect(finalNeed(toWound(1, 7), [], 'wound').need).toBeNull();
   });
 });

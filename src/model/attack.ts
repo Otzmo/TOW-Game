@@ -1,4 +1,4 @@
-import { statOf, toHitCombat, toHitShooting, toWound } from './flow';
+import { shootingReroll, statOf, toHitCombat, toHitShooting, toWound } from './flow';
 import type { WeaponProfile } from './gear';
 import type { UnitState } from './types';
 
@@ -8,8 +8,8 @@ export type AttackMode = 'shooting' | 'combat';
 export interface RollMod {
   label: string;
   value: number;
-  /** vom Programm vorgeschlagen (Reichweite, AP der Waffe) statt von Hand eingetragen */
-  auto?: boolean;
+  /** Hinweis zum Anhaken, z. B. die gemessene Entfernung bei langer Reichweite */
+  hint?: string;
 }
 
 /** Waffe, mit der angegriffen wird (aufgelöste Werte für diese Einheit) */
@@ -60,20 +60,24 @@ export function attackWeapon(p: WeaponProfile, u: UnitState): AttackWeapon {
 export const bareHands = (u: UnitState): AttackWeapon =>
   ({ name: 'Hand weapon', range: null, strength: statOf(u, 'S'), ap: 0, rules: [], raw: 'S S · AP -' });
 
-/** Grundwert des Trefferwurfs mit Erklärung: Beschuss nach BS, Nahkampf nach WS gegen WS */
-export function baseToHit(mode: AttackMode, a: UnitState, t: UnitState): { need: number; why: string } {
+/**
+ * Grundwert des Trefferwurfs mit Erklärung: Beschuss nach BS, Nahkampf nach WS gegen WS.
+ * reroll: ab BS 6 werden Fehlschüsse auf diesen Wert wiederholt (Modifikatoren gelten nur für den ersten Wurf).
+ */
+export function baseToHit(mode: AttackMode, a: UnitState, t: UnitState): { need: number; why: string; reroll: number | null } {
   if (mode === 'shooting') {
     const bs = statOf(a, 'BS');
-    return { need: toHitShooting(bs), why: `BS ${bs}` };
+    const reroll = shootingReroll(bs);
+    return { need: toHitShooting(bs), why: `BS ${bs}${reroll ? `, misses re-rolled on ${reroll}+` : ''}`, reroll };
   }
   const ws = statOf(a, 'WS');
   const enemy = statOf(t, 'WS');
-  return { need: toHitCombat(ws, enemy), why: `WS ${ws} vs WS ${enemy}` };
+  return { need: toHitCombat(ws, enemy), why: `WS ${ws} vs WS ${enemy}`, reroll: null };
 }
 
 /** Grundwert des Verwundungswurfs: Stärke gegen Widerstand */
-export function baseToWound(strength: number, toughness: number): { need: number; why: string } {
-  return { need: toWound(strength, toughness), why: `S ${strength} vs T ${toughness}` };
+export function baseToWound(strength: number, toughness: number): { need: number; why: string; reroll: null } {
+  return { need: toWound(strength, toughness), why: `S ${strength} vs T ${toughness}`, reroll: null };
 }
 
 export const sumMods = (mods: RollMod[]) => mods.reduce((s, m) => s + m.value, 0);
@@ -94,30 +98,44 @@ export function finalNeed(base: number, mods: RollMod[], kind: 'hit' | 'wound' |
 export const needText = (r: { need: number | null; then: number | null }) =>
   r.need === null ? 'impossible' : r.then ? `6, then ${r.then}+` : `${r.need}+`;
 
-/** Erfolge aus geworfenen Würfeln (bei „6, dann x+“ mit den Würfen der zweiten Runde) */
-export function successes(dice: number[], need: number | null, then: number[] = [], thenNeed: number | null = null): number {
+/**
+ * Erfolge aus geworfenen Würfeln: bei „6, dann x+“ zählen die Würfe der zweiten Runde,
+ * bei BS 6+ kommen die gelungenen Wiederholungen der Fehlschüsse dazu.
+ */
+export function successes(dice: number[], need: number | null, then: number[] = [], thenNeed: number | null = null,
+  rerolled: number[] = [], rerollNeed: number | null = null): number {
   if (need === null) return 0;
-  const first = dice.filter((d) => d >= need).length;
-  return thenNeed ? then.filter((d) => d >= thenNeed).length : first;
+  const first = thenNeed ? then.filter((d) => d >= thenNeed).length : dice.filter((d) => d >= need).length;
+  return first + (rerollNeed ? rerolled.filter((d) => d >= rerollNeed).length : 0);
 }
 
-/** Beschuss: über die halbe Reichweite hinaus −1 (lange Reichweite) */
-export function rangeMods(range: number | null, distance: number): RollMod[] {
-  if (range === null) return [];
-  return distance > range / 2 ? [{ label: `Long range (${distance.toFixed(1)}″ > ${range / 2}″)`, value: -1, auto: true }] : [];
+/** Wie viele Würfel wiederholt werden: Fehlschüsse des ersten Wurfs (bei „6, dann x+“ die der zweiten Runde) */
+export function misses(dice: number[], need: number | null, then: number[] = [], thenNeed: number | null = null): number {
+  if (need === null) return dice.length;
+  if (thenNeed) return dice.length - then.filter((d) => d >= thenNeed).length;
+  return dice.filter((d) => d < need).length;
 }
 
-/** Übliche Modifikatoren zum Anhaken (Beschuss nach dem Regelbuch, Nahkampf: eigene Einträge) */
-export const SHOOTING_OPTIONS: RollMod[] = [
-  { label: 'Moved and shot', value: -1 },
-  { label: 'Stand & Shoot', value: -1 },
-  { label: 'Partial cover', value: -1 },
-  { label: 'Full cover', value: -2 },
-];
+/**
+ * Modifikatoren beim Beschuss (Quick Reference): alle zum Anhaken, keiner wird von selbst verrechnet.
+ * Bei langer Reichweite steht die gemessene Entfernung als Hinweis dabei.
+ */
+export function shootingOptions(range: number | null, distance: number): RollMod[] {
+  const far = range !== null && distance > range / 2;
+  return [
+    { label: 'Moving & Shooting', value: -1 },
+    { label: 'Long range', value: -1,
+      hint: range === null ? undefined : `${distance.toFixed(1)}″ – half range ${range / 2}″${far ? ', looks like long range' : ''}` },
+    { label: 'Stand & Shoot', value: -1 },
+    { label: 'Partial cover', value: -1 },
+    { label: 'Full cover', value: -2 },
+    { label: 'Target is skirmishers', value: -1, hint: 'unit of models with Unit Strength 1' },
+  ];
+}
 
-/** Rüstungswurf: Grundwert und AP der Waffe als Modifikator */
+/** Rüstungswurf: AP der Waffe zum Anhaken */
 export function saveMods(ap: number, weapon: string): RollMod[] {
-  return ap ? [{ label: `AP ${ap} (${weapon})`, value: ap, auto: true }] : [];
+  return ap ? [{ label: `AP ${ap} (${weapon})`, value: ap }] : [];
 }
 
 /** „Armour Bane (1)“: bei einer natürlichen 6 beim Verwunden verbessert sich der AP um diesen Wert */

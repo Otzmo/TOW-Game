@@ -1,5 +1,5 @@
 import {
-  armourBane, attackWeapon, bareHands, baseToHit, baseToWound, finalNeed, needText, rangeMods, saveMods, SHOOTING_OPTIONS,
+  armourBane, attackWeapon, bareHands, baseToHit, baseToWound, finalNeed, misses, needText, saveMods, shootingOptions,
   successes, type AttackMode, type AttackWeapon, type RollMod,
 } from '../model/attack';
 import { minChargeDistance, roll, statOf } from '../model/flow';
@@ -44,6 +44,9 @@ interface Rolled {
   then: number[];
   need: number | null;
   thenNeed: number | null;
+  /** BS 6+: wiederholte Fehlschüsse */
+  rerolled: number[];
+  rerollNeed: number | null;
   success: number;
   /** davon mit natürlicher 6 (Armour Bane beim Verwunden) */
   sixes: number;
@@ -105,12 +108,15 @@ export class AttackFlow {
     const rolled = stage.rolled as Rolled | undefined;
     if (rolled) return this.showRolled(p, body, a, t, weapon, rolled, hitStep);
 
-    // Vorschläge: Reichweite (Beschuss), sonst nichts – alles weitere von Hand
+    // Modifikatoren nur zum Anhaken – verrechnet wird nur, was angehakt ist (lange Reichweite mit gemessener Entfernung)
     const distance = minChargeDistance(a, t, this.units);
-    const suggested = hitStep && mode === 'shooting' ? [...rangeMods(weapon.range, distance), ...SHOOTING_OPTIONS] : [];
+    const suggested = hitStep && mode === 'shooting' ? shootingOptions(weapon.range, distance) : [];
     const active = [...suggested.filter((m) => form.checked.includes(m.label)), ...form.manual];
     const base = hitStep ? baseToHit(mode, a, t) : baseToWound(form.strength, form.toughness);
     const need = finalNeed(base.need, active, hitStep ? 'hit' : 'wound');
+    // BS 6+: Fehlschüsse werden ohne Modifikatoren wiederholt
+    const reroll = base.reroll;
+    const needLine = `${needText(need)}${reroll && need.need !== null ? `, misses re-rolled on ${reroll}+` : ''}`;
     const outOfRange = hitStep && weapon.range !== null && distance > weapon.range;
 
     const weaponSelect = hitStep
@@ -125,8 +131,8 @@ export class AttackFlow {
     body.innerHTML = `<div class="prompt-form">${weaponSelect}${counts}</div>
       ${weapon.rules.length ? `<p class="atk-rules">Weapon rules: ${esc(weapon.rules.join(', '))}</p>` : ''}
       ${outOfRange ? `<p class="warn">Out of range: ${distance.toFixed(1)}″ > ${weapon.range}″</p>` : ''}
-      ${this.modsHtml(`${hitStep ? 'To Hit' : 'To Wound'} ${base.need}+ <span class="meta">(${esc(base.why)})</span>`,
-        suggested, form.checked, form.manual, needText(need))}
+      ${this.modsHtml(`${hitStep ? 'To Hit' : 'To Wound'} ${base.need > 6 ? 'impossible' : `${base.need}+`} <span class="meta">(${esc(base.why)})</span>`,
+        suggested, form.checked, form.manual, needLine)}
       <div class="prompt-actions">
         <button class="primary" data-roll ${need.need === null || !form.count ? 'disabled' : ''}>${hitStep ? 'Roll To Hit' : 'Roll To Wound'} (${form.count} ${form.count === 1 ? 'die' : 'dice'})</button>
         <button data-cancel>Cancel</button>
@@ -144,13 +150,14 @@ export class AttackFlow {
     (body.querySelector('[data-roll]') as HTMLButtonElement).onclick = () => {
       const dice = roll(form.count);
       const then = need.then ? roll(dice.filter((d) => d === 6).length) : [];
-      const success = successes(dice, need.need, then, need.then);
+      const rerolled = reroll && need.need !== null ? roll(misses(dice, need.need, then, need.then)) : [];
+      const success = successes(dice, need.need, then, need.then, rerolled, reroll);
       // Armour Bane: Verwundungen mit einer natürlichen 6 bekommen besseren AP
       const sixes = hitStep ? 0 : Math.min(success, dice.filter((d) => d === 6).length);
-      stage.rolled = { dice, then, need: need.need, thenNeed: need.then, success, sixes } satisfies Rolled;
+      stage.rolled = { dice, then, need: need.need, thenNeed: need.then, rerolled, rerollNeed: reroll, success, sixes } satisfies Rolled;
       const mods = active.length ? ` [${active.map((m) => `${m.label} ${signed(m.value)}`).join(', ')}]` : '';
-      this.host.log({ kind: 'roll', dice: then.length ? [dice, then] : [dice],
-        text: `${a.info.name} → ${t.info.name} (${weapon.name}): ${form.count} ${hitStep ? 'to hit' : 'to wound'} ${needText(need)}${mods} → ${success} ${hitStep ? 'hits' : 'wounds'}` });
+      this.host.log({ kind: 'roll', dice: [dice, then, rerolled].filter((d) => d.length),
+        text: `${a.info.name} → ${t.info.name} (${weapon.name}): ${form.count} ${hitStep ? 'to hit' : 'to wound'} ${needLine}${mods} → ${success} ${hitStep ? 'hits' : 'wounds'}` });
       redraw();
     };
   }
@@ -161,12 +168,8 @@ export class AttackFlow {
     // Vorschlag: Beschuss ein Schuss je Modell, Nahkampf Modelle × Attacken (anpassbar)
     const count = p.data.step === 'wound' ? Number(p.data.hits) || 0
       : mode === 'shooting' ? a.models : a.models * Math.max(1, statOf(a, 'A'));
-    const distance = minChargeDistance(a, t, this.units);
-    return {
-      weapon: w, count,
-      checked: mode === 'shooting' ? rangeMods(weapon.range, distance).map((m) => m.label) : [],
-      manual: [], strength: Number(p.data.strength) || weapon.strength, toughness: statOf(t, 'T') || 3,
-    };
+    // Nichts ist vorab angehakt: Modifikatoren wählt der Spieler selbst
+    return { weapon: w, count, checked: [], manual: [], strength: Number(p.data.strength) || weapon.strength, toughness: statOf(t, 'T') || 3 };
   }
 
   private showRolled(p: Prompt, body: HTMLElement, a: UnitState, t: UnitState, weapon: AttackWeapon, r: Rolled, hitStep: boolean): void {
@@ -174,6 +177,7 @@ export class AttackFlow {
     const bane = armourBane(weapon.rules);
     body.innerHTML = `<div class="dice-row">${diceHtml(r.dice, r.thenNeed ? 7 : r.need ?? 7)}</div>
       ${r.then.length ? `<div class="dice-row"><span class="dice-label">Sixes, then ${r.thenNeed}+</span>${diceHtml(r.then, r.thenNeed ?? 7)}</div>` : ''}
+      ${r.rerolled.length ? `<div class="dice-row"><span class="dice-label">Misses re-rolled, ${r.rerollNeed}+</span>${diceHtml(r.rerolled, r.rerollNeed ?? 7)}</div>` : ''}
       <p class="prompt-info"><b>${r.success} ${word}${r.success === 1 ? '' : 's'}</b>
         ${!hitStep && bane && r.sixes ? ` · ${r.sixes} with a natural 6 (Armour Bane ${bane}: AP ${weapon.ap - bane})` : ''}</p>
       <div class="prompt-actions">${r.success
@@ -223,20 +227,23 @@ export class AttackFlow {
     const done = stage.saves as SavesRolled | undefined;
     if (done) return this.showSaves(p, body, target, done);
 
-    // AP der Waffe gilt immer; eigene Modifikatoren (z. B. Schild nur von vorn) kommen dazu
-    const apMods = saveMods(ap, String(p.data.weapon ?? 'weapon'));
-    const mods = [...apMods, ...form.manual];
+    // AP der Waffe und Armour Bane nur zum Anhaken; eigene Modifikatoren (z. B. Schild nur von vorn) kommen dazu
+    const baneMod: RollMod | null = bane && baneAp
+      ? { label: `Armour Bane (${baneAp})`, value: -baneAp, hint: `only ${bane} wound${bane === 1 ? '' : 's'} from a natural 6` } : null;
+    const options = [...saveMods(ap, String(p.data.weapon ?? 'weapon')), ...(baneMod ? [baneMod] : [])];
+    const mods = [...options.filter((m) => m !== baneMod && form.checked.includes(m.label)), ...form.manual];
+    const baned = baneMod && form.checked.includes(baneMod.label) ? bane : 0;
     const armourNeed = form.armour ? finalNeed(form.armour, mods, 'save') : { need: null, then: null };
-    const baneNeed = form.armour ? finalNeed(form.armour, [...mods, { label: 'Armour Bane', value: -baneAp }], 'save') : { need: null, then: null };
+    const baneNeed = form.armour && baneMod ? finalNeed(form.armour, [...mods, baneMod], 'save') : { need: null, then: null };
     const armourLine = !form.armour ? 'no armour save'
-      : bane ? `${wounds - bane} at ${needText(armourNeed)}, ${bane} at ${needText(baneNeed)} (Armour Bane ${baneAp})`
+      : baned ? `${wounds - baned} at ${needText(armourNeed)}, ${baned} at ${needText(baneNeed)} (Armour Bane)`
       : needText(armourNeed);
     body.innerHTML = `<div class="prompt-form">
         <label>Armour Save <select id="sv-armour">${saveOptions(form.armour)}</select></label>
         <label>Ward Save <select id="sv-ward">${saveOptions(form.ward)}</select></label>
         <label>Regeneration Save <select id="sv-regen">${saveOptions(form.regen)}</select></label>
       </div>
-      ${this.modsHtml(`Armour Save ${form.armour ? `${form.armour}+` : '–'}`, apMods.map((m) => ({ ...m })), apMods.map((m) => m.label), form.manual, armourLine, true)}
+      ${this.modsHtml(`Armour Save ${form.armour ? `${form.armour}+` : '–'}`, options, form.checked, form.manual, armourLine)}
       <p class="prompt-info">Ward and Regeneration saves are not modified by AP.</p>
       <div class="prompt-actions"><button class="primary" data-roll>Roll saves (${wounds} wound${wounds === 1 ? '' : 's'})</button></div>`;
     const redraw = () => this.renderSaves(p, body);
@@ -255,9 +262,9 @@ export class AttackFlow {
         parts.push(`${saved} saved by ${name} (${need}+)`);
         return { dice, saved };
       };
-      const normal = roll1(wounds - bane, armourNeed.need, 'armour');
-      const baned = roll1(bane, baneNeed.need, 'armour, Armour Bane');
-      let left = wounds - normal.saved - baned.saved;
+      const normal = roll1(wounds - baned, armourNeed.need, 'armour');
+      const baneRoll = roll1(baned, baneNeed.need, 'armour, Armour Bane');
+      let left = wounds - normal.saved - baneRoll.saved;
       const ward = roll1(left, form.ward, 'ward');
       left -= ward.saved;
       const regen = roll1(left, form.regen, 'regeneration');
@@ -268,14 +275,14 @@ export class AttackFlow {
       stage.saves = {
         rows: [
           { label: 'Armour', dice: normal.dice, need: armourNeed.need },
-          { label: 'Armour (Armour Bane)', dice: baned.dice, need: baneNeed.need },
+          { label: 'Armour (Armour Bane)', dice: baneRoll.dice, need: baneNeed.need },
           { label: 'Ward', dice: ward.dice, need: form.ward },
           { label: 'Regeneration', dice: regen.dice, need: form.regen },
         ].filter((r) => r.dice.length),
         unsaved: left, text,
       } satisfies SavesRolled;
       this.host.log({ kind: 'roll', text: `${target.info.name}: ${text}`,
-        dice: [normal.dice, baned.dice, ward.dice, regen.dice].filter((d) => d.length) });
+        dice: [normal.dice, baneRoll.dice, ward.dice, regen.dice].filter((d) => d.length) });
       redraw();
     };
   }
@@ -304,18 +311,14 @@ export class AttackFlow {
 
   // --- Modifikatoren ----------------------------------------------------------
 
-  /**
-   * Grundwert, Vorschläge zum Anhaken, eigene Einträge (mit ×) und eine Zeile zum Hinzufügen; unten der nötige Wurf.
-   * @param fixed Vorschläge stehen fest (z. B. AP der Waffe) und lassen sich nicht abhaken
-   */
-  private modsHtml(base: string, suggested: RollMod[], checked: string[], manual: RollMod[], need: string, fixed = false): string {
+  /** Grundwert, Modifikatoren zum Anhaken (mit Hinweis), eigene Einträge (mit ×) und eine Zeile zum Hinzufügen; unten der nötige Wurf */
+  private modsHtml(base: string, suggested: RollMod[], checked: string[], manual: RollMod[], need: string): string {
     const row = (m: RollMod, control: string) =>
-      `<div class="atk-mod${m.value < 0 ? ' minus' : m.value > 0 ? ' plus' : ''}">${control}<span class="atk-label">${esc(m.label)}</span><b>${signed(m.value)}</b></div>`;
+      `<label class="atk-mod${m.value < 0 ? ' minus' : m.value > 0 ? ' plus' : ''}">${control}<span class="atk-label">${esc(m.label)}${m.hint ? ` <span class="atk-hint">${esc(m.hint)}</span>` : ''}</span><b>${signed(m.value)}</b></label>`;
     const values = [-3, -2, -1, 1, 2, 3].map((v) => `<option value="${v}" ${v === -1 ? 'selected' : ''}>${signed(v)}</option>`).join('');
     return `<div class="atk-mods">
       <div class="atk-base">${base}</div>
-      ${suggested.map((m) => row(m, fixed ? '<span class="atk-fixed">•</span>'
-        : `<input type="checkbox" data-opt="${esc(m.label)}" ${checked.includes(m.label) ? 'checked' : ''}>`)).join('')}
+      ${suggested.map((m) => row(m, `<input type="checkbox" data-opt="${esc(m.label)}" ${checked.includes(m.label) ? 'checked' : ''}>`)).join('')}
       ${manual.map((m, i) => row(m, `<button class="atk-del" data-del="${i}" title="Remove">×</button>`)).join('')}
       <div class="atk-add"><input id="atk-mlabel" placeholder="Add modifier, e.g. Hatred"><select id="atk-mval">${values}</select><button data-add>Add</button></div>
       <div class="atk-need">Roll needed: <b>${esc(need)}</b></div>

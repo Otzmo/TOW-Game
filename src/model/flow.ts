@@ -79,17 +79,24 @@ export function statOf(u: UnitState, key: keyof typeof STAT_INDEX): number {
 /** Trefferwurf beim Schießen: BS 1 = 6+, BS 2 = 5+, BS 3 = 4+, BS 4 = 3+, BS 5+ = 2+ */
 export const toHitShooting = (bs: number) => Math.min(6, Math.max(2, 7 - bs));
 
-/** Trefferwurf im Nahkampf: höheres WS 3+, mehr als doppeltes WS des Gegners 5+, sonst 4+ */
+/** BS 6 und mehr: Fehlschüsse dürfen wiederholt werden, BS 6 auf 6+, BS 7 auf 5+ … BS 10 auf 2+; sonst null */
+export const shootingReroll = (bs: number) => (bs >= 6 ? Math.max(2, 12 - bs) : null);
+
+/**
+ * Trefferwurf im Nahkampf (To-Hit Chart): WS mehr als doppelt so hoch wie das des Gegners 2+, höher 3+,
+ * WS des Gegners mehr als doppelt so hoch 5+, sonst 4+
+ */
 export function toHitCombat(ws: number, enemyWs: number): number {
+  if (ws > 2 * enemyWs) return 2;
   if (ws > enemyWs) return 3;
   if (enemyWs > 2 * ws) return 5;
   return 4;
 }
 
-/** Verwundungswurf: Stärke gegen Widerstand */
+/** Verwundungswurf (To-Wound Chart): Stärke gegen Widerstand; 7 = unmöglich (Widerstand 6 oder mehr über der Stärke) */
 export function toWound(s: number, t: number): number {
   const d = s - t;
-  return d >= 2 ? 2 : d === 1 ? 3 : d === 0 ? 4 : d === -1 ? 5 : 6;
+  return d >= 2 ? 2 : d === 1 ? 3 : d === 0 ? 4 : d === -1 ? 5 : d > -6 ? 6 : 7;
 }
 
 export function leadershipOf(u: UnitState): number {
