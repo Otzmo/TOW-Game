@@ -2,6 +2,7 @@ import type { History } from '../model/history';
 import { OBJECT_TYPES } from '../model/objects';
 import type { Store } from '../model/store';
 import type { BoardObject, LogEntry } from '../model/types';
+import { artilleryDie, artilleryText, scatterDie } from './dice';
 
 const $ = (id: string) => document.getElementById(id)!;
 const input = (id: string) => $(id) as HTMLInputElement;
@@ -36,9 +37,10 @@ export class ObjectPanel {
     input('o-w').onchange = () => this.change({ w: Math.max(0.5, Number(input('o-w').value) || 0.5) });
     input('o-h').onchange = () => this.change({ h: Math.max(0.5, Number(input('o-h').value) || 0.5) });
     input('o-rot').onchange = () => this.change({ rotation: ((Number(input('o-rot').value) || 0) * Math.PI) / 180 });
-    $('o-scatter-row').onclick = (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-scatter]');
-      if (btn) this.scatter(Number(btn.dataset.scatter));
+    $('o-sc-roll').onclick = () => this.scatter();
+    // Nach einem HIT: auf Wunsch doch dem kleinen Pfeil folgen (wenn ein Treffer nicht möglich ist)
+    $('o-scatter-result').onclick = (e) => {
+      if ((e.target as HTMLElement).closest('[data-small-arrow]') && this.pending) this.move(this.pending.angle, this.pending.dist, this.pending.dice);
     };
     fetch(`${import.meta.env.BASE_URL}data/terrain.json`).then((r) => (r.ok ? r.json() : {})).catch(() => ({}))
       .then((t) => { this.terrain = t; this.render(); });
@@ -60,30 +62,67 @@ export class ObjectPanel {
   }
 
   /**
-   * Abweichung einer Schablone: D6 oder 2D6 Zoll in eine zufällige Richtung; zeigt ein Würfel eine 1,
-   * ist es ein Volltreffer und die Schablone bleibt liegen.
+   * Abweichung einer Schablone mit den angehakten Würfeln: Abweichungswürfel für die Richtung (HIT = Volltreffer,
+   * die Schablone bleibt liegen), Artilleriewürfel und/oder D6/2D6 für die Entfernung (Misfire = kein Schuss).
+   * Danach wird die Schablone verschoben.
    */
-  private scatter(n: number): void {
+  private scatter(): void {
     const o = this.id ? this.store.state.objects[this.id] : undefined;
     if (!o) return;
-    const dice = Array.from({ length: n }, () => rnd(6));
+    const checked = (id: string) => input(id).checked;
     const name = OBJECT_TYPES[o.type]?.name ?? 'Template';
-    if (dice.includes(1)) {
-      this.lastScatter = `<p class="ok"><b>Direct hit!</b> (${dice.join(' + ')})</p>`;
-      this.log({ kind: 'roll', dice: [dice], text: `${name}: direct hit` });
+    // Ohne Abweichungswürfel: zufällige Richtung, kein Volltreffer
+    const dir = checked('o-sc-dir') ? scatterDie() : { hit: false, angle: rnd(360) - 1 };
+    const art = checked('o-sc-art') ? artilleryDie() : null;
+    const d6s = [...(checked('o-sc-d6') ? [rnd(6)] : []), ...(checked('o-sc-2d6') ? [rnd(6), rnd(6)] : [])];
+    const dist = (art ?? 0) + d6s.reduce((s, d) => s + d, 0);
+    const parts = [
+      checked('o-sc-dir') ? (dir.hit ? 'HIT' : `arrow ${dir.angle}°`) : `direction ${dir.angle}°`,
+      art !== null ? `artillery ${artilleryText(art)}` : '',
+      d6s.length ? `${d6s.length === 1 ? 'D6' : `${d6s.length}D6`} ${d6s.join(' + ')}` : '',
+    ].filter(Boolean).join(' · ');
+    const dice = [...(art !== null ? [art] : []), ...d6s];
+    this.pending = null;
+    if (art === 0) {
+      this.lastScatter = `<p class="warn"><b>Misfire!</b> (${esc(parts)}) – roll on the misfire table.</p>`;
+      this.log({ kind: 'roll', dice: d6s.length ? [d6s] : undefined, text: `${name}: misfire (${parts})` });
+      this.render();
+      return;
+    }
+    if (dir.hit) {
+      // Kleiner Pfeil auf der HIT-Seite: gilt, wenn ein Treffer nicht möglich ist
+      this.pending = { angle: dir.angle, dist, dice };
+      this.lastScatter = `<p class="ok"><b>Direct hit!</b> (${esc(parts)})</p>
+        <p class="meta">${dist ? `<button data-small-arrow class="link">Use the small arrow instead: ${dist}″ <span class="scatter-arrow" style="transform: rotate(${dir.angle}deg)">↑</span></button>` : ''}</p>`;
+      this.log({ kind: 'roll', dice: dice.length ? [dice] : undefined, text: `${name}: direct hit (${parts})` });
       this.store.setMeta({ scatterFx: { from: { x: o.x, y: o.y }, to: { x: o.x, y: o.y }, r: Math.max(o.w, o.h) / 2, hit: true, ts: Date.now() } });
       this.render();
       return;
     }
-    const dist = dice.reduce((s, d) => s + d, 0);
-    const angle = rnd(360) - 1;
+    if (!dist) {
+      this.lastScatter = `<p class="warn">No distance dice chosen – tick the Artillery dice, D6 or 2D6.</p>`;
+      this.render();
+      return;
+    }
+    this.move(dir.angle, dist, dice, parts);
+  }
+
+  /** HIT-Ergebnis, falls doch dem kleinen Pfeil gefolgt wird */
+  private pending: { angle: number; dist: number; dice: number[] } | null = null;
+
+  /** Schablone um dist Zoll in Richtung angle (Grad, 0 = nach oben) verschieben */
+  private move(angle: number, dist: number, dice: number[], parts = `small arrow ${angle}°`): void {
+    const o = this.id ? this.store.state.objects[this.id] : undefined;
+    if (!o) return;
+    const name = OBJECT_TYPES[o.type]?.name ?? 'Template';
     const a = (angle * Math.PI) / 180;
+    this.pending = null;
     this.history.record();
     const from = { x: o.x, y: o.y };
     this.store.updateObject(o.id, { x: o.x + Math.sin(a) * dist, y: o.y - Math.cos(a) * dist });
     this.store.setMeta({ scatterFx: { from, to: { x: o.x, y: o.y }, r: Math.max(o.w, o.h) / 2, hit: false, ts: Date.now() } });
-    this.lastScatter = `<p class="warn">Scatters <b>${dist}″</b> <span class="scatter-arrow" style="transform: rotate(${angle}deg)">↑</span> (${dice.join(' + ')})</p>`;
-    this.log({ kind: 'roll', dice: [dice], text: `${name} scatters ${dist}″ (direction ${angle}°)` });
+    this.lastScatter = `<p class="warn">Scatters <b>${dist}″</b> <span class="scatter-arrow" style="transform: rotate(${angle}deg)">↑</span> (${esc(parts)})</p>`;
+    this.log({ kind: 'roll', dice: dice.length ? [dice] : undefined, text: `${name} scatters ${dist}″ (${parts})` });
     this.render();
   }
 

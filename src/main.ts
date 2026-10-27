@@ -117,6 +117,7 @@ async function start(): Promise<void> {
     seat: () => seat,
     log: (entry) => addLog(entry),
     allowMove: (id) => gate.grant(id),
+    movedThisTurn: (id) => board.movedThisTurn(id),
   });
   // Aufbauphase: Schlachtfeld, Roll-offs, Zonen und Aufstellen
   const setup = new SetupPanel(store, history, () => seat, (entry) => addLog(entry));

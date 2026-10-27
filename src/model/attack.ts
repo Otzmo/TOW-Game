@@ -1,6 +1,7 @@
 import { shootingReroll, statOf, toHitCombat, toHitShooting, toWound } from './flow';
 import type { WeaponProfile } from './gear';
-import { isSkirmish, unitLayout } from './store';
+import { combatContacts } from './contact';
+import { isSkirmish, unitLayout, type Slot } from './store';
 import type { UnitState } from './types';
 
 /**
@@ -209,6 +210,34 @@ export function baseToHit(mode: AttackMode, a: UnitState, t: UnitState): { need:
   const ws = statOf(a, 'WS');
   const enemy = statOf(t, 'WS');
   return { need: toHitCombat(ws, enemy), why: `WS ${ws} vs WS ${enemy}`, reroll: null };
+}
+
+/**
+ * Attacken aus dem Basekontakt mit dem Ziel: Modelle in Basekontakt schlagen mit allen Attacken zu, Modelle im ersten
+ * Glied ohne Kontakt mit je einer Supporting Attack; Reittiere nur in Basekontakt und nie unterstützend.
+ * Ergebnis je Zeile (key): Zahl der Attacken und Erklärung; ohne Kontakt null.
+ */
+export function contactAttacks(lines: AttackLine[], u: UnitState, units: Record<string, UnitState>, target: UnitState):
+  Map<string, { count: number; note: string }> | null {
+  const c = combatContacts(u, units, target);
+  if (!c) return null;
+  const champion = lines.some((l) => l.unitId === u.id && l.row === 1);
+  const troops = c.slots.filter((s) => !s.charId && !(champion && s.label === 'C'));
+  const out = new Map<string, { count: number; note: string }>();
+  const describe = (inContact: number, support: number) =>
+    [inContact ? `${inContact} in base contact` : '', support ? `${support} supporting` : ''].filter(Boolean).join(', ') || 'not in base contact';
+  for (const l of lines) {
+    let slots: Slot[];
+    if (l.unitId === u.id) {
+      if (l.mount) slots = c.slots.filter((s) => !s.charId);
+      else slots = l.row === 1 ? c.slots.filter((s) => s.label === 'C') : troops;
+    } else slots = c.slots.filter((s) => s.charId === l.unitId);
+    const inContact = slots.filter((s) => c.contact.has(s.key)).length;
+    // Reittiere unterstützen nie
+    const support = l.mount ? 0 : slots.filter((s) => !c.contact.has(s.key) && c.front.has(s.key)).length;
+    out.set(l.key, { count: inContact * l.a + support, note: describe(inContact, support) });
+  }
+  return out;
 }
 
 /** Trefferwurf einer Angriffszeile: Beschuss nach ihrem BS, Nahkampf ihr WS gegen das WS des Ziels */

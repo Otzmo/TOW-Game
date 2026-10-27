@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
-  armourBane, attackLines, baseToHit, baseToWound, finalNeed, lineToHit, misses, needText, rollExpr, saveMods, shooters, shootingOptions, shootingRules,
+  armourBane, attackLines, baseToHit, contactAttacks, baseToWound, finalNeed, lineToHit, misses, needText, rollExpr, saveMods, shooters, shootingOptions, shootingRules,
   successes, weaponAp, weaponRange, weaponStrength,
 } from './attack';
 import { shootingReroll, toHitCombat, toWound } from './flow';
 import { byId } from './testUnits';
+import type { UnitState } from './types';
 import { testUnit } from './testUnits';
 
 /** Einheit mit Profil M WS BS S T W I A Ld */
@@ -133,6 +134,39 @@ describe('attack lines (one per profile)', () => {
     const target = withProfile('t', ['4', '3', '3', '3', '3', '1', '3', '1', '7']);
     expect(lineToHit('combat', lines[2], target).need).toBe(4);
     expect(lineToHit('combat', lines[0], target).need).toBe(3);
+  });
+});
+
+describe('attacks from base contact', () => {
+  const B = 25 / 25.4;
+  // Ziel: ein Modell, Blick nach unten; Angreifer 5 breit direkt davor (Fronten berühren sich)
+  const target = { ...withProfile('t', ['4', '3', '3', '3', '3', '1', '3', '1', '7']), owner: 'p2' as const, rotation: Math.PI };
+  const fighters = (models: number, extra: Partial<UnitState> = {}) => ({
+    ...withProfile('a', ['4', '3', '3', '3', '3', '1', '3', '2', '7']), ...testUnit('a', { models, width: 5, y: B }), ...extra,
+    info: { ...withProfile('a', ['4', '3', '3', '3', '3', '1', '3', '2', '7']).info },
+  });
+
+  it('models touching the enemy (corners too) attack fully, the rest of the front rank supports', () => {
+    const a = fighters(10);
+    const units = byId(a, target);
+    const lines = attackLines(a, units, 'combat');
+    const counts = contactAttacks(lines, a, units, target)!;
+    // Mitte und beide Nachbarn (Ecke an Ecke) in Kontakt: 3 × 2 Attacken, 2 unterstützen mit je 1
+    expect(counts.get(lines[0].key)).toEqual({ count: 8, note: '3 in base contact, 2 supporting' });
+  });
+
+  it('no base contact: nothing to count', () => {
+    const a = fighters(10, { y: 5 });
+    expect(contactAttacks(attackLines(a, byId(a, target), 'combat'), a, byId(a, target), target)).toBeNull();
+  });
+
+  it('mounts only attack in base contact and never support', () => {
+    const a = fighters(5);
+    const riders = { ...a, info: { ...a.info, profile: [...a.info.profile, { name: 'Horse', values: ['8', '3', '-', '3', '-', '-', '3', '1', '-'] }] } };
+    const units = byId(riders, target);
+    const lines = attackLines(riders, units, 'combat');
+    const counts = contactAttacks(lines, riders, units, target)!;
+    expect(counts.get(lines.find((l) => l.mount)!.key)).toEqual({ count: 3, note: '3 in base contact' });
   });
 });
 

@@ -26,6 +26,9 @@ export class Camera {
   /** Wird gerufen, wenn sich die Drehung der Ansicht ändert (für den Knopf) */
   onRotate: (rotated: boolean) => void = () => {};
 
+  /** Bilder, in denen nach einer Drehung noch Texte aufgerichtet werden */
+  private settleFrames = 0;
+
   /**
    * @param table Tischgröße in Zoll
    * @param onView nach jeder Änderung von Zoom oder Lage (z. B. Maßband-Beschriftung gleich groß halten)
@@ -34,7 +37,12 @@ export class Camera {
     private onView: () => void) {
     world.pivot.set((table.width * PPI) / 2, (table.height * PPI) / 2);
     app.ticker.add(() => {
-      if (this.rotated) keepTextUpright(world);
+      // Nach dem Zurückdrehen noch ein paar Bilder lang: bleibende Texte (z. B. die Zahl am Maßband beim Ziehen)
+      // wurden in der gedrehten Ansicht umgedreht und stünden sonst jetzt auf dem Kopf
+      if (this.rotated || this.settleFrames > 0) {
+        keepTextUpright(world);
+        this.settleFrames = Math.max(0, this.settleFrames - 1);
+      }
     });
     app.canvas.addEventListener('wheel', (e) => this.onWheel(e), { passive: false });
   }
@@ -82,6 +90,8 @@ export class Camera {
   setRotated(on: boolean): void {
     if (on === this.rotated) return;
     this.world.rotation = on ? Math.PI : 0;
+    // Die Weltlage der Texte stimmt erst nach dem nächsten Zeichnen; darum mehrere Bilder lang prüfen
+    this.settleFrames = 3;
     this.fit();
     this.onRotate(on);
   }

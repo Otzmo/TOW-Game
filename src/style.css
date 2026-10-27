@@ -360,6 +360,13 @@ body.sheet-open .bottom-panel { display: none; }
 .atk-hint { color: var(--muted); font-size: calc(11px * var(--ui)); }
 .atk-fixed { width: 16px; text-align: center; color: var(--accent); }
 .atk-shooters { margin-top: 8px; }
+.atk-rules-box { margin-top: 8px; }
+/* Schablone: Würfel zum Abweichen auswählen */
+#o-scatter-row .check { display: flex; align-items: flex-start; justify-content: flex-start; gap: 8px; text-align: left; margin: 3px 0; font-size: calc(12px * var(--ui)); }
+#o-scatter-row .check input { flex: none; margin-top: 2px; }
+#p-charge details.helpers { margin-top: 8px; font-size: calc(12px * var(--ui)); }
+#p-charge details.helpers summary { cursor: pointer; color: var(--muted); }
+#p-charge details.helpers .check { display: flex; gap: 6px; margin: 4px 0; }
 /* Eine Zeile je Profil (Truppe, Champion, Reittier, Charakter) */
 .atk-lines { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: calc(12px * var(--ui)); }
 .atk-lines th { text-align: left; color: var(--muted); font-weight: 600; padding: 3px 4px; border-bottom: 1px solid var(--line); }

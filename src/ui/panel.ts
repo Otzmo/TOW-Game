@@ -12,6 +12,7 @@ import { PLAYER_COLORS } from '../view/theme';
 import { currentPhase } from '../model/phases';
 import type { AttackMode } from '../model/attack';
 import { weaponsFor } from './attackFlow';
+import { HELPERS, helperOn, setHelper, type Helper } from '../view/helpers';
 
 const $ = (id: string) => document.getElementById(id)!;
 
@@ -112,6 +113,10 @@ export class UnitPanel {
       if (btn.dataset.charge === 'place') actions.placeAmbush(u.id);
       if (btn.dataset.charge === 'shoot') actions.attack(u.id, 'shooting');
       if (btn.dataset.charge === 'fight') actions.attack(u.id, 'combat');
+    };
+    $('p-charge').onchange = (e) => {
+      const box = (e.target as HTMLElement).closest<HTMLInputElement>('input[data-helper]');
+      if (box) setHelper(box.dataset.helper as Helper, box.checked);
     };
     $('p-join').onclick = (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
@@ -270,15 +275,22 @@ export class UnitPanel {
   }
 
   /** Angriff: ansagen (Distanz wird berechnet), dann mit einem Knopf die Angriffsbewegung ausführen */
-  /** Angriff, Beschuss und Nahkampf; in der Aufstellung nur der Hinterhalt */
+  /** Angriff, Beschuss und Nahkampf; in der Aufstellung nur der Hinterhalt; darunter die Hilfen zum An- und Abhaken */
   private chargeHtml(u: UnitState): string {
-    const charge = this.chargeOnlyHtml(u);
+    const charge = this.chargeOnlyHtml(u) + this.helpersHtml();
     const { meta } = this.store.state;
     if (currentPhase(meta) === 'setup' || u.ambush) return charge;
     // Beschuss nur mit Fernkampfwaffe (die Waffenliste kommt aus einer eigenen Datei, siehe loadWeapons)
     const shoot = weaponsFor(u, 'shooting').length
       ? '<button data-charge="shoot" title="Pick a target, then roll To Hit and To Wound">🏹 Shoot</button>' : '';
     return `${charge}<div class="row-btns">${shoot}<button data-charge="fight" title="Pick a target, then roll To Hit and To Wound">🗡 Fight</button></div>`;
+  }
+
+  /** Hilfen beim Bewegen und Angreifen: angehakt = das Spiel hilft */
+  private helpersHtml(): string {
+    return `<details class="helpers"><summary>Helpers</summary>
+      ${HELPERS.map((h) => `<label class="check" title="${escapeHtml(h.hint)}"><input type="checkbox" data-helper="${h.key}" ${helperOn(h.key) ? 'checked' : ''}> ${escapeHtml(h.label)}</label>`).join('')}
+    </details>`;
   }
 
   private chargeOnlyHtml(u: UnitState): string {

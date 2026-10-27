@@ -1,6 +1,7 @@
 import { Application, Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
 import { BoardTools } from './boardTools';
 import { Camera } from './camera';
+import { helperOn } from './helpers';
 import { drawCharges as paintCharges, drawRanges as paintRanges } from './overlays';
 import {
   alignToBases, chargePathCheck, chargeTravel, contactPoses, minChargeDistance, toLocal, toTable,
@@ -87,6 +88,14 @@ export class Board {
   private drag: Drag | null = null;
   /** Zoll, die eine Einheit in dieser Runde nacheinander zurückgelegt hat (Schwenken + Bewegen) */
   private moveRun: { unitId: string; total: number; round: number } | null = null;
+  /** In welchem Spielerzug eine Einheit zuletzt bewegt wurde (für „Moving & Shooting“ beim Beschuss) */
+  private readonly moved = new Map<string, string>();
+  private turnKey = () => `${this.store.state.meta.round}-${this.store.state.meta.active}`;
+
+  /** Hat sich die Einheit in diesem Spielerzug bewegt (auf diesem Gerät gezogen)? */
+  movedThisTurn(unitId: string): boolean {
+    return this.moved.get(unitId) === this.turnKey();
+  }
   selectedId: string | null = null;
 
   constructor(app: Application, private store: Store, private history: History, private events: BoardEvents) {
@@ -285,8 +294,11 @@ export class Board {
   /** Stellung mit maximiertem Kontakt, an der der Angreifer Platz hat (ohne andere Einheiten zu überlappen) */
   private maximisedPose(charger: UnitState, target: UnitState) {
     const { units } = this.store.state;
-    return contactPoses(charger, target, units)
-      .find((p) => !overlappingUnits({ ...charger, x: p.x, y: p.y, rotation: p.rotation }, units).length);
+    const free = contactPoses(charger, target, units)
+      .filter((p) => !overlappingUnits({ ...charger, x: p.x, y: p.y, rotation: p.rotation }, units).length);
+    if (helperOn('maximise') || !free.length) return free[0];
+    // Ohne Maximieren: an der zugewandten Kante so wenig seitlich verschieben wie möglich (gerade hinein)
+    return free.filter((p) => p.side === free[0].side).sort((a, b) => a.shift - b.shift)[0];
   }
 
   /** Angriffsbewegung: an die zugewandte Kante des Ziels, bündig an den Base-Grenzen */
@@ -330,6 +342,7 @@ export class Board {
    * gegnerischen Einheit, wird sie an diese Kante angelegt – mit den meisten Modellen in Basekontakt.
    */
   private chargeSnap(unitId: string): string | null {
+    if (!helperOn('snap')) return null;
     const units = this.store.state.units;
     const u = units[unitId];
     const me = unitFootprint(u, units);
@@ -380,6 +393,7 @@ export class Board {
 
   /** Einheiten stehen nie übereinander: an Gegner anlegen oder zurück an den Start (siehe collision.ts). */
   private separate(unitId: string, start: Pose): string | null {
+    if (!helperOn('apart')) return null;
     const units = this.store.state.units;
     const u = units[unitId];
     if (!u) return null;
@@ -671,6 +685,7 @@ export class Board {
     // Zoll dieser Einheit weiter zusammenzählen (bis eine andere Einheit bewegt wird oder die Runde endet)
     const run = this.moveRun?.unitId === d.unitId ? this.moveRun.total : 0;
     this.moveRun = { unitId: d.unitId, total: run + this.dragInches(d), round: this.store.state.meta.round };
+    if (this.dragInches(d) > 0.05) this.moved.set(d.unitId, this.turnKey());
     const all = [text, charge, apart].filter(Boolean).join(' · ');
     if (all) this.events.onAction(d.unitId, all);
   }

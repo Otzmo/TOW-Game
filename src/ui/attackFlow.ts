@@ -1,5 +1,5 @@
 import {
-  armourBane, attackLines, attackWeapon, bareHands, baseToWound, finalNeed, isDiceExpr, lineToHit, misses, needText, rollExpr,
+  armourBane, attackLines, attackWeapon, bareHands, contactAttacks, baseToWound, finalNeed, isDiceExpr, lineToHit, misses, needText, rollExpr,
   shooters, shootingOptions, shootingRules, successes, type AttackLine, type AttackMode, type AttackWeapon, type RollMod,
   type ShootingRules,
 } from '../model/attack';
@@ -7,8 +7,9 @@ import { d6, minChargeDistance, roll, statOf } from '../model/flow';
 import { unitSaves, unitWeapons } from '../model/gear';
 import type { History } from '../model/history';
 import { playerName } from '../model/players';
-import type { Store } from '../model/store';
-import type { LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
+import { objectPolygon, pointInPolygon } from '../model/objects';
+import { isSkirmish, type Store } from '../model/store';
+import type { BoardObject, LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
 import { diceHtml } from './dice';
 
 const esc = (s: string) =>
@@ -32,6 +33,8 @@ export interface AttackHost {
   finish(p: Prompt, result: string): void;
   /** Zwischenstand des offenen Popups (wird bei einem neuen Popup geleert) */
   stage(): Record<string, unknown>;
+  /** Hat sich die Einheit in diesem Spielerzug bewegt? */
+  movedThisTurn(unitId: string): boolean;
 }
 
 /** Eine Zeile im Trefferwurf: welches Profil, mit welcher Waffe, wie oft */
@@ -52,6 +55,10 @@ interface HitForm {
   hill: boolean;
   /** Multiple Shots abgeben statt eines Schusses je Modell */
   multi: boolean;
+  /** abgewählte Regeln und Hilfen (Namen) */
+  off: string[];
+  /** Nahkampf: Erklärung der Attacken aus dem Basekontakt je Zeile */
+  notes: Record<string, string>;
 }
 
 /** Zeile im Verwundungswurf (aus den Treffern einer Zeile) */
@@ -107,7 +114,51 @@ export function weaponsFor(u: UnitState, mode: AttackMode, ownS = statOf(u, 'S')
   return list.length ? list : mode === 'combat' ? [bareHands(u, ownS)] : [];
 }
 
+/** Hilfe im Nahkampf: Attacken aus dem Basekontakt zählen */
+const CONTACT = 'Attacks from base contact';
+
 const unitRuleNames = (u: UnitState) => [...u.info.rules, ...u.info.items].map((r) => r.name);
+
+/** Sonderregeln, die das Spiel anwendet – je eine Checkbox, angehakt, solange sie nicht abgewählt ist */
+const RULES: { name: string; hint: string; has: (r: ShootingRules) => boolean; off: (r: ShootingRules) => Partial<ShootingRules> }[] = [
+  { name: 'Volley Fire', hint: 'half of each further rank shoots', has: (r) => r.volley, off: () => ({ volley: false }) },
+  { name: 'Ponderous', hint: 'Moving & Shooting −2', has: (r) => r.ponderous, off: () => ({ ponderous: false }) },
+  { name: 'Quick Shot', hint: 'no penalty for Moving & Shooting', has: (r) => r.quickShot, off: () => ({ quickShot: false }) },
+  { name: 'Dwarf Crafted', hint: 'no penalty for Stand & Shoot', has: (r) => r.dwarfCrafted, off: () => ({ dwarfCrafted: false }) },
+  { name: 'Move or Shoot', hint: 'warning after moving', has: (r) => r.moveOrShoot, off: () => ({ moveOrShoot: false }) },
+  { name: 'Cumbersome', hint: 'warning for Stand & Shoot', has: (r) => r.cumbersome, off: () => ({ cumbersome: false }) },
+  { name: 'Poisoned Attacks', hint: 'natural 6 To Hit: +2 To Wound', has: (r) => r.poisoned, off: () => ({ poisoned: false }) },
+];
+
+/** Regeln der Waffe und Einheit ohne die abgewählten */
+function rulesWithout(weapon: AttackWeapon, unit: UnitState, off: string[]): ShootingRules {
+  const r = shootingRules(weapon.rules, unitRuleNames(unit));
+  return RULES.reduce((acc, x) => (off.includes(x.name) ? { ...acc, ...x.off(acc) } : acc), r);
+}
+
+/** Checkboxen für Regeln und Hilfen: angehakt = das Spiel wendet sie an */
+function ruleBoxes(items: { name: string; hint: string }[], off: string[]): string {
+  if (!items.length) return '';
+  return `<div class="atk-mods atk-rules-box"><div class="atk-base">Rules & helpers <span class="meta">(untick to ignore)</span></div>
+    ${items.map((x) => `<label class="atk-mod"><input type="checkbox" data-rule="${esc(x.name)}" ${off.includes(x.name) ? '' : 'checked'}><span class="atk-label">${esc(x.name)} <span class="atk-hint">${esc(x.hint)}</span></span></label>`).join('')}
+  </div>`;
+}
+
+function wireRules(body: HTMLElement, off: string[], after: () => void): void {
+  body.querySelectorAll<HTMLInputElement>('[data-rule]').forEach((box) => {
+    box.onchange = () => {
+      const i = off.indexOf(box.dataset.rule!);
+      if (!box.checked && i < 0) off.push(box.dataset.rule!);
+      if (box.checked && i >= 0) off.splice(i, 1);
+      after();
+    };
+  });
+}
+
+/** Steht die Einheit (ihre Mitte) auf einem Hügel? */
+function onHill(u: UnitState, objects: Record<string, BoardObject>): boolean {
+  return Object.values(objects).some((o) => o.kind === 'terrain' && o.type === 'hill' && pointInPolygon(u, objectPolygon(o)));
+}
 
 /**
  * Beschuss und Nahkampf als Abfolge von Popups: Der Angreifer würfelt erst Treffer, nach Bestätigung
@@ -157,7 +208,7 @@ export class AttackFlow {
   private renderHit(p: Prompt, body: HTMLElement, a: UnitState, t: UnitState, mode: AttackMode): void {
     const stage = this.host.stage();
     const shooting = mode === 'shooting';
-    const form = (stage.hit as HitForm | undefined) ?? (stage.hit = this.newHitForm(a, mode)) as HitForm;
+    const form = (stage.hit as HitForm | undefined) ?? (stage.hit = this.newHitForm(a, t, mode)) as HitForm;
     const lines = form.lines.filter((l) => this.lineWeapons(l.line, mode).length);
     if (!lines.length) {
       body.innerHTML = `<p class="warn">${esc(a.info.name)} has no ${shooting ? 'missile weapon' : 'attacks'}.</p>
@@ -170,8 +221,8 @@ export class AttackFlow {
 
     const distance = minChargeDistance(a, t, this.units);
     const weaponOf = (l: HitLine) => this.lineWeapons(l.line, mode)[Math.min(l.weapon, this.lineWeapons(l.line, mode).length - 1)];
-    const rulesOf = (l: HitLine) => shootingRules(weaponOf(l).rules, unitRuleNames(this.units[l.line.unitId] ?? a));
-    // Lage zum Anhaken (nichts vorab angehakt); die Werte hängen von der Waffe der Zeile ab (Ponderous, Quick Shot …)
+    const rulesOf = (l: HitLine) => rulesWithout(weaponOf(l), this.units[l.line.unitId] ?? a, form.off);
+    // Lage zum Anhaken (Erkanntes ist vorab angehakt); die Werte hängen von der Waffe der Zeile ab (Ponderous, Quick Shot …)
     const optionsOf = (l: HitLine) => (shooting ? shootingOptions(weaponOf(l).range, distance, rulesOf(l)) : []);
     const activeOf = (l: HitLine): RollMod[] => [
       ...optionsOf(l).filter((m) => form.checked.includes(m.label)),
@@ -203,18 +254,23 @@ export class AttackFlow {
         ? `<select data-weapon="${i}">${weapons.map((x, j) => `<option value="${j}" ${j === l.weapon ? 'selected' : ''}>${esc(x.name)}${x.range !== null ? ` ${x.range}″` : ''} · S ${x.strength} · AP ${x.ap || '–'}</option>`).join('')}</select>`
         : `<span>${esc(w.name)}${w.range !== null ? ` ${w.range}″` : ''} · S ${w.strength} · AP ${w.ap || '–'}</span>`;
       // Schmal genug für die rechte Spalte: Waffe unter dem Namen
+      const note = !shooting && !form.off.includes(CONTACT) ? form.notes[l.line.key] : undefined;
       return `<tr>
-        <td><b>${esc(l.line.label)}</b> <span class="meta">${plural(l.line.models, 'model')} · ${esc(n.base.why)}</span>
+        <td><b>${esc(l.line.label)}</b> <span class="meta">${plural(l.line.models, 'model')} · ${esc(n.base.why)}${note ? ` · ${esc(note)}` : ''}</span>
           <div class="atk-weapon">${select}</div>${w.rules.length ? `<span class="meta">${esc(w.rules.join(', '))}</span>` : ''}</td>
         <td><input type="number" min="0" max="200" data-count="${i}" value="${l.count}"></td>
         <td class="atk-need-cell">${esc(n.text)}</td></tr>`;
     }).join('');
     const situation = shooting ? optionsOf(lines[0]) : [];
     const fixed = shooting && form.multi && first.multipleShots ? [{ label: `Multiple Shots (${first.multipleShots})`, value: -1, hint: 'weapon rule' }] : [];
+    // Alle Regeln der beteiligten Waffen und Einheiten, dazu im Nahkampf die Zählung aus dem Basekontakt
+    const present = RULES.filter((x) => lines.some((l) => x.has(shootingRules(weaponOf(l).rules, unitRuleNames(this.units[l.line.unitId] ?? a)))));
+    const helpers = !shooting && Object.keys(form.notes).length ? [{ name: CONTACT, hint: 'models in base contact attack fully, the rest of the front rank supports; mounts never support' }] : [];
     body.innerHTML = `<table class="atk-lines">
         <thead><tr><th>Who · weapon</th><th>${shooting ? 'Shots' : 'Attacks'}</th><th>To Hit</th></tr></thead>
         <tbody>${rows}</tbody></table>
       ${shooting ? this.shootersHtml(a, first, form, moved, stand) : ''}
+      ${ruleBoxes([...helpers, ...present], form.off)}
       ${warnings.map((w) => `<p class="warn">${esc(w)}</p>`).join('')}
       ${this.modsHtml('Modifiers <span class="meta">(for all lines; the To Hit column shows the result)</span>', situation, form.checked, form.manual, '', fixed)}
       <div class="prompt-actions">
@@ -226,8 +282,10 @@ export class AttackFlow {
     // Lage, Hügel, Multiple Shots oder Waffe geändert: Schüsse nach den Regeln neu zählen (danach von Hand änderbar)
     const recount = () => {
       if (shooting) this.recountShots(a, form);
+      else this.countCombat(a, t, form);
       redraw();
     };
+    wireRules(body, form.off, recount);
     body.querySelectorAll<HTMLInputElement>('[data-count]').forEach((inp) => {
       inp.onchange = () => { lines[Number(inp.dataset.count)].count = clampCount(inp.value); redraw(); };
     });
@@ -279,19 +337,42 @@ export class AttackFlow {
     };
   }
 
-  private newHitForm(a: UnitState, mode: AttackMode): HitForm {
+  /**
+   * Neues Formular mit allem, was das Spiel erkennt, schon angehakt: bewegt in diesem Zug, lange Reichweite,
+   * Plänkler als Ziel, auf einem Hügel; im Nahkampf die Attacken aus dem Basekontakt. Alles lässt sich abhaken.
+   */
+  private newHitForm(a: UnitState, t: UnitState, mode: AttackMode): HitForm {
     const form: HitForm = {
       lines: attackLines(a, this.units, mode).map((line) => ({ line, weapon: 0, count: line.count, multiRolled: null })),
-      checked: [], manual: [], hill: false, multi: false,
+      checked: [], manual: [], hill: false, multi: false, off: [], notes: {},
     };
-    if (mode === 'shooting') this.recountShots(a, form);
+    if (mode === 'shooting') {
+      const w = form.lines[0] ? this.lineWeapons(form.lines[0].line, mode)[0] : undefined;
+      const distance = minChargeDistance(a, t, this.units);
+      if (this.host.movedThisTurn(a.id)) form.checked.push('Moving & Shooting');
+      if (w?.range != null && distance > w.range / 2) form.checked.push('Long range');
+      if (isSkirmish(t)) form.checked.push('Target is skirmishers');
+      form.hill = onHill(a, this.host.store.state.objects);
+      this.recountShots(a, form);
+    } else this.countCombat(a, t, form);
     return form;
+  }
+
+  /** Nahkampf: Attacken aus dem Basekontakt (wenn angehakt und Kontakt besteht), sonst Modelle × Attacken */
+  private countCombat(a: UnitState, t: UnitState, form: HitForm): void {
+    const counts = contactAttacks(form.lines.map((l) => l.line), a, this.units, t);
+    form.notes = {};
+    for (const l of form.lines) {
+      const c = counts?.get(l.line.key);
+      if (c) form.notes[l.line.key] = c.note;
+      l.count = c && !form.off.includes(CONTACT) ? c.count : l.line.count;
+    }
   }
 
   /** Schießende Modelle der Truppe: erstes Glied (Hügel: zwei), mit Volley Fire die Hälfte jedes weiteren – nicht nach Bewegung oder bei Stand & Shoot */
   private modelsShooting(a: UnitState, l: HitLine, form: HitForm): number {
     const w = this.lineWeapons(l.line, 'shooting')[l.weapon];
-    const rules = shootingRules(w?.rules ?? [], unitRuleNames(this.units[l.line.unitId] ?? a));
+    const rules = w ? rulesWithout(w, this.units[l.line.unitId] ?? a, form.off) : shootingRules([]);
     const volley = rules.volley && !form.checked.includes('Moving & Shooting') && !form.checked.includes('Stand & Shoot');
     // Nur die Truppe (erste Zeile) hängt von Gliedern ab; Champion und Charaktere schießen mit je einem Modell
     if (l.line.unitId !== a.id || l.line.row !== 0) return l.line.models;
@@ -304,7 +385,7 @@ export class AttackFlow {
     for (const l of form.lines) {
       const models = this.modelsShooting(a, l, form);
       const w = this.lineWeapons(l.line, 'shooting')[l.weapon];
-      const expr = shootingRules(w?.rules ?? [], unitRuleNames(this.units[l.line.unitId] ?? a)).multipleShots;
+      const expr = w ? rulesWithout(w, this.units[l.line.unitId] ?? a, form.off).multipleShots : null;
       l.count = !form.multi || !expr ? models : isDiceExpr(expr) ? l.multiRolled ?? models : models * (Number.parseInt(expr, 10) || 1);
     }
   }
@@ -335,8 +416,9 @@ export class AttackFlow {
   private showHits(p: Prompt, body: HTMLElement, a: UnitState, mode: AttackMode, lines: HitLine[], rolled: LineRoll[]): void {
     const total = rolled.reduce((s, r) => s + r.success, 0);
     const weaponOf = (l: HitLine) => this.lineWeapons(l.line, mode)[Math.min(l.weapon, this.lineWeapons(l.line, mode).length - 1)];
+    const off = (this.host.stage().hit as HitForm | undefined)?.off ?? [];
     const poisonedOf = (l: HitLine, r: LineRoll) =>
-      shootingRules(weaponOf(l).rules, unitRuleNames(this.units[l.line.unitId] ?? a)).poisoned ? Math.min(r.sixes, r.success) : 0;
+      rulesWithout(weaponOf(l), this.units[l.line.unitId] ?? a, off).poisoned ? Math.min(r.sixes, r.success) : 0;
     body.innerHTML = `${rolled.map((r, i) => this.rollRows(r, `${r.label} (${weaponOf(lines[i]).name})`)
       + `<p class="prompt-info">${r.label}: <b>${plural(r.success, 'hit')}</b>${poisonedOf(lines[i], r) ? ` · ${poisonedOf(lines[i], r)} with a natural 6 (Poisoned Attacks: +2 To Wound)` : ''}</p>`).join('')}
       <p class="prompt-info"><b>Total: ${plural(total, 'hit')}</b></p>
@@ -351,7 +433,9 @@ export class AttackFlow {
         label: l.line.label, weapon: weaponOf(l), hits: rolled[i].success, poisoned: poisonedOf(l, rolled[i]), strength: weaponOf(l).strength,
       })).filter((w) => w.hits);
       for (const k of Object.keys(stage)) delete stage[k];
-      this.host.store.setPrompt(p.id, { ...p, title: 'Roll To Wound', data: { ...p.data, step: 'wound', lines: JSON.stringify(wound) } });
+      // Abgewählte Regeln gelten auch für Verwundung und Rettungswurf
+      this.host.store.setPrompt(p.id, { ...p, title: 'Roll To Wound',
+        data: { ...p.data, step: 'wound', lines: JSON.stringify(wound), off: JSON.stringify(off) } });
     };
   }
 
@@ -441,7 +525,7 @@ export class AttackFlow {
       const saves = unitSaves(t.info);
       this.host.create('saves', t.owner, a.owner, 'Saves: Armour, Ward, Regeneration',
         `${a.info.name}: ${plural(total, 'wound')} against ${t.info.name}.`,
-        { targetId: t.id, wounds: total, groups: JSON.stringify(groups),
+        { targetId: t.id, wounds: total, groups: JSON.stringify(groups), off: String(p.data.off ?? '[]'),
           save: saves.armour ?? '', ward: saves.ward?.value ?? '', regen: saves.regen?.value ?? '' });
     };
   }
@@ -469,20 +553,23 @@ export class AttackFlow {
     const groups = parse<SaveGroup[]>(p.data.groups, [{ label: String(p.data.weapon ?? 'Attack'), wounds: Number(p.data.wounds) || 0,
       ap: Number(p.data.ap) || 0, bane: Number(p.data.bane) || 0, baneAp: Number(p.data.baneAp) || 0, mw: String(p.data.mw ?? '') }]);
     const wounds = groups.reduce((s, g) => s + g.wounds, 0);
-    type SaveForm = { armour: number | null; ward: number | null; regen: number | null; manual: RollMod[] };
+    type SaveForm = { armour: number | null; ward: number | null; regen: number | null; manual: RollMod[]; off: string[] };
     const num = (v: unknown) => (Number(v) >= 1 && Number(v) <= 6 ? Number(v) : null);
     const form = (stage.saveForm as SaveForm | undefined) ?? (stage.saveForm = {
-      armour: num(p.data.save), ward: num(p.data.ward), regen: num(p.data.regen), manual: [],
+      armour: num(p.data.save), ward: num(p.data.ward), regen: num(p.data.regen), manual: [], off: parse<string[]>(p.data.off, []),
     }) as SaveForm;
     const done = stage.saves as SavesRolled | undefined;
     if (done) return this.showSaves(p, body, target, done);
 
-    // Regeln der Waffe gelten von selbst: AP für alle Wunden der Gruppe, Armour Bane für die mit einer natürlichen 6;
-    // eigene Modifikatoren (z. B. Schild nur von vorn) gelten für alle
+    // Regeln der Waffe sind angehakt und lassen sich abwählen: AP für alle Wunden der Gruppe, Armour Bane für die mit
+    // einer natürlichen 6, Multiple Wounds; eigene Modifikatoren (z. B. Schild nur von vorn) gelten für alle
+    const useAp = !form.off.includes('AP');
+    const useBane = !form.off.includes('Armour Bane');
+    const useMw = !form.off.includes('Multiple Wounds');
     const needs = (g: SaveGroup) => {
-      const ap = g.ap ? [{ label: `AP ${g.ap}`, value: g.ap }] : [];
+      const ap = useAp && g.ap ? [{ label: `AP ${g.ap}`, value: g.ap }] : [];
       const normal = form.armour ? finalNeed(form.armour, [...ap, ...form.manual], 'save') : { need: null, then: null };
-      const bane = form.armour && g.bane && g.baneAp
+      const bane = useBane && form.armour && g.bane && g.baneAp
         ? finalNeed(form.armour, [...ap, ...form.manual, { label: 'Armour Bane', value: -g.baneAp }], 'save') : null;
       return { normal, bane, baned: bane ? Math.min(g.bane, g.wounds) : 0 };
     };
@@ -491,15 +578,21 @@ export class AttackFlow {
       const armour = !form.armour ? 'no armour save'
         : n.bane ? `${g.wounds - n.baned} at ${needText(n.normal)}, ${n.baned} at ${needText(n.bane)} (Armour Bane ${g.baneAp})`
         : needText(n.normal);
-      return `<tr><td><b>${esc(g.label)}</b>${g.mw ? `<br><span class="meta">Multiple Wounds (${esc(g.mw)})</span>` : ''}</td>
-        <td>${g.wounds}</td><td>${g.ap ? signed(g.ap) : '–'}</td><td class="atk-need-cell">${esc(armour)}</td></tr>`;
+      return `<tr><td><b>${esc(g.label)}</b>${g.mw && useMw ? `<br><span class="meta">Multiple Wounds (${esc(g.mw)})</span>` : ''}</td>
+        <td>${g.wounds}</td><td>${useAp && g.ap ? signed(g.ap) : '–'}</td><td class="atk-need-cell">${esc(armour)}</td></tr>`;
     }).join('');
+    const saveRules = [
+      ...(groups.some((g) => g.ap) ? [{ name: 'AP', hint: 'weapon AP worsens the armour save' }] : []),
+      ...(groups.some((g) => g.bane && g.baneAp) ? [{ name: 'Armour Bane', hint: 'wounds from a natural 6 get better AP' }] : []),
+      ...(groups.some((g) => g.mw) ? [{ name: 'Multiple Wounds', hint: 'each unsaved wound counts several times' }] : []),
+    ];
     body.innerHTML = `<div class="prompt-form">
         <label>Armour Save <select id="sv-armour">${saveOptions(form.armour)}</select></label>
         <label>Ward Save <select id="sv-ward">${saveOptions(form.ward)}</select></label>
         <label>Regeneration Save <select id="sv-regen">${saveOptions(form.regen)}</select></label>
       </div>
       <table class="atk-lines"><thead><tr><th>Wounds from</th><th>Wounds</th><th>AP</th><th>Armour</th></tr></thead><tbody>${rows}</tbody></table>
+      ${ruleBoxes(saveRules, form.off)}
       ${this.modsHtml('Armour Save modifiers <span class="meta">(for all wounds; AP and Armour Bane are already in the table)</span>', [], [], form.manual, '')}
       <p class="prompt-info">Ward and Regeneration saves are not modified by AP.</p>
       <div class="prompt-actions"><button class="primary" data-roll>Roll saves (${plural(wounds, 'wound')})</button></div>`;
@@ -509,6 +602,7 @@ export class AttackFlow {
       s.onchange = () => { form[key] = num(s.value); redraw(); };
     }
     this.wireMods(body, [], form.manual, redraw);
+    wireRules(body, form.off, redraw);
     (body.querySelector('[data-roll]') as HTMLButtonElement).onclick = () => {
       // Je Gruppe nacheinander: Rüstung, dann Rettung, dann Regeneration – jeweils für die noch übrigen Wunden;
       // danach Multiple Wounds je unverhinderter Verwundung
@@ -535,7 +629,7 @@ export class AttackFlow {
         left -= roll1(left, form.ward, 'ward');
         left -= roll1(left, form.regen, 'regeneration');
         steps.push(`${left} unsaved`);
-        const each = g.mw && left ? Array.from({ length: left }, () => rollExpr(g.mw, d6)) : [];
+        const each = useMw && g.mw && left ? Array.from({ length: left }, () => rollExpr(g.mw, d6)) : [];
         if (each.length) {
           steps.push(`Multiple Wounds (${g.mw}): ${each.map((r) => r.total).join(' + ')} Wounds`);
           allDice.push(each.flatMap((r) => r.dice));

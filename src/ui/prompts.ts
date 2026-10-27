@@ -26,6 +26,8 @@ export interface PromptHost {
   log(entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>): void;
   /** Bewegung außerhalb der eigenen Bewegungsphase erlauben (Flucht, Gegenangriff) */
   allowMove(unitId: string): void;
+  /** Hat sich die Einheit in diesem Spielerzug bewegt? (Vorschlag „Moving & Shooting“) */
+  movedThisTurn(unitId: string): boolean;
 }
 
 /**
@@ -47,6 +49,7 @@ export class PromptCenter {
       create: (kind, to, from, title, text, data) => this.create(kind, to, from, title, text, data),
       finish: (p, result) => this.finish(p, result),
       stage: () => this.stage,
+      movedThisTurn: (id) => host.movedThisTurn(id),
     });
     // Keine Phasen mehr: Angriffe laufen über die Einheit (ansagen, Angriffsbewegung); hier werden nur
     // offene Aufforderungen aus älteren Spielständen gezeigt

@@ -168,8 +168,12 @@
       <button id="o-close" class="close" aria-label="Close">×</button>
     </header>
     <div class="cols">
-      <div class="field" id="o-scatter-row"><span>Scatter (a 1 is a direct hit)</span>
-        <div class="row-btns"><button data-scatter="1" class="primary">🎲 Scatter D6</button><button data-scatter="2" class="primary">🎲 Scatter 2D6</button></div>
+      <div class="field" id="o-scatter-row"><span>Scatter – choose the dice, then roll</span>
+        <label class="check"><input type="checkbox" id="o-sc-dir" checked> Scatter dice: direction (HIT = direct hit)</label>
+        <label class="check"><input type="checkbox" id="o-sc-art" checked> Artillery dice: distance (Misfire = no shot)</label>
+        <label class="check"><input type="checkbox" id="o-sc-d6"> D6: distance</label>
+        <label class="check"><input type="checkbox" id="o-sc-2d6"> 2D6: distance</label>
+        <div class="row-btns"><button id="o-sc-roll" class="primary">🎲 Roll and move</button></div>
         <div id="o-scatter-result"></div></div>
       <div class="field" id="o-rules-row"></div>
       <label class="field">Label <input id="o-label" type="text" maxlength="40"></label>
