@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
-  armourBane, baseToHit, baseToWound, finalNeed, misses, needText, saveMods, shootingOptions, successes, weaponAp, weaponRange,
-  weaponStrength,
+  armourBane, baseToHit, baseToWound, finalNeed, misses, needText, rollExpr, saveMods, shooters, shootingOptions, shootingRules,
+  successes, weaponAp, weaponRange, weaponStrength,
 } from './attack';
 import { shootingReroll, toHitCombat, toWound } from './flow';
+import { byId } from './testUnits';
 import { testUnit } from './testUnits';
 
 /** Einheit mit Profil M WS BS S T W I A Ld */
@@ -86,6 +87,53 @@ describe('modifiers', () => {
     // BS 6: 2+, Fehlschüsse (die 1en) auf 6+ wiederholt
     expect(misses([1, 1, 3, 5], 2)).toBe(2);
     expect(successes([1, 1, 3, 5], 2, [], null, [6, 2], 6)).toBe(3);
+  });
+});
+
+describe('missile weapon rules', () => {
+  it('only the front rank shoots; Volley Fire adds half of each further rank, rounded up', () => {
+    const archers = testUnit('a', { models: 25, width: 5 });
+    expect(shooters(archers, byId(archers), false, false)).toBe(5);
+    expect(shooters(archers, byId(archers), false, true)).toBe(5 + 4 * 3);
+    // auf einem Hügel schießen zwei Glieder, Volley Fire für die übrigen drei
+    expect(shooters(archers, byId(archers), true, true)).toBe(10 + 3 * 3);
+    // unvollständiges letztes Glied: 12 Modelle = 5 + 5 + 2 → 5 + 3 + 1
+    const twelve = testUnit('b', { models: 12, width: 5 });
+    expect(shooters(twelve, byId(twelve), false, true)).toBe(9);
+  });
+
+  it('skirmishers all shoot', () => {
+    const s = { ...testUnit('s', { models: 6, width: 3 }), formation: 'skirmish' as const };
+    expect(shooters(s, byId(s), false, false)).toBe(6);
+  });
+
+  it('reads the rules of the weapon and the unit', () => {
+    const warbow = shootingRules(['Volley Fire']);
+    expect(warbow).toMatchObject({ volley: true, ponderous: false, quickShot: false, multipleShots: null });
+    expect(shootingRules(['Armour Bane (1)', 'Ponderous']).ponderous).toBe(true);
+    expect(shootingRules(['Multiple Shots (D3)', 'Volley Fire']).multipleShots).toBe('D3');
+    expect(shootingRules(['Multiple Wounds (D3+1)']).multipleWounds).toBe('D3+1');
+    expect(shootingRules(['Multiple Shots (2)'], ['Poisoned Attacks']).poisoned).toBe(true);
+    expect(shootingRules([], ['Dwarf Crafted']).dwarfCrafted).toBe(true);
+  });
+
+  it('Moving & Shooting is −2 with Ponderous, 0 with Quick Shot; Stand & Shoot 0 when Dwarf Crafted', () => {
+    const moving = (rules: string[], unit: string[] = []) =>
+      shootingOptions(24, 10, shootingRules(rules, unit)).find((m) => m.label === 'Moving & Shooting')!.value;
+    expect(moving(['Volley Fire'])).toBe(-1);
+    expect(moving(['Ponderous'])).toBe(-2);
+    expect(moving(['Quick Shot'])).toBe(0);
+    const stand = shootingOptions(24, 10, shootingRules([], ['Dwarf Crafted'])).find((m) => m.label === 'Stand & Shoot')!;
+    expect(stand.value).toBe(0);
+  });
+
+  it('rolls dice expressions for Multiple Shots and Multiple Wounds', () => {
+    const fixed = () => 4;
+    expect(rollExpr('2', fixed).total).toBe(2);
+    expect(rollExpr('D3', fixed)).toEqual({ total: 2, dice: [2] });
+    expect(rollExpr('D3+1', fixed).total).toBe(3);
+    expect(rollExpr('2D6', fixed).total).toBe(8);
+    expect(rollExpr('D6+1', fixed).total).toBe(5);
   });
 });
 

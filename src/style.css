@@ -358,6 +358,9 @@ body.sheet-open .bottom-panel { display: none; }
 .atk-base { font-weight: 600; }
 .atk-mod { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .atk-hint { color: var(--muted); font-size: calc(11px * var(--ui)); }
+.atk-fixed { width: 16px; text-align: center; color: var(--accent); }
+.atk-shooters { margin-top: 8px; }
+.atk-shooters [data-roll-multi] { padding: 3px 8px; }
 .atk-mod .atk-label { flex: 1; }
 .atk-mod.minus b { color: #f0a35e; }
 .atk-mod.plus b { color: var(--ok, #8fca7a); }

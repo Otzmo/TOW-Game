@@ -1,6 +1,80 @@
 import { shootingReroll, statOf, toHitCombat, toHitShooting, toWound } from './flow';
 import type { WeaponProfile } from './gear';
+import { isSkirmish, unitLayout } from './store';
 import type { UnitState } from './types';
+
+/**
+ * Wie viele Modelle schießen: das erste Glied (auf einem Hügel die ersten zwei); Plänkler alle.
+ * Volley Fire: dazu aus jedem weiteren Glied die Hälfte, aufgerundet – nicht nach einer Bewegung in diesem Zug
+ * und nicht bei Stand & Shoot. Angeschlossene Charaktere zählen nicht (sie schießen selbst).
+ */
+export function shooters(u: UnitState, units: Record<string, UnitState>, hill: boolean, volley: boolean): number {
+  const troops = unitLayout(u, units).slots.filter((s) => !s.charId);
+  if (isSkirmish(u)) return troops.length;
+  const rows = new Map<number, number>();
+  for (const s of troops) {
+    const y = Math.round(s.y * 100);
+    rows.set(y, (rows.get(y) ?? 0) + 1);
+  }
+  const ranks = [...rows.entries()].sort((a, b) => a[0] - b[0]).map(([, n]) => n);
+  const shooting = hill ? 2 : 1;
+  const front = ranks.slice(0, shooting).reduce((s, n) => s + n, 0);
+  const rear = volley ? ranks.slice(shooting).reduce((s, n) => s + Math.ceil(n / 2), 0) : 0;
+  return front + rear;
+}
+
+/** Sonderregeln einer Schusswaffe, die die Würfe verändern (Texte: tow.whfb.app, weapons.json) */
+export interface ShootingRules {
+  volley: boolean;
+  /** Moving & Shooting −2 statt −1 */
+  ponderous: boolean;
+  /** kein −1 für Moving & Shooting */
+  quickShot: boolean;
+  /** kein −1 bei Stand & Shoot */
+  dwarfCrafted: boolean;
+  /** nicht, wenn das Modell sich in diesem Zug bewegt hat */
+  moveOrShoot: boolean;
+  /** nicht bei Stand & Shoot */
+  cumbersome: boolean;
+  /** „Multiple Shots (X)“: X Schüsse je Modell mit −1, z. B. "2" oder "D3" */
+  multipleShots: string | null;
+  /** natürliche 6 beim Treffen: +2 auf den Verwundungswurf */
+  poisoned: boolean;
+  /** „Multiple Wounds (X)“: jede unverhinderte Verwundung zählt X-fach */
+  multipleWounds: string | null;
+}
+
+const bracket = (rules: string[], name: string) => {
+  for (const r of rules) {
+    const m = new RegExp(`^${name}\\s*\\(([^)]+)\\)`, 'i').exec(r.trim());
+    if (m) return m[1].trim();
+  }
+  return null;
+};
+
+/** Regeln der Waffe, dazu Regeln der Einheit, die beim Schießen gelten (Poisoned Attacks, Dwarf Crafted) */
+export function shootingRules(weaponRules: string[], unitRules: string[] = []): ShootingRules {
+  const all = [...weaponRules, ...unitRules];
+  const has = (re: RegExp) => all.some((r) => re.test(r.trim()));
+  const own = (re: RegExp) => weaponRules.some((r) => re.test(r.trim()));
+  return {
+    volley: own(/^volley fire/i), ponderous: own(/^ponderous/i), quickShot: own(/^quick shot/i),
+    dwarfCrafted: has(/^dwarf crafted/i), moveOrShoot: own(/^move or shoot/i), cumbersome: own(/^cumbersome/i),
+    multipleShots: bracket(weaponRules, 'Multiple Shots'), poisoned: has(/^poisoned attacks/i),
+    multipleWounds: bracket(weaponRules, 'Multiple Wounds'),
+  };
+}
+
+/** Würfelausdruck wie "3", "D3", "D3+1", "2D6", "D6+1" werfen; ohne Würfel bleibt es die Zahl */
+export function rollExpr(expr: string, d6: () => number): { total: number; dice: number[] } {
+  const m = /^(\d*)D(3|6)\s*([+-]\s*\d+)?$/i.exec(expr.replace(/\s/g, ''));
+  if (!m) return { total: Number.parseInt(expr, 10) || 1, dice: [] };
+  const n = Number(m[1] || 1);
+  const dice = Array.from({ length: n }, () => (m[2] === '3' ? Math.ceil(d6() / 2) : d6()));
+  return { total: dice.reduce((s, d) => s + d, 0) + (m[3] ? Number(m[3].replace(/\s/g, '')) : 0), dice };
+}
+
+export const isDiceExpr = (expr: string) => /D\d/i.test(expr);
 
 export type AttackMode = 'shooting' | 'combat';
 
@@ -120,20 +194,25 @@ export function misses(dice: number[], need: number | null, then: number[] = [],
  * Modifikatoren beim Beschuss (Quick Reference): alle zum Anhaken, keiner wird von selbst verrechnet.
  * Bei langer Reichweite steht die gemessene Entfernung als Hinweis dabei.
  */
-export function shootingOptions(range: number | null, distance: number): RollMod[] {
+export function shootingOptions(range: number | null, distance: number, rules?: ShootingRules): RollMod[] {
   const far = range !== null && distance > range / 2;
+  // Waffenregeln ändern den Wert: Ponderous −2, Quick Shot 0; Dwarf Crafted kein −1 bei Stand & Shoot
+  const moving = rules?.quickShot ? 0 : rules?.ponderous ? -2 : -1;
+  const movingHint = rules?.moveOrShoot ? 'Move or Shoot: cannot shoot after moving'
+    : rules?.quickShot ? 'Quick Shot: no penalty' : rules?.ponderous ? 'Ponderous: −2 instead of −1' : undefined;
+  const standHint = rules?.cumbersome ? 'Cumbersome: cannot Stand & Shoot' : rules?.dwarfCrafted ? 'Dwarf Crafted: no penalty' : undefined;
   return [
-    { label: 'Moving & Shooting', value: -1 },
+    { label: 'Moving & Shooting', value: moving, hint: movingHint },
     { label: 'Long range', value: -1,
       hint: range === null ? undefined : `${distance.toFixed(1)}″ – half range ${range / 2}″${far ? ', looks like long range' : ''}` },
-    { label: 'Stand & Shoot', value: -1 },
+    { label: 'Stand & Shoot', value: rules?.dwarfCrafted ? 0 : -1, hint: standHint },
     { label: 'Partial cover', value: -1 },
     { label: 'Full cover', value: -2 },
     { label: 'Target is skirmishers', value: -1, hint: 'unit of models with Unit Strength 1' },
   ];
 }
 
-/** Rüstungswurf: AP der Waffe zum Anhaken */
+/** Rüstungswurf: AP der Waffe (gilt immer) */
 export function saveMods(ap: number, weapon: string): RollMod[] {
   return ap ? [{ label: `AP ${ap} (${weapon})`, value: ap }] : [];
 }
