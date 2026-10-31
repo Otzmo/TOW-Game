@@ -13,6 +13,7 @@ import { objectPolygon, pointInPolygon } from '../model/objects';
 import { isSkirmish, type Store } from '../model/store';
 import type { BoardObject, LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
 import { diceHtml } from './dice';
+import { freezeSteps, stepSections } from './steps';
 
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
@@ -161,8 +162,8 @@ function onHill(u: UnitState, objects: Record<string, BoardObject>): boolean {
 }
 
 /**
- * Beschuss und Nahkampf als Abfolge von Popups: Der Angreifer würfelt erst Treffer, nach Bestätigung
- * Verwundungen; danach würfelt der Verteidiger Rüstung, Rettung und Regeneration.
+ * Beschuss und Nahkampf als ein Fenster mit drei Schritten, die alle stehen bleiben: Der Angreifer würfelt erst
+ * Treffer, nach Bestätigung Verwundungen; danach würfelt der Verteidiger Rüstung, Rettung und Regeneration.
  * Jedes Profil greift in einer eigenen Zeile an (Truppe, Champion, Reittier, angeschlossene Charaktere).
  * Die Lage (bewegt, Deckung, Hügel …) hakt der Spieler an; die Regeln der Waffe (Volley Fire, Ponderous,
  * Quick Shot, Multiple Shots, Poisoned Attacks, AP, Armour Bane, Multiple Wounds) folgen daraus von selbst.
@@ -212,8 +213,13 @@ export class AttackFlow {
       return;
     }
     const mode = (p.data.mode === 'shooting' ? 'shooting' : 'combat') as AttackMode;
-    if (p.data.step === 'wound') return this.renderWound(p, body, a, t);
-    this.renderHit(p, body, a, t, mode);
+    // Alle Schritte bleiben sichtbar, bis der Ablauf fertig ist; nur der aktuelle ist bedienbar
+    const now = ['hit', 'wound', 'saves'].indexOf(String(p.data.step));
+    const els = stepSections(body, ['Roll To Hit', 'Roll To Wound', 'Saves: Armour, Ward, Regeneration'], Math.max(0, now), p.status === 'open');
+    this.renderHit(p, els[0], a, t, mode);
+    if (now >= 1) this.renderWound(p, els[1], a, t);
+    if (now >= 2) this.renderSaves(p, els[2]);
+    freezeSteps(body);
   }
 
   // --- Treffer ------------------------------------------------------------------
@@ -445,8 +451,9 @@ export class AttackFlow {
         label: l.line.label, weapon: weaponOf(l), hits: rolled[i].success, poisoned: poisonedOf(l, rolled[i]), strength: weaponOf(l).strength,
       })).filter((w) => w.hits);
       // Abgewählte Regeln gelten auch für Verwundung und Rettungswurf
-      this.host.store.setPrompt(p.id, { ...p, title: 'Roll To Wound',
-        data: { ...p.data, step: 'wound', lines: JSON.stringify(wound), on: JSON.stringify(on), state: '{}' } });
+      const cur = this.host.store.state.prompts[p.id] ?? p;
+      this.host.store.setPrompt(p.id, { ...cur, title: 'Roll To Wound',
+        data: { ...cur.data, step: 'wound', lines: JSON.stringify(wound), on: JSON.stringify(on) } });
     };
   }
 
@@ -458,7 +465,7 @@ export class AttackFlow {
       lines: parse<WoundLine[]>(p.data.lines, []), toughness: statOf(t, 'T') || 3, manual: [],
     } satisfies WoundForm) as WoundForm;
     const rolled = stage.woundRolled as LineRoll[] | undefined;
-    if (rolled) return this.showWounds(p, body, a, t, form, rolled);
+    if (rolled) return this.showWounds(p, body, t, form, rolled);
     const needOf = (l: WoundLine) => {
       const base = baseToWound(l.strength, form.toughness);
       const need = finalNeed(base.need, form.manual, 'wound');
@@ -510,7 +517,7 @@ export class AttackFlow {
     };
   }
 
-  private showWounds(p: Prompt, body: HTMLElement, a: UnitState, t: UnitState, form: WoundForm, rolled: LineRoll[]): void {
+  private showWounds(p: Prompt, body: HTMLElement, t: UnitState, form: WoundForm, rolled: LineRoll[]): void {
     const total = rolled.reduce((s, r) => s + r.success, 0);
     body.innerHTML = `${rolled.map((r, i) => {
       const w = form.lines[i].weapon;
@@ -532,12 +539,11 @@ export class AttackFlow {
         return { label: `${r.label} (${w.name})`, wounds: r.success, ap: w.ap, bane: bane ? r.sixes : 0, baneAp: bane,
           mw: shootingRules(w.rules).multipleWounds ?? '' };
       }).filter((g) => g.wounds);
-      this.host.store.setPrompt(p.id, null);
       const saves = unitSaves(t.info);
-      this.host.create('saves', t.owner, a.owner, 'Saves: Armour, Ward, Regeneration',
-        `${a.info.name}: ${plural(total, 'wound')} against ${t.info.name}.`,
-        { targetId: t.id, wounds: total, groups: JSON.stringify(groups), on: String(p.data.on ?? '[]'),
-          save: saves.armour ?? '', ward: saves.ward?.value ?? '', regen: saves.regen?.value ?? '' });
+      const cur = this.host.store.state.prompts[p.id] ?? p;
+      this.host.store.setPrompt(p.id, { ...cur, to: t.owner, title: 'Saves: Armour, Ward, Regeneration',
+        data: { ...cur.data, step: 'saves', targetId: t.id, wounds: total, groups: JSON.stringify(groups), on: String(p.data.on ?? '[]'),
+          save: saves.armour ?? '', ward: saves.ward?.value ?? '', regen: saves.regen?.value ?? '' } });
     };
   }
 
@@ -556,7 +562,7 @@ export class AttackFlow {
   renderSaves(p: Prompt, body: HTMLElement): void {
     const target = this.units[String(p.data.targetId)];
     if (!target) {
-      this.host.finish(p, 'The target is gone.');
+      if (p.status === 'open') this.host.finish(p, 'The target is gone.');
       return;
     }
     const stage = this.st(p);

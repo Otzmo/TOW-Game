@@ -4,6 +4,7 @@ import { playerName } from '../model/players';
 import type { Store } from '../model/store';
 import type { ChargeReaction, LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
 import { diceHtml } from './dice';
+import { freezeSteps, stepSections } from './steps';
 
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
@@ -72,13 +73,17 @@ export class ChargeFlow {
     const a = this.units[String(p.data.chargerId)];
     const t = this.units[String(p.data.targetId)];
     if (!a || !t) {
-      this.host.finish(p, 'A unit of this charge is gone.');
+      if (p.status === 'open') this.host.finish(p, 'A unit of this charge is gone.');
       return;
     }
     const s = this.state(p);
-    if (p.data.step === 'react') return this.renderReact(p, body, a, t, s);
-    if (p.data.step === 'roll') return this.renderRoll(p, body, a, t, s);
-    this.renderDeclare(p, body, a, t, s);
+    // Alle Schritte bleiben sichtbar, bis der Angriff fertig ist; nur der aktuelle ist bedienbar
+    const now = Math.max(0, ['declare', 'react', 'roll'].indexOf(String(p.data.step)));
+    const els = stepSections(body, ['Declare charge', 'Charge reaction', 'Charge roll'], now, p.status === 'open');
+    this.renderDeclare(p, els[0], a, t, s);
+    if (now >= 1) this.renderReact(p, els[1], a, t, s);
+    if (now >= 2) this.renderRoll(p, els[2], a, t, s);
+    freezeSteps(body);
   }
 
   /** Entfernungen: Mindestdistanz für Kontakt, Distanz bis zur maximierten Stellung, angegriffene Seite */

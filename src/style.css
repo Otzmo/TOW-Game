@@ -529,10 +529,28 @@ table.profile th, table.profile td { padding: 3px 2px; }
 #score-panel .note { margin: 10px 0 0; }
 
 /* Aufforderungen und Hinweise oben in der rechten Spalte, über allem anderen dort */
+/* Fight, Shoot, Charge, Tests: liegen über der ganzen rechten Anzeige, bis der Ablauf fertig ist */
 #right-top > #prompt-card {
-  position: absolute; top: 0; left: 0; right: 0; width: auto; max-width: none; max-height: 100%; margin: 0;
-  overflow-y: auto; border-radius: 0 0 0 12px; z-index: 6; box-shadow: 0 8px 24px rgba(0, 0, 0, .5);
+  position: absolute; inset: 0; width: auto; max-width: none; max-height: none; margin: 0;
+  overflow-y: auto; border-radius: 0; z-index: 6; box-shadow: none;
 }
+/* Schritte untereinander: erledigte bleiben stehen, der aktuelle ist hervorgehoben, kommende sind angekündigt */
+.steps { display: flex; flex-direction: column; gap: 10px; }
+.step { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+.step h4 { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; font-size: calc(14px * var(--ui)); }
+.step-no {
+  display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; flex: none;
+  border: 1px solid var(--line); font-size: calc(11px * var(--ui));
+}
+.step.active { border-color: var(--accent); }
+.step.active .step-no { background: var(--accent); border-color: var(--accent); color: #1a1a1a; }
+.step.done .step-no { background: var(--btn); }
+.step.done .step-no::before { content: '✓'; }
+.step.done .step-no { font-size: 0; }
+.step.done .step-no::before { font-size: calc(11px * var(--ui)); }
+.step.todo { opacity: .55; }
+.step.todo .step-body .meta { margin: 0; }
+.step:not(.active) .atk-add { display: none; }
 #right-top > #phase-notice, #right-top > #sync-error {
   position: absolute; top: auto; bottom: 0; left: 0; right: 0; width: auto; max-width: none; margin: 0;
   border-radius: 0; flex-wrap: wrap;

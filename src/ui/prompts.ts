@@ -18,6 +18,9 @@ const other = (p: PlayerId): PlayerId => (p === 'p1' ? 'p2' : 'p1');
 const newId = (prefix: string) => `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
 const sel = (id: string) => $(id) as HTMLSelectElement;
 
+/** Abläufe mit mehreren Schritten: am Ende bleibt das ganze Fenster mit allen Schritten stehen */
+const FLOWS = new Set<PromptKind>(['attack', 'saves', 'charge', 'ldtest']);
+
 export const TEST_TYPES: Record<string, string> = {
   break: 'Break test', panic: 'Panic test', fear: 'Fear test', terror: 'Terror test', rally: 'Rally test', ld: 'Leadership test',
 };
@@ -152,7 +155,11 @@ export class PromptCenter {
   }
 
   private finish(p: Prompt, result: string): void {
-    this.store.setPrompt(p.id, { ...p, status: 'done', result, acknowledged: false });
+    // Wer den letzten Schritt selbst gemacht hat und auch Auslöser ist (offline: immer), hat alles gesehen
+    const seat = this.host.seat();
+    const seen = FLOWS.has(p.kind) && (!seat || seat === p.from);
+    const cur = this.store.state.prompts[p.id] ?? p;
+    this.store.setPrompt(p.id, { ...cur, status: 'done', result, acknowledged: seen });
     this.stage = {};
   }
 
@@ -204,12 +211,33 @@ export class PromptCenter {
     $('prompt-head').innerHTML = `${who}<b>${esc(mode === 'result' ? `Result: ${p.title}` : p.title)}</b>${more > 0 ? `<span class="prompt-more">+${more} more</span>` : ''}`;
     $('prompt-text').textContent = mode === 'result' ? p.result ?? '' : p.text;
     const body = $('prompt-body');
+    if (mode === 'result' && FLOWS.has(p.kind)) {
+      // Ergebnis eines Ablaufs: alle Schritte mit ihren Würfeln, nur noch zum Lesen
+      $('prompt-text').textContent = p.text;
+      this.renderKind(p, body);
+      body.querySelectorAll('.prompt-actions').forEach((el) => el.remove());
+      body.querySelectorAll<HTMLInputElement | HTMLButtonElement | HTMLSelectElement>('input, select, button').forEach((el) => { el.disabled = true; });
+      body.insertAdjacentHTML('beforeend', `<p class="prompt-info"><b>${esc(p.result ?? '')}</b></p><div class="prompt-actions"><button class="primary" data-ack>OK</button></div>`);
+      (body.querySelector('[data-ack]') as HTMLButtonElement).onclick = () =>
+        this.store.setPrompt(p.id, { ...p, acknowledged: true });
+      return;
+    }
     if (mode === 'result') {
       body.innerHTML = `<div class="prompt-actions"><button class="primary" data-ack>OK</button></div>`;
       (body.querySelector('[data-ack]') as HTMLButtonElement).onclick = () =>
         this.store.setPrompt(p.id, { ...p, acknowledged: true });
       return;
     }
+    this.renderKind(p, body);
+    // Zusehen: dasselbe Fenster, aber nichts anklickbar
+    if (mode === 'watch') {
+      body.querySelectorAll<HTMLInputElement | HTMLButtonElement | HTMLSelectElement>('input, select, button, textarea')
+        .forEach((el) => { el.disabled = true; });
+      body.insertAdjacentHTML('afterbegin', `<p class="prompt-watch">${esc(playerName(p.to))} is deciding – you see this live.</p>`);
+    }
+  }
+
+  private renderKind(p: Prompt, body: HTMLElement): void {
     switch (p.kind) {
       case 'chargeReaction': this.renderReaction(p, body); break;
       case 'chargeRoll': this.renderChargeRoll(p, body); break;
@@ -219,12 +247,6 @@ export class PromptCenter {
       case 'dispel': this.renderDispel(p, body); break;
       case 'test': this.renderTest(p, body); break;
       case 'ldtest': this.tests.render(p, body); break;
-    }
-    // Zusehen: dasselbe Fenster, aber nichts anklickbar
-    if (mode === 'watch') {
-      body.querySelectorAll<HTMLInputElement | HTMLButtonElement | HTMLSelectElement>('input, select, button, textarea')
-        .forEach((el) => { el.disabled = true; });
-      body.insertAdjacentHTML('afterbegin', `<p class="prompt-watch">${esc(playerName(p.to))} is deciding – you see this live.</p>`);
     }
   }
 

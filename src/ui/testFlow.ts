@@ -66,7 +66,7 @@ export class TestFlow {
     const u = this.host.store.state.units[String(p.data.unitId)];
     const s = this.state(p);
     if (!u || !s) {
-      this.host.finish(p, 'The unit is gone.');
+      if (p.status === 'open') this.host.finish(p, 'The unit is gone.');
       return;
     }
     const ld = s.on.includes('Inspiring Presence') ? Math.max(s.ld, s.generalLd) : s.ld;
