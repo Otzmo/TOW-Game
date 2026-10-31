@@ -1,55 +1,56 @@
+import { polyDistance } from './contact';
 import { isJoined, isSkirmish, unitFootprint } from './store';
-import type { UnitState } from './types';
+import type { Point, UnitState } from './types';
 
-/** Bis zu diesem Abstand (oder dieser Überlappung) rasten Einheiten aneinander (Zoll) */
+/** Bis zu diesem Abstand (oder bei Überlappung) rasten Einheiten an den Gegner (Zoll) */
 export const SNAP_DISTANCE = 1;
-/** Bis zu diesem Winkelunterschied werden sie parallel ausgerichtet (Bogenmaß, 20°) */
-const SNAP_ANGLE = (20 * Math.PI) / 180;
 
 const norm = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
 
+/** Umriss einer Einheit auf dem Tisch (Rechteck um die Mitte) */
+function outline(u: UnitState, w: number, h: number): Point[] {
+  const c = Math.cos(u.rotation);
+  const s = Math.sin(u.rotation);
+  return [[-w / 2, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]]
+    .map(([x, y]) => ({ x: u.x + x * c - y * s, y: u.y + x * s + y * c }));
+}
+
 /**
- * Einheit an eine benachbarte Einheit anlegen: Steht eine Kante höchstens SNAP_DISTANCE von einer Kante einer anderen
- * Einheit entfernt (oder überlappt sie so wenig) und sind beide fast parallel, wird die Einheit parallel ausgerichtet
- * und bündig an diese Kante geschoben; entlang der Kante bleibt sie, wo sie losgelassen wurde.
+ * Einheit an eine gegnerische Einheit anlegen: Kommt sie ihr bis auf SNAP_DISTANCE nahe (oder überlappt sie), wird sie
+ * – egal wie schräg sie steht – parallel zur gegnerischen Einheit ausgerichtet und bündig an die Kante geschoben, vor
+ * der sie steht; entlang der Kante bleibt sie, wo sie losgelassen wurde. Eigene Einheiten rasten nicht ein.
  * Ergebnis: neue Lage und die Einheit, an der sie anliegt – oder null.
  */
 export function snapTogether(u: UnitState, units: Record<string, UnitState>):
   { pose: Pick<UnitState, 'x' | 'y' | 'rotation'>; to: UnitState } | null {
   if (isSkirmish(u) || isJoined(u, units)) return null;
   const me = unitFootprint(u, units);
-  let best: { pose: Pick<UnitState, 'x' | 'y' | 'rotation'>; to: UnitState; gap: number } | null = null;
+  const mine = outline(u, me.w, me.h);
+  let best: { pose: Pick<UnitState, 'x' | 'y' | 'rotation'>; to: UnitState; dist: number } | null = null;
   for (const t of Object.values(units)) {
-    if (t.id === u.id || t.joinedTo === u.id || isJoined(t, units) || isSkirmish(t) || t.ambush
+    if (t.id === u.id || t.owner === u.owner || t.joinedTo === u.id || isJoined(t, units) || isSkirmish(t) || t.ambush
       || t.status === 'destroyed' || t.status === 'fledOff') continue;
-    // Nächste Ausrichtung in 90°-Schritten zur anderen Einheit
+    const them = unitFootprint(t, units);
+    // Wirklicher Abstand der Umrisse (bei schräger Stellung zählt die nächste Ecke)
+    const dist = polyDistance(mine, outline(t, them.w, them.h));
+    if (dist > SNAP_DISTANCE || (best && dist >= best.dist)) continue;
+    // Nächste Ausrichtung in 90°-Schritten zur gegnerischen Einheit
     const quarter = Math.round(norm(u.rotation - t.rotation) / (Math.PI / 2));
     const rotation = t.rotation + quarter * (Math.PI / 2);
-    if (Math.abs(norm(u.rotation - rotation)) > SNAP_ANGLE) continue;
-    // Im Koordinatensystem der anderen Einheit: beide als achsenparallele Rechtecke
+    const sideways = Math.abs(quarter) % 2 === 1;
+    const hw = (sideways ? me.h : me.w) / 2;
+    const hh = (sideways ? me.w : me.h) / 2;
+    // Mitte im Koordinatensystem des Gegners; die Seite, vor der sie steht, bekommt den Kontakt
     const c = Math.cos(-t.rotation);
     const s = Math.sin(-t.rotation);
     const lx = (u.x - t.x) * c - (u.y - t.y) * s;
     const ly = (u.x - t.x) * s + (u.y - t.y) * c;
-    const them = unitFootprint(t, units);
-    const sideways = Math.abs(quarter) % 2 === 1;
-    const hw = (sideways ? me.h : me.w) / 2;
-    const hh = (sideways ? me.w : me.h) / 2;
-    const overlapX = Math.min(lx + hw, them.w / 2) - Math.max(lx - hw, -them.w / 2);
-    const overlapY = Math.min(ly + hh, them.h / 2) - Math.max(ly - hh, -them.h / 2);
-    // Abstand der Kanten: positiv = Lücke, negativ = Überlappung
-    const gapX = Math.abs(lx) - hw - them.w / 2;
-    const gapY = Math.abs(ly) - hh - them.h / 2;
-    const options: { nx: number; ny: number; gap: number }[] = [];
-    if (overlapY > 0.01 && Math.abs(gapX) <= SNAP_DISTANCE) options.push({ nx: Math.sign(lx || 1) * (hw + them.w / 2), ny: ly, gap: gapX });
-    if (overlapX > 0.01 && Math.abs(gapY) <= SNAP_DISTANCE) options.push({ nx: lx, ny: Math.sign(ly || 1) * (hh + them.h / 2), gap: gapY });
-    for (const o of options) {
-      if (best && Math.abs(o.gap) >= Math.abs(best.gap)) continue;
-      // zurück auf den Tisch
-      const x = t.x + o.nx * Math.cos(t.rotation) - o.ny * Math.sin(t.rotation);
-      const y = t.y + o.nx * Math.sin(t.rotation) + o.ny * Math.cos(t.rotation);
-      best = { pose: { x, y, rotation }, to: t, gap: o.gap };
-    }
+    const byX = Math.abs(lx) - them.w / 2 > Math.abs(ly) - them.h / 2;
+    const nx = byX ? Math.sign(lx || 1) * (hw + them.w / 2) : Math.max(-them.w / 2 - hw, Math.min(them.w / 2 + hw, lx));
+    const ny = byX ? Math.max(-them.h / 2 - hh, Math.min(them.h / 2 + hh, ly)) : Math.sign(ly || 1) * (hh + them.h / 2);
+    const x = t.x + nx * Math.cos(t.rotation) - ny * Math.sin(t.rotation);
+    const y = t.y + nx * Math.sin(t.rotation) + ny * Math.cos(t.rotation);
+    best = { pose: { x, y, rotation }, to: t, dist };
   }
   return best ? { pose: best.pose, to: best.to } : null;
 }
