@@ -3,6 +3,7 @@ import { BoardTools } from './boardTools';
 import { Camera } from './camera';
 import { drawCharges as paintCharges, drawRanges as paintRanges } from './overlays';
 import { toLocal, toTable } from '../model/flow';
+import { snapTogether } from '../model/snap';
 import {
   isJoined, isNonUnitChange, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
 } from '../model/store';
@@ -33,7 +34,9 @@ interface Swing {
 type UnitDragType = 'move' | 'rotate' | 'swing';
 
 type UnitDrag = { type: UnitDragType; unitId: string; ox: number; oy: number; sx: number; sy: number; srot: number;
-  gx: number; gy: number; moved: boolean; swing?: Swing };
+  gx: number; gy: number; moved: boolean; swing?: Swing;
+  /** Umschalt beim Ziehen gehalten: beim Loslassen nicht an andere Einheiten anlegen */
+  free?: boolean };
 
 /** Ein einzelnes Modell einer Plänklereinheit ziehen (Positionen in Einheitskoordinaten). */
 type ModelDrag = { type: 'model'; unitId: string; key: string; start: Point; startPointer: Point;
@@ -87,30 +90,18 @@ export class Board {
     const r = this.runs.get(unitId);
     return r && r.turn === this.turnKey() ? r.total : 0;
   }
-  /** Wo eine Einheit vor ihrer ersten Bewegung in diesem Spielerzug stand (für „Reset movement“) */
-  private readonly turnStart = new Map<string, { turn: string; pose: Pick<UnitState, 'x' | 'y' | 'rotation' | 'positions'> }>();
-  private rememberStart(u: UnitState): void {
-    const s = this.turnStart.get(u.id);
-    if (s && s.turn === this.turnKey()) return;
-    this.turnStart.set(u.id, { turn: this.turnKey(), pose: { x: u.x, y: u.y, rotation: u.rotation, positions: u.positions ? { ...u.positions } : u.positions } });
-  }
-
-  /** Hat die Einheit in diesem Spielerzug eine Stelle, an die sie zurück kann? */
+  /** Hat die Einheit in diesem Spielerzug schon Zoll gesammelt? (für „Reset movement“) */
   canResetMovement(unitId: string): boolean {
-    return this.turnStart.get(unitId)?.turn === this.turnKey();
+    return this.runBefore(unitId) > 0;
   }
 
-  /** Einheit an ihre Stelle vom Anfang des Spielerzugs zurücksetzen; die gezogenen Zoll beginnen wieder bei 0 */
+  /** Nur das Zusammenzählen der Bewegung für diesen Spielerzug zurücksetzen – die Einheit bleibt, wo sie steht */
   resetMovement(unitId: string): void {
-    const s = this.turnStart.get(unitId);
     const u = this.store.state.units[unitId];
-    if (!u || !s || s.turn !== this.turnKey() || this.viewOnly) return;
-    this.history.record();
-    this.store.updateUnit(unitId, s.pose);
+    if (!u || this.viewOnly) return;
     this.runs.delete(unitId);
     this.moved.delete(unitId);
-    this.turnStart.delete(unitId);
-    this.events.onAction(unitId, 'movement reset to the start of the turn');
+    this.events.onAction(unitId, 'movement total reset');
   }
 
   private addRun(unitId: string, inches: number): void {
@@ -333,7 +324,6 @@ export class Board {
     const u = this.movableUnit();
     if (!u || !this.canMove(u.id)) return;
     this.history.record();
-    this.rememberStart(u);
     const p = toTable(u, right, -forward);
     this.store.updateUnit(u.id, { x: p.x, y: p.y });
     const dist = Math.hypot(forward, right);
@@ -355,7 +345,6 @@ export class Board {
     const u = this.movableUnit();
     if (!u || !this.canMove(u.id)) return;
     this.history.record();
-    this.rememberStart(u);
     this.store.updateUnit(u.id, { rotation: u.rotation + rad });
     this.events.onAction(u.id, `turned ${Math.abs(deg)}° ${deg > 0 ? 'right' : 'left'}`);
   }
@@ -440,7 +429,6 @@ export class Board {
         startAngle: Math.atan2(p.y - pivot.y, p.x - pivot.x), front: w };
     }
     this.history.record();
-    this.rememberStart(u);
     this.drag = { type, unitId, ox: u.x - p.x, oy: u.y - p.y, sx: u.x, sy: u.y, srot: u.rotation,
       gx: e.global.x, gy: e.global.y, moved: type !== 'move', swing };
     const view = this.views.get(unitId);
@@ -461,7 +449,6 @@ export class Board {
     const startPositions: Record<string, Point> = {};
     for (const s of layout.slots) startPositions[s.key] = { x: s.x + s.w / 2, y: s.y + s.d / 2 };
     this.history.record();
-    this.rememberStart(u);
     this.drag = { type: 'model', unitId, key, start: startPositions[key], startPointer: toLocal(u, this.toInches(e)),
       startPositions, startStray: layout.stray.size, gx: e.global.x, gy: e.global.y, moved: false };
     const select = charId ?? unitId;
@@ -491,6 +478,7 @@ export class Board {
     const d = this.drag;
     if (!d) return;
     if (!d.moved && Math.hypot(e.global.x - d.gx, e.global.y - d.gy) < DRAG_THRESHOLD) return;
+    if (d.type !== 'pan' && d.type !== 'model') d.free = e.shiftKey;
     const starting = !d.moved;
     d.moved = true;
     if (starting && (d.type === 'move' || d.type === 'model') && !this.canMove(d.unitId)) {
@@ -586,7 +574,10 @@ export class Board {
       this.events.onAction(d.unitId, `joined ${target.info.name}`);
       return;
     }
-    const text = this.describe(d);
+    // Aneinander anlegen: liegt eine Kante knapp neben einer anderen Einheit, bündig und parallel einrasten (Umschalt: nicht)
+    const snap = d.free ? null : snapTogether(this.store.state.units[d.unitId], this.store.state.units);
+    if (snap) this.store.updateUnit(d.unitId, snap.pose);
+    const text = [this.describe(d), snap ? `snapped to ${snap.to.info.name}` : ''].filter(Boolean).join(' · ');
     // Zoll dieser Einheit weiter zusammenzählen (bis eine andere Einheit bewegt wird oder die Runde endet)
     this.addRun(d.unitId, this.dragInches(d));
     if (this.dragInches(d) > 0.05) this.moved.set(d.unitId, this.turnKey());

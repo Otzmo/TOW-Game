@@ -35,7 +35,7 @@ export interface PanelActions {
   showRanges(on: boolean): void;
   /** Pfeil eines angesagten Angriffs entfernen */
   cancelCharge(unitId: string): void;
-  /** Einheit an ihre Stelle vom Anfang des Spielerzugs zurücksetzen */
+  /** Gezogene Zoll der Einheit für diesen Spielerzug auf 0 setzen */
   resetMovement(unitId: string): void;
   canResetMovement(unitId: string): boolean;
   /** Einheit aus dem Hinterhalt aufstellen (nächster Klick auf den Tisch) */
@@ -82,14 +82,26 @@ export class UnitPanel {
       this.applyWounds(n);
     };
     $('p-command').onclick = (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-kill]');
       const u = this.unit();
+      const back = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-revive]');
+      if (back && u) {
+        // Zurückstellen: ein Modell mehr, die Rolle wieder da (Reihenfolge M, S, C wie beim Import)
+        const i = Number(back.dataset.revive);
+        const code = (u.info.commandKilled ?? [])[i];
+        const command = [...u.info.command, code].sort((a, b) => 'MSC'.indexOf(a) - 'MSC'.indexOf(b));
+        const commandKilled = (u.info.commandKilled ?? []).filter((_, j) => j !== i);
+        this.change(this.keepFront(u, { models: u.models + 1, info: { ...u.info, command, commandKilled } }));
+        this.setLastAction(u.id, `${({ M: 'musician', S: 'standard bearer', C: 'champion' } as Record<string, string>)[code] ?? code} back in the unit`);
+        return;
+      }
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-kill]');
       if (!btn || !u) return;
       const i = Number(btn.dataset.kill);
       const code = u.info.command[i];
       const command = u.info.command.filter((_, j) => j !== i);
+      const commandKilled = [...(u.info.commandKilled ?? []), code];
       // Das Modell fällt: ein Modell weniger (die Front bleibt stehen) und die Rolle ist weg
-      this.change(this.keepFront(u, { models: Math.max(1, u.models - (u.models > 1 ? 1 : 0)), info: { ...u.info, command } }));
+      this.change(this.keepFront(u, { models: Math.max(1, u.models - (u.models > 1 ? 1 : 0)), info: { ...u.info, command, commandKilled } }));
       this.setLastAction(u.id, `${({ M: 'musician', S: 'standard bearer', C: 'champion' } as Record<string, string>)[code] ?? code} killed`);
     };
     $('p-note').onchange = (e) => this.change({ note: (e.target as HTMLTextAreaElement).value.trim() || null });
@@ -267,9 +279,9 @@ export class UnitPanel {
   /** Angriff: ansagen (Distanz wird berechnet), dann mit einem Knopf die Angriffsbewegung ausführen */
   /** Hinterhalt: in der Aufstellung hinein- bzw. herausnehmen, danach von dort aufstellen (Angriffe: Knöpfe links) */
   private chargeHtml(u: UnitState): string {
-    // Bewegung zurücknehmen: zurück an die Stelle vom Anfang des Spielerzugs
+    // Gezogene Zoll dieses Spielerzugs auf 0 setzen; die Einheit bleibt stehen (zurücksetzen geht mit Undo)
     const reset = this.actions.canResetMovement(u.id) && !isJoined(u, this.store.state.units)
-      ? '<div class="row-btns"><button data-charge="reset" title="Back to where the unit stood at the start of this turn">↺ Reset movement</button></div>' : '';
+      ? '<div class="row-btns"><button data-charge="reset" title="Start counting this unit’s movement for this turn again from 0 – the unit stays where it is">↺ Reset movement</button></div>' : '';
     return this.chargeOnlyHtml(u) + reset;
   }
 
@@ -382,9 +394,11 @@ export class UnitPanel {
     $('p-models').textContent = String(u.models);
     // Kommandomodelle einzeln töten (z. B. Champion fällt in einer Herausforderung)
     const names: Record<string, string> = { M: 'Musician', S: 'Standard bearer', C: info.profile[1]?.name ?? 'Champion' };
-    $('p-command-row').hidden = !info.command.length;
+    const killed = info.commandKilled ?? [];
+    $('p-command-row').hidden = !info.command.length && !killed.length;
     $('p-command').innerHTML = info.command.map((c, i) =>
-      `<button data-kill="${i}" title="This model is killed: one model fewer, the role is lost">✕ ${escapeHtml(names[c] ?? c)}</button>`).join('');
+      `<button data-kill="${i}" title="This model is killed: one model fewer, the role is lost">✕ ${escapeHtml(names[c] ?? c)}</button>`).join('')
+      + killed.map((c, i) => `<button data-revive="${i}" class="revive" title="Put this command model back: one model more">+ ${escapeHtml(names[c] ?? c)}</button>`).join('');
     const free = rearFree(u, units);
     $('p-rear-row').hidden = free === 0;
     $('p-rear').textContent = `${Math.min(u.rearOffset ?? 0, free)}/${free}`;

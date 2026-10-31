@@ -33,6 +33,8 @@ export interface UnitInfo {
   items: RuleRef[];
   /** Kürzel der Kommandomodelle im ersten Glied, z. B. ['M', 'S', 'C'] */
   command: string[];
+  /** Gefallene Kommandomodelle (Kürzel), um sie wieder zurückstellen zu können */
+  commandKilled?: string[];
   /** Charakter, der sich Einheiten anschließen kann */
   isCharacter?: boolean;
   /** Punktkosten laut Armeeliste (für Siegpunkte) */

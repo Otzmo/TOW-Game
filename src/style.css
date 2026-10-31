@@ -772,5 +772,9 @@ details { background: rgba(0, 0, 0, .15); border-color: rgba(214, 168, 74, .2); 
 .die.ok { background: var(--accent); }
 
 /* Kommandomodelle einzeln töten */
+/* Bezeichnung oben, Knöpfe darunter mit Umbruch – nichts überlappt, auch bei langen Champion-Namen */
+#p-command-row { display: block; }
+#p-command-row .label { display: block; margin-bottom: 4px; }
 #p-command { display: flex; flex-wrap: wrap; gap: 4px; }
-#p-command button { padding: 2px 7px; font-size: calc(12px * var(--ui)); }
+#p-command-row #p-command button { width: auto; height: auto; padding: 3px 8px; font-size: calc(12px * var(--ui)); white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+#p-command button.revive { border-style: dashed; color: var(--muted); }

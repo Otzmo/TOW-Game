@@ -123,7 +123,11 @@ export class Camera {
  */
 function levelText(node: Container, parentRotation: number): void {
   for (const child of node.children) {
-    if (child.label === UPRIGHT || child instanceof Text) child.rotation = -parentRotation;
+    if (child.label === UPRIGHT || child instanceof Text) {
+      // Nur setzen, wenn sich etwas ändert: jede Zuweisung markiert das Objekt für Pixi als geändert
+      const target = Math.atan2(Math.sin(-parentRotation), Math.cos(-parentRotation));
+      if (Math.abs(Math.atan2(Math.sin(child.rotation - target), Math.cos(child.rotation - target))) > 1e-4) child.rotation = target;
+    }
     else if (child.children?.length) levelText(child as Container, parentRotation + child.rotation);
   }
 }
