@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { snapTogether, touchingEnemies } from './snap';
 import { unitFootprint } from './store';
 import { byId, testUnit } from './testUnits';
+import type { Point } from './types';
 
 const B = 25 / 25.4;
 
@@ -72,6 +73,30 @@ describe('snap units together', () => {
     const r = snapTogether(corrected, byId(a, corrected), keep)!;
     expect(r.pose.x).toBeCloseTo(placed.x + 1.5 * B, 6);
     expect(r.pose.y).toBeCloseTo(B, 6);
+  });
+
+  /** Einheit 5 × 5 schräg vor der rechten vorderen Ecke eines Gegners, der nach unten (+y) schaut */
+  const diagonal = (forward: Point, left: Point) => {
+    const a = testUnit('a', { models: 10, width: 5, rotation: Math.PI });
+    const r = Math.atan2(forward.x, -forward.y);
+    const right = { x: Math.cos(r), y: Math.sin(r) };
+    const half = unitFootprint(testUnit('x', { models: 25, width: 5 })).w / 2;
+    const b = testUnit('b', { owner: 'p2', models: 25, width: 5, rotation: r,
+      x: left.x + right.x * half - forward.x * half, y: left.y + right.y * half - forward.y * half });
+    return snapTogether(b, byId(a, b))!;
+  };
+
+  it('straight ahead: more than half of the lane in the enemy front snaps into the front, even from the corner', () => {
+    const r = diagonal({ x: -0.5, y: -Math.sqrt(3) / 2 }, { x: 1.0, y: 2.0 });
+    expect(Math.cos(r.pose.rotation)).toBeCloseTo(1, 6);
+    expect(r.pose.y).toBeCloseTo(B + unitFootprint(testUnit('x', { models: 25, width: 5 })).h / 2, 6);
+  });
+
+  it('straight ahead: a lane that mostly hits the flank snaps to the flank', () => {
+    const f = { x: -Math.cos(0.436), y: -Math.sin(0.436) };
+    const r = diagonal(f, { x: 2.7, y: 1.6 });
+    // Front nach links, auf die Flanke des Gegners
+    expect(Math.sin(r.pose.rotation)).toBeCloseTo(-1, 6);
   });
 
   it('facing each other (180°) snaps front to front', () => {
