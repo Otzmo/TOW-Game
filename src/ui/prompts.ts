@@ -7,6 +7,7 @@ import { playerName } from '../model/players';
 import type { Store } from '../model/store';
 import type { Charge, ChargeReaction, LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
 import { AttackFlow } from './attackFlow';
+import { ChargeFlow } from './chargeFlow';
 import { diceHtml } from './dice';
 
 const $ = (id: string) => document.getElementById(id)!;
@@ -41,6 +42,8 @@ export class PromptCenter {
 
   /** Beschuss und Nahkampf: Treffer, Verwundungen, Rettungswürfe */
   readonly attacks: AttackFlow;
+  /** Angriff: Ansage, Reaktion, Angriffswurf */
+  readonly charges: ChargeFlow;
 
   constructor(private store: Store, private history: History, private host: PromptHost) {
     this.attacks = new AttackFlow({
@@ -48,8 +51,13 @@ export class PromptCenter {
       log: (entry) => host.log(entry),
       create: (kind, to, from, title, text, data) => this.create(kind, to, from, title, text, data),
       finish: (p, result) => this.finish(p, result),
-      stage: () => this.stage,
       movedThisTurn: (id) => host.movedThisTurn(id),
+    });
+    this.charges = new ChargeFlow({
+      store,
+      log: (entry) => host.log(entry),
+      create: (kind, to, from, title, text, data) => this.create(kind, to, from, title, text, data),
+      finish: (p, result) => this.finish(p, result),
     });
     // Keine Phasen mehr: Angriffe laufen über die Einheit (ansagen, Angriffsbewegung); hier werden nur
     // offene Aufforderungen aus älteren Spielständen gezeigt
@@ -147,13 +155,18 @@ export class PromptCenter {
 
   // --- Anzeige ----------------------------------------------------------------
 
-  /** Offene Aufforderung für mich (offline: jede), sonst ein Ergebnis, das ich noch bestätigen muss. */
-  private current(): { prompt: Prompt; mode: 'act' | 'result' } | null {
+  /**
+   * Offene Aufforderung: für mich zum Handeln (offline: jede), sonst zum Zusehen – beide Spieler (und Zuschauer)
+   * sehen jedes Fenster live mit; danach ein Ergebnis, das ich noch bestätigen muss.
+   */
+  private current(): { prompt: Prompt; mode: 'act' | 'watch' | 'result' } | null {
     const seat = this.host.seat();
-    if (seat === 'spectator') return null;
     const list = Object.values(this.store.state.prompts).sort((a, b) => a.ts - b.ts);
-    const open = list.find((p) => p.status === 'open' && (!seat || p.to === seat));
-    if (open) return { prompt: open, mode: 'act' };
+    const mine = list.find((p) => p.status === 'open' && (!seat || p.to === seat));
+    if (mine) return { prompt: mine, mode: 'act' };
+    const other = list.find((p) => p.status === 'open');
+    if (other) return { prompt: other, mode: 'watch' };
+    if (seat === 'spectator') return null;
     const result = list.find((p) => p.status === 'done' && !p.acknowledged && (!seat || p.from === seat));
     return result ? { prompt: result, mode: 'result' } : null;
   }
@@ -163,7 +176,7 @@ export class PromptCenter {
     const cur = this.current();
     const seat = this.host.seat();
     const waiting = Object.values(this.store.state.prompts).filter((p) => p.status === 'open' && seat && p.to !== seat);
-    $('prompt-wait').hidden = !waiting.length;
+    $('prompt-wait').hidden = !waiting.length || cur?.mode === 'watch';
     $('prompt-wait').textContent = waiting.length
       ? `Waiting for ${playerName(waiting[0].to)}: ${waiting.map((p) => p.title).join(', ')}` : '';
     if (!cur) {
@@ -177,7 +190,8 @@ export class PromptCenter {
     card.hidden = false;
     card.className = `prompt-${p.kind}`;
     const more = Object.values(this.store.state.prompts).filter((x) => x.status === 'open' && (!seat || x.to === seat)).length - 1;
-    const who = seat ? '' : `<span class="prompt-who"><span class="dot ${mode === 'act' ? p.to : p.from}"></span>${playerName(mode === 'act' ? p.to : p.from)}</span>`;
+    const actor = mode === 'result' ? p.from : p.to;
+    const who = seat && mode !== 'watch' ? '' : `<span class="prompt-who"><span class="dot ${actor}"></span>${playerName(actor)}</span>`;
     $('prompt-head').innerHTML = `${who}<b>${esc(mode === 'result' ? `Result: ${p.title}` : p.title)}</b>${more > 0 ? `<span class="prompt-more">+${more} more</span>` : ''}`;
     $('prompt-text').textContent = mode === 'result' ? p.result ?? '' : p.text;
     const body = $('prompt-body');
@@ -188,12 +202,19 @@ export class PromptCenter {
       return;
     }
     switch (p.kind) {
-      case 'chargeReaction': return this.renderReaction(p, body);
-      case 'chargeRoll': return this.renderChargeRoll(p, body);
-      case 'attack': return this.attacks.renderAttack(p, body);
-      case 'saves': return this.attacks.renderSaves(p, body);
-      case 'dispel': return this.renderDispel(p, body);
-      case 'test': return this.renderTest(p, body);
+      case 'chargeReaction': this.renderReaction(p, body); break;
+      case 'chargeRoll': this.renderChargeRoll(p, body); break;
+      case 'charge': this.charges.render(p, body); break;
+      case 'attack': this.attacks.renderAttack(p, body); break;
+      case 'saves': this.attacks.renderSaves(p, body); break;
+      case 'dispel': this.renderDispel(p, body); break;
+      case 'test': this.renderTest(p, body); break;
+    }
+    // Zusehen: dasselbe Fenster, aber nichts anklickbar
+    if (mode === 'watch') {
+      body.querySelectorAll<HTMLInputElement | HTMLButtonElement | HTMLSelectElement>('input, select, button, textarea')
+        .forEach((el) => { el.disabled = true; });
+      body.insertAdjacentHTML('afterbegin', `<p class="prompt-watch">${esc(playerName(p.to))} is deciding – you see this live.</p>`);
     }
   }
 

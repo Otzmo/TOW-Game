@@ -10,9 +10,6 @@ import { hasStandard, mountBonus, unitVictoryPoints, wounds, woundsPerModel } fr
 import type { RuleRef, UnitState, UnitStatus } from '../model/types';
 import { PLAYER_COLORS } from '../view/theme';
 import { currentPhase } from '../model/phases';
-import type { AttackMode } from '../model/attack';
-import { weaponsFor } from './attackFlow';
-import { HELPERS, helperOn, setHelper, type Helper } from '../view/helpers';
 
 const $ = (id: string) => document.getElementById(id)!;
 
@@ -33,14 +30,10 @@ export interface PanelActions {
   select(unitId: string): void;
   detach(charId: string): void;
   showRanges(on: boolean): void;
-  /** Angriff ansagen (Ziel anklicken), ausführen bzw. zurücknehmen */
-  declareCharge(unitId: string): void;
-  chargeMove(unitId: string): void;
+  /** Pfeil eines angesagten Angriffs entfernen */
   cancelCharge(unitId: string): void;
   /** Einheit aus dem Hinterhalt aufstellen (nächster Klick auf den Tisch) */
   placeAmbush(unitId: string): void;
-  /** Beschuss bzw. Nahkampf: Ziel anklicken, dann Treffer- und Verwundungswurf */
-  attack(unitId: string, mode: AttackMode): void;
 }
 
 /** Seitenpanel mit allen Angaben zur ausgewählten Einheit. */
@@ -103,20 +96,12 @@ export class UnitPanel {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-charge]');
       const u = this.unit();
       if (!btn || !u) return;
-      if (btn.dataset.charge === 'declare') actions.declareCharge(u.id);
-      if (btn.dataset.charge === 'move') actions.chargeMove(u.id);
       if (btn.dataset.charge === 'cancel') actions.cancelCharge(u.id);
       if (btn.dataset.charge === 'ambush' && this.canMove(u.id)) {
         this.change({ ambush: !u.ambush });
         this.setLastAction(u.id, u.ambush ? 'put in ambush' : 'back on the table');
       }
       if (btn.dataset.charge === 'place') actions.placeAmbush(u.id);
-      if (btn.dataset.charge === 'shoot') actions.attack(u.id, 'shooting');
-      if (btn.dataset.charge === 'fight') actions.attack(u.id, 'combat');
-    };
-    $('p-charge').onchange = (e) => {
-      const box = (e.target as HTMLElement).closest<HTMLInputElement>('input[data-helper]');
-      if (box) setHelper(box.dataset.helper as Helper, box.checked);
     };
     $('p-join').onclick = (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
@@ -275,22 +260,9 @@ export class UnitPanel {
   }
 
   /** Angriff: ansagen (Distanz wird berechnet), dann mit einem Knopf die Angriffsbewegung ausführen */
-  /** Angriff, Beschuss und Nahkampf; in der Aufstellung nur der Hinterhalt; darunter die Hilfen zum An- und Abhaken */
+  /** Hinterhalt: in der Aufstellung hinein- bzw. herausnehmen, danach von dort aufstellen (Angriffe: Knöpfe links) */
   private chargeHtml(u: UnitState): string {
-    const charge = this.chargeOnlyHtml(u) + this.helpersHtml();
-    const { meta } = this.store.state;
-    if (currentPhase(meta) === 'setup' || u.ambush) return charge;
-    // Beschuss nur mit Fernkampfwaffe (die Waffenliste kommt aus einer eigenen Datei, siehe loadWeapons)
-    const shoot = weaponsFor(u, 'shooting').length
-      ? '<button data-charge="shoot" title="Pick a target, then roll To Hit and To Wound">🏹 Shoot</button>' : '';
-    return `${charge}<div class="row-btns">${shoot}<button data-charge="fight" title="Pick a target, then roll To Hit and To Wound">🗡 Fight</button></div>`;
-  }
-
-  /** Hilfen beim Bewegen und Angreifen: angehakt = das Spiel hilft */
-  private helpersHtml(): string {
-    return `<details class="helpers"><summary>Helpers</summary>
-      ${HELPERS.map((h) => `<label class="check" title="${escapeHtml(h.hint)}"><input type="checkbox" data-helper="${h.key}" ${helperOn(h.key) ? 'checked' : ''}> ${escapeHtml(h.label)}</label>`).join('')}
-    </details>`;
+    return this.chargeOnlyHtml(u);
   }
 
   private chargeOnlyHtml(u: UnitState): string {
@@ -307,17 +279,12 @@ export class UnitPanel {
       return `<p class="warn">In ambush – not on the table yet.</p>
         <div class="row-btns"><button data-charge="place" class="primary">⌖ Place on the table</button></div>`;
     }
+    // Angesagter Angriff: Hinweis und Pfeil entfernen (z. B. nach Undo)
     const c = charges[`charge-${u.id}`];
     const target = c ? units[c.target] : undefined;
-    if (!c || !target) return '<div class="row-btns"><button data-charge="declare">⚔ Declare charge</button></div>';
-    const dist = c.distance != null ? `${c.distance.toFixed(1)}″` : '?';
-    const max = c.maxDistance != null ? `${c.maxDistance.toFixed(1)}″` : '?';
-    return c.status === 'rolled'
-      ? `<p class="ok">Charged ${escapeHtml(target.info.name)} (${dist})</p>
-         <div class="row-btns"><button data-charge="cancel" title="Remove the charge marker, e.g. after Undo">Clear charge</button></div>`
-      : `<p>Charge against <b>${escapeHtml(target.info.name)}</b></p>
-         <p class="charge-dist">Contact from <b>${dist}</b> · maximised at <b>${max}</b></p>
-         <div class="row-btns"><button data-charge="move" class="primary">Charge move</button><button data-charge="cancel">Cancel</button></div>`;
+    if (!c || !target) return '';
+    return `<p>Charge against <b>${escapeHtml(target.info.name)}</b></p>
+      <div class="row-btns"><button data-charge="cancel" title="Remove the charge arrow">Clear charge</button></div>`;
   }
 
   private render(): void {

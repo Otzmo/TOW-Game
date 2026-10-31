@@ -350,6 +350,7 @@ body.sheet-open .bottom-panel { display: none; }
 .prompt-checks { display: flex; gap: 14px; flex-wrap: wrap; font-size: calc(13px * var(--ui)); }
 .prompt-checks label { display: flex; align-items: center; gap: 6px; }
 .prompt-info { margin: 6px 0; font-size: calc(13px * var(--ui)); }
+.prompt-watch { margin: 0 0 8px; padding: 5px 8px; border-radius: 6px; background: var(--btn); color: var(--muted); font-size: calc(12px * var(--ui)); }
 /* Beschuss und Nahkampf: Grundwert, Modifikatoren und nötiger Wurf vor dem Würfeln */
 .prompt-form input { font: inherit; font-size: calc(13px * var(--ui)); color: var(--text); background: var(--input); border: 1px solid var(--line); border-radius: 6px; padding: 5px 7px; }
 .prompt-form input:disabled { opacity: .7; }
@@ -364,9 +365,6 @@ body.sheet-open .bottom-panel { display: none; }
 /* Schablone: Würfel zum Abweichen auswählen */
 #o-scatter-row .check { display: flex; align-items: flex-start; justify-content: flex-start; gap: 8px; text-align: left; margin: 3px 0; font-size: calc(12px * var(--ui)); }
 #o-scatter-row .check input { flex: none; margin-top: 2px; }
-#p-charge details.helpers { margin-top: 8px; font-size: calc(12px * var(--ui)); }
-#p-charge details.helpers summary { cursor: pointer; color: var(--muted); }
-#p-charge details.helpers .check { display: flex; gap: 6px; margin: 4px 0; }
 /* Eine Zeile je Profil (Truppe, Champion, Reittier, Charakter) */
 .atk-lines { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: calc(12px * var(--ui)); }
 .atk-lines th { text-align: left; color: var(--muted); font-weight: 600; padding: 3px 4px; border-bottom: 1px solid var(--line); }
@@ -576,7 +574,7 @@ body:not(.battle) #g-end { display: none; }
 #sheet-battlefield details p { white-space: pre-line; color: var(--muted); }
 #sheet-battlefield p { margin: 4px 0; }
 /* In der Aufstellung nur, was dafür gebraucht wird: Maßband, Sichtlinie, Marker, Schablonen, Siegpunkte und Würfel erst danach */
-body:not(.battle) #toolbox [data-tool="measure"], body:not(.battle) #toolbox [data-tool="sight"],
+body:not(.battle) #toolbox [data-attack], body:not(.battle) #toolbox [data-tool="measure"], body:not(.battle) #toolbox [data-tool="sight"],
 body:not(.battle) #toolbox [data-sheet="markers"], body:not(.battle) #toolbox [data-sheet="templates"],
 body:not(.battle) #toolbox [data-sheet="score"], body:not(.battle) #toolbox [data-sheet="dice"] { display: none; }
 #lobby { z-index: 20; }

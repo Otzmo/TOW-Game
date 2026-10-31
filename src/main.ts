@@ -72,16 +72,8 @@ async function start(): Promise<void> {
     select: (id) => board.select(id),
     detach: (id) => board.detachCharacter(id),
     showRanges: (on) => board.setShowRanges(on),
-    declareCharge: (id) => board.startChargePick(id, (target) => board.declareCharge(id, target)),
-    chargeMove: (id) => board.chargeMove(id),
     cancelCharge: (id) => board.cancelCharge(id),
     placeAmbush: (id) => board.startAmbushPlace(id),
-    attack: (id, mode) => {
-      const owner = store.state.units[id]?.owner;
-      // Online würfelt nur der Besitzer der Einheit; offline jeder
-      if (!owner || (seat && seat !== owner)) return;
-      board.startChargePick(id, (target) => prompts.attacks.start(owner, id, target, mode), mode === 'shooting' ? 'Shooting' : 'Combat');
-    },
   });
   const objectPanel = new ObjectPanel(store, history, {
     close: () => board.tools.select(null),
@@ -118,6 +110,22 @@ async function start(): Promise<void> {
     log: (entry) => addLog(entry),
     allowMove: (id) => gate.grant(id),
     movedThisTurn: (id) => board.movedThisTurn(id),
+  });
+  // Angriff, Beschuss, Nahkampf: Knopf links, dann die eigene Einheit, dann das Ziel anklicken
+  document.querySelectorAll<HTMLButtonElement>('[data-attack]').forEach((btn) => {
+    btn.onclick = () => {
+      const kind = btn.dataset.attack as 'charge' | 'shooting' | 'combat';
+      const name = { charge: 'Charge', shooting: 'Shoot', combat: 'Fight' }[kind];
+      // Online wählt jeder nur eigene Einheiten; Zuschauer gar nicht
+      if (seat === 'spectator') return;
+      board.startPick(`${name}: click your unit`, (u) => !seat || u.owner === seat, (id) => {
+        const a = store.state.units[id];
+        board.startPick(`${name} by ${a.info.name}: click the enemy unit`, (t) => t.owner !== a.owner, (target) => {
+          if (kind === 'charge') prompts.charges.start(a.owner, id, target);
+          else prompts.attacks.start(a.owner, id, target, kind);
+        });
+      });
+    };
   });
   // Aufbauphase: Schlachtfeld, Roll-offs, Zonen und Aufstellen
   const setup = new SetupPanel(store, history, () => seat, (entry) => addLog(entry));

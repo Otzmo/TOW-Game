@@ -1,15 +1,11 @@
 import { Application, Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
 import { BoardTools } from './boardTools';
 import { Camera } from './camera';
-import { helperOn } from './helpers';
 import { drawCharges as paintCharges, drawRanges as paintRanges } from './overlays';
-import {
-  alignToBases, chargePathCheck, chargeTravel, contactPoses, minChargeDistance, toLocal, toTable,
-} from '../model/flow';
+import { toLocal, toTable } from '../model/flow';
 import {
   isJoined, isNonUnitChange, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
 } from '../model/store';
-import { keepApart, overlappingUnits, type Pose } from '../model/collision';
 import type { History } from '../model/history';
 import { currentPhase } from '../model/phases';
 import type { Point, UnitState } from '../model/types';
@@ -56,9 +52,6 @@ export interface BoardEvents {
   onSelectObject(objectId: string | null): void;
   onAction(unitId: string, description: string): void;
 }
-
-/** Abstand, ab dem eine Einheit beim Loslassen an eine gegnerische Kante angelegt wird (Zoll) */
-const CHARGE_SNAP = 1;
 
 /** Spielfeld: Tisch, Einheiten, Kamera und Maussteuerung. */
 export class Board {
@@ -225,18 +218,17 @@ export class Board {
     this.drawCharges();
   }
 
-  /** Ziel wählen (Angriff, Beschuss, Nahkampf): Hinweis zeigen und den nächsten Klick auf eine gegnerische Einheit abwarten. */
-  startChargePick(chargerId: string, onPick: (targetId: string) => void, action = 'Charge'): void {
-    const charger = this.store.state.units[chargerId];
-    if (!charger) return;
+  /** Einheit wählen lassen (Angreifer, Ziel …): Hinweis zeigen und den nächsten Klick auf eine passende Einheit abwarten. */
+  startPick(hint: string, accept: (u: UnitState) => boolean, onPick: (unitId: string) => void): void {
     this.tools.setTool('select');
+    this.placeUnit = null;
     this.pickTarget = (id) => {
-      const t = this.store.state.units[id];
-      if (t && t.owner !== charger.owner) onPick(id);
+      const u = this.store.state.units[id];
+      if (u && accept(u)) onPick(id);
     };
-    const hint = document.getElementById('tool-hint')!;
-    hint.textContent = `${action} by ${charger.info.name}: click an enemy unit · Esc to cancel`;
-    hint.hidden = false;
+    const el = document.getElementById('tool-hint')!;
+    el.textContent = `${hint} · Esc to cancel`;
+    el.hidden = false;
   }
 
   cancelPick(): boolean {
@@ -264,63 +256,8 @@ export class Board {
     if (!u) return;
     this.history.record();
     this.store.updateUnit(unitId, { ambush: null, x: p.x, y: p.y });
-    // Landet sie auf einem Gegner, wird sie angelegt; auf einer eigenen Einheit bleibt der Hinweis im Log
-    const apart = this.separate(unitId, { x: p.x, y: p.y, rotation: u.rotation });
     this.select(unitId);
-    this.events.onAction(unitId, `arrives from ambush${apart ? ` · ${apart}` : ''}`);
-  }
-
-  /**
-   * Angriff ansagen: Distanz wird berechnet und als Pfeil für beide Spieler gezeigt; ausgeführt wird er
-   * mit chargeMove. Bis zum Ende der Runde bleibt der Pfeil stehen.
-   */
-  declareCharge(chargerId: string, targetId: string): void {
-    const { units } = this.store.state;
-    const charger = units[chargerId];
-    const target = units[targetId];
-    if (!charger || !target) return;
-    // Mindestens nötig für Kontakt, und nötig für die Stellung mit maximiertem Kontakt
-    const round1 = (v: number) => Math.round(v * 10) / 10;
-    const distance = round1(minChargeDistance(charger, target, units));
-    const pose = this.maximisedPose(charger, target);
-    const maxDistance = pose ? round1(chargeTravel(charger, pose, units)) : null;
-    const id = `charge-${chargerId}`;
-    this.store.setCharge(id, { id, charger: chargerId, target: targetId, round: this.store.state.meta.round,
-      status: 'declared', distance, maxDistance });
-    this.events.onAction(chargerId, `declares a charge against ${target.info.name} – contact from ${distance.toFixed(1)}″`
-      + (maxDistance != null ? `, maximised at ${maxDistance.toFixed(1)}″` : ''));
-  }
-
-  /** Stellung mit maximiertem Kontakt, an der der Angreifer Platz hat (ohne andere Einheiten zu überlappen) */
-  private maximisedPose(charger: UnitState, target: UnitState) {
-    const { units } = this.store.state;
-    const free = contactPoses(charger, target, units)
-      .filter((p) => !overlappingUnits({ ...charger, x: p.x, y: p.y, rotation: p.rotation }, units).length);
-    if (helperOn('maximise') || !free.length) return free[0];
-    // Ohne Maximieren: an der zugewandten Kante so wenig seitlich verschieben wie möglich (gerade hinein)
-    return free.filter((p) => p.side === free[0].side).sort((a, b) => a.shift - b.shift)[0];
-  }
-
-  /** Angriffsbewegung: an die zugewandte Kante des Ziels, bündig an den Base-Grenzen */
-  chargeMove(chargerId: string): void {
-    const { units, charges } = this.store.state;
-    const c = charges[`charge-${chargerId}`];
-    const charger = units[chargerId];
-    const target = c ? units[c.target] : undefined;
-    if (!c || !charger || !target || !this.canMove(chargerId)) return;
-    // Erste Kante, an der der Angreifer Platz hat (ohne andere Einheiten zu überlappen)
-    const pose = this.maximisedPose(charger, target);
-    if (!pose) {
-      this.events.onAction(chargerId, `cannot reach ${target.info.name}: no room at any edge`);
-      return;
-    }
-    // Regel 3: einmal schwenken, sonst gerade – sonst Warnung (die Bewegung wird trotzdem ausgeführt)
-    const path = chargePathCheck(charger, pose, units);
-    this.history.record();
-    this.store.updateUnit(chargerId, { x: pose.x, y: pose.y, rotation: pose.rotation });
-    this.store.setCharge(c.id, { ...c, status: 'rolled', success: true });
-    const touching = ` – ${pose.chargerContacts} of your front rank and ${pose.targetContacts} enemy models in base contact`;
-    this.events.onAction(chargerId, `charges ${target.info.name} in the ${pose.side}${touching} · ${path.note}`);
+    this.events.onAction(unitId, 'arrives from ambush');
   }
 
   cancelCharge(chargerId: string): void {
@@ -335,72 +272,6 @@ export class Board {
   /** Bewegungs- und Angriffsreichweiten der ausgewählten Einheit (wenn eingeschaltet) */
   private drawRanges(): void {
     paintRanges(this.rangeLayer, this.store.state, this.showRanges ? this.selectedId : null);
-  }
-
-  /**
-   * Angriff: Liegt die Frontmitte der Einheit nach dem Loslassen höchstens 1″ vor einer Kante einer
-   * gegnerischen Einheit, wird sie an diese Kante angelegt – mit den meisten Modellen in Basekontakt.
-   */
-  private chargeSnap(unitId: string): string | null {
-    if (!helperOn('snap')) return null;
-    const units = this.store.state.units;
-    const u = units[unitId];
-    const me = unitFootprint(u, units);
-    const front = toTable(u, 0, -me.h / 2);
-    let best: { dist: number; target: UnitState; p: Point; n: Point; side: string } | null = null;
-    for (const t of Object.values(units)) {
-      if (t.owner === u.owner || isJoined(t, units) || t.status === 'destroyed' || t.status === 'fledOff') continue;
-      const { w, h } = unitFootprint(t, units);
-      // Kanten des Ziels: Mittelpunkt, Richtung entlang der Kante, Außennormale, halbe Länge
-      const edges: [string, Point, Point, number][] = [
-        ['front', { x: 0, y: -h / 2 }, { x: 0, y: -1 }, w / 2],
-        ['rear', { x: 0, y: h / 2 }, { x: 0, y: 1 }, w / 2],
-        ['left flank', { x: -w / 2, y: 0 }, { x: -1, y: 0 }, h / 2],
-        ['right flank', { x: w / 2, y: 0 }, { x: 1, y: 0 }, h / 2],
-      ];
-      const local = toLocal(t, front);
-      for (const [side, mid, n, half] of edges) {
-        const along = n.x === 0 ? local.x - mid.x : local.y - mid.y;
-        const out = (local.x - mid.x) * n.x + (local.y - mid.y) * n.y;
-        if (Math.abs(along) > half + 0.5 || out < -0.5 || out > CHARGE_SNAP) continue;
-        // Immer an den Base-Grenzen des Ziels anlegen
-        const step = (n.x === 0 ? t.info.baseWidth : t.info.baseDepth) / 25.4;
-        const clamped = alignToBases(along, half, step, me.w);
-        const lp = n.x === 0 ? { x: mid.x + clamped, y: mid.y } : { x: mid.x, y: mid.y + clamped };
-        const p = toTable(t, lp.x, lp.y);
-        const c = Math.cos(t.rotation);
-        const s = Math.sin(t.rotation);
-        const wn = { x: n.x * c - n.y * s, y: n.x * s + n.y * c };
-        if (!best || Math.abs(out) < best.dist) best = { dist: Math.abs(out), target: t, p, n: wn, side };
-      }
-    }
-    if (!best) return null;
-    // Charge-Regel: an dieser Kante so anlegen, dass möglichst viele Modelle beider Seiten Basekontakt haben
-    // (gleiche Wertung wie der Knopf „Charge move“); blockierte Lagen fallen weg
-    const bestSide = best.side;
-    const maxed = contactPoses(u, best.target, units)
-      .filter((q) => q.side === bestSide)
-      .find((q) => !overlappingUnits({ ...u, x: q.x, y: q.y, rotation: q.rotation }, units).length);
-    if (maxed) {
-      this.store.updateUnit(unitId, { x: maxed.x, y: maxed.y, rotation: maxed.rotation });
-      return `charges ${best.target.info.name} in the ${bestSide} – ${maxed.contacts} models in base contact`;
-    }
-    // Eigene Front zeigt gegen die Außennormale der Zielkante; Mitte liegt eine halbe Tiefe dahinter
-    const rotation = Math.atan2(-best.n.x, best.n.y);
-    this.store.updateUnit(unitId, { x: best.p.x + best.n.x * (me.h / 2), y: best.p.y + best.n.y * (me.h / 2), rotation });
-    return `charges ${best.target.info.name} in the ${bestSide}`;
-  }
-
-  /** Einheiten stehen nie übereinander: an Gegner anlegen oder zurück an den Start (siehe collision.ts). */
-  private separate(unitId: string, start: Pose): string | null {
-    if (!helperOn('apart')) return null;
-    const units = this.store.state.units;
-    const u = units[unitId];
-    if (!u) return null;
-    const fix = keepApart(u, units, start);
-    if (!fix) return null;
-    this.store.updateUnit(unitId, fix.pose);
-    return fix.note;
   }
 
   // --- Aktionen für Tastenkürzel -----------------------------------------------
@@ -429,9 +300,8 @@ export class Board {
     this.history.record();
     const p = toTable(u, right, -forward);
     this.store.updateUnit(u.id, { x: p.x, y: p.y });
-    const apart = this.separate(u.id, { x: u.x, y: u.y, rotation: u.rotation });
     const dist = Math.hypot(forward, right);
-    this.events.onAction(u.id, `${dist.toFixed(1)}″ ${forward > 0 ? 'forward' : forward < 0 ? 'backward' : right > 0 ? 'right' : 'left'}${apart ? ` · ${apart}` : ''}`);
+    this.events.onAction(u.id, `${dist.toFixed(1)}″ ${forward > 0 ? 'forward' : forward < 0 ? 'backward' : right > 0 ? 'right' : 'left'}`);
   }
 
   /** Auswahl um ihre Mitte drehen (Grad, im Uhrzeigersinn positiv). */
@@ -447,10 +317,8 @@ export class Board {
     const u = this.movableUnit();
     if (!u || !this.canMove(u.id)) return;
     this.history.record();
-    const start = { x: u.x, y: u.y, rotation: u.rotation };
     this.store.updateUnit(u.id, { rotation: u.rotation + rad });
-    const apart = this.separate(u.id, start);
-    this.events.onAction(u.id, `turned ${Math.abs(deg)}° ${deg > 0 ? 'right' : 'left'}${apart ? ` · ${apart}` : ''}`);
+    this.events.onAction(u.id, `turned ${Math.abs(deg)}° ${deg > 0 ? 'right' : 'left'}`);
   }
 
   /** Nächste bzw. vorige Einheit auswählen (bevorzugt die des Spielers am Zug). */
@@ -680,13 +548,11 @@ export class Board {
       return;
     }
     const text = this.describe(d);
-    const charge = d.type === 'move' ? this.chargeSnap(d.unitId) : null;
-    const apart = this.separate(d.unitId, { x: d.sx, y: d.sy, rotation: d.srot });
     // Zoll dieser Einheit weiter zusammenzählen (bis eine andere Einheit bewegt wird oder die Runde endet)
     const run = this.moveRun?.unitId === d.unitId ? this.moveRun.total : 0;
     this.moveRun = { unitId: d.unitId, total: run + this.dragInches(d), round: this.store.state.meta.round };
     if (this.dragInches(d) > 0.05) this.moved.set(d.unitId, this.turnKey());
-    const all = [text, charge, apart].filter(Boolean).join(' · ');
+    const all = text;
     if (all) this.events.onAction(d.unitId, all);
   }
 
