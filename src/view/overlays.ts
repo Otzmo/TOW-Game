@@ -129,5 +129,38 @@ export function drawRanges(layer: Container, state: GameState, unitId: string | 
   layer.addChild(c);
 }
 
+/**
+ * Ausgewählte Einheit: von beiden vorderen Ecken je ein gerader Strich nach vorn bis zur Tischkante –
+ * zeigt, wen die Einheit vor sich hat (hilft beim Ansagen und Ausrichten eines Angriffs).
+ * @param unitId ausgewählte Einheit oder ein angeschlossener Charakter (dann zählt seine Einheit); null = nichts zeigen
+ */
+export function drawFrontLines(layer: Container, state: GameState, unitId: string | null): void {
+  layer.removeChildren().forEach((c) => c.destroy());
+  const { units, table } = state;
+  let u = unitId ? units[unitId] : undefined;
+  if (u?.joinedTo && units[u.joinedTo]) u = units[u.joinedTo];
+  if (!u || u.ambush) return;
+  const { w, h } = unitFootprint(u, units);
+  const dir = { x: Math.sin(u.rotation), y: -Math.cos(u.rotation) };
+  const g = new Graphics();
+  for (const side of [-1, 1]) {
+    const a = toTable(u, (side * w) / 2, -h / 2);
+    // Bis zur Tischkante: kleinste Strecke, nach der der Strich den Tisch verlässt
+    const exits = [
+      dir.x > 1e-9 ? (table.width - a.x) / dir.x : dir.x < -1e-9 ? -a.x / dir.x : Infinity,
+      dir.y > 1e-9 ? (table.height - a.y) / dir.y : dir.y < -1e-9 ? -a.y / dir.y : Infinity,
+    ];
+    const len = Math.min(...exits);
+    if (!(len > 0) || !Number.isFinite(len)) continue;
+    // Gestrichelt: 1″ Strich, ½″ Lücke
+    for (let s = 0; s < len; s += 1.5) {
+      const e = Math.min(len, s + 1);
+      g.moveTo((a.x + dir.x * s) * PPI, (a.y + dir.y * s) * PPI).lineTo((a.x + dir.x * e) * PPI, (a.y + dir.y * e) * PPI);
+    }
+  }
+  g.stroke({ width: 1.5, color: 0xffffff, alpha: 0.75 });
+  layer.addChild(g);
+}
+
 // Sprüche früh laden, damit ihre Reichweiten beim ersten Anzeigen bekannt sind
 void loadSpells();

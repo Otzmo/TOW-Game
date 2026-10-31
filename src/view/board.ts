@@ -1,7 +1,7 @@
 import { Application, Container, FederatedPointerEvent, Graphics, Text } from 'pixi.js';
 import { BoardTools } from './boardTools';
 import { Camera } from './camera';
-import { drawCharges as paintCharges, drawRanges as paintRanges } from './overlays';
+import { drawCharges as paintCharges, drawFrontLines as paintFrontLines, drawRanges as paintRanges } from './overlays';
 import { toLocal, toTable } from '../model/flow';
 import { snapTogether, touchingEnemies } from '../model/snap';
 import {
@@ -65,6 +65,8 @@ export class Board {
   readonly camera: Camera;
   private readonly unitLayer = new Container();
   private readonly rangeLayer = new Container();
+  /** Gerade Striche nach vorn von beiden vorderen Ecken der ausgewählten Einheit */
+  private readonly frontLayer = new Container();
   /** Angriffspfeile: wer wen angreift, mit Reaktion und Ergebnis */
   private readonly chargeLayer = new Container();
   /** Zielauswahl beim Angriff ansagen: nächster Klick auf eine Einheit */
@@ -145,7 +147,7 @@ export class Board {
     });
     const t = this.tools;
     this.world.addChild(createTable(table.width, table.height), t.zoneLayer, t.terrainLayer, this.guide,
-      this.rangeLayer, this.unitLayer, this.chargeLayer, t.overlayLayer, t.toolLayer, this.moveLabel);
+      this.rangeLayer, this.frontLayer, this.unitLayer, this.chargeLayer, t.overlayLayer, t.toolLayer, this.moveLabel);
 
     app.stage.on('pointerdown', (e) => {
       // Einheit aus dem Hinterhalt: dort aufstellen, wo geklickt wird
@@ -300,6 +302,7 @@ export class Board {
   /** Bewegungs- und Angriffsreichweiten der ausgewählten Einheit (wenn eingeschaltet) */
   private drawRanges(): void {
     paintRanges(this.rangeLayer, this.store.state, this.showRanges ? this.selectedId : null);
+    paintFrontLines(this.frontLayer, this.store.state, this.selectedId);
   }
 
   // --- Aktionen für Tastenkürzel -----------------------------------------------
@@ -402,7 +405,7 @@ export class Board {
     // Gleiten zur neuen Stelle, außer während man die Einheit selbst zieht
     const dragging = !!this.drag && this.drag.type !== 'pan' && this.drag.unitId === u.id;
     if (view.visible) view.update(u, unitLayout(u, units), units, this.selectedId, !dragging);
-    if (this.showRanges && this.selectedId === u.id) this.drawRanges();
+    if (this.selectedId === u.id || (this.selectedId && this.store.state.units[this.selectedId]?.joinedTo === u.id)) this.drawRanges();
     // Angriffspfeile folgen bewegten Einheiten
     if (Object.values(this.store.state.charges).some((c) => c.charger === u.id || c.target === u.id)) this.drawCharges();
   }
