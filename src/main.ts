@@ -73,6 +73,8 @@ async function start(): Promise<void> {
     detach: (id) => board.detachCharacter(id),
     showRanges: (on) => board.setShowRanges(on),
     cancelCharge: (id) => board.cancelCharge(id),
+    resetMovement: (id) => board.resetMovement(id),
+    canResetMovement: (id) => board.canResetMovement(id),
     placeAmbush: (id) => board.startAmbushPlace(id),
   });
   const objectPanel = new ObjectPanel(store, history, {

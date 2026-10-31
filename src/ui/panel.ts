@@ -35,6 +35,9 @@ export interface PanelActions {
   showRanges(on: boolean): void;
   /** Pfeil eines angesagten Angriffs entfernen */
   cancelCharge(unitId: string): void;
+  /** Einheit an ihre Stelle vom Anfang des Spielerzugs zurücksetzen */
+  resetMovement(unitId: string): void;
+  canResetMovement(unitId: string): boolean;
   /** Einheit aus dem Hinterhalt aufstellen (nächster Klick auf den Tisch) */
   placeAmbush(unitId: string): void;
 }
@@ -51,7 +54,7 @@ export class UnitPanel {
   canMove: (unitId: string) => boolean = () => true;
   private lastAction = new Map<string, string>();
 
-  constructor(private store: Store, private history: History, actions: PanelActions) {
+  constructor(private store: Store, private history: History, private actions: PanelActions) {
     // Waffenprofile kommen aus einer eigenen Datei; sobald sie da ist, neu zeichnen
     void loadWeapons().then(() => this.render());
     // Zaubersprüche aller Lores (für die Sprüche im Profil des Zauberers)
@@ -102,6 +105,7 @@ export class UnitPanel {
       const u = this.unit();
       if (!btn || !u) return;
       if (btn.dataset.charge === 'cancel') actions.cancelCharge(u.id);
+      if (btn.dataset.charge === 'reset') actions.resetMovement(u.id);
       if (btn.dataset.charge === 'ambush' && this.canMove(u.id)) {
         this.change({ ambush: !u.ambush });
         this.setLastAction(u.id, u.ambush ? 'put in ambush' : 'back on the table');
@@ -252,7 +256,10 @@ export class UnitPanel {
   /** Angriff: ansagen (Distanz wird berechnet), dann mit einem Knopf die Angriffsbewegung ausführen */
   /** Hinterhalt: in der Aufstellung hinein- bzw. herausnehmen, danach von dort aufstellen (Angriffe: Knöpfe links) */
   private chargeHtml(u: UnitState): string {
-    return this.chargeOnlyHtml(u);
+    // Bewegung zurücknehmen: zurück an die Stelle vom Anfang des Spielerzugs
+    const reset = this.actions.canResetMovement(u.id) && !isJoined(u, this.store.state.units)
+      ? '<div class="row-btns"><button data-charge="reset" title="Back to where the unit stood at the start of this turn">↺ Reset movement</button></div>' : '';
+    return this.chargeOnlyHtml(u) + reset;
   }
 
   private chargeOnlyHtml(u: UnitState): string {

@@ -24,7 +24,7 @@ const ROTATE_SNAP = Math.PI / 12;
 const CAUTION_COLOR = 0xe0b44c;
 
 type ObjectDrag =
-  | { type: 'move'; id: string; ox: number; oy: number; gx: number; gy: number; moved: boolean }
+  | { type: 'move'; id: string; ox: number; oy: number; gx: number; gy: number; moved: boolean; start: Point }
   | { type: 'rotate' | 'size'; id: string; gx: number; gy: number; moved: boolean }
   | { type: 'measure' | 'sight'; id: string; a: Point; b: Point; gx: number; gy: number; moved: boolean;
     /** Liegendes Maßband anfassen: ein Ende oder die ganze Linie (from = Startpunkt des Zeigers) */
@@ -195,7 +195,16 @@ export class BoardTools {
     const o = this.store.state.objects[d.id];
     if (!o) return true;
     if (d.type === 'move') {
-      this.store.updateObject(d.id, { x: p.x + d.ox, y: p.y + d.oy });
+      const to = { x: p.x + d.ox, y: p.y + d.oy };
+      this.store.updateObject(d.id, to);
+      // Wie bei Einheiten: Linie vom Startpunkt und die gezogenen Zoll (z. B. eine Schablone nach der Abweichung versetzen)
+      const s = 1 / this.host.worldScale();
+      this.toolGraphics.clear().circle(d.start.x * PPI, d.start.y * PPI, 3 * s).fill(GUIDE_COLOR)
+        .moveTo(d.start.x * PPI, d.start.y * PPI).lineTo(to.x * PPI, to.y * PPI).stroke({ width: 1.5 * s, color: GUIDE_COLOR, alpha: 0.9 });
+      this.toolLabel.text = `${Math.hypot(to.x - d.start.x, to.y - d.start.y).toFixed(1)}″`;
+      this.toolLabel.style.fill = GUIDE_COLOR;
+      this.toolLabel.scale.set(s);
+      this.toolLabel.position.set(to.x * PPI, (to.y - Math.max(o.w, o.h) / 2) * PPI - 6 * s);
     } else if (d.type === 'rotate') {
       let a = Math.atan2(p.y - o.y, p.x - o.x) + Math.PI / 2;
       if (e.shiftKey) a = Math.round(a / ROTATE_SNAP) * ROTATE_SNAP;
@@ -216,6 +225,7 @@ export class BoardTools {
     if (!d) return false;
     this.drag = null;
     if (!('a' in d) && !d.moved) this.history.dropIfUnchanged();
+    if (d.type === 'move') this.clearToolDrawing();
     if ('a' in d) {
       // Das Maßband bleibt als Markierung auf dem Tisch liegen (für beide), bis es über sein × gelöscht wird
       if (d.moved) this.sendMeasure(d.id, d.type, d.a, d.b);
@@ -437,7 +447,7 @@ export class BoardTools {
     const p = this.host.toInches(e);
     this.history.record();
     this.drag = type === 'move'
-      ? { type, id, ox: o.x - p.x, oy: o.y - p.y, gx: e.global.x, gy: e.global.y, moved: false }
+      ? { type, id, ox: o.x - p.x, oy: o.y - p.y, gx: e.global.x, gy: e.global.y, moved: false, start: { x: o.x, y: o.y } }
       : { type, id, gx: e.global.x, gy: e.global.y, moved: false };
     this.select(id);
   }
