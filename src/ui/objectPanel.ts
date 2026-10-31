@@ -76,11 +76,12 @@ export class ObjectPanel {
     const art = checked('o-sc-art') ? artilleryDie() : null;
     const d3 = checked('o-sc-d3') ? Math.ceil(rnd(6) / 2) : null;
     const d6s = [...(checked('o-sc-d6') ? [rnd(6)] : []), ...(checked('o-sc-2d6') ? [rnd(6), rnd(6)] : [])];
-    const dist = (art ?? 0) + (d3 ?? 0) + d6s.reduce((s, d) => s + d, 0);
+    // −D3 verkürzt die Abweichung (z. B. Goblin-Katapult), nie unter 0
+    const dist = Math.max(0, (art ?? 0) + d6s.reduce((s, d) => s + d, 0) - (d3 ?? 0));
     const parts = [
       checked('o-sc-dir') ? (dir.hit ? 'HIT' : `arrow ${dir.angle}°`) : `direction ${dir.angle}°`,
       art !== null ? `artillery ${artilleryText(art)}` : '',
-      d3 !== null ? `D3 ${d3}` : '',
+      d3 !== null ? `−D3 ${d3}` : '',
       d6s.length ? `${d6s.length === 1 ? 'D6' : `${d6s.length}D6`} ${d6s.join(' + ')}` : '',
     ].filter(Boolean).join(' · ');
     const dice = [...(art !== null ? [art] : []), ...(d3 !== null ? [d3] : []), ...d6s];
@@ -102,7 +103,9 @@ export class ObjectPanel {
       return;
     }
     if (!dist) {
-      this.lastScatter = `<p class="warn">No distance dice chosen – tick the Artillery dice, D3, D6 or 2D6.</p>`;
+      this.lastScatter = d3 !== null && dice.length > 1
+        ? `<p class="ok"><b>No scatter</b> – the −D3 cancels the distance (${esc(parts)}). The template stays where it is.</p>`
+        : `<p class="warn">No distance dice chosen – tick the Artillery dice, D6 or 2D6.</p>`;
       this.render();
       return;
     }
