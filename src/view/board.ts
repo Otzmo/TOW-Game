@@ -3,7 +3,7 @@ import { BoardTools } from './boardTools';
 import { Camera } from './camera';
 import { drawCharges as paintCharges, drawRanges as paintRanges } from './overlays';
 import { toLocal, toTable } from '../model/flow';
-import { snapTogether } from '../model/snap';
+import { snapTogether, touchingEnemies } from '../model/snap';
 import {
   isJoined, isNonUnitChange, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
 } from '../model/store';
@@ -36,7 +36,9 @@ type UnitDragType = 'move' | 'rotate' | 'swing';
 type UnitDrag = { type: UnitDragType; unitId: string; ox: number; oy: number; sx: number; sy: number; srot: number;
   gx: number; gy: number; moved: boolean; swing?: Swing;
   /** Umschalt beim Ziehen gehalten: beim Loslassen nicht an andere Einheiten anlegen */
-  free?: boolean };
+  free?: boolean;
+  /** Gegner, an denen die Einheit schon vor dem Ziehen anlag: dort nicht erneut maximieren (Korrektur von Hand) */
+  touching?: Set<string> };
 
 /** Ein einzelnes Modell einer Plänklereinheit ziehen (Positionen in Einheitskoordinaten). */
 type ModelDrag = { type: 'model'; unitId: string; key: string; start: Point; startPointer: Point;
@@ -430,7 +432,7 @@ export class Board {
     }
     this.history.record();
     this.drag = { type, unitId, ox: u.x - p.x, oy: u.y - p.y, sx: u.x, sy: u.y, srot: u.rotation,
-      gx: e.global.x, gy: e.global.y, moved: type !== 'move', swing };
+      gx: e.global.x, gy: e.global.y, moved: type !== 'move', swing, touching: touchingEnemies(u, this.store.state.units) };
     const view = this.views.get(unitId);
     if (view && type === 'move') view.cursor = 'grabbing';
     this.select(selectId);
@@ -575,7 +577,7 @@ export class Board {
       return;
     }
     // Aneinander anlegen: liegt eine Kante knapp neben einer anderen Einheit, bündig und parallel einrasten (Umschalt: nicht)
-    const snap = d.free ? null : snapTogether(this.store.state.units[d.unitId], this.store.state.units);
+    const snap = d.free ? null : snapTogether(this.store.state.units[d.unitId], this.store.state.units, d.touching);
     if (snap) this.store.updateUnit(d.unitId, snap.pose);
     const text = [this.describe(d), snap ? `snapped to ${snap.to.info.name}` : ''].filter(Boolean).join(' · ');
     // Zoll dieser Einheit weiter zusammenzählen (bis eine andere Einheit bewegt wird oder die Runde endet)

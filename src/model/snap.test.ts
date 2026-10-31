@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { snapTogether } from './snap';
+import { snapTogether, touchingEnemies } from './snap';
 import { unitFootprint } from './store';
 import { byId, testUnit } from './testUnits';
 
@@ -47,6 +47,20 @@ describe('snap units together', () => {
     expect(r.pose.y).toBeCloseTo(B, 6);
     // Alle drei gegnerischen Modelle berührt: mittig darunter (Ecken der äußeren Bases zählen)
     expect(Math.abs(r.pose.x)).toBeLessThanOrEqual(B + 1e-6);
+  });
+
+  it('a unit already in contact can be corrected along the edge without jumping back to the maximised spot', () => {
+    const a = testUnit('a', { models: 3, rotation: Math.PI });
+    const b = testUnit('b', { owner: 'p2', models: 5, x: 2.6 * B, y: B + 0.4 });
+    const first = snapTogether(b, byId(a, b))!;
+    const placed = { ...b, ...first.pose };
+    const keep = touchingEnemies(placed, byId(a, placed));
+    expect(keep.has('a')).toBe(true);
+    // Von Hand 1,5 Bases zur Seite geschoben (leicht abgehoben): bleibt dort, nur bündig angelegt
+    const corrected = { ...placed, x: placed.x + 1.5 * B, y: B + 0.2 };
+    const r = snapTogether(corrected, byId(a, corrected), keep)!;
+    expect(r.pose.x).toBeCloseTo(placed.x + 1.5 * B, 6);
+    expect(r.pose.y).toBeCloseTo(B, 6);
   });
 
   it('facing each other (180°) snaps front to front', () => {

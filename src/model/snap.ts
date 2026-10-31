@@ -22,9 +22,11 @@ function outline(u: UnitState, w: number, h: number): Point[] {
  * der sie steht; entlang der Kante bleibt sie, wo sie losgelassen wurde. Eigene Einheiten rasten nicht ein.
  * Liegt sie mit ihrer Front an, wird wie beim Angriff maximiert: so viele Modelle wie möglich in Basekontakt
  * (auch Ecke an Ecke zählt), bei gleicher Zahl mit möglichst wenig seitlicher Verschiebung.
+ * Lag sie schon vor dem Ziehen an dieser Einheit an (keep, siehe touchingEnemies), wird nicht erneut maximiert:
+ * so lässt sich die Stellung entlang der Kante von Hand korrigieren, ohne dass sie zurückspringt.
  * Ergebnis: neue Lage und die Einheit, an der sie anliegt – oder null.
  */
-export function snapTogether(u: UnitState, units: Record<string, UnitState>):
+export function snapTogether(u: UnitState, units: Record<string, UnitState>, keep: ReadonlySet<string> = new Set()):
   { pose: Pick<UnitState, 'x' | 'y' | 'rotation'>; to: UnitState } | null {
   if (isSkirmish(u) || isJoined(u, units)) return null;
   const me = unitFootprint(u, units);
@@ -37,6 +39,7 @@ export function snapTogether(u: UnitState, units: Record<string, UnitState>):
     // Wirklicher Abstand der Umrisse (bei schräger Stellung zählt die nächste Ecke)
     const dist = polyDistance(mine, outline(t, them.w, them.h));
     if (dist > SNAP_DISTANCE || (best && dist >= best.dist)) continue;
+    const maximise = !keep.has(t.id);
     // Nächste Ausrichtung in 90°-Schritten zur gegnerischen Einheit
     const quarter = Math.round(norm(u.rotation - t.rotation) / (Math.PI / 2));
     const rotation = t.rotation + quarter * (Math.PI / 2);
@@ -57,9 +60,22 @@ export function snapTogether(u: UnitState, units: Record<string, UnitState>):
     let pose = { x, y, rotation };
     // Front an der Kante? Dann die maximierte Stellung an dieser Kante (gleiche Wertung wie beim Angriff)
     const side = byX ? (lx < 0 ? 'left flank' : 'right flank') : (ly < 0 ? 'front' : 'rear');
-    const maxed = contactPoses({ ...u, ...pose }, t, units).filter((q) => q.side === side)[0];
+    const maxed = maximise ? contactPoses({ ...u, ...pose }, t, units).filter((q) => q.side === side)[0] : undefined;
     if (maxed && Math.abs(norm(maxed.rotation - rotation)) < 0.01) pose = { x: maxed.x, y: maxed.y, rotation: maxed.rotation };
     best = { pose, to: t, dist };
   }
   return best ? { pose: best.pose, to: best.to } : null;
+}
+
+/** Gegnerische Einheiten, an denen die Einheit gerade anliegt (Umrisse berühren sich) */
+export function touchingEnemies(u: UnitState, units: Record<string, UnitState>): Set<string> {
+  const me = unitFootprint(u, units);
+  const mine = outline(u, me.w, me.h);
+  const ids = new Set<string>();
+  for (const t of Object.values(units)) {
+    if (t.id === u.id || t.owner === u.owner || t.status === 'destroyed' || t.status === 'fledOff') continue;
+    const them = unitFootprint(t, units);
+    if (polyDistance(mine, outline(t, them.w, them.h)) < 0.02) ids.add(t.id);
+  }
+  return ids;
 }
