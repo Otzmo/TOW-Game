@@ -84,6 +84,8 @@ export class UnitView extends Container {
     this.eventMode = 'static';
     this.cursor = 'grab';
     for (const g of [this.handle, this.wheelLeft, this.wheelRight]) g.eventMode = 'static';
+    // Die 45°-Linien fangen keine Klicks ab
+    this.arcs.eventMode = 'none';
     this.handle.cursor = 'crosshair';
     this.wheelLeft.cursor = 'alias';
     this.wheelRight.cursor = 'alias';
@@ -260,15 +262,13 @@ export class UnitView extends Container {
       g.hitArea = new Circle(cx, -H / 2, 9);
     }
 
-    // Bögen: Linien diagonal aus den Ecken, Frontbereich leicht eingefärbt
+    // Bögen: nur Linien im 45°-Winkel aus den Ecken (keine Fläche – darunter bleibt alles anklickbar)
     const d = ARC_LENGTH * PPI * Math.SQRT1_2;
     const corners: [number, number, number, number][] = [
       [-W / 2, -H / 2, -1, -1], [W / 2, -H / 2, 1, -1], [-W / 2, H / 2, -1, 1], [W / 2, H / 2, 1, 1],
     ];
     for (const [cx, cy, dx, dy] of corners) this.arcs.moveTo(cx, cy).lineTo(cx + dx * d, cy + dy * d);
     this.arcs.stroke({ width: 1, color: 0xffffff, alpha: 0.35 });
-    this.arcs.poly([-W / 2, -H / 2, W / 2, -H / 2, W / 2 + d, -H / 2 - d, -W / 2 - d, -H / 2 - d])
-      .fill({ color: colors.edge, alpha: 0.08 });
   }
 
   /**
