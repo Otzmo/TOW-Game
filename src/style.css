@@ -364,7 +364,7 @@ body.sheet-open .bottom-panel { display: none; }
 .atk-rules-box { margin-top: 8px; }
 /* Schablone: Würfel zum Abweichen auswählen */
 #o-scatter-row .check { display: flex; align-items: flex-start; justify-content: flex-start; gap: 8px; text-align: left; margin: 3px 0; font-size: calc(12px * var(--ui)); }
-#o-scatter-row .check input { flex: none; margin-top: 2px; }
+#o-scatter-row .check input { flex: none; width: auto; margin-top: 2px; }
 /* Eine Zeile je Profil (Truppe, Champion, Reittier, Charakter) */
 .atk-lines { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: calc(12px * var(--ui)); }
 .atk-lines th { text-align: left; color: var(--muted); font-weight: 600; padding: 3px 4px; border-bottom: 1px solid var(--line); }
@@ -574,7 +574,7 @@ body:not(.battle) #g-end { display: none; }
 #sheet-battlefield details p { white-space: pre-line; color: var(--muted); }
 #sheet-battlefield p { margin: 4px 0; }
 /* In der Aufstellung nur, was dafür gebraucht wird: Maßband, Sichtlinie, Marker, Schablonen, Siegpunkte und Würfel erst danach */
-body:not(.battle) #toolbox [data-attack], body:not(.battle) #toolbox [data-tool="measure"], body:not(.battle) #toolbox [data-tool="sight"],
+body:not(.battle) #toolbox [data-attack], body:not(.battle) #toolbox [data-test], body:not(.battle) #toolbox [data-tool="measure"], body:not(.battle) #toolbox [data-tool="sight"],
 body:not(.battle) #toolbox [data-sheet="markers"], body:not(.battle) #toolbox [data-sheet="templates"],
 body:not(.battle) #toolbox [data-sheet="score"], body:not(.battle) #toolbox [data-sheet="dice"] { display: none; }
 #lobby { z-index: 20; }

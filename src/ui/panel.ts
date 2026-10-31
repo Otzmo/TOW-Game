@@ -1,17 +1,22 @@
 import type { Store } from '../model/store';
 import {
   canSkirmish, isJoined, isNonUnitChange, isSkirmish, joinedCharacters, rearFree, SKIRMISH_GAP, spreadPositions,
-  unitFootprint, unitLayout,
+  unitLayout,
 } from '../model/store';
 import type { History } from '../model/history';
 import { armourInfo, loadWeapons, optionInfo, unitSaves, unitWeapons, visibleOptions, visibleRules, weaponRule } from '../model/gear';
+import { keepFront, loseWounds } from '../model/wounds';
+import { wizardLevel } from '../model/flow';
 import { modifiedValue, rollTables, statMods, tableMods, type StatMod } from '../model/modifiers';
-import { hasStandard, mountBonus, unitVictoryPoints, wounds, woundsPerModel } from '../model/score';
+import { hasStandard, mountBonus, unitVictoryPoints, wounds } from '../model/score';
 import type { RuleRef, UnitState, UnitStatus } from '../model/types';
 import { PLAYER_COLORS } from '../view/theme';
 import { currentPhase } from '../model/phases';
 
 const $ = (id: string) => document.getElementById(id)!;
+
+/** Zauberspruch aus spells.json */
+interface SpellInfo { name: string; slug: string; type: string; castingValue: number | null; range: string; text: string }
 
 /** Vergleichsschlüssel für Regel- und Optionsnamen: ohne Klammerwerte, Groß-/Kleinschreibung und Satzzeichen */
 const ruleKey = (s: string) => s.toLowerCase().replace(/\([^)]*\)/g, '').replace(/[^a-z0-9]/g, '');
@@ -47,10 +52,18 @@ export class UnitPanel {
   /** Phasenregeln: Umformieren zählt als Bewegung */
   canMove: (unitId: string) => boolean = () => true;
   private lastAction = new Map<string, string>();
+  /** Zaubersprüche nach slug (aus spells.json) */
+  private spells = new Map<string, SpellInfo & { lore: string }>();
 
   constructor(private store: Store, private history: History, actions: PanelActions) {
     // Waffenprofile kommen aus einer eigenen Datei; sobald sie da ist, neu zeichnen
     void loadWeapons().then(() => this.render());
+    // Zaubersprüche aller Lores (für die Sprüche im Profil des Zauberers)
+    fetch(`${import.meta.env.BASE_URL}data/spells.json`).then((r) => (r.ok ? r.json() : [])).catch(() => [])
+      .then((lores: { name: string; spells: SpellInfo[] }[]) => {
+        for (const l of lores) for (const s of l.spells) this.spells.set(s.slug, { ...s, lore: l.name });
+        this.render();
+      });
     // Begriff anklicken (Waffe, Waffenregel, Rüstungsteil …): Erklärung im Abschnitt zeigen bzw. schließen
     $('panel').addEventListener('click', (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-info]');
@@ -168,16 +181,8 @@ export class UnitPanel {
   private applyWounds(n: number): void {
     const u = this.unit();
     if (!u) return;
-    const per = woundsPerModel(u);
-    let models = u.models;
-    let lost = (u.woundsLost ?? 0) + n;
-    while (lost >= per && models > 1) {
-      models--;
-      lost -= per;
-    }
-    lost = Math.max(0, Math.min(per, lost));
-    const removed = u.models - models;
-    this.change(this.keepFront(u, { models, woundsLost: lost }));
+    const { patch, removed } = loseWounds(u, this.store.state.units, n);
+    this.change(patch);
     if (n > 0) {
       this.setLastAction(u.id, `lost ${n} wound${n === 1 ? '' : 's'}${removed ? ` – ${removed} model${removed === 1 ? '' : 's'} removed` : ''}`);
     }
@@ -203,14 +208,7 @@ export class UnitPanel {
    * die Einheit wächst bzw. schrumpft nach hinten.
    */
   private keepFront(u: UnitState, patch: Partial<UnitState>): Partial<UnitState> {
-    const units = this.store.state.units;
-    if (isSkirmish(u)) return patch;
-    const before = unitFootprint(u, units).h;
-    const after = unitFootprint({ ...u, ...patch }, units).h;
-    const shift = (after - before) / 2;
-    if (Math.abs(shift) < 1e-6) return patch;
-    // In Einheitsrichtung nach hinten (+y lokal)
-    return { ...patch, x: u.x - Math.sin(u.rotation) * shift, y: u.y + Math.cos(u.rotation) * shift };
+    return keepFront(u, this.store.state.units, patch);
   }
 
   /** Plänkler in Reihen mit 0,5″ Abstand aufstellen (Breite wie eingestellt). */
@@ -322,6 +320,15 @@ export class UnitPanel {
     this.linked = shown;
     $('p-weapons').innerHTML = this.weaponsHtml(u, shown);
     $('p-saves').innerHTML = this.savesHtml(u, shown);
+    // Zauberer: die ausgewürfelten bzw. gewählten Sprüche mit Spruchwert, Reichweite und Text zum Aufklappen
+    const spells = (u.spells ?? []).map((slug) => this.spells.get(slug)).filter((x): x is SpellInfo & { lore: string } => !!x);
+    const wizard = wizardLevel(u) > 0;
+    $('p-spells-sec').hidden = !spells.length && !wizard;
+    $('p-spells').innerHTML = spells.length
+      ? spells.map((s) => `<details><summary>${escapeHtml(s.name)}<span class="note">${s.castingValue ? `${s.castingValue}+` : '–'} · ${escapeHtml(s.range || '–')} · ${escapeHtml(s.type)}</span></summary>
+          <p>${escapeHtml(s.text)}
+<span class="meta">${escapeHtml(s.lore)}</span></p></details>`).join('')
+      : '<p class="meta">No spells chosen yet – roll them in the Spells window (Z).</p>';
     // Auch Mehrzahl zählt: "Great weapons" ist oben "Great Weapon", "Shields" ist "Shield"
     const isShown = (name: string) => {
       const k = ruleKey(name);

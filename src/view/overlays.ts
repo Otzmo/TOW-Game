@@ -1,8 +1,13 @@
 import { Container, Graphics, Text } from 'pixi.js';
 import { frontCenter, toLocal, toTable } from '../model/flow';
+import { weaponRange } from '../model/attack';
+import { unitWeapons } from '../model/gear';
 import { unitFootprint } from '../model/store';
 import type { GameState, UnitState } from '../model/types';
 import { OK_COLOR, PPI, STRAY_COLOR } from './theme';
+
+/** Farbe der Schussreichweiten */
+const SHOOT_COLOR = 0x8fca7a;
 
 /** Bewegungswert der Einheit: erster Zahlenwert in der M-Spalte (bei Reitern der des Reittiers). */
 function movement(u: UnitState): number | null {
@@ -62,7 +67,8 @@ export function drawCharges(layer: Container, state: GameState): void {
 
 /**
  * Reichweiten einer Einheit als Abstand um ihre Fläche:
- * Bewegung (M), Marsch (2 × M) und größte mögliche Angriffsreichweite (M + 6, Swiftstride +3, Battle Hunger +2).
+ * Bewegung (M), Marsch (2 × M) und größte mögliche Angriffsreichweite (M + 6, Swiftstride +3, Battle Hunger +2);
+ * dazu für Schusswaffen die Reichweite und die halbe Reichweite (darüber hinaus lange Reichweite).
  * @param unitId ausgewählte Einheit oder ein angeschlossener Charakter (dann zählt seine Einheit); null = nichts zeigen
  */
 export function drawRanges(layer: Container, state: GameState, unitId: string | null): void {
@@ -71,8 +77,7 @@ export function drawRanges(layer: Container, state: GameState, unitId: string | 
   let u = unitId ? units[unitId] : undefined;
   if (u?.joinedTo && units[u.joinedTo]) u = units[u.joinedTo];
   if (!u) return;
-  const m = movement(u);
-  if (!m) return;
+  const m = movement(u) ?? 0;
   // Regeln der Einheit, ihres Reittiers und angeschlossener Charaktere
   const all = [u, ...Object.values(units).filter((c) => c.joinedTo === u!.id)];
   const has = (re: RegExp) => all.some((x) => [...x.info.rules, ...x.info.items].some((r) => re.test(r.name)));
@@ -87,17 +92,26 @@ export function drawRanges(layer: Container, state: GameState, unitId: string | 
   c.rotation = u.rotation;
   const g = new Graphics();
   c.addChild(g);
-  const ranges: [number, string, number][] = [[m, `Move ${m}″`, 0xffffff], [2 * m, `March ${2 * m}″`, 0x9ab4d8],
-    [base, `Charge max. ${base}″ (M+6)`, 0xf0a35e]];
+  // Bewegung und Angriff: Beschriftung oben; Schusswaffen: Beschriftung unten, damit sich nichts überdeckt
+  const ranges: [number, string, number, boolean][] = m ? [[m, `Move ${m}″`, 0xffffff, true], [2 * m, `March ${2 * m}″`, 0x9ab4d8, true],
+    [base, `Charge max. ${base}″ (M+6)`, 0xf0a35e, true]] : [];
   // Swiftstride und Battle Hunger verlängern den Angriff: eigener Ring mit Aufschlüsselung
-  if (extras.length) ranges.push([charge, `With ${extras.map(([n, d]) => `${n} +${d}`).join(', ')}: ${charge}″`, STRAY_COLOR]);
-  for (const [d, text, color] of ranges) {
+  if (m && extras.length) ranges.push([charge, `With ${extras.map(([n, d]) => `${n} +${d}`).join(', ')}: ${charge}″`, STRAY_COLOR, true]);
+  const missiles = new Map<number, string>();
+  for (const p of [...u.info.items.flatMap((i) => i.profiles ?? []), ...unitWeapons(u.info).flatMap((x) => x.profiles)]) {
+    const r = weaponRange(p.range);
+    if (r && !missiles.has(r)) missiles.set(r, p.name);
+  }
+  for (const [r, name] of missiles) {
+    ranges.push([r, `${name} ${r}″`, SHOOT_COLOR, false], [r / 2, `${name}: long range beyond ${r / 2}″`, SHOOT_COLOR, false]);
+  }
+  for (const [d, text, color, top] of ranges) {
     const D = d * PPI;
     g.roundRect((-w / 2) * PPI - D, (-h / 2) * PPI - D, w * PPI + 2 * D, h * PPI + 2 * D, D)
-      .stroke({ width: 1.5, color, alpha: 0.7 });
+      .stroke({ width: 1.5, color, alpha: top || text.includes(' long range') ? 0.7 : 0.9 });
     const t = new Text({ text, style: { fontFamily: 'system-ui', fontSize: 12, fontWeight: '600', fill: color, stroke: { color: 0x000000, width: 3 } }, resolution: 6 });
-    t.anchor.set(0.5, 1);
-    t.position.set(0, (-h / 2) * PPI - D - 1);
+    t.anchor.set(0.5, top ? 1 : 0);
+    t.position.set(0, top ? (-h / 2) * PPI - D - 1 : (h / 2) * PPI + D + 1);
     c.addChild(t);
   }
   layer.addChild(c);

@@ -44,6 +44,8 @@
       <button data-attack="charge" title="Charge: click your unit, then the enemy unit">⚔ Charge</button>
       <button data-attack="shooting" title="Shoot: click your unit, then the target">🏹 Shoot</button>
       <button data-attack="combat" title="Fight: click your unit, then the enemy unit">🗡 Fight</button>
+      <button data-test="break" title="Break test: click the unit that lost the combat">⚑ Break test</button>
+      <button data-test="ld" title="Leadership, Panic, Fear, Terror or Rally test: click the unit">☯ Ld test</button>
       <hr>
       <button data-sheet="battlefield" title="Reopen the current setup step">⚙ Setup ▸</button>
       <button data-sheet="markers">◆ Markers ▸</button>
@@ -223,6 +225,11 @@
       <section class="col">
         <h3>Armour, Ward &amp; Regeneration</h3>
         <div id="p-saves"></div>
+      </section>
+
+      <section class="col" id="p-spells-sec" hidden>
+        <h3>Spells</h3>
+        <div id="p-spells"></div>
       </section>
 
       <section class="col compact">

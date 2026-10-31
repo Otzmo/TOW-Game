@@ -8,6 +8,7 @@ import type { Store } from '../model/store';
 import type { Charge, ChargeReaction, LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
 import { AttackFlow } from './attackFlow';
 import { ChargeFlow } from './chargeFlow';
+import { TestFlow } from './testFlow';
 import { diceHtml } from './dice';
 
 const $ = (id: string) => document.getElementById(id)!;
@@ -44,6 +45,8 @@ export class PromptCenter {
   readonly attacks: AttackFlow;
   /** Angriff: Ansage, Reaktion, Angriffswurf */
   readonly charges: ChargeFlow;
+  /** Aufriebstest und Leadership-Tests */
+  readonly tests: TestFlow;
 
   constructor(private store: Store, private history: History, private host: PromptHost) {
     this.attacks = new AttackFlow({
@@ -52,6 +55,12 @@ export class PromptCenter {
       create: (kind, to, from, title, text, data) => this.create(kind, to, from, title, text, data),
       finish: (p, result) => this.finish(p, result),
       movedThisTurn: (id) => host.movedThisTurn(id),
+    });
+    this.tests = new TestFlow({
+      store,
+      log: (entry) => host.log(entry),
+      create: (kind, to, from, title, text, data) => this.create(kind, to, from, title, text, data),
+      finish: (p, result) => this.finish(p, result),
     });
     this.charges = new ChargeFlow({
       store,
@@ -209,6 +218,7 @@ export class PromptCenter {
       case 'saves': this.attacks.renderSaves(p, body); break;
       case 'dispel': this.renderDispel(p, body); break;
       case 'test': this.renderTest(p, body); break;
+      case 'ldtest': this.tests.render(p, body); break;
     }
     // Zusehen: dasselbe Fenster, aber nichts anklickbar
     if (mode === 'watch') {

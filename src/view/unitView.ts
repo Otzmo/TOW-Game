@@ -1,5 +1,5 @@
 import { Circle, Container, Graphics, Rectangle, Text } from 'pixi.js';
-import { isDestroyed } from '../model/score';
+import { isDestroyed, wounds, woundsPerModel } from '../model/score';
 import { isSkirmish, type UnitLayout } from '../model/store';
 import type { UnitState } from '../model/types';
 import { PLAYER_COLORS, PPI, STRAY_COLOR, UPRIGHT } from './theme';
@@ -287,9 +287,14 @@ export class UnitView extends Container {
       resolution: 8,
     });
     const start = u.info.startModels ?? u.models;
+    // Modelle mit mehreren Lebenspunkten: übrige Lebenspunkte gleich sichtbar (Einzelmodell immer, Einheit am angeschlagenen Modell)
+    const per = woundsPerModel(u);
+    const hurt = (u.woundsLost ?? 0) > 0;
+    const hearts = per > 1 && (start === 1 || hurt) ? `${start > 1 ? ' ' : ''}♥${start > 1 ? per - (u.woundsLost ?? 0) : wounds(u).left}/${per}` : '';
+    const damaged = u.models < start || !!status || hurt;
     const count = new Text({
-      text: start > 1 ? `${u.models}/${start}` : status || '1',
-      style: { fontFamily: 'system-ui', fontSize: 9, fontWeight: '800', fill: u.models < start || status ? 0x1a1a1a : 0xf3e6c4 },
+      text: start > 1 ? `${u.models}/${start}${hearts}` : status || hearts || '1',
+      style: { fontFamily: 'system-ui', fontSize: 9, fontWeight: '800', fill: damaged ? 0x1a1a1a : 0xf3e6c4 },
       resolution: 8,
     });
     const extra = start > 1 && status ? new Text({
@@ -306,7 +311,7 @@ export class UnitView extends Container {
     name.position.set(-total / 2, 0);
     const badgeX = -total / 2 + name.width + 6;
     const badge = new Graphics().roundRect(badgeX, -6.5, bw, 13, 6.5)
-      .fill(u.models < start || status ? 0xe8a04a : 0x4a3a26);
+      .fill(damaged ? 0xe8a04a : 0x4a3a26);
     count.anchor.set(0.5);
     count.position.set(badgeX + bw / 2, 0);
     plaque.addChild(bg, name, badge, count);

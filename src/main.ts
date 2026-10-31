@@ -111,6 +111,18 @@ async function start(): Promise<void> {
     allowMove: (id) => gate.grant(id),
     movedThisTurn: (id) => board.movedThisTurn(id),
   });
+  // Aufriebstest, Leadership-Tests: Knopf links, dann die Einheit anklicken (gewürfelt wird beim Besitzer)
+  document.querySelectorAll<HTMLButtonElement>('[data-test]').forEach((btn) => {
+    btn.onclick = () => {
+      const me = seat;
+      if (me === 'spectator') return;
+      const kind = btn.dataset.test as 'break' | 'ld';
+      board.startPick(`${kind === 'break' ? 'Break test' : 'Leadership test'}: click the unit`, () => true, (id) => {
+        const u = store.state.units[id];
+        prompts.tests.start(me ?? u.owner, id, kind);
+      });
+    };
+  });
   // Angriff, Beschuss, Nahkampf: Knopf links, dann die eigene Einheit, dann das Ziel anklicken
   document.querySelectorAll<HTMLButtonElement>('[data-attack]').forEach((btn) => {
     btn.onclick = () => {

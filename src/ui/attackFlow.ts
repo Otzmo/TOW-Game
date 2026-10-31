@@ -5,6 +5,8 @@ import {
 } from '../model/attack';
 import { d6, minChargeDistance, roll, statOf } from '../model/flow';
 import { unitSaves, unitWeapons } from '../model/gear';
+import { isDestroyed, wounds as woundsOf, woundsPerModel } from '../model/score';
+import { loseWounds } from '../model/wounds';
 import type { History } from '../model/history';
 import { playerName } from '../model/players';
 import { objectPolygon, pointInPolygon } from '../model/objects';
@@ -648,27 +650,32 @@ export class AttackFlow {
         parts.push(`${g.label}: ${steps.join(' → ')}`);
       }
       const text = parts.join('; ');
-      stage.saves = { rows: rowsOut, unsaved, perWound, text } satisfies SavesRolled;
+      // Verluste gleich anwenden: erst ein Modell ganz, dann das nächste; die Front bleibt stehen
+      const per = woundsPerModel(target);
+      const single = (target.info.startModels ?? target.models) === 1;
+      const lost = perWound.reduce((sum, w) => sum + (single ? w : Math.min(w, per)), 0);
+      let what = 'Nothing lost.';
+      if (lost) {
+        this.host.history.record();
+        const { patch, removed } = loseWounds(target, this.units, lost);
+        this.host.store.updateUnit(target.id, patch);
+        const after = { ...target, ...patch };
+        what = isDestroyed(after) ? `${target.info.name} is destroyed.`
+          : single ? `${target.info.name} loses ${plural(lost, 'Wound')} (${woundsOf(after).left} left).`
+          : `${plural(removed, 'model')} removed from ${target.info.name}${after.woundsLost ? ` · one model has lost ${plural(after.woundsLost, 'Wound')}` : ''}.`;
+      }
+      stage.saves = { rows: rowsOut, unsaved, perWound, text, what } satisfies SavesRolled;
       this.host.log({ kind: 'roll', text: `${target.info.name}: ${text}`, dice: allDice.filter((d) => d.length) });
       redraw();
     };
   }
 
   private showSaves(p: Prompt, body: HTMLElement, target: UnitState, done: SavesRolled): void {
-    const perModel = target.info.woundsPerModel ?? 1;
-    const single = (target.info.startModels ?? target.models) === 1;
-    // Einzelmodell: alle verlorenen Lebenspunkte zählen; Einheit: überzählige Wounds einer Verwundung verfallen
-    const lost = done.perWound.reduce((s, w) => s + (single ? w : Math.min(w, perModel)), 0);
-    const losses = single ? lost : Math.floor(lost / perModel);
-    // Entfernt wird von Hand: das Fenster sagt nur, wie viele Modelle bzw. Lebenspunkte verloren gehen
-    const what = !done.unsaved ? 'Nothing to remove.'
-      : single ? `${target.info.name} loses ${plural(losses, 'Wound')} – mark them by hand.`
-      : `Remove ${plural(losses, 'model')} from ${target.info.name} by hand${lost % perModel ? ` (${lost % perModel} Wound${lost % perModel === 1 ? '' : 's'} left over on one model)` : ''}.`;
     body.innerHTML = `${done.rows.map((r) => `<div class="dice-row"><span class="dice-label">${esc(r.label)} ${r.need}+</span>${diceHtml(r.dice, r.need ?? 7)}</div>`).join('')}
       <p class="prompt-info"><b>${done.unsaved} unsaved.</b> ${esc(done.text)}</p>
-      <p class="prompt-info"><b>${esc(what)}</b></p>
+      <p class="prompt-info"><b>${esc(done.what)}</b></p>
       <div class="prompt-actions"><button class="primary" data-ok>Done</button></div>`;
-    (body.querySelector('[data-ok]') as HTMLButtonElement).onclick = () => this.host.finish(p, `${target.info.name}: ${done.text}. ${what}`);
+    (body.querySelector('[data-ok]') as HTMLButtonElement).onclick = () => this.host.finish(p, `${target.info.name}: ${done.text}. ${done.what}`);
   }
 
   // --- Modifikatoren ----------------------------------------------------------
@@ -721,4 +728,6 @@ interface SavesRolled {
   /** Verlorene Wounds je unverhinderter Verwundung (Multiple Wounds, sonst 1) */
   perWound: number[];
   text: string;
+  /** Was mit dem Ziel passiert ist (Modelle entfernt, Lebenspunkte verloren) */
+  what: string;
 }
