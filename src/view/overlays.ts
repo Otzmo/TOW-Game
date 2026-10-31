@@ -2,12 +2,15 @@ import { Container, Graphics, Text } from 'pixi.js';
 import { frontCenter, toLocal, toTable } from '../model/flow';
 import { weaponRange } from '../model/attack';
 import { unitWeapons } from '../model/gear';
+import { loadSpells, spellInfo } from '../model/spellData';
 import { unitFootprint } from '../model/store';
 import type { GameState, UnitState } from '../model/types';
 import { OK_COLOR, PPI, STRAY_COLOR } from './theme';
 
 /** Farbe der Schussreichweiten */
 const SHOOT_COLOR = 0x8fca7a;
+/** Farbe der Zauberreichweiten */
+const SPELL_COLOR = 0xb48cff;
 
 /** Bewegungswert der Einheit: erster Zahlenwert in der M-Spalte (bei Reitern der des Reittiers). */
 function movement(u: UnitState): number | null {
@@ -68,7 +71,8 @@ export function drawCharges(layer: Container, state: GameState): void {
 /**
  * Reichweiten einer Einheit als Abstand um ihre Fläche:
  * Bewegung (M), Marsch (2 × M) und größte mögliche Angriffsreichweite (M + 6, Swiftstride +3, Battle Hunger +2);
- * dazu für Schusswaffen die Reichweite und die halbe Reichweite (darüber hinaus lange Reichweite).
+ * dazu für Schusswaffen die Reichweite und die halbe Reichweite (darüber hinaus lange Reichweite) und für die
+ * gewählten Zaubersprüche ihre Reichweite.
  * @param unitId ausgewählte Einheit oder ein angeschlossener Charakter (dann zählt seine Einheit); null = nichts zeigen
  */
 export function drawRanges(layer: Container, state: GameState, unitId: string | null): void {
@@ -105,6 +109,14 @@ export function drawRanges(layer: Container, state: GameState, unitId: string | 
   for (const [r, name] of missiles) {
     ranges.push([r, `${name} ${r}″`, SHOOT_COLOR, false], [r / 2, `${name}: long range beyond ${r / 2}″`, SHOOT_COLOR, false]);
   }
+  // Zaubersprüche der Einheit und angeschlossener Zauberer: je Reichweite ein Ring mit den Namen der Sprüche
+  const spells = new Map<number, string[]>();
+  for (const slug of all.flatMap((x) => x.spells ?? [])) {
+    const s = spellInfo(slug);
+    const r = s ? weaponRange(s.range) : null;
+    if (s && r) spells.set(r, [...(spells.get(r) ?? []), s.name]);
+  }
+  for (const [r, names] of spells) ranges.push([r, `${names.join(', ')} ${r}″`, SPELL_COLOR, false]);
   for (const [d, text, color, top] of ranges) {
     const D = d * PPI;
     g.roundRect((-w / 2) * PPI - D, (-h / 2) * PPI - D, w * PPI + 2 * D, h * PPI + 2 * D, D)
@@ -116,3 +128,6 @@ export function drawRanges(layer: Container, state: GameState, unitId: string | 
   }
   layer.addChild(c);
 }
+
+// Sprüche früh laden, damit ihre Reichweiten beim ersten Anzeigen bekannt sind
+void loadSpells();

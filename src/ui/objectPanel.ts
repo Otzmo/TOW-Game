@@ -64,7 +64,7 @@ export class ObjectPanel {
   /**
    * Abweichung einer Schablone mit den angehakten Würfeln: Abweichungswürfel für die Richtung (HIT = Volltreffer,
    * die Schablone bleibt liegen), Artilleriewürfel und/oder D6/2D6 für die Entfernung (Misfire = kein Schuss).
-   * Danach wird die Schablone verschoben.
+   * Die Schablone wird nicht verschoben – das Fenster zeigt nur Richtung und Entfernung.
    */
   private scatter(): void {
     const o = this.id ? this.store.state.objects[this.id] : undefined;
@@ -74,14 +74,16 @@ export class ObjectPanel {
     // Ohne Abweichungswürfel: zufällige Richtung, kein Volltreffer
     const dir = checked('o-sc-dir') ? scatterDie() : { hit: false, angle: rnd(360) - 1 };
     const art = checked('o-sc-art') ? artilleryDie() : null;
+    const d3 = checked('o-sc-d3') ? Math.ceil(rnd(6) / 2) : null;
     const d6s = [...(checked('o-sc-d6') ? [rnd(6)] : []), ...(checked('o-sc-2d6') ? [rnd(6), rnd(6)] : [])];
-    const dist = (art ?? 0) + d6s.reduce((s, d) => s + d, 0);
+    const dist = (art ?? 0) + (d3 ?? 0) + d6s.reduce((s, d) => s + d, 0);
     const parts = [
       checked('o-sc-dir') ? (dir.hit ? 'HIT' : `arrow ${dir.angle}°`) : `direction ${dir.angle}°`,
       art !== null ? `artillery ${artilleryText(art)}` : '',
+      d3 !== null ? `D3 ${d3}` : '',
       d6s.length ? `${d6s.length === 1 ? 'D6' : `${d6s.length}D6`} ${d6s.join(' + ')}` : '',
     ].filter(Boolean).join(' · ');
-    const dice = [...(art !== null ? [art] : []), ...d6s];
+    const dice = [...(art !== null ? [art] : []), ...(d3 !== null ? [d3] : []), ...d6s];
     this.pending = null;
     if (art === 0) {
       this.lastScatter = `<p class="warn"><b>Misfire!</b> (${esc(parts)}) – roll on the misfire table.</p>`;
@@ -100,7 +102,7 @@ export class ObjectPanel {
       return;
     }
     if (!dist) {
-      this.lastScatter = `<p class="warn">No distance dice chosen – tick the Artillery dice, D6 or 2D6.</p>`;
+      this.lastScatter = `<p class="warn">No distance dice chosen – tick the Artillery dice, D3, D6 or 2D6.</p>`;
       this.render();
       return;
     }
@@ -110,18 +112,19 @@ export class ObjectPanel {
   /** HIT-Ergebnis, falls doch dem kleinen Pfeil gefolgt wird */
   private pending: { angle: number; dist: number; dice: number[] } | null = null;
 
-  /** Schablone um dist Zoll in Richtung angle (Grad, 0 = nach oben) verschieben */
+  /**
+   * Abweichung anzeigen: dist Zoll in Richtung angle (Grad, 0 = nach oben). Die Schablone bleibt liegen; ein Pfeil auf
+   * dem Tisch zeigt beiden Spielern, wohin sie gehört – verschoben wird sie von Hand.
+   */
   private move(angle: number, dist: number, dice: number[], parts = `small arrow ${angle}°`): void {
     const o = this.id ? this.store.state.objects[this.id] : undefined;
     if (!o) return;
     const name = OBJECT_TYPES[o.type]?.name ?? 'Template';
     const a = (angle * Math.PI) / 180;
     this.pending = null;
-    this.history.record();
     const from = { x: o.x, y: o.y };
-    this.store.updateObject(o.id, { x: o.x + Math.sin(a) * dist, y: o.y - Math.cos(a) * dist });
-    this.store.setMeta({ scatterFx: { from, to: { x: o.x, y: o.y }, r: Math.max(o.w, o.h) / 2, hit: false, ts: Date.now() } });
-    this.lastScatter = `<p class="warn">Scatters <b>${dist}″</b> <span class="scatter-arrow" style="transform: rotate(${angle}deg)">↑</span> (${esc(parts)})</p>`;
+    this.store.setMeta({ scatterFx: { from, to: { x: o.x + Math.sin(a) * dist, y: o.y - Math.cos(a) * dist }, r: Math.max(o.w, o.h) / 2, hit: false, ts: Date.now() } });
+    this.lastScatter = `<p class="warn">Scatters <b>${dist}″</b> <span class="scatter-arrow" style="transform: rotate(${angle}deg)">↑</span> (${esc(parts)}) – move the template by hand.</p>`;
     this.log({ kind: 'roll', dice: dice.length ? [dice] : undefined, text: `${name} scatters ${dist}″ (${parts})` });
     this.render();
   }

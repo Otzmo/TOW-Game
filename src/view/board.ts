@@ -80,7 +80,16 @@ export class Board {
   private readonly views = new Map<string, UnitView>();
   private drag: Drag | null = null;
   /** Zoll, die eine Einheit in dieser Runde nacheinander zurückgelegt hat (Schwenken + Bewegen) */
-  private moveRun: { unitId: string; total: number; round: number } | null = null;
+  /** Zoll, die jede Einheit in diesem Spielerzug zurückgelegt hat (Schwenken, Bewegen, Drehen zusammen) */
+  private readonly runs = new Map<string, { turn: string; total: number }>();
+  /** Bisher zurückgelegte Zoll dieser Einheit im laufenden Spielerzug */
+  private runBefore(unitId: string): number {
+    const r = this.runs.get(unitId);
+    return r && r.turn === this.turnKey() ? r.total : 0;
+  }
+  private addRun(unitId: string, inches: number): void {
+    this.runs.set(unitId, { turn: this.turnKey(), total: this.runBefore(unitId) + inches });
+  }
   /** In welchem Spielerzug eine Einheit zuletzt bewegt wurde (für „Moving & Shooting“ beim Beschuss) */
   private readonly moved = new Map<string, string>();
   private turnKey = () => `${this.store.state.meta.round}-${this.store.state.meta.active}`;
@@ -301,6 +310,8 @@ export class Board {
     const p = toTable(u, right, -forward);
     this.store.updateUnit(u.id, { x: p.x, y: p.y });
     const dist = Math.hypot(forward, right);
+    this.addRun(u.id, dist);
+    this.moved.set(u.id, this.turnKey());
     this.events.onAction(u.id, `${dist.toFixed(1)}″ ${forward > 0 ? 'forward' : forward < 0 ? 'backward' : right > 0 ? 'right' : 'left'}`);
   }
 
@@ -401,8 +412,6 @@ export class Board {
         startAngle: Math.atan2(p.y - pivot.y, p.x - pivot.x), front: w };
     }
     this.history.record();
-    // Neue Einheit oder neue Runde: das Zusammenzählen beginnt von vorn
-    if (this.moveRun && (this.moveRun.unitId !== unitId || this.moveRun.round !== this.store.state.meta.round)) this.moveRun = null;
     this.drag = { type, unitId, ox: u.x - p.x, oy: u.y - p.y, sx: u.x, sy: u.y, srot: u.rotation,
       gx: e.global.x, gy: e.global.y, moved: type !== 'move', swing };
     const view = this.views.get(unitId);
@@ -549,8 +558,7 @@ export class Board {
     }
     const text = this.describe(d);
     // Zoll dieser Einheit weiter zusammenzählen (bis eine andere Einheit bewegt wird oder die Runde endet)
-    const run = this.moveRun?.unitId === d.unitId ? this.moveRun.total : 0;
-    this.moveRun = { unitId: d.unitId, total: run + this.dragInches(d), round: this.store.state.meta.round };
+    this.addRun(d.unitId, this.dragInches(d));
     if (this.dragInches(d) > 0.05) this.moved.set(d.unitId, this.turnKey());
     const all = text;
     if (all) this.events.onAction(d.unitId, all);
@@ -609,14 +617,14 @@ export class Board {
   }
 
   /**
-   * Beschreibung des Ziehens. Wird dieselbe Einheit mehrmals hintereinander bewegt (z. B. schwenken, dann
-   * vorrücken), stehen die Zoll zusammengezählt dabei ("total").
+   * Beschreibung des Ziehens. Alle Bewegungen und Manöver derselben Einheit in diesem Spielerzug (z. B. schwenken,
+   * dann vorrücken) stehen zusammengezählt dabei ("total") – auch wenn dazwischen andere Einheiten bewegt wurden.
    */
   private describe(d: UnitDrag): string {
     const u = this.store.state.units[d.unitId];
     const turn = normAngle(u.rotation - d.srot);
     const deg = (turn * 180) / Math.PI;
-    const before = this.moveRun?.unitId === d.unitId ? this.moveRun.total : 0;
+    const before = this.runBefore(d.unitId);
     const total = (s: string) => (s && before > 0 ? `${s} · total ${(before + this.dragInches(d)).toFixed(1)}″` : s);
     if (d.swing) {
       // Gemessen wird der Weg der äußeren Ecke

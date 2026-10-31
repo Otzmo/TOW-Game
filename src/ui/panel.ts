@@ -7,6 +7,7 @@ import type { History } from '../model/history';
 import { armourInfo, loadWeapons, optionInfo, unitSaves, unitWeapons, visibleOptions, visibleRules, weaponRule } from '../model/gear';
 import { keepFront, loseWounds } from '../model/wounds';
 import { wizardLevel } from '../model/flow';
+import { loadSpells, spellInfo, type SpellInfo } from '../model/spellData';
 import { modifiedValue, rollTables, statMods, tableMods, type StatMod } from '../model/modifiers';
 import { hasStandard, mountBonus, unitVictoryPoints, wounds } from '../model/score';
 import type { RuleRef, UnitState, UnitStatus } from '../model/types';
@@ -14,9 +15,6 @@ import { PLAYER_COLORS } from '../view/theme';
 import { currentPhase } from '../model/phases';
 
 const $ = (id: string) => document.getElementById(id)!;
-
-/** Zauberspruch aus spells.json */
-interface SpellInfo { name: string; slug: string; type: string; castingValue: number | null; range: string; text: string }
 
 /** Vergleichsschlüssel für Regel- und Optionsnamen: ohne Klammerwerte, Groß-/Kleinschreibung und Satzzeichen */
 const ruleKey = (s: string) => s.toLowerCase().replace(/\([^)]*\)/g, '').replace(/[^a-z0-9]/g, '');
@@ -52,18 +50,12 @@ export class UnitPanel {
   /** Phasenregeln: Umformieren zählt als Bewegung */
   canMove: (unitId: string) => boolean = () => true;
   private lastAction = new Map<string, string>();
-  /** Zaubersprüche nach slug (aus spells.json) */
-  private spells = new Map<string, SpellInfo & { lore: string }>();
 
   constructor(private store: Store, private history: History, actions: PanelActions) {
     // Waffenprofile kommen aus einer eigenen Datei; sobald sie da ist, neu zeichnen
     void loadWeapons().then(() => this.render());
     // Zaubersprüche aller Lores (für die Sprüche im Profil des Zauberers)
-    fetch(`${import.meta.env.BASE_URL}data/spells.json`).then((r) => (r.ok ? r.json() : [])).catch(() => [])
-      .then((lores: { name: string; spells: SpellInfo[] }[]) => {
-        for (const l of lores) for (const s of l.spells) this.spells.set(s.slug, { ...s, lore: l.name });
-        this.render();
-      });
+    void loadSpells().then(() => this.render());
     // Begriff anklicken (Waffe, Waffenregel, Rüstungsteil …): Erklärung im Abschnitt zeigen bzw. schließen
     $('panel').addEventListener('click', (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-info]');
@@ -321,7 +313,7 @@ export class UnitPanel {
     $('p-weapons').innerHTML = this.weaponsHtml(u, shown);
     $('p-saves').innerHTML = this.savesHtml(u, shown);
     // Zauberer: die ausgewürfelten bzw. gewählten Sprüche mit Spruchwert, Reichweite und Text zum Aufklappen
-    const spells = (u.spells ?? []).map((slug) => this.spells.get(slug)).filter((x): x is SpellInfo & { lore: string } => !!x);
+    const spells = (u.spells ?? []).map((slug) => spellInfo(slug)).filter((x): x is SpellInfo => !!x);
     const wizard = wizardLevel(u) > 0;
     $('p-spells-sec').hidden = !spells.length && !wizard;
     $('p-spells').innerHTML = spells.length
