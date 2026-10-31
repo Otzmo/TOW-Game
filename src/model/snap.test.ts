@@ -39,6 +39,16 @@ describe('snap units together', () => {
     expect(r.pose.y).toBeCloseTo(B, 6);
   });
 
+  it('front to front it maximises: as many models in contact as possible, corners count', () => {
+    // Gegner 3 Modelle breit, Angreifer 5 breit, beim Loslassen weit seitlich versetzt
+    const a = testUnit('a', { models: 3, rotation: Math.PI });
+    const b = testUnit('b', { owner: 'p2', models: 5, x: 2.6 * B, y: B + 0.4 });
+    const r = snapTogether(b, byId(a, b))!;
+    expect(r.pose.y).toBeCloseTo(B, 6);
+    // Alle drei gegnerischen Modelle berührt: mittig darunter (Ecken der äußeren Bases zählen)
+    expect(Math.abs(r.pose.x)).toBeLessThanOrEqual(B + 1e-6);
+  });
+
   it('facing each other (180°) snaps front to front', () => {
     const a = testUnit('a', { models: 5, rotation: Math.PI });
     const b = testUnit('b', { owner: 'p2', models: 5, y: B + 0.3 });
