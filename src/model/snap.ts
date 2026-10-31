@@ -18,10 +18,10 @@ function outline(u: UnitState, w: number, h: number): Point[] {
 
 /**
  * Einheit an eine gegnerische Einheit anlegen: Kommt sie ihr bis auf SNAP_DISTANCE nahe (oder überlappt sie), wird sie
- * – egal wie schräg sie steht – parallel zur gegnerischen Einheit ausgerichtet und bündig an die Kante geschoben, vor
- * der sie steht; entlang der Kante bleibt sie, wo sie losgelassen wurde. Eigene Einheiten rasten nicht ein.
- * Liegt sie mit ihrer Front an, wird wie beim Angriff maximiert: so viele Modelle wie möglich in Basekontakt
- * (auch Ecke an Ecke zählt), bei gleicher Zahl mit möglichst wenig seitlicher Verschiebung.
+ * – egal wie schräg sie steht – mit ihrer Front zu der Kante gedreht, vor der sie steht (Front, Flanke oder Rücken
+ * des Gegners), und bündig angelegt. Eigene Einheiten rasten nicht ein.
+ * Wie beim Angriff wird maximiert: so viele Modelle wie möglich in Basekontakt (auch Ecke an Ecke zählt),
+ * bei gleicher Zahl mit möglichst wenig seitlicher Verschiebung.
  * Lag sie schon vor dem Ziehen an dieser Einheit an (keep, siehe touchingEnemies), wird nicht erneut maximiert:
  * so lässt sich die Stellung entlang der Kante von Hand korrigieren, ohne dass sie zurückspringt.
  * Ergebnis: neue Lage und die Einheit, an der sie anliegt – oder null.
@@ -40,25 +40,27 @@ export function snapTogether(u: UnitState, units: Record<string, UnitState>, kee
     const dist = polyDistance(mine, outline(t, them.w, them.h));
     if (dist > SNAP_DISTANCE || (best && dist >= best.dist)) continue;
     const maximise = !keep.has(t.id);
-    // Nächste Ausrichtung in 90°-Schritten zur gegnerischen Einheit
-    const quarter = Math.round(norm(u.rotation - t.rotation) / (Math.PI / 2));
-    const rotation = t.rotation + quarter * (Math.PI / 2);
-    const sideways = Math.abs(quarter) % 2 === 1;
-    const hw = (sideways ? me.h : me.w) / 2;
-    const hh = (sideways ? me.w : me.h) / 2;
     // Mitte im Koordinatensystem des Gegners
     const c = Math.cos(-t.rotation);
     const s = Math.sin(-t.rotation);
     const lx = (u.x - t.x) * c - (u.y - t.y) * s;
     const ly = (u.x - t.x) * s + (u.y - t.y) * c;
-    // Angelegt wird an der Seite mit dem größten Abstand der (ausgerichteten) Umrisse – dort trennen sie sich
-    const byX = Math.abs(lx) - hw - them.w / 2 > Math.abs(ly) - hh - them.h / 2;
+    // Angelegt wird an der Seite mit dem größten Abstand der Umrisse – dort trennen sie sich (gemessen mit der
+    // Ausrichtung, die der jetzigen am nächsten liegt)
+    const quarter = Math.round(norm(u.rotation - t.rotation) / (Math.PI / 2));
+    const turned = Math.abs(quarter) % 2 === 1;
+    const byX = Math.abs(lx) - (turned ? me.h : me.w) / 2 - them.w / 2 > Math.abs(ly) - (turned ? me.w : me.h) / 2 - them.h / 2;
+    // Immer mit der eigenen Front zum Gegner, wie beim Angriff – nie mit Flanke oder Rücken an ihm kleben
+    const rotation = t.rotation + (byX ? (lx < 0 ? Math.PI / 2 : -Math.PI / 2) : ly < 0 ? Math.PI : 0);
+    const sideways = byX;
+    const hw = (sideways ? me.h : me.w) / 2;
+    const hh = (sideways ? me.w : me.h) / 2;
     const nx = byX ? Math.sign(lx || 1) * (hw + them.w / 2) : Math.max(-them.w / 2 - hw, Math.min(them.w / 2 + hw, lx));
     const ny = byX ? Math.max(-them.h / 2 - hh, Math.min(them.h / 2 + hh, ly)) : Math.sign(ly || 1) * (hh + them.h / 2);
     const x = t.x + nx * Math.cos(t.rotation) - ny * Math.sin(t.rotation);
     const y = t.y + nx * Math.sin(t.rotation) + ny * Math.cos(t.rotation);
     let pose = { x, y, rotation };
-    // Front an der Kante? Dann die maximierte Stellung an dieser Kante (gleiche Wertung wie beim Angriff)
+    // Maximierte Stellung an dieser Kante (gleiche Wertung wie beim Angriff)
     const side = byX ? (lx < 0 ? 'left flank' : 'right flank') : (ly < 0 ? 'front' : 'rear');
     const maxed = maximise ? contactPoses({ ...u, ...pose }, t, units).filter((q) => q.side === side)[0] : undefined;
     if (maxed && Math.abs(norm(maxed.rotation - rotation)) < 0.01) pose = { x: maxed.x, y: maxed.y, rotation: maxed.rotation };

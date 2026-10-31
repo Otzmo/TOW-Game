@@ -6,15 +6,26 @@ import { byId, testUnit } from './testUnits';
 const B = 25 / 25.4;
 
 describe('snap units together', () => {
-  it('a unit released 0.8″ beside another snaps flush, parallel, and stays where it was along the edge', () => {
+  it('a unit released 0.8″ beside the flank turns its front to the flank and lies flush against it', () => {
     const a = testUnit('a', { models: 5 });
     const w = unitFootprint(a).w;
     const b = testUnit('b', { owner: 'p2', models: 5, x: w + 0.8, y: 0.4, rotation: 0.1 });
     const r = snapTogether(b, byId(a, b))!;
     expect(r.to.id).toBe('a');
-    expect(r.pose.rotation).toBeCloseTo(0, 6);
-    expect(r.pose.x).toBeCloseTo(w, 6);
-    expect(r.pose.y).toBeCloseTo(0.4, 6);
+    // Front zeigt nach links, also auf die rechte Flanke von a
+    expect(Math.sin(r.pose.rotation)).toBeCloseTo(-1, 6);
+    expect(r.pose.x).toBeCloseTo(w / 2 + unitFootprint(b).h / 2, 6);
+  });
+
+  it('never sticks with its flank to an enemy front: a unit turned sideways below the front is turned to face it', () => {
+    // Gegner schaut nach unten (+y); eigene Einheit steht davor, aber um 90° gedreht und seitlich versetzt
+    const a = testUnit('a', { models: 5, rotation: Math.PI });
+    const { w } = unitFootprint(a);
+    const b = testUnit('b', { owner: 'p2', models: 25, width: 5, x: w / 2 + 1.5, y: 4, rotation: -Math.PI / 2 });
+    const r = snapTogether({ ...b, y: B / 2 + unitFootprint(b).w / 2 + 0.3 }, byId(a, b))!;
+    // Front nach oben zum Gegner, bündig an dessen Front
+    expect(Math.cos(r.pose.rotation)).toBeCloseTo(1, 6);
+    expect(r.pose.y).toBeCloseTo(B / 2 + unitFootprint(b).h / 2, 6);
   });
 
   it('a slight overlap is pushed out to touch', () => {
