@@ -770,3 +770,7 @@ table.profile th { font-family: var(--head); color: var(--accent); }
 details { background: rgba(0, 0, 0, .15); border-color: rgba(214, 168, 74, .2); }
 .die { background: #f3e6c4; color: #1d140a; }
 .die.ok { background: var(--accent); }
+
+/* Kommandomodelle einzeln töten */
+#p-command { display: flex; flex-wrap: wrap; gap: 4px; }
+#p-command button { padding: 2px 7px; font-size: calc(12px * var(--ui)); }

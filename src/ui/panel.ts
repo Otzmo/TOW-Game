@@ -81,6 +81,17 @@ export class UnitPanel {
       const n = Math.max(1, Math.round(Number(($('p-wound-n') as HTMLInputElement).value) || 1));
       this.applyWounds(n);
     };
+    $('p-command').onclick = (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-kill]');
+      const u = this.unit();
+      if (!btn || !u) return;
+      const i = Number(btn.dataset.kill);
+      const code = u.info.command[i];
+      const command = u.info.command.filter((_, j) => j !== i);
+      // Das Modell fällt: ein Modell weniger (die Front bleibt stehen) und die Rolle ist weg
+      this.change(this.keepFront(u, { models: Math.max(1, u.models - (u.models > 1 ? 1 : 0)), info: { ...u.info, command } }));
+      this.setLastAction(u.id, `${({ M: 'musician', S: 'standard bearer', C: 'champion' } as Record<string, string>)[code] ?? code} killed`);
+    };
     $('p-note').onchange = (e) => this.change({ note: (e.target as HTMLTextAreaElement).value.trim() || null });
     $('p-tables').onclick = (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-table]');
@@ -369,6 +380,11 @@ export class UnitPanel {
     });
     $('p-width').textContent = String(skirmish ? Math.min(u.width, u.models) : cols);
     $('p-models').textContent = String(u.models);
+    // Kommandomodelle einzeln töten (z. B. Champion fällt in einer Herausforderung)
+    const names: Record<string, string> = { M: 'Musician', S: 'Standard bearer', C: info.profile[1]?.name ?? 'Champion' };
+    $('p-command-row').hidden = !info.command.length;
+    $('p-command').innerHTML = info.command.map((c, i) =>
+      `<button data-kill="${i}" title="This model is killed: one model fewer, the role is lost">✕ ${escapeHtml(names[c] ?? c)}</button>`).join('');
     const free = rearFree(u, units);
     $('p-rear-row').hidden = free === 0;
     $('p-rear').textContent = `${Math.min(u.rearOffset ?? 0, free)}/${free}`;
