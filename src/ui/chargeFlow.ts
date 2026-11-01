@@ -262,7 +262,11 @@ export class ChargeFlow {
           rolled.push(v);
         };
         let what: string;
-        if (verb === 'roll' || verb === 're') {
+        if (verb === 'roll' && key !== 'd6' && key !== 'd3') {
+          // Die W6 des Wurfs (2W6, mit Jaguar Standard 3W6) fallen zusammen; neu würfeln geht danach einzeln
+          for (let i = 0; i < setup.dice; i++) if (d.base[i] == null) die(String(i));
+          what = `${setup.dice}D6`;
+        } else if (verb === 'roll' || verb === 're') {
           die(key!);
           what = `${verb === 're' ? 'Reroll – ' : ''}${key === 'd6' ? '+D6' : key === 'd3' ? '+D3' : `D6 ${Number(key) + 1}`}`;
         } else if (verb === 'all') {
