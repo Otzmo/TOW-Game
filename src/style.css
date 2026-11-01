@@ -725,8 +725,7 @@ table.scoring input { width: 100%; max-width: 80px; }
 button.die.die-hit { border: 0; cursor: pointer; font: inherit; font-weight: 700; font-size: calc(11px * var(--ui)); gap: 2px; display: inline-flex; align-items: center; height: 22px; }
 button.die.die-hit:hover { outline: 2px solid var(--accent); }
 .small-arrow { display: inline-block; font-size: calc(10px * var(--ui)); line-height: 1; }
-/* Hinterhalt: Knopf unten links erst nach der Aufstellung; Liste mit „Place“ */
-body:not(.battle) #ambush-btn { display: none; }
+/* Hinterhalt: Knopf unten links (auch in der Aufstellung, um Einheiten zurückzuholen); Liste mit „Place“ */
 #ambush-count { color: var(--accent); font-weight: 700; }
 #sheet-ambush section + section { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); }
 #sheet-ambush h4 { margin: 0 0 6px; display: flex; align-items: center; }
