@@ -194,7 +194,9 @@ export async function importBbList(
 
   const units: UnitState[] = list.units.map((entry) => {
     const slug = lastSegment(entry.unitEntryId);
-    const src = data.units[slug];
+    // Kennung weicht manchmal ab, z. B. "road-wardens" in der Liste, "empire-road-wardens" in den Daten
+    const near = Object.keys(data.units).filter((k) => k.endsWith(`-${slug}`) || k.startsWith(`${slug}-`));
+    const src = data.units[slug] ?? data.units[`${slug}-${factionSlug}`] ?? (near.length === 1 ? data.units[near[0]] : undefined);
     if (!src) warnings.push(`Unit "${slug}" not found in the data – created as an empty block.`);
 
     // Reittier: Option aus einer "-mount"-Gruppe, die selbst eine Einheit ist

@@ -1,7 +1,7 @@
 {
   "id": "1e56e1a9-e309-4214-bc9f-419ca2ef5cd7",
   "name": "Men Easy",
-  "builderEditedAt": "2026-11-01T09:40:51.165Z",
+  "builderEditedAt": "2026-11-01T12:47:27.973Z",
   "factionId": "tow/empire-of-man",
   "forceTemplateId": "tow/empire-of-man/grand-army",
   "ruleset": {
@@ -89,10 +89,6 @@
       "quantity": 1,
       "selectedOptions": [
         {
-          "groupId": "general-of-the-empire-weapon",
-          "optionId": "hand-weapon"
-        },
-        {
           "groupId": "general-of-the-empire-mount",
           "optionId": "on-foot"
         },
@@ -107,6 +103,10 @@
         {
           "groupId": "general-of-the-empire-general",
           "optionId": "general"
+        },
+        {
+          "groupId": "general-of-the-empire-weapon",
+          "optionId": "great-weapon"
         }
       ],
       "traitIds": []
@@ -183,6 +183,30 @@
         {
           "groupId": "empire-archers-unit-options",
           "optionId": "fire-and-flee"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "725698c5-516b-477b-bd65-9527406dfa4d",
+      "unitEntryId": "tow/empire-of-man/road-wardens",
+      "quantity": 5,
+      "selectedOptions": [
+        {
+          "groupId": "road-wardens-missile",
+          "optionId": "crossbows"
+        },
+        {
+          "groupId": "road-wardens-command",
+          "optionId": "musician"
+        },
+        {
+          "groupId": "road-wardens-command",
+          "optionId": "captain"
+        },
+        {
+          "groupId": "road-wardens-scouting",
+          "optionId": "ambushers"
         }
       ],
       "traitIds": []
