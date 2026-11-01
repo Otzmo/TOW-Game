@@ -746,7 +746,7 @@ button.die.die-hit:hover { outline: 2px solid var(--accent); }
 #g-round { white-space: normal; line-height: 1.5; }
 #g-round .turn-of { display: flex; align-items: center; font-weight: 600; }
 body.spectator #new-game { display: none; }
-#view-toggles #toggle-rotate.on { border-color: var(--accent); color: var(--accent); }
+#view-toggles #toggle-fullscreen.on, #view-toggles #toggle-rotate.on { border-color: var(--accent); color: var(--accent); }
 .charge-dist { font-size: calc(12px * var(--ui)); color: var(--muted); }
 .charge-dist b { color: var(--text); }
 /* Würfel: kurz rollen nach einem neuen Wurf, Sechsen glänzen */

@@ -163,6 +163,20 @@ async function start(): Promise<void> {
   const rotateBtn = document.getElementById('toggle-rotate')!;
   rotateBtn.onclick = () => board.camera.setRotated(!board.camera.rotated);
   board.camera.onRotate = (on) => rotateBtn.classList.toggle('on', on);
+  // Vollbild ein/aus; verweigert der Browser es (z. B. eingebettet), kurzer Hinweis
+  const fullBtn = document.getElementById('toggle-fullscreen')!;
+  fullBtn.onclick = () => {
+    const blocked = () => {
+      const hint = document.getElementById('tool-hint')!;
+      hint.textContent = 'Full screen is not allowed here – open the page in its own browser tab (or press F11)';
+      hint.hidden = false;
+      window.setTimeout(() => { if (hint.textContent?.startsWith('Full screen')) hint.hidden = true; }, 4000);
+    };
+    if (document.fullscreenElement) void document.exitFullscreen().catch(() => undefined);
+    else if (!document.fullscreenEnabled) blocked();
+    else document.documentElement.requestFullscreen().catch(blocked);
+  };
+  document.addEventListener('fullscreenchange', () => fullBtn.classList.toggle('on', !!document.fullscreenElement));
   new Shortcuts({ board, panel, gameBar, toolbox, history, views });
   new LogPanel(store, (text) => addLog({ kind: 'chat', text }));
 
