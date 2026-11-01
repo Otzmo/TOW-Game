@@ -283,6 +283,8 @@ export async function importBbList(
       x: 0,
       y: 0,
       rotation: 0,
+      // Einheiten mit „Open Order Formation“ stehen von Anfang an in offener Ordnung
+      ...(rules.some((r) => /^open order/i.test(r.name)) ? { formation: 'open' as const } : {}),
     };
   });
 
