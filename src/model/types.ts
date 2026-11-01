@@ -53,22 +53,25 @@ export interface UnitInfo {
 /** Zustand für Siegpunkte: vernichtet, vom Tisch geflohen oder gerade fliehend */
 export type UnitStatus = 'destroyed' | 'fledOff' | 'fleeing';
 
-/** Schuss einer Kriegsmaschine Schritt für Schritt: zielen, feuern, Ergebnis */
+/** Schuss einer Kriegsmaschine Schritt für Schritt: jeder Würfel einzeln per Knopf, für beide sichtbar */
 export interface WarMachineShot {
   unitId: string;
   /** Index in warMachineWeapons(unit) */
   weapon: number;
-  step: 'aim' | 'fire' | 'done';
-  /** Kanone: Zielpunkt */
+  /** choose: Kanonenkugel oder Grapeshot wählen · fire: würfeln · done: Ergebnis steht fest */
+  step: 'choose' | 'fire' | 'done';
+  /** Kanone: Zielpunkt (genau dort, wo geklickt wurde) */
   target?: Point | null;
   /** Bombardment, Grapeshot: Zieleinheit */
   targetUnit?: string | null;
   /** Bombardment: id der Schablone */
   template?: string | null;
+  /** Gewürfelt: Artilleriewürfel (Aufschlag bzw. Schuss), Abprall, Abweichung, W6 auf der Misfire-Tabelle */
+  dice?: { first?: number | null; bounce?: number | null; scatter?: { hit: boolean; angle: number } | null; misfire?: number | null };
+  /** Kanone: getroffene Bases, auf dem Tisch markiert */
+  hitPolys?: Point[][] | null;
   /** Ergebniszeilen (Text) */
   lines?: string[];
-  /** Bombardment: Abweichung, die noch auf die Schablone angewendet werden kann */
-  scatter?: { angle: number; dist: number } | null;
 }
 
 /** Veränderlicher Zustand einer Einheit auf dem Tisch. */

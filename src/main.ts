@@ -18,6 +18,7 @@ import { openSheet } from './ui/sheets';
 import { PromptCenter } from './ui/prompts';
 import { SetupPanel } from './ui/setupPanel';
 import { WarMachinePanel } from './ui/warMachine';
+import { warMachineWeapons } from './model/warMachines';
 import { GameBar } from './ui/gameBar';
 import { ImportDialog } from './ui/importDialog';
 import { Lobby } from './ui/lobby';
@@ -136,6 +137,11 @@ async function start(): Promise<void> {
       if (seat === 'spectator') return;
       board.startPick(`${name}: click your unit`, (u) => !seat || u.owner === seat, (id) => {
         const a = store.state.units[id];
+        // Kriegsmaschinen schießen nach ihren eigenen Regeln (Cannon Fire, Bombardment, Grapeshot)
+        if (kind === 'shooting' && warMachineWeapons(a).length) {
+          warMachines.aim(id);
+          return;
+        }
         board.startPick(`${name} by ${a.info.name}: click the enemy unit`, (t) => t.owner !== a.owner, (target) => {
           if (kind === 'charge') prompts.charges.start(a.owner, id, target);
           else prompts.attacks.start(a.owner, id, target, kind);
@@ -151,7 +157,7 @@ async function start(): Promise<void> {
   new DicePanel((entry) => addLog(entry));
   new SpellsPanel(store, history, () => seat, (entry) => addLog(entry));
   new DestroyedPanel(store, (id) => board.select(id));
-  new WarMachinePanel(store, history, () => seat, (entry) => addLog(entry), {
+  const warMachines = new WarMachinePanel(store, history, () => seat, (entry) => addLog(entry), {
     pickPoint: (hint, onPick) => board.startPointPick(hint, onPick),
     pickUnit: (hint, accept, onPick) => board.startPick(hint, accept, onPick),
     select: (id) => board.select(id),

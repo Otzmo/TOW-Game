@@ -82,7 +82,7 @@ export class BoardTools {
       if (change.loaded) this.syncAll();
       // Nur reine Meta-, Log-, Charge- oder Abfrage-Änderungen lassen die Treffer unberührt
       const sharedOnly = (change.meta || change.log || change.chargeId || change.promptId) && !(change.objectId || change.unitId || change.loaded || change.replacedOwner);
-      if (!sharedOnly) this.scheduleHits();
+      if (!sharedOnly || change.meta) this.scheduleHits();
       if (change.meta || change.loaded || change.objectId) this.drawZones();
       if (change.meta) this.showShared();
       void state;
@@ -274,6 +274,10 @@ export class BoardTools {
     g.clear();
     this.hitLabels.removeChildren().forEach((c) => c.destroy());
     const { units, objects } = this.store.state;
+    // Von der Kanonenkugel getroffene Modelle
+    for (const poly of this.store.state.meta.warMachine?.hitPolys ?? []) {
+      g.poly(poly.flatMap((p) => [p.x * PPI, p.y * PPI])).fill({ color: 0xf0603e, alpha: 0.6 }).stroke({ width: 1.5, color: 0xffd0c0, alpha: 0.95 });
+    }
     const templates = Object.values(objects).filter((o) => o.kind === 'template');
     if (!templates.length) return;
     const bases = basesOnTable(units);
