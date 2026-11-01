@@ -76,6 +76,8 @@ export class Board {
   private pickTarget: ((unitId: string) => void) | null = null;
   /** Einheit aus dem Hinterhalt, die beim nächsten Klick auf den Tisch aufgestellt wird */
   private placeUnit: string | null = null;
+  /** Punkt wählen (z. B. Zielpunkt einer Kanone): nächster Klick auf den Tisch oder eine Einheit */
+  private pickPoint: ((p: Point) => void) | null = null;
   /** Bewegungs- und Angriffsreichweiten der ausgewählten Einheit anzeigen */
   showRanges = false;
   private viewOnly = false;
@@ -153,6 +155,12 @@ export class Board {
       this.rangeLayer, this.frontLayer, this.unitLayer, this.chargeLayer, t.overlayLayer, t.toolLayer, this.moveLabel);
 
     app.stage.on('pointerdown', (e) => {
+      if (this.pickPoint) {
+        const pick = this.pickPoint;
+        this.cancelPick();
+        pick(this.toInches(e));
+        return;
+      }
       // Einheit aus dem Hinterhalt: dort aufstellen, wo geklickt wird
       if (this.placeUnit) {
         const id = this.placeUnit;
@@ -255,6 +263,7 @@ export class Board {
   startPick(hint: string, accept: (u: UnitState) => boolean, onPick: (unitId: string) => void): void {
     this.tools.setTool('select');
     this.placeUnit = null;
+    this.pickPoint = null;
     this.pickTarget = (id) => {
       const u = this.store.state.units[id];
       if (u && accept(u)) onPick(id);
@@ -264,10 +273,22 @@ export class Board {
     el.hidden = false;
   }
 
-  cancelPick(): boolean {
-    if (!this.pickTarget && !this.placeUnit) return false;
+  /** Punkt auf dem Tisch wählen lassen: Hinweis zeigen und den nächsten Klick abwarten (auch auf eine Einheit) */
+  startPointPick(hint: string, onPick: (p: Point) => void): void {
+    this.tools.setTool('select');
     this.pickTarget = null;
     this.placeUnit = null;
+    this.pickPoint = onPick;
+    const el = document.getElementById('tool-hint')!;
+    el.textContent = `${hint} · Esc to cancel`;
+    el.hidden = false;
+  }
+
+  cancelPick(): boolean {
+    if (!this.pickTarget && !this.placeUnit && !this.pickPoint) return false;
+    this.pickTarget = null;
+    this.placeUnit = null;
+    this.pickPoint = null;
     document.getElementById('tool-hint')!.hidden = true;
     return true;
   }
@@ -376,6 +397,13 @@ export class Board {
       const v = new UnitView(u.id);
       view = v;
       v.on('pointerdown', (e) => {
+        if (this.pickPoint) {
+          e.stopPropagation();
+          const pick = this.pickPoint;
+          this.cancelPick();
+          pick(this.toInches(e));
+          return;
+        }
         // Zielauswahl für einen Angriff
         if (this.pickTarget) {
           e.stopPropagation();

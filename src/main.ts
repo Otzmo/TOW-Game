@@ -17,6 +17,7 @@ import { SpellsPanel } from './ui/spells';
 import { openSheet } from './ui/sheets';
 import { PromptCenter } from './ui/prompts';
 import { SetupPanel } from './ui/setupPanel';
+import { WarMachinePanel } from './ui/warMachine';
 import { GameBar } from './ui/gameBar';
 import { ImportDialog } from './ui/importDialog';
 import { Lobby } from './ui/lobby';
@@ -150,6 +151,11 @@ async function start(): Promise<void> {
   new DicePanel((entry) => addLog(entry));
   new SpellsPanel(store, history, () => seat, (entry) => addLog(entry));
   new DestroyedPanel(store, (id) => board.select(id));
+  new WarMachinePanel(store, history, () => seat, (entry) => addLog(entry), {
+    pickPoint: (hint, onPick) => board.startPointPick(hint, onPick),
+    pickUnit: (hint, accept, onPick) => board.startPick(hint, accept, onPick),
+    select: (id) => board.select(id),
+  });
   new NotesPanel(store);
   new AmbushPanel(store, () => seat, {
     place: (id) => board.startAmbushPlace(id),

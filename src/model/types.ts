@@ -53,6 +53,24 @@ export interface UnitInfo {
 /** Zustand für Siegpunkte: vernichtet, vom Tisch geflohen oder gerade fliehend */
 export type UnitStatus = 'destroyed' | 'fledOff' | 'fleeing';
 
+/** Schuss einer Kriegsmaschine Schritt für Schritt: zielen, feuern, Ergebnis */
+export interface WarMachineShot {
+  unitId: string;
+  /** Index in warMachineWeapons(unit) */
+  weapon: number;
+  step: 'aim' | 'fire' | 'done';
+  /** Kanone: Zielpunkt */
+  target?: Point | null;
+  /** Bombardment, Grapeshot: Zieleinheit */
+  targetUnit?: string | null;
+  /** Bombardment: id der Schablone */
+  template?: string | null;
+  /** Ergebniszeilen (Text) */
+  lines?: string[];
+  /** Bombardment: Abweichung, die noch auf die Schablone angewendet werden kann */
+  scatter?: { angle: number; dist: number } | null;
+}
+
 /** Veränderlicher Zustand einer Einheit auf dem Tisch. */
 export type Formation = 'close' | 'open' | 'skirmish';
 
@@ -128,6 +146,8 @@ export interface GameMeta {
   ping?: { x: number; y: number; by: string; ts: number } | null;
   /** Letzte Abweichung einer Schablone (Pfeil vom alten zum neuen Punkt) bzw. Volltreffer (Aufblitzen), für beide sichtbar */
   scatterFx?: { from: Point; to: Point; r: number; hit: boolean; ts: number } | null;
+  /** Laufender Schuss einer Kriegsmaschine (für beide sichtbar) */
+  warMachine?: WarMachineShot | null;
   /** Geladene Armee je Spieler (Fraktion und Listenname) */
   armies?: Partial<Record<PlayerId, { faction: string; list: string }>>;
 }
