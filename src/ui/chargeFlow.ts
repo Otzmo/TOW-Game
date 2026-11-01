@@ -1,29 +1,35 @@
-import { CHARGE_RULES, chargeInitiative, reactionChoices, ruleKey, unitHasRule } from '../model/charge';
-import { chargeRoll, chargeTravel, contactPoses, fleeRoll, minChargeDistance, movementOf, type RollResult } from '../model/flow';
+import {
+  CHARGE_RULES, chargeInitiative, chargeSetup, fleeSetup, hasChargeRule, reactionChoices, rollTotal, ruleKey,
+  type ChargeRule, type RollDice, type RollSetup,
+} from '../model/charge';
+import { placementProblem } from '../model/collision';
+import { slotPolygons } from '../model/contact';
+import { chargeTravel, contactPose, contactPoses, d6, minChargeDistance, movementOf } from '../model/flow';
+import type { History } from '../model/history';
+import { OBJECT_TYPES, objectPolygon, segmentHitsPolygon } from '../model/objects';
 import { playerName } from '../model/players';
 import type { Store } from '../model/store';
 import type { ChargeReaction, LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
-import { diceHtml } from './dice';
+import { weaponsFor } from './attackFlow';
 import { freezeSteps, stepSections } from './steps';
 
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 const inch = (n: number) => `${n.toFixed(1)}″`;
+const d3 = () => Math.ceil(d6() / 2);
 const REACTIONS: Record<ChargeReaction, string> = {
   hold: 'Hold', standShoot: 'Stand & Shoot', flee: 'Flee', fireFlee: 'Fire & Flee', counter: 'Counter Charge',
 };
 
-/** Regeln, die Angreifer bzw. Ziel haben: von Anfang an angehakt */
-function chargeRulesOf(a: UnitState, t: UnitState): string[] {
-  return CHARGE_RULES.filter((r) => unitHasRule(r.side === 'charger' ? a : t, r.name)).map(ruleKey);
-}
-
 /** Was PromptCenter für den Angriff bereitstellt */
 export interface ChargeHost {
   store: Store;
+  history: History;
   log(entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>): void;
   create(kind: PromptKind, to: PlayerId, from: PlayerId, title: string, text: string, data: Prompt['data']): void;
   finish(p: Prompt, result: string): void;
+  /** Stand & Shoot: Beschussfenster des Ziels auf den Angreifer, „Stand & Shoot“ angehakt */
+  standShoot(from: PlayerId, shooterId: string, targetId: string): void;
 }
 
 /** Stand im Fenster (liegt im Spielstand, damit beide Spieler ihn sehen) */
@@ -31,14 +37,22 @@ interface ChargeState {
   /** angehakte Regeln, Schlüssel wie ruleKey – zu Beginn das Erkannte */
   on: string[];
   reaction?: ChargeReaction;
-  flee?: RollResult;
-  roll?: RollResult & { range: number };
+  /** Fluchtwurf bzw. Angriffswurf, Würfel einzeln */
+  flee?: RollDice;
+  roll?: RollDice;
+  /** schon per Knopf ausgeführt */
+  fled?: boolean;
+  moved?: 'contact' | 'failed' | 'removed';
+  /** Meldung, wenn eine Bewegung per Knopf nicht geht */
+  note?: string | null;
 }
 
+type Side = 'charger' | 'target';
+
 /**
- * Angriff als Fenster für beide Spieler: Ansage mit den Charge-Regeln (Checkboxen, Regeln der Einheiten vorab angehakt),
- * Reaktion des Gegners (mit Fluchtwurf), Angriffswurf und Ergebnis. Bewegt und entfernt wird nichts – das Fenster
- * sagt nur, was passiert; die Einheiten zieht der Spieler selbst.
+ * Angriff als Fenster für beide Spieler: Ansage, Reaktion des Gegners (Fluchtwurf), Angriffswurf und Ergebnis.
+ * Es erscheinen nur die Regeln, die die Einheiten haben (vorab angehakt). Jeder Würfel wird einzeln geworfen und
+ * kann wiederholt werden; dazu die Wiederholungen aus den Regeln. Bewegt wird nur auf Knopfdruck.
  */
 export class ChargeFlow {
   constructor(private host: ChargeHost) {}
@@ -52,14 +66,47 @@ export class ChargeFlow {
     const a = this.units[chargerId];
     const t = this.units[targetId];
     if (!a || !t || a.owner === t.owner) return;
+    const on = [...this.detected('charger', a, t), ...this.detected('target', t, a)];
     this.host.create('charge', a.owner, from, 'Declare charge', `${a.info.name} → ${t.info.name}`,
-      { chargerId, targetId, step: 'declare', state: JSON.stringify({ on: chargeRulesOf(a, t) } satisfies ChargeState) });
+      { chargerId, targetId, step: 'declare', state: JSON.stringify({ on } satisfies ChargeState) });
+  }
+
+  // --- Regeln ---------------------------------------------------------------------
+
+  /** Regeln, die zu dieser Einheit gehören oder gerade gelten können (Zauber der Armee, Gelände auf dem Tisch) */
+  private available(side: Side, unit: UnitState): ChargeRule[] {
+    const { units, objects } = this.host.store.state;
+    const friends = Object.values(units).filter((u) => u.owner === unit.owner);
+    return CHARGE_RULES.filter((r) => r.side === side).filter((r) => {
+      if (r.from === 'army-spell') return friends.some((u) => (u.spells ?? []).some((s) => r.match?.test(s.replace(/-/g, ' '))));
+      if (r.from === 'army-rule') return friends.some((u) => [...u.info.rules, ...u.info.items].some((x) => r.match?.test(x.name)));
+      if (r.from === 'terrain') return Object.values(objects).some((o) => (OBJECT_TYPES[o.type]?.rules ?? []).includes('Difficult Terrain'));
+      return hasChargeRule(unit, r, units);
+    });
+  }
+
+  /** Vorab angehakt: Regeln der Einheit (außer freiwilligen Nachteilen); Gelände, wenn die Linie hindurchgeht */
+  private detected(side: Side, unit: UnitState, other: UnitState): string[] {
+    const objects = this.host.store.state.objects;
+    return this.available(side, unit).filter((r) => {
+      if (r.from === 'terrain') {
+        return Object.values(objects).some((o) => (OBJECT_TYPES[o.type]?.rules ?? []).includes('Difficult Terrain')
+          && segmentHitsPolygon(unit, other, objectPolygon(o)));
+      }
+      return !r.from && !r.optional;
+    }).map(ruleKey);
+  }
+
+  private ticked(side: Side, s: ChargeState): ChargeRule[] {
+    return CHARGE_RULES.filter((r) => r.side === side && s.on.includes(ruleKey(r)));
   }
 
   private state(p: Prompt): ChargeState {
     try {
       const s = JSON.parse(String(p.data.state || '{}')) as Partial<ChargeState>;
-      return { ...s, on: s.on ?? [] };
+      // Ältere Spielstände: Würfe im alten Format verwerfen
+      const ok = (d: unknown) => !!d && Array.isArray((d as RollDice).base);
+      return { ...s, on: s.on ?? [], flee: ok(s.flee) ? s.flee : undefined, roll: ok(s.roll) ? s.roll : undefined };
     } catch {
       return { on: [] };
     }
@@ -100,13 +147,11 @@ export class ChargeFlow {
     return { min, max, side: best?.side ?? 'front' };
   }
 
-  private rulesHtml(side: 'charger' | 'target', a: UnitState, t: UnitState, s: ChargeState): string {
-    const unit = side === 'charger' ? a : t;
-    const rows = CHARGE_RULES.filter((r) => r.side === side).map((r) => {
-      const has = unitHasRule(unit, r.name);
-      return `<label class="atk-mod"><input type="checkbox" data-crule="${esc(ruleKey(r))}" ${s.on.includes(ruleKey(r)) ? 'checked' : ''}>
-        <span class="atk-label">${esc(r.name)} <span class="atk-hint">${esc(r.hint)}${has ? ` · ${esc(unit.info.name)} has this rule` : ''}</span></span></label>`;
-    }).join('');
+  private rulesHtml(side: Side, unit: UnitState, s: ChargeState): string {
+    const rules = this.available(side, unit);
+    if (!rules.length) return '';
+    const rows = rules.map((r) => `<label class="atk-mod"><input type="checkbox" data-crule="${esc(ruleKey(r))}" ${s.on.includes(ruleKey(r)) ? 'checked' : ''}>
+        <span class="atk-label">${esc(r.name)} <span class="atk-hint">${esc(r.hint)}</span></span></label>`).join('');
     return `<div class="atk-mods atk-rules-box"><div class="atk-base">Special rules – ${esc(unit.info.name)} <span class="meta">(ticked: the unit has it)</span></div>${rows}</div>`;
   }
 
@@ -120,14 +165,89 @@ export class ChargeFlow {
     });
   }
 
+  // --- Würfel ---------------------------------------------------------------------
+
+  /**
+   * Würfelzeilen eines Wurfs: jeder W6 einzeln (Roll, dann Reroll), +W6/+W3 der Regeln, dazu die Wiederholungen
+   * aus den Regeln (ganzen Wurf, 1en). Gestrichene Würfel sind blass.
+   */
+  private diceHtml(which: 'flee' | 'roll', d: RollDice | undefined, setup: RollSetup, rules: ChargeRule[]): string {
+    const dice = d ?? { base: [] };
+    const res = rollTotal(dice, setup);
+    const row = (label: string, value: number | null | undefined, key: string, dropped = false) =>
+      `<div class="dice-step"><span class="label">${esc(label)}</span>${value != null
+        ? `<span class="die ${dropped ? 'dropped' : ''}">${value}</span> <button data-cd="re:${which}:${key}" title="Roll this die again">↻ Reroll</button>`
+        : `<button data-cd="roll:${which}:${key}" class="primary">🎲 Roll</button>`}</div>`;
+    const names = (pick: (r: ChargeRule) => boolean) => rules.filter(pick).map((r) => r.name).join(', ');
+    const rows = Array.from({ length: setup.dice }, (_, i) => row(`D6 ${i + 1}`, dice.base[i], String(i), !!res?.dropped.includes(i)));
+    if (setup.d6) rows.push(row(`+D6 (${names((r) => !!r.d6)})`, dice.d6, 'd6'));
+    if (setup.d3) rows.push(row(`+D3 (${names((r) => !!r.d3)})`, dice.d3, 'd3'));
+    const base = dice.base.slice(0, setup.dice);
+    const allRolled = base.length === setup.dice && base.every((x) => x != null);
+    const extra: string[] = [];
+    if (allRolled && setup.rerollAll.length && !dice.usedAll) {
+      extra.push(`<button data-cd="all:${which}">↻ Re-roll the whole roll (${esc(setup.rerollAll.map((r) => r.name).join(', '))})</button>`);
+    }
+    if (allRolled && setup.ones.length && !dice.usedOnes && base.includes(1)) {
+      const one = setup.ones.every((r) => r.ones === 'one');
+      extra.push(`<button data-cd="ones:${which}">↻ Re-roll ${one ? 'a 1' : '1s'} (${esc(setup.ones.map((r) => r.name).join(', '))})</button>`);
+    }
+    return rows.join('') + (extra.length ? `<div class="row-btns">${extra.join('')}</div>` : '');
+  }
+
+  /** Würfelknöpfe: einzelnen Würfel werfen bzw. neu werfen, ganzen Wurf oder 1en wiederholen */
+  private wireDice(p: Prompt, body: HTMLElement, s: ChargeState, setups: Record<'flee' | 'roll', () => RollSetup>, name: (w: 'flee' | 'roll') => string): void {
+    body.querySelectorAll<HTMLButtonElement>('[data-cd]').forEach((btn) => {
+      btn.onclick = () => {
+        const [verb, which, key] = btn.dataset.cd!.split(':') as ['roll' | 're' | 'all' | 'ones', 'flee' | 'roll', string | undefined];
+        const setup = setups[which]();
+        const d: RollDice = { base: [], ...s[which] };
+        d.base = [...d.base];
+        const rolled: number[] = [];
+        const die = (k: string) => {
+          const v = k === 'd3' ? d3() : d6();
+          if (k === 'd6') d.d6 = v;
+          else if (k === 'd3') d.d3 = v;
+          else d.base[Number(k)] = v;
+          rolled.push(v);
+        };
+        let what: string;
+        if (verb === 'roll' || verb === 're') {
+          die(key!);
+          what = `${verb === 're' ? 'Reroll – ' : ''}${key === 'd6' ? '+D6' : key === 'd3' ? '+D3' : `D6 ${Number(key) + 1}`}`;
+        } else if (verb === 'all') {
+          for (let i = 0; i < setup.dice; i++) die(String(i));
+          if (setup.d6) die('d6');
+          if (setup.d3) die('d3');
+          d.usedAll = true;
+          what = `Re-roll of the whole roll (${setup.rerollAll.map((r) => r.name).join(', ')})`;
+        } else {
+          const one = setup.ones.every((r) => r.ones === 'one');
+          const idx = d.base.slice(0, setup.dice).map((x, i) => (x === 1 ? i : -1)).filter((i) => i >= 0);
+          for (const i of one ? idx.slice(0, 1) : idx) die(String(i));
+          d.usedOnes = true;
+          what = `Re-roll ${one ? 'a 1' : '1s'} (${setup.ones.map((r) => r.name).join(', ')})`;
+        }
+        s[which] = d;
+        s.note = null;
+        const res = rollTotal(d, setup);
+        this.host.log({ kind: 'roll', dice: [rolled], text: `${name(which)}: ${what} ${rolled.join(', ')}${res ? ` → ${res.total}` : ''}` });
+        this.commit(p, s);
+      };
+    });
+  }
+
   // --- 1. Ansage ------------------------------------------------------------------
 
   private renderDeclare(p: Prompt, body: HTMLElement, a: UnitState, t: UnitState, s: ChargeState): void {
     const d = this.distances(a, t);
     const m = movementOf(a);
+    const cap = chargeSetup(this.ticked('charger', s)).cap ?? 6;
     body.innerHTML = `<p class="prompt-info">Contact from <b>${inch(d.min)}</b>${d.max !== null ? ` · maximised at <b>${inch(d.max)}</b>` : ''}
-        · charges the <b>${esc(d.side)}</b> · Movement ${m}″, so a charge roll of at least ${Math.max(0, Math.ceil(d.min - m))} is needed</p>
-      ${this.rulesHtml('charger', a, t, s)}
+        · charges the <b>${esc(d.side)}</b> · Movement ${m}″, so a charge roll of at least ${Math.max(0, Math.ceil(d.min - m))} is needed
+        · maximum charge range ${m + cap}″</p>
+      ${d.min > m + cap ? `<p class="warn">The target is beyond the maximum charge range (${m + cap}″).</p>` : ''}
+      ${this.rulesHtml('charger', a, s)}
       <p class="meta">Check line of sight; units already in combat or fleeing cannot declare a charge.</p>
       <div class="prompt-actions"><button class="primary" data-declare>Declare charge – ${esc(playerName(t.owner))} chooses a reaction ›</button>
         <button data-cancel>Cancel</button></div>`;
@@ -149,96 +269,186 @@ export class ChargeFlow {
   private renderReact(p: Prompt, body: HTMLElement, a: UnitState, t: UnitState, s: ChargeState): void {
     const d = this.distances(a, t);
     const fleeing = t.status === 'fleeing';
-    const choices = reactionChoices(s.on, d.min, movementOf(a), fleeing);
+    const units = this.units;
+    const canShoot = [t, ...Object.values(units).filter((c) => c.joinedTo === t.id)]
+      .some((u) => weaponsFor(u, 'shooting').some((w) => w.range !== null));
+    const choices = reactionChoices(s.on, d.min, movementOf(a), fleeing, canShoot);
     const flees = s.reaction === 'flee' || s.reaction === 'fireFlee';
-    const swift = s.on.includes('Swiftstride (target)');
+    const shoots = s.reaction === 'standShoot' || s.reaction === 'fireFlee';
+    const fleeRules = this.ticked('target', s);
+    const setup = () => fleeSetup(this.ticked('target', s), s.reaction === 'fireFlee');
+    const res = flees && s.flee ? rollTotal(s.flee, setup()) : null;
     body.innerHTML = `<p class="prompt-info">${esc(a.info.name)} charges <b>${esc(t.info.name)}</b> in the ${esc(d.side)} – contact from ${inch(d.min)}.</p>
-      ${this.rulesHtml('target', a, t, s)}
+      ${this.rulesHtml('target', t, s)}
       <div class="prompt-options">${choices.map((c) => `<button data-react="${c.key}" class="${s.reaction === c.key ? 'primary' : ''}" ${c.allowed ? '' : 'disabled'}>
         <b>${esc(c.label)}</b><span>${esc(c.hint)}</span></button>`).join('')}</div>
-      ${flees ? this.fleeHtml(s, swift) : ''}
-      ${s.reaction === 'standShoot' || s.reaction === 'fireFlee' ? '<p class="meta">Shoot with 🏹 Shoot (tick Stand & Shoot) before the charge roll.</p>' : ''}
-      <div class="prompt-actions"><button class="primary" data-confirm ${!s.reaction || (flees && !s.flee) ? 'disabled' : ''}>Confirm reaction – charge roll ›</button></div>`;
+      ${shoots ? `<div class="row-btns"><button data-standshoot>🏹 ${s.reaction === 'fireFlee' ? 'Fire' : 'Stand & Shoot'} at ${esc(a.info.name)} ›</button></div>` : ''}
+      ${flees ? `<h4>Flee roll <span class="meta">(${s.reaction === 'fireFlee' ? '2D6, discard the lowest' : '2D6'})</span></h4>${this.diceHtml('flee', s.flee, setup(), fleeRules)}` : ''}
+      ${res ? `<p class="prompt-info"><b>Flees ${res.total}″</b> (${esc(res.text)}) – directly away from the charger.</p>
+        <div class="row-btns">${s.fled ? `<span class="ok">✓ ${esc(t.info.name)} has fled ${res.total}″</span>`
+          : `<button data-flee-move>Move ${esc(t.info.name)} ${res.total}″ away</button>`}</div>` : ''}
+      ${s.note ? `<p class="warn">${esc(s.note)}</p>` : ''}
+      <div class="prompt-actions"><button class="primary" data-confirm ${!s.reaction || (flees && !res) ? 'disabled' : ''}>Confirm reaction – charge roll ›</button></div>`;
     this.wireRules(p, body, s);
+    this.wireDice(p, body, s, { flee: setup, roll: () => chargeSetup(this.ticked('charger', s)) }, () => `${t.info.name} flee roll`);
     body.querySelectorAll<HTMLButtonElement>('[data-react]').forEach((b) => {
       b.onclick = () => {
         s.reaction = b.dataset.react as ChargeReaction;
         if (s.reaction !== 'flee' && s.reaction !== 'fireFlee') delete s.flee;
+        s.note = null;
         this.commit(p, s);
       };
     });
-    const rollFlee = body.querySelector<HTMLButtonElement>('[data-flee]');
-    if (rollFlee) rollFlee.onclick = () => {
-      s.flee = fleeRoll(s.reaction === 'fireFlee', swift);
-      this.host.log({ kind: 'roll', dice: [s.flee.dice], text: `${t.info.name} flees ${s.flee.total}″ (${s.flee.text})` });
-      this.commit(p, s);
-    };
+    const shoot = body.querySelector<HTMLButtonElement>('[data-standshoot]');
+    if (shoot) shoot.onclick = () => this.host.standShoot(t.owner, t.id, a.id);
+    const move = body.querySelector<HTMLButtonElement>('[data-flee-move]');
+    if (move && res) move.onclick = () => this.fleeMove(p, s, t, a, res.total);
     (body.querySelector('[data-confirm]') as HTMLButtonElement).onclick = () => {
-      this.host.log({ kind: 'action', text: `${t.info.name}: ${REACTIONS[s.reaction!]}${s.flee ? ` – flees ${s.flee.total}″` : ''}` });
+      this.host.log({ kind: 'action', text: `${t.info.name}: ${REACTIONS[s.reaction!]}${res ? ` – flees ${res.total}″` : ''}` });
+      s.note = null;
       this.commit(p, s, { step: 'roll', to: a.owner, title: 'Charge roll' });
     };
-  }
-
-  private fleeHtml(s: ChargeState, swift: boolean): string {
-    if (!s.flee) return `<div class="prompt-actions"><button data-flee>Roll flee (${s.reaction === 'fireFlee' ? '2D6, discard the lowest' : '2D6'}${swift ? ' + D6 Swiftstride' : ''})</button></div>`;
-    return `<div class="dice-row">${diceHtml(s.flee.dice)}</div>
-      <p class="prompt-info"><b>Flees ${s.flee.total}″</b> (${esc(s.flee.text)}) – turn directly away from the charger and move it by hand.</p>`;
   }
 
   // --- 3. Angriffswurf und Ergebnis ---------------------------------------------------
 
   private renderRoll(p: Prompt, body: HTMLElement, a: UnitState, t: UnitState, s: ChargeState): void {
-    // Entfernung jetzt: ist das Ziel geflohen und von Hand gezogen, gilt die neue Lage
+    // Entfernung jetzt: ist das Ziel geflohen, gilt die neue Lage
     const d = this.distances(a, t);
     const m = movementOf(a);
     const fled = s.reaction === 'flee' || s.reaction === 'fireFlee' || t.status === 'fleeing';
-    const swift = s.on.includes('Swiftstride (charger)');
-    const hunger = s.on.includes('Battle Hunger (charger)');
-    const summary = `${t.info.name}: ${s.reaction ? REACTIONS[s.reaction] : '–'}${s.flee ? ` (fled ${s.flee.total}″)` : ''}`;
-    if (!s.roll) {
-      body.innerHTML = `<p class="prompt-info">${esc(summary)}</p>
-        <p class="prompt-info">Distance now: contact from <b>${inch(d.min)}</b>${d.max !== null ? ` · maximised at ${inch(d.max)}` : ''}</p>
-        <p class="meta">Charge range = Movement ${m}″ + 2D6, discard the lowest${swift ? ', + D6 (Swiftstride)' : ''}${hunger ? ', + D3 (Battle Hunger)' : ''}.</p>
-        <div class="prompt-actions"><button class="primary" data-roll>Roll charge</button></div>`;
-      (body.querySelector('[data-roll]') as HTMLButtonElement).onclick = () => {
-        const r = chargeRoll(swift, hunger);
-        s.roll = { ...r, range: m + r.total };
-        this.host.log({ kind: 'roll', dice: [r.dice], text: `${a.info.name} charge roll: ${r.text} + M ${m} = ${s.roll.range}″ (needs ${inch(d.min)})` });
-        this.commit(p, s);
-      };
-      return;
-    }
-    const result = this.outcome(a, t, s, d, fled);
+    const rules = this.ticked('charger', s);
+    const setup = () => chargeSetup(this.ticked('charger', s));
+    const res = s.roll ? rollTotal(s.roll, setup()) : null;
+    const fleeRes = s.flee ? rollTotal(s.flee, fleeSetup(this.ticked('target', s), s.reaction === 'fireFlee')) : null;
+    const summary = `${t.info.name}: ${s.reaction ? REACTIONS[s.reaction] : '–'}${fleeRes ? ` (fled ${fleeRes.total}″)` : ''}`;
+    const range = res ? m + res.total : null;
+    const outcome = res && range !== null ? this.outcome(a, t, s, d, fled, res.total, range) : [];
+    const base = (s.roll?.base ?? []).slice(0, setup().dice);
+    const notes = [
+      ...(rules.some((r) => r.name === 'Temperamental') && base.includes(1) ? ['Temperamental: a natural 1 was rolled – check the Steam Tank rule.'] : []),
+      ...(rules.some((r) => r.name === 'Ogre Kingdoms Charge') && base.includes(6) ? ['Ogre Kingdoms Charge: a natural 6 – Impact Hits (1) if the charge move is 6″ or more.'] : []),
+    ];
     body.innerHTML = `<p class="prompt-info">${esc(summary)}</p>
-      <div class="dice-row">${diceHtml(s.roll.dice)}</div>
-      <p class="prompt-info">Charge range <b>${s.roll.range}″</b> (${esc(s.roll.text)} + M ${m}) · needed ${inch(d.min)}</p>
-      ${result.map((x) => `<p class="prompt-info">${x}</p>`).join('')}
-      <div class="prompt-actions"><button class="primary" data-done>Done</button></div>`;
+      <p class="prompt-info">Distance now: contact from <b>${inch(d.min)}</b>${d.max !== null ? ` · maximised at ${inch(d.max)}` : ''}
+        · charge range = Movement ${m}″ + charge roll (maximum ${m + (setup().cap ?? 6)}″)</p>
+      ${this.rulesHtml('charger', a, s)}
+      <h4>Charge roll <span class="meta">(2D6, discard the ${setup().keep === 'lowest' ? 'highest' : 'lowest'}${setup().dice === 3 ? ', one extra D6' : ''})</span></h4>
+      ${this.diceHtml('roll', s.roll, setup(), rules)}
+      ${res && range !== null ? `<p class="prompt-info">Charge roll ${res.total} (${esc(res.text)}) + M ${m} = <b>${range}″</b> · needed ${inch(d.min)}</p>
+        ${outcome.map((x) => `<p class="prompt-info">${x}</p>`).join('')}
+        ${notes.map((x) => `<p class="prompt-info">${esc(x)}</p>`).join('')}
+        ${this.moveButtons(s, t, fled, range >= d.min, res.total, range)}` : ''}
+      ${s.note ? `<p class="warn">${esc(s.note)}</p>` : ''}
+      <div class="prompt-actions"><button class="primary" data-done ${res ? '' : 'disabled'}>Done</button></div>`;
+    this.wireRules(p, body, s);
+    this.wireDice(p, body, s, { roll: setup, flee: () => fleeSetup(this.ticked('target', s), s.reaction === 'fireFlee') }, () => `${a.info.name} charge roll`);
+    body.querySelector<HTMLButtonElement>('[data-move]')?.addEventListener('click', (e) => {
+      const kind = (e.currentTarget as HTMLButtonElement).dataset.move as 'contact' | 'failed' | 'removed';
+      if (res && range !== null) this.chargeMove(p, s, a, t, kind, kind === 'failed' && !fled ? res.total : range);
+    });
     (body.querySelector('[data-done]') as HTMLButtonElement).onclick = () => {
+      if (!res || range === null) return;
       const c = this.host.store.state.charges[`charge-${a.id}`];
-      if (c) this.host.store.setCharge(c.id, { ...c, status: 'rolled', success: s.roll!.range >= d.min, reaction: s.reaction ?? null });
-      const text = result.map((x) => x.replace(/<[^>]+>/g, '')).join(' ');
-      this.host.log({ kind: 'action', text: `${a.info.name} → ${t.info.name}: ${text}` });
+      if (c) this.host.store.setCharge(c.id, { ...c, status: 'rolled', success: range >= d.min, reaction: s.reaction ?? null });
+      const text = outcome.map((x) => x.replace(/<[^>]+>/g, '')).join(' ');
+      this.host.log({ kind: 'action', text: `${a.info.name} → ${t.info.name}: charge range ${range}″ – ${text}` });
       this.host.finish(p, text);
     };
   }
 
-  /** Was passiert – nur als Text; bewegt und entfernt wird von Hand */
-  private outcome(a: UnitState, t: UnitState, s: ChargeState, d: { min: number; max: number | null; side: string }, fled: boolean): string[] {
-    const range = s.roll!.range;
+  /** Knöpfe für die Bewegung nach dem Angriffswurf (nur auf Klick) */
+  private moveButtons(s: ChargeState, t: UnitState, fled: boolean, success: boolean, roll: number, range: number): string {
+    if (s.moved) {
+      const done = { contact: 'moved into base contact', failed: 'moved', removed: `${t.info.name} removed (destroyed)` }[s.moved];
+      return `<div class="row-btns"><span class="ok">✓ ${esc(done)}</span></div>`;
+    }
+    if (success && fled) return `<div class="row-btns"><button data-move="removed">Remove ${esc(t.info.name)} (caught – destroyed)</button></div>`;
+    if (success) return '<div class="row-btns"><button data-move="contact">Move into base contact</button></div>';
+    return `<div class="row-btns"><button data-move="failed">Move ${fled ? range : roll}″ towards ${esc(t.info.name)}</button></div>`;
+  }
+
+  /** Was passiert – als Text; bewegt wird von Hand oder mit den Knöpfen */
+  private outcome(a: UnitState, t: UnitState, s: ChargeState, d: { min: number; max: number | null; side: string }, fled: boolean,
+    roll: number, range: number): string[] {
     const out: string[] = [];
     if (range >= d.min) {
-      out.push(`<b>Charge succeeds</b> – move ${esc(a.info.name)} into base contact by hand${d.max !== null ? ` (as many models as possible: maximised at ${inch(d.max)}, ${esc(d.side)})` : ''}.`);
-      if (fled) out.push(`The fleeing unit is caught and <b>destroyed</b> – remove ${esc(t.info.name)} by hand. The charger may then take a Leadership test to reform.`);
+      out.push(`<b>Charge succeeds</b> – move ${esc(a.info.name)} into base contact${d.max !== null ? ` (as many models as possible: maximised at ${inch(d.max)}, ${esc(d.side)})` : ''}.`);
+      if (fled) out.push(`The fleeing unit is caught and <b>destroyed</b>. The charger may then take a Leadership test to reform.`);
       else out.push(`Initiative <b>+${chargeInitiative(d.min, d.side)}</b> for ${esc(a.info.name)} this turn (+1 per full 1″ moved, at most +${d.side === 'front' ? 3 : 4} in the ${esc(d.side)}).`);
       if (s.on.includes('Impact Hits (charger)')) out.push('Impact Hits are resolved before anything else.');
       if (s.on.includes('Furious Charge (charger)')) out.push('Furious Charge: +1 Attack this turn.');
     } else if (fled) {
-      out.push(`<b>Charge does not reach</b> the fleeing unit – move ${esc(a.info.name)} its full charge range (${range}″) towards it by hand.`);
+      out.push(`<b>Charge does not reach</b> the fleeing unit – ${esc(a.info.name)} moves its full charge range (${range}″) towards it.`);
     } else {
-      out.push(`<b>Failed charge</b> – move ${esc(a.info.name)} ${s.roll!.total}″ (the charge roll) directly towards ${esc(t.info.name)} by hand.`);
+      out.push(`<b>Failed charge</b> – ${esc(a.info.name)} moves ${roll}″ (the charge roll) directly towards ${esc(t.info.name)}.`);
     }
     if (s.reaction === 'counter') out.push('Counter Charge: resolve the counter charge by hand (see the rule).');
     return out;
+  }
+
+  // --- Bewegungen per Knopf ---------------------------------------------------------
+
+  /** Fliehen: direkt vom Angreifer weg drehen und die gewürfelte Weite ziehen */
+  private fleeMove(p: Prompt, s: ChargeState, t: UnitState, a: UnitState, dist: number): void {
+    const dx = t.x - a.x;
+    const dy = t.y - a.y;
+    const len = Math.hypot(dx, dy) || 1;
+    const pose = { x: t.x + (dx / len) * dist, y: t.y + (dy / len) * dist, rotation: Math.atan2(dx / len, -dy / len), status: 'fleeing' as const };
+    const problem = placementProblem({ ...t, ...pose }, this.units, false);
+    if (problem) {
+      s.note = `Cannot move ${t.info.name} there: ${problem} – move it by hand.`;
+      this.commit(p, s);
+      return;
+    }
+    this.host.history.record();
+    // Verlässt die Einheit dabei den Tisch, ist sie vom Schlachtfeld geflohen
+    const { width, height } = this.host.store.state.table;
+    const off = slotPolygons({ ...t, ...pose }, this.units).some(({ poly }) => poly.some((q) => q.x < 0 || q.y < 0 || q.x > width || q.y > height));
+    this.host.store.updateUnit(t.id, off ? { ...pose, status: 'fledOff' } : pose);
+    s.fled = true;
+    s.note = null;
+    this.host.log({ kind: 'action', text: `${t.info.name} flees ${dist}″ directly away from ${a.info.name}${off ? ' – and off the battlefield' : ''}` });
+    this.commit(p, s);
+  }
+
+  /** Nach dem Angriffswurf: in Kontakt ziehen, fehlgeschlagen auf das Ziel zu, oder gefangene Fliehende entfernen */
+  private chargeMove(p: Prompt, s: ChargeState, a: UnitState, t: UnitState, kind: 'contact' | 'failed' | 'removed', dist: number): void {
+    const units = this.units;
+    let patch: Partial<UnitState>;
+    let id = a.id;
+    let text: string;
+    if (kind === 'removed') {
+      id = t.id;
+      patch = { status: 'destroyed' };
+      text = `${t.info.name} is caught and destroyed`;
+    } else if (kind === 'contact') {
+      // Größtmöglicher Kontakt, soweit die Angriffsweite reicht; sonst die nächste Kontaktstellung
+      const pose = contactPoses(a, t, units).find((q) => chargeTravel(a, q, units) <= dist + 1e-6) ?? contactPose(a, t, units);
+      patch = { x: pose.x, y: pose.y, rotation: pose.rotation };
+      text = `${a.info.name} moves into base contact with ${t.info.name} (${pose.side})`;
+    } else {
+      const dx = t.x - a.x;
+      const dy = t.y - a.y;
+      const len = Math.hypot(dx, dy) || 1;
+      // Nicht bis in den Kontakt (dann wäre der Angriff gelungen)
+      const go = Math.max(0, Math.min(dist, minChargeDistance(a, t, units) - 0.05));
+      patch = { x: a.x + (dx / len) * go, y: a.y + (dy / len) * go };
+      text = `${a.info.name} moves ${go.toFixed(1)}″ towards ${t.info.name}`;
+    }
+    if (kind !== 'removed') {
+      const problem = placementProblem({ ...units[id], ...patch }, units, false);
+      if (problem) {
+        s.note = `Cannot move ${a.info.name} there: ${problem} – move it by hand.`;
+        this.commit(p, s);
+        return;
+      }
+    }
+    this.host.history.record();
+    this.host.store.updateUnit(id, patch);
+    s.moved = kind;
+    s.note = null;
+    this.host.log({ kind: 'action', text });
+    this.commit(p, s);
   }
 }

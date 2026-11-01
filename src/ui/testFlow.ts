@@ -72,6 +72,19 @@ export class TestFlow {
     return [...new Set(on)];
   }
 
+  /**
+   * Nur Regeln zeigen, die passen: Regeln der Einheit, General bzw. Armeestandarte (wenn sie auf dem Tisch stehen),
+   * Lagen aus dem Kampf (doppelte Unit Strength) – und alles, was schon angehakt ist.
+   */
+  private offered(u: UnitState, name: string, s: TestState): boolean {
+    if (s.on.includes(name) || unitHasRule(u, name)) return true;
+    const friends = Object.values(this.host.store.state.units).filter((x) => x.owner === u.owner && x.id !== u.id
+      && !x.ambush && x.status !== 'destroyed' && x.status !== 'fledOff');
+    if (name === 'Inspiring Presence') return friends.some((x) => x.info.isGeneral);
+    if (name === 'Hold Your Ground') return friends.some((x) => x.info.isBsb);
+    return name === 'Winner has twice the Unit Strength';
+  }
+
   private state(p: Prompt): TestState | null {
     try {
       return JSON.parse(String(p.data.state)) as TestState;
@@ -94,7 +107,7 @@ export class TestFlow {
     }
     const ld = s.on.includes('Inspiring Presence') ? Math.max(s.ld, s.generalLd) : s.ld;
     const isBreak = s.kind === 'break';
-    const rules = TEST_RULES.filter((r) => r.tests.includes(s.kind));
+    const rules = TEST_RULES.filter((r) => r.tests.includes(s.kind) && this.offered(u, r.name, s));
     const cold = s.on.includes('Cold-blooded');
     body.innerHTML = `<div class="prompt-form">
         ${isBreak ? '' : `<label>Test <select data-kind>${(['ld', 'panic', 'fear', 'terror', 'rally'] as TestKind[]).map((k) => `<option value="${k}" ${k === s.kind ? 'selected' : ''}>${TEST_NAMES[k]}</option>`).join('')}</select></label>`}
@@ -103,7 +116,7 @@ export class TestFlow {
         ${isBreak ? `<label>Lost the combat by <input type="number" min="0" max="30" data-field="diff" value="${s.diff}"></label>`
           : `<label>Modifier to the roll <input type="number" min="-6" max="6" data-field="mod" value="${s.mod}"></label>`}
       </div>
-      <div class="atk-mods atk-rules-box"><div class="atk-base">Special rules <span class="meta">(ticked: detected by the game)</span></div>
+      <div class="atk-mods atk-rules-box"><div class="atk-base">Special rules <span class="meta">(only what applies to this unit; ticked: detected)</span></div>
         ${rules.map((r) => `<label class="atk-mod"><input type="checkbox" data-trule="${esc(r.name)}" ${s.on.includes(r.name) ? 'checked' : ''}>
           <span class="atk-label">${esc(r.name)} <span class="atk-hint">${esc(r.hint)}${unitHasRule(u, r.name) ? ` · ${esc(u.info.name)} has this rule` : ''}</span></span></label>`).join('')}
       </div>

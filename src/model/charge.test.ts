@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CHARGE_RULES, chargeInitiative, reactionChoices, ruleKey, unitHasRule } from './charge';
+import { CHARGE_RULES, chargeInitiative, chargeSetup, fleeSetup, hasChargeRule, reactionChoices, rollTotal, ruleKey, unitHasRule } from './charge';
 import { testUnit } from './testUnits';
 
 const allowed = (on: string[], distance: number, move: number, fleeing = false) =>
@@ -45,5 +45,33 @@ describe('charge rules', () => {
     expect(unitHasRule(testUnit('k', { rules: ['Swiftstride', 'First Charge'] }), 'Swiftstride')).toBe(true);
     expect(unitHasRule(testUnit('k', { rules: ['Fire and Flee'] }), 'Fire & Flee')).toBe(true);
     expect(unitHasRule(testUnit('k'), 'Fly')).toBe(false);
+  });
+});
+
+describe('charge and flee rolls', () => {
+  const rule = (name: string, side: 'charger' | 'target' = 'charger') => CHARGE_RULES.find((r) => r.name === name && r.side === side)!;
+
+  it('keeps the highest of 2D6, adds Swiftstride and caps at 6 + 3', () => {
+    const s = chargeSetup([rule('Swiftstride')]);
+    expect(rollTotal({ base: [2, 5], d6: 6 }, s)).toMatchObject({ total: 9, dropped: [0] });
+    expect(rollTotal({ base: [2, 3], d6: 1 }, s)?.total).toBe(4);
+    expect(rollTotal({ base: [2, null], d6: 1 }, s)).toBeNull();
+  });
+
+  it('difficult terrain discards the highest, the Jaguar Standard rolls a third die', () => {
+    expect(rollTotal({ base: [2, 5] }, chargeSetup([rule('Difficult Terrain')]))?.total).toBe(2);
+    expect(chargeSetup([rule('Jaguar Standard')]).dice).toBe(3);
+  });
+
+  it('flee: 2D6 together, Fire & Flee keeps the highest, Resolute −1', () => {
+    expect(rollTotal({ base: [3, 4] }, fleeSetup([], false))?.total).toBe(7);
+    expect(rollTotal({ base: [3, 4] }, fleeSetup([], true))?.total).toBe(4);
+    expect(rollTotal({ base: [1, 1] }, fleeSetup([rule('Resolute', 'target')], true))?.total).toBe(1);
+  });
+
+  it('finds rules on the unit and its joined characters', () => {
+    const u = testUnit('u', { rules: ['Daemon(s) Of Slaanesh'] });
+    expect(hasChargeRule(u, rule('Daemons of Slaanesh'), { u })).toBe(true);
+    expect(hasChargeRule(u, rule('Swiftstride'), { u })).toBe(false);
   });
 });

@@ -66,7 +66,8 @@ export class PromptCenter {
       finish: (p, result) => this.finish(p, result),
     });
     this.charges = new ChargeFlow({
-      store,
+      store, history,
+      standShoot: (from, shooterId, targetId) => this.attacks.start(from, shooterId, targetId, 'shooting', ['Stand & Shoot']),
       log: (entry) => host.log(entry),
       create: (kind, to, from, title, text, data) => this.create(kind, to, from, title, text, data),
       finish: (p, result) => this.finish(p, result),
@@ -178,9 +179,12 @@ export class PromptCenter {
   private current(): { prompt: Prompt; mode: 'act' | 'watch' | 'result' } | null {
     const seat = this.host.seat();
     const list = Object.values(this.store.state.prompts).sort((a, b) => a.ts - b.ts);
-    const mine = list.find((p) => p.status === 'open' && (!seat || p.to === seat));
+    // Offene Fenster: das neueste zuerst – ein Fenster aus einem anderen heraus (Stand & Shoot während der
+    // Angriffsreaktion) kommt nach vorn, danach geht es im ursprünglichen weiter
+    const open = list.filter((p) => p.status === 'open').reverse();
+    const mine = open.find((p) => !seat || p.to === seat);
     if (mine) return { prompt: mine, mode: 'act' };
-    const other = list.find((p) => p.status === 'open');
+    const other = open[0];
     if (other) return { prompt: other, mode: 'watch' };
     if (seat === 'spectator') return null;
     const result = list.find((p) => p.status === 'done' && !p.acknowledged && (!seat || p.from === seat));

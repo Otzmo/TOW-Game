@@ -811,3 +811,6 @@ body.hide-left .col-resizer.left { display: none; }
 
 /* Fehlermeldung bei der Zielwahl (z. B. außer Reichweite) */
 #tool-hint.error { background: #b3261e; color: #fff; border-color: #f0603e; }
+
+/* Gestrichener Würfel (z. B. der niedrigere beim Angriffswurf) */
+.die.dropped { opacity: .35; text-decoration: line-through; }

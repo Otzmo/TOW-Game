@@ -203,13 +203,13 @@ export class AttackFlow {
   }
 
   /** Angriff beginnen: Popup „Roll To Hit“ für den Besitzer der angreifenden Einheit */
-  start(from: PlayerId, attackerId: string, targetId: string, mode: AttackMode): void {
+  start(from: PlayerId, attackerId: string, targetId: string, mode: AttackMode, preset: string[] = []): void {
     const a = this.units[attackerId];
     const t = this.units[targetId];
     if (!a || !t || a.owner === t.owner) return;
     const verb = mode === 'shooting' ? 'Shooting' : 'Combat';
     this.host.create('attack', a.owner, from, 'Roll To Hit', `${verb}: ${a.info.name} → ${t.info.name}`,
-      { attackerId, targetId, mode, step: 'hit' });
+      { attackerId, targetId, mode, step: 'hit', preset: JSON.stringify(preset) });
   }
 
   /**
@@ -256,7 +256,7 @@ export class AttackFlow {
   private renderHit(p: Prompt, body: HTMLElement, a: UnitState, t: UnitState, mode: AttackMode): void {
     const stage = this.st(p);
     const shooting = mode === 'shooting';
-    const form = (stage.hit as HitForm | undefined) ?? (stage.hit = this.newHitForm(a, t, mode)) as HitForm;
+    const form = (stage.hit as HitForm | undefined) ?? (stage.hit = this.newHitForm(a, t, mode, parse<string[]>(p.data.preset, []))) as HitForm;
     const lines = form.lines.filter((l) => this.lineWeapons(l.line, mode).length);
     if (!lines.length) {
       body.innerHTML = `<p class="warn">${esc(a.info.name)} has no ${shooting ? 'missile weapon' : 'attacks'}.</p>
@@ -395,7 +395,7 @@ export class AttackFlow {
    * Neues Formular mit allem, was das Spiel erkennt, schon angehakt: bewegt in diesem Zug, lange Reichweite,
    * Plänkler als Ziel, auf einem Hügel; im Nahkampf die Attacken aus dem Basekontakt. Alles lässt sich abhaken.
    */
-  private newHitForm(a: UnitState, t: UnitState, mode: AttackMode): HitForm {
+  private newHitForm(a: UnitState, t: UnitState, mode: AttackMode, preset: string[] = []): HitForm {
     const form: HitForm = {
       lines: attackLines(a, this.units, mode).map((line) => ({ line, weapon: 0, count: line.count, multiRolled: null })),
       checked: [], manual: [], hill: false, multi: false, on: [], notes: {},
@@ -414,6 +414,8 @@ export class AttackFlow {
         ...(w?.range != null && distance > w.range / 2 ? ['Long range'] : []),
         ...(inCover(a, t, objects) ? ['Partial cover'] : []),
         ...(isSkirmish(t) ? ['Target is skirmishers'] : []),
+        // Vorgaben des Aufrufers, z. B. Stand & Shoot aus der Angriffsreaktion
+        ...preset,
       ];
       form.hill = onHill(a, objects);
       this.recountShots(a, form);
