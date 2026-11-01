@@ -451,10 +451,11 @@ export class ChargeFlow {
       const dx = t.x - a.x;
       const dy = t.y - a.y;
       const len = Math.hypot(dx, dy) || 1;
-      // Nicht bis in den Kontakt (dann wäre der Angriff gelungen)
-      const go = Math.max(0, Math.min(dist, minChargeDistance(a, t, units) - 0.05));
-      patch = { x: a.x + (dx / len) * go, y: a.y + (dy / len) * go };
-      text = `${a.info.name} moves ${go.toFixed(1)}″ towards ${t.info.name}`;
+      // Front zur Zieleinheit drehen (Mitte zu Mitte), dann auf sie zu – nicht bis in den Kontakt (dann wäre der Angriff gelungen)
+      const rotation = Math.atan2(dx / len, -dy / len);
+      const go = Math.max(0, Math.min(dist, minChargeDistance({ ...a, rotation }, t, units) - 0.05));
+      patch = { x: a.x + (dx / len) * go, y: a.y + (dy / len) * go, rotation };
+      text = `${a.info.name} turns to face ${t.info.name} and moves ${go.toFixed(1)}″ towards it`;
     }
     if (kind !== 'removed') {
       const problem = placementProblem({ ...units[id], ...patch }, units, false);
