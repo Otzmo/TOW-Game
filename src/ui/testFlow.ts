@@ -5,6 +5,7 @@ import { BREAK_TEXT, breakResult, keptDice, TEST_NAMES, TEST_RULES, testPassed, 
 import type { LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
 import { distanceToUnit } from '../model/warMachines';
 import { diceHtml } from './dice';
+import { summaryBar } from './steps';
 
 /** Inspiring Presence und Hold Your Ground: bis zu diesem Abstand (Zoll) */
 const SUPPORT_RANGE = 12;
@@ -109,7 +110,15 @@ export class TestFlow {
     const isBreak = s.kind === 'break';
     const rules = TEST_RULES.filter((r) => r.tests.includes(s.kind) && this.offered(u, r.name, s));
     const cold = s.on.includes('Cold-blooded');
-    body.innerHTML = `<div class="prompt-form">
+    const rolled = s.reroll ?? s.dice;
+    const passed = rolled ? (isBreak ? breakResult(rolled, ld, s.diff, s.on) !== 'flee' : !this.failed(s, ld)) : null;
+    const header = summaryBar([
+      `${esc(TEST_NAMES[s.kind])}`,
+      `Ld <b>${ld}</b>`,
+      isBreak ? `Lost by <b>${s.diff}</b>` : s.mod ? `Roll <b>${signed(s.mod)}</b>` : null,
+      rolled ? `Rolled <b>${keptDice(rolled).reduce((x, y) => x + y, 0)}</b>` : null,
+    ], rolled ? { text: this.outcome(s, ld), tone: passed ? 'ok' : 'bad' } : null);
+    body.innerHTML = `${header}<div class="prompt-form">
         ${isBreak ? '' : `<label>Test <select data-kind>${(['ld', 'panic', 'fear', 'terror', 'rally'] as TestKind[]).map((k) => `<option value="${k}" ${k === s.kind ? 'selected' : ''}>${TEST_NAMES[k]}</option>`).join('')}</select></label>`}
         <label>Leadership of ${esc(u.info.name)} <input type="number" min="1" max="12" data-field="ld" value="${s.ld}"></label>
         ${s.on.includes('Inspiring Presence') ? `<label>Leadership of the General <input type="number" min="1" max="12" data-field="generalLd" value="${s.generalLd}"></label>` : ''}

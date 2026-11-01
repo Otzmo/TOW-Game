@@ -7,16 +7,16 @@ import { isJoined, type Store } from '../model/store';
 import { templateHitsByUnit } from '../model/templates';
 import type { LogEntry, PlayerId, Point, UnitState, WarMachineShot } from '../model/types';
 import { beyond, cannonShot, distanceToUnit, misfireResult, warMachineWeapons, type WarMachineWeapon } from '../model/warMachines';
-import { artilleryDie, artilleryText, scatterDie, scatterHtml } from './dice';
+import { artilleryDie, artilleryText, scatterDie } from './dice';
 import type { WoundLine } from './attackFlow';
 import { openSheet } from './sheets';
+import { dieSlots, summaryBar, type DieSlot } from './steps';
 
 const $ = (id: string) => document.getElementById(id)!;
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 const d6 = () => 1 + Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32 * 6);
 const inch = (n: number) => `${n.toFixed(1)}″`;
-const artHtml = (v: number) => `<span class="die die-art ${v ? '' : 'misfire'}">${v ? v : 'Misfire'}</span>`;
 
 /** Linien des Schusses im Maßband-Speicher (für beide sichtbar) */
 const LINES = ['wm-aim', 'wm-shot', 'wm-bounce'] as const;
@@ -407,40 +407,48 @@ export class WarMachinePanel {
     const dis = may ? '' : 'disabled';
     const dice = shot.dice ?? {};
     const range = weapon.min ? `${weapon.min}–${weapon.max}″` : `${weapon.max}″`;
-    /** Zeile mit Würfel: Ergebnis oder Knopf zum Würfeln */
-    const row = (label: string, value: string | null, act: string, button: string) =>
-      `<div class="dice-step"><span class="label">${label}</span>${value !== null
-        ? `${value} <button data-wm="re-${act}" title="Roll this die again" ${dis}>↻ Reroll</button>`
-        : `<button data-wm="${act}" class="primary" ${dis}>🎲 ${button}</button>`}</div>`;
+    /** Würfelfeld: leer = würfeln, gewürfelt = neu würfeln */
+    const slot = (label: string, value: number | null | undefined, act: string, face?: string): DieSlot => ({
+      label, attr: 'data-wm', act: value != null ? `re-${act}` : act, disabled: !may,
+      face: value == null ? null : face ?? (value === 0 && act !== 'misfire' ? 'Misfire' : String(value)), bad: value === 0 && act !== 'misfire',
+    });
     const rows: string[] = [];
     if (shot.step === 'choose') {
       rows.push(`<p>The target is within 12″: fire a cannonball or grapeshot?</p>
         <div class="row-btns"><button data-wm="choose-cannon" class="primary" ${dis}>Cannonball</button><button data-wm="choose-grape" ${dis}>Grapeshot</button></div>`);
-    } else if (weapon.mode === 'cannon') {
-      rows.push(row('Strike point (Artillery dice)', dice.first != null ? artHtml(dice.first) : null, 'first', 'Roll'));
-      if (dice.first) {
-        rows.push(`<p class="prompt-info">Strike point ${dice.first}″ beyond the target point, directly away from the cannon</p>`);
-        rows.push(row('Bounce (Artillery dice)', dice.bounce != null ? artHtml(dice.bounce) : null, 'bounce', 'Roll'));
-        if (dice.bounce === 0) rows.push('<p class="prompt-info">Misfire on the bounce: the cannonball buries itself in the ground – only models under the strike point are hit.</p>');
-        else if (dice.bounce) rows.push(`<p class="prompt-info">The cannonball bounces ${dice.bounce}″ further</p>`);
-      }
-    } else if (weapon.mode === 'grapeshot') {
-      rows.push(row('Hits (Artillery dice)', dice.first != null ? artHtml(dice.first) : null, 'first', 'Roll'));
     } else {
-      rows.push(row('Artillery dice', dice.first != null ? artHtml(dice.first) : null, 'first', 'Roll'));
-      rows.push(dice.first === 0 && !dice.scatter ? '<div class="dice-step"><span class="label">Scatter dice</span><span class="meta">–</span></div>'
-        : row('Scatter dice', dice.scatter ? scatterHtml(dice.scatter) : null, 'scatter', 'Roll'));
-    }
-    if (dice.first === 0) {
-      rows.push(`<p class="warn"><b>Misfire!</b> Roll on the ${weapon.misfire === 'stone-thrower' ? 'Stone Thrower' : 'Black Powder'} Misfire table.</p>`);
-      rows.push(row('Misfire table (D6)', dice.misfire != null ? `<span class="die">${dice.misfire}</span>` : null, 'misfire', 'Roll'));
+      const slots: DieSlot[] = [];
+      if (weapon.mode === 'cannon') {
+        slots.push(slot('Strike point', dice.first, 'first'));
+        if (dice.first) slots.push(slot('Bounce', dice.bounce, 'bounce'));
+      } else if (weapon.mode === 'grapeshot') slots.push(slot('Hits', dice.first, 'first'));
+      else {
+        slots.push(slot('Artillery', dice.first, 'first'));
+        if (dice.first !== 0 || dice.scatter) {
+          const sc = dice.scatter;
+          slots.push(slot('Scatter', sc ? 1 : null, 'scatter',
+            sc ? (sc.hit ? 'HIT' : `<span class="scatter-arrow" style="transform: rotate(${sc.angle}deg)">↑</span>`) : undefined));
+        }
+      }
+      if (dice.first === 0) slots.push(slot('Misfire table D6', dice.misfire, 'misfire'));
+      rows.push(dieSlots(slots));
+      if (weapon.mode === 'cannon' && dice.first) {
+        rows.push(`<p class="prompt-info">Strike point ${dice.first}″ beyond the target point, directly away from the cannon${
+          dice.bounce === 0 ? ' · bounce Misfire: the ball buries itself, only models under the strike point are hit'
+          : dice.bounce ? ` · bounces ${dice.bounce}″ further` : ''}</p>`);
+      }
+      if (dice.first === 0) rows.push(`<p class="warn"><b>Misfire!</b> Roll on the ${weapon.misfire === 'stone-thrower' ? 'Stone Thrower' : 'Black Powder'} Misfire table.</p>`);
     }
     // Abweichung anwenden (nur auf Knopfdruck)
     if (weapon.mode === 'bombard' && shot.step === 'done' && dice.first && dice.scatter && !dice.scatter.hit && !shot.moved) {
       rows.push(`<div class="row-btns"><button data-wm="move-template" ${dis}>Move the template ${dice.first}″ <span class="scatter-arrow" style="transform: rotate(${dice.scatter.angle}deg)">↑</span></button></div>`);
     }
     const wounds = shot.step === 'done' && dice.first !== 0 ? this.woundsHtml(shot, weapon, dis) : '';
-    $('wm-panel').innerHTML = `<p><span class="dot ${unit.owner}"></span><b>${esc(unit.info.name)}</b> · ${esc(MODE_NAMES[weapon.mode])} (${esc(weapon.name)}, ${range})</p>
+    const header = summaryBar([
+      `<span class="dot ${unit.owner}"></span><b>${esc(unit.info.name)}</b>`,
+      `${esc(MODE_NAMES[weapon.mode])} · ${esc(weapon.name)} ${range}`,
+    ], this.resultOf(shot, weapon));
+    $('wm-panel').innerHTML = `${header}
       ${(shot.lines ?? []).map((l) => `<p class="${/misfire/i.test(l) ? 'warn' : 'prompt-info'}">${esc(l)}</p>`).join('')}
       ${rows.join('')}
       ${(shot.result ?? []).map((l) => `<p class="${/misfire/i.test(l) ? 'warn' : 'prompt-info'}">${esc(l)}</p>`).join('')}
@@ -448,6 +456,18 @@ export class WarMachinePanel {
       <div class="row-btns">${shot.step !== 'done' ? `<button data-wm="retarget" ${dis}>⌖ New target</button>` : ''}
         <button data-wm="close" ${dis}>${shot.step === 'done' ? 'Done – remove lines and marks' : 'Cancel'}</button></div>
       <p class="meta">Lost models are removed automatically after the saves${weapon.mode === 'bombard' ? ' · the template is removed with Done' : ''}.</p>`;
+  }
+
+  /** Ergebnis für die Kopfzeile: Misfire, Treffer, Volltreffer oder Abweichung */
+  private resultOf(shot: WarMachineShot, w: WarMachineWeapon): { text: string; tone: 'ok' | 'bad' | 'neutral' } | null {
+    const d = shot.dice ?? {};
+    if (d.first === 0) return { text: 'Misfire', tone: 'bad' };
+    if (shot.step !== 'done') return null;
+    if (w.mode === 'bombard') return d.scatter?.hit ? { text: 'Direct hit', tone: 'ok' } : { text: `Scatters ${d.first}″`, tone: 'neutral' };
+    const hits = (shot.targets ?? []).reduce((s, x) => s + x.hits, 0);
+    const s = hits === 1 ? '' : 's';
+    return hits ? { text: w.mode === 'cannon' ? `${hits} model${s} hit` : `${hits} hit${s}`, tone: 'ok' }
+      : { text: 'No models hit', tone: 'neutral' };
   }
 
   /** Treffer je Einheit mit den 4+-Würfen des Gegners und dem Knopf zum Verwundungswurf */

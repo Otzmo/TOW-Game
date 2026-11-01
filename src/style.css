@@ -814,3 +814,34 @@ body.hide-left .col-resizer.left { display: none; }
 
 /* Gestrichener Würfel (z. B. der niedrigere beim Angriffswurf) */
 .die.dropped { opacity: .35; text-decoration: line-through; }
+
+/* Erledigte Schritte eingeklappt: eine Zeile mit Kurzfassung, Klick klappt auf */
+.step h4[data-step-toggle] { cursor: pointer; }
+.step.collapsed { padding-top: 6px; padding-bottom: 6px; }
+.step.collapsed h4 { margin: 0; }
+.step.collapsed .step-body { display: none; }
+.step-sum { flex: 1; text-align: right; font-weight: 400; color: var(--muted); font-size: calc(12px * var(--ui)); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.step-chev::before { content: '▾'; color: var(--muted); }
+.step.collapsed .step-chev::before { content: '▸'; }
+/* Kopfzeile mit den Kernzahlen und dem Ergebnis, bleibt beim Scrollen oben */
+.dlg-summary {
+  position: sticky; top: -14px; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px;
+  margin: 0 0 10px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel);
+  font-size: calc(13px * var(--ui)); box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+}
+.dlg-summary .sum-item b { color: var(--accent); }
+.dlg-summary .sum-result { margin-left: auto; padding: 3px 10px; border-radius: 999px; font-weight: 700; background: var(--btn); }
+.dlg-summary .sum-result.ok { background: #2f5a2a; color: #d6f5c8; }
+.dlg-summary .sum-result.bad { background: #6a2a24; color: #ffd8cc; }
+/* Würfelfelder nebeneinander: leer = würfeln, gewürfelt = neu würfeln */
+.dice-slots { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0; }
+.die-slot { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 52px; padding: 6px 6px 4px; border-radius: 10px; cursor: pointer; }
+.die-slot .die-face {
+  display: flex; align-items: center; justify-content: center; min-width: 30px; height: 30px; padding: 0 4px; border-radius: 6px;
+  background: #f3e6c4; color: #1d140a; font-weight: 800; font-size: calc(16px * var(--ui));
+}
+.die-slot.empty .die-face { background: transparent; border: 1px dashed var(--line); font-size: calc(14px * var(--ui)); }
+.die-slot.dropped .die-face { opacity: .35; text-decoration: line-through; }
+.die-slot.bad .die-face { background: #f0603e; color: #fff; font-size: calc(11px * var(--ui)); }
+.die-slot .die-label { font-size: calc(10px * var(--ui)); color: var(--muted); max-width: 90px; text-align: center; line-height: 1.2; }
+.die-slot:disabled { cursor: default; }

@@ -4,7 +4,8 @@ import { playerName } from '../model/players';
 import type { Store } from '../model/store';
 import { templateHitsByUnit } from '../model/templates';
 import type { BoardObject, LogEntry, PlayerId } from '../model/types';
-import { artilleryDie, artilleryText, scatterDie, scatterHtml } from './dice';
+import { artilleryDie, artilleryText, scatterDie } from './dice';
+import { dieSlots, summaryBar } from './steps';
 
 const $ = (id: string) => document.getElementById(id)!;
 const input = (id: string) => $(id) as HTMLInputElement;
@@ -120,6 +121,23 @@ export class ObjectPanel {
     this.log({ kind: 'roll', dice: [dice], text: `${again ? 'Reroll – ' : ''}${OBJECT_TYPES[o.type]?.name ?? 'Template'} on ${e.unit.info.name}: ${e.partial} partially covered – ${hit} hit on 4+` });
   }
 
+  /** Kopfzeile der Schablone: Größe, Ergebnis der Abweichung und Treffer insgesamt */
+  private renderSummary(o: BoardObject): void {
+    const list = templateHitsByUnit(o, this.store.state.units);
+    const rolls = this.partialDice(o);
+    const open = list.filter((e) => e.partial && rolls[e.unit.id]?.length !== e.partial).length;
+    const hits = list.reduce((s, e) => s + e.full + (e.centre ? 1 : 0)
+      + (rolls[e.unit.id]?.length === e.partial ? rolls[e.unit.id].filter((d) => d >= 4).length : 0), 0);
+    const res = o.type === 'flame' ? null : this.result(this.rolls.get(o.id) ?? {});
+    const scatter = !res ? null : res.kind === 'misfire' ? { text: 'Misfire', tone: 'bad' as const }
+      : res.kind === 'hit' ? { text: 'Direct hit', tone: 'ok' as const }
+      : res.kind === 'scatter' ? { text: `Scatters ${res.dist}″`, tone: 'neutral' as const } : null;
+    $('o-summary').innerHTML = summaryBar([
+      `Models under it <b>${list.reduce((s, e) => s + e.full + e.partial + (e.centre ? 1 : 0), 0)}</b>`,
+      `Hits <b>${hits}${open ? ' + 4+ rolls' : ''}</b>`,
+    ], scatter);
+  }
+
   /** Getroffene Modelle je Einheit; teilweise bedeckte würfelt der Gegner (4+), am Ende steht die Zahl der Treffer */
   private renderHits(o: BoardObject): void {
     const list = templateHitsByUnit(o, this.store.state.units);
@@ -222,17 +240,21 @@ export class ObjectPanel {
   private renderScatter(o: BoardObject): void {
     const r = this.rolls.get(o.id) ?? {};
     const labels: Record<ScatterKind, string> = { dir: 'Scatter dice', art: 'Artillery dice', d3: '−D3', d6: 'D6', d2: '2D6' };
-    const die = (k: ScatterKind): string => {
+    /** Gesicht eines gewürfelten Würfels (HTML) */
+    const face = (k: ScatterKind): string => {
       const v = r[k];
-      if (k === 'dir') return scatterHtml(v as NonNullable<ScatterRolls['dir']>);
-      if (k === 'art') return `<span class="die die-art ${v ? '' : 'misfire'}">${v ? v : 'Misfire'}</span>`;
-      return (Array.isArray(v) ? v : [v as number]).map((d) => `<span class="die">${d}</span>`).join('');
+      if (k === 'dir') {
+        const d = v as NonNullable<ScatterRolls['dir']>;
+        return d.hit ? 'HIT' : `<span class="scatter-arrow" style="transform: rotate(${d.angle}deg)">↑</span>`;
+      }
+      if (k === 'art') return v ? String(v) : 'Misfire';
+      return Array.isArray(v) ? v.join('+') : String(v);
     };
     const kinds = this.kinds();
-    $('o-sc-dice').innerHTML = kinds.map((k) => `<div class="dice-step"><span class="label">${labels[k]}</span>${r[k] !== undefined
-      ? `<span class="dice-inline">${die(k)}</span> <button data-sc="re:${k}" title="Roll this die again">↻ Reroll</button>`
-      : `<button data-sc="roll:${k}" class="primary">🎲 Roll</button>`}</div>`).join('')
-      + (kinds.some((k) => r[k] !== undefined) ? '<div class="row-btns"><button data-sc="clear">Clear the dice</button></div>' : '');
+    $('o-sc-dice').innerHTML = dieSlots(kinds.map((k) => ({
+      label: labels[k], attr: 'data-sc', act: `${r[k] !== undefined ? 're' : 'roll'}:${k}`,
+      face: r[k] !== undefined ? face(k) : null, bad: k === 'art' && r.art === 0,
+    }))) + (kinds.some((k) => r[k] !== undefined) ? '<div class="row-btns"><button data-sc="clear">Clear the dice</button></div>' : '');
     const res = this.result(r);
     const arrow = (angle: number) => `<span class="scatter-arrow" style="transform: rotate(${angle}deg)">↑</span>`;
     $('o-scatter-result').innerHTML = !res ? ''
@@ -268,7 +290,11 @@ export class ObjectPanel {
     $('o-scatter-row').hidden = o.kind !== 'template' || o.type === 'flame';
     if (o.kind === 'template' && o.type !== 'flame') this.renderScatter(o);
     $('o-hits-row').hidden = o.kind !== 'template';
-    if (o.kind === 'template') this.renderHits(o);
+    $('o-summary').hidden = o.kind !== 'template';
+    if (o.kind === 'template') {
+      this.renderHits(o);
+      this.renderSummary(o);
+    }
     // Gelände: Regeln mit Volltext zum Aufklappen
     $('o-rules-row').hidden = o.kind !== 'terrain';
     if (o.kind === 'terrain') {

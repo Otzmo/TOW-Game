@@ -11,7 +11,7 @@ import { playerName } from '../model/players';
 import type { Store } from '../model/store';
 import type { ChargeReaction, LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
 import { weaponsFor } from './attackFlow';
-import { freezeSteps, stepSections } from './steps';
+import { dieSlots, freezeSteps, stepSections, summaryBar } from './steps';
 
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
@@ -131,7 +131,8 @@ export class ChargeFlow {
     const s = this.state(p);
     // Alle Schritte bleiben sichtbar, bis der Angriff fertig ist; nur der aktuelle ist bedienbar
     const now = Math.max(0, ['declare', 'react', 'roll'].indexOf(String(p.data.step)));
-    const els = stepSections(body, ['Declare charge', 'Charge reaction', 'Charge roll'], now, p.status === 'open');
+    const els = stepSections(body, ['Declare charge', 'Charge reaction', 'Charge roll'], now, p.status === 'open',
+      { key: p.id, header: this.header(a, t, s), summaries: this.summaries(a, t, s) });
     this.renderDeclare(p, els[0], a, t, s);
     if (now >= 1) this.renderReact(p, els[1], a, t, s);
     if (now >= 2) this.renderRoll(p, els[2], a, t, s);
@@ -157,6 +158,37 @@ export class ChargeFlow {
       this.host.log({ kind: 'action', text: `${a.info.name} → ${t.info.name}: charge cancelled` });
       this.host.store.setPrompt(p.id, null);
     };
+  }
+
+  /** Kopfzeile: nötige Weite, größtmögliche Weite, gewürfelte Weite und das Ergebnis */
+  private header(a: UnitState, t: UnitState, s: ChargeState): string {
+    const d = this.distances(a, t);
+    const m = movementOf(a);
+    const setup = chargeSetup(this.ticked('charger', s));
+    const max = m + (setup.cap ?? 6);
+    const res = s.roll ? rollTotal(s.roll, setup) : null;
+    const range = res ? m + res.total : null;
+    const fled = s.reaction === 'flee' || s.reaction === 'fireFlee' || t.status === 'fleeing';
+    const result = range !== null
+      ? range >= d.min ? { text: fled ? 'Caught' : 'Charge succeeds', tone: 'ok' as const } : { text: fled ? 'Does not reach' : 'Failed charge', tone: 'bad' as const }
+      : d.min > max ? { text: 'Out of reach', tone: 'bad' as const } : null;
+    return summaryBar([
+      `Needed <b>${inch(d.min)}</b>`,
+      `Max <b>${max}″</b>`,
+      range !== null ? `Range <b>${range}″</b>` : `Movement <b>${m}″</b>`,
+      s.reaction ? `Reaction <b>${esc(REACTIONS[s.reaction])}</b>` : null,
+    ], result);
+  }
+
+  /** Kurzfassung der Schritte für die eingeklappte Zeile */
+  private summaries(a: UnitState, t: UnitState, s: ChargeState): string[] {
+    const rules = this.ticked('charger', s).map((r) => r.name);
+    const flee = s.flee ? rollTotal(s.flee, fleeSetup(this.ticked('target', s), s.reaction === 'fireFlee')) : null;
+    return [
+      [`${a.info.name} → ${t.info.name}`, ...rules].join(' · '),
+      s.reaction ? `${REACTIONS[s.reaction]}${flee ? ` – fled ${flee.total}″` : ''}` : '',
+      '',
+    ];
   }
 
   /** Entfernungen: Mindestdistanz für Kontakt, Distanz bis zur maximierten Stellung, angegriffene Seite */
@@ -195,14 +227,13 @@ export class ChargeFlow {
   private diceHtml(which: 'flee' | 'roll', d: RollDice | undefined, setup: RollSetup, rules: ChargeRule[]): string {
     const dice = d ?? { base: [] };
     const res = rollTotal(dice, setup);
-    const row = (label: string, value: number | null | undefined, key: string, dropped = false) =>
-      `<div class="dice-step"><span class="label">${esc(label)}</span>${value != null
-        ? `<span class="die ${dropped ? 'dropped' : ''}">${value}</span> <button data-cd="re:${which}:${key}" title="Roll this die again">↻ Reroll</button>`
-        : `<button data-cd="roll:${which}:${key}" class="primary">🎲 Roll</button>`}</div>`;
+    const slot = (label: string, value: number | null | undefined, key: string, dropped = false) => ({
+      label, attr: 'data-cd', act: `${value != null ? 're' : 'roll'}:${which}:${key}`, face: value != null ? String(value) : null, dropped,
+    });
     const names = (pick: (r: ChargeRule) => boolean) => rules.filter(pick).map((r) => r.name).join(', ');
-    const rows = Array.from({ length: setup.dice }, (_, i) => row(`D6 ${i + 1}`, dice.base[i], String(i), !!res?.dropped.includes(i)));
-    if (setup.d6) rows.push(row(`+D6 (${names((r) => !!r.d6)})`, dice.d6, 'd6'));
-    if (setup.d3) rows.push(row(`+D3 (${names((r) => !!r.d3)})`, dice.d3, 'd3'));
+    const slots = Array.from({ length: setup.dice }, (_, i) => slot(`D6 ${i + 1}`, dice.base[i], String(i), !!res?.dropped.includes(i)));
+    if (setup.d6) slots.push(slot(`+D6 ${names((r) => !!r.d6)}`, dice.d6, 'd6'));
+    if (setup.d3) slots.push(slot(`+D3 ${names((r) => !!r.d3)}`, dice.d3, 'd3'));
     const base = dice.base.slice(0, setup.dice);
     const allRolled = base.length === setup.dice && base.every((x) => x != null);
     const extra: string[] = [];
@@ -213,7 +244,7 @@ export class ChargeFlow {
       const one = setup.ones.every((r) => r.ones === 'one');
       extra.push(`<button data-cd="ones:${which}">↻ Re-roll ${one ? 'a 1' : '1s'} (${esc(setup.ones.map((r) => r.name).join(', '))})</button>`);
     }
-    return rows.join('') + (extra.length ? `<div class="row-btns">${extra.join('')}</div>` : '');
+    return dieSlots(slots) + (extra.length ? `<div class="row-btns">${extra.join('')}</div>` : '');
   }
 
   /** Würfelknöpfe: einzelnen Würfel werfen bzw. neu werfen, ganzen Wurf oder 1en wiederholen */

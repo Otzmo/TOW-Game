@@ -13,7 +13,7 @@ import { OBJECT_TYPES, objectPolygon, pointInPolygon, segmentHitsPolygon } from 
 import { isSkirmish, type Store } from '../model/store';
 import type { BoardObject, LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
 import { diceHtml } from './dice';
-import { freezeSteps, stepSections } from './steps';
+import { freezeSteps, stepSections, summaryBar } from './steps';
 
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
@@ -242,13 +242,40 @@ export class AttackFlow {
     // Alle Schritte bleiben sichtbar, bis der Ablauf fertig ist; nur der aktuelle ist bedienbar
     const now = ['hit', 'wound', 'saves'].indexOf(String(p.data.step));
     const fixed = typeof p.data.fixedHits === 'string' ? p.data.fixedHits : '';
-    const els = stepSections(body, [fixed ? 'Hits' : 'Roll To Hit', 'Roll To Wound', 'Saves: Armour, Ward, Regeneration'], Math.max(0, now), p.status === 'open');
+    const sums = this.totals(p);
+    const els = stepSections(body, [fixed ? 'Hits' : 'Roll To Hit', 'Roll To Wound', 'Saves: Armour, Ward, Regeneration'], Math.max(0, now), p.status === 'open', {
+      key: p.id,
+      header: summaryBar([
+        sums.shots !== null && sums.hits === null ? `${mode === 'shooting' ? 'Shots' : 'Attacks'} <b>${sums.shots}</b>` : null,
+        sums.hits !== null ? `Hits <b>${sums.hits}</b>` : null,
+        sums.wounds !== null ? `Wounds <b>${sums.wounds}</b>` : null,
+        sums.unsaved !== null ? `Unsaved <b>${sums.unsaved}</b>` : null,
+      ], sums.result),
+      summaries: [sums.hits !== null ? plural(sums.hits, 'hit') : '', sums.wounds !== null ? plural(sums.wounds, 'wound') : '', ''],
+    });
     // Feste Treffer (Kriegsmaschine, Schablone): kein Trefferwurf
     if (fixed) els[0].innerHTML = `<p class="prompt-info">${esc(fixed)}</p>`;
     else this.renderHit(p, els[0], a, t, mode);
     if (now >= 1) this.renderWound(p, els[1], a, t);
     if (now >= 2) this.renderSaves(p, els[2]);
     freezeSteps(body);
+  }
+
+  /** Zwischenstände für Kopfzeile und eingeklappte Schritte: Schüsse/Attacken, Treffer, Wunden, unverhindert */
+  private totals(p: Prompt): { shots: number | null; hits: number | null; wounds: number | null; unsaved: number | null;
+    result: { text: string; tone: 'ok' | 'bad' | 'neutral' } | null } {
+    const st = this.st(p);
+    const sum = (r: LineRoll[] | undefined) => (r ? r.reduce((s, x) => s + x.success, 0) : null);
+    const fixed = typeof p.data.fixedHits === 'string';
+    const hits = fixed ? parse<WoundLine[]>(p.data.lines, []).reduce((s, l) => s + l.hits, 0) : sum(st.hitRolled as LineRoll[] | undefined);
+    const form = st.hit as HitForm | undefined;
+    const shots = !fixed && form ? form.lines.reduce((s, l) => s + l.count, 0) : null;
+    const wounds = sum(st.woundRolled as LineRoll[] | undefined);
+    const saves = st.saves as SavesRolled | undefined;
+    const result = saves ? { text: saves.unsaved ? `${plural(saves.unsaved, 'unsaved wound')}` : 'All saved', tone: 'neutral' as const }
+      : wounds === 0 ? { text: 'No wounds', tone: 'neutral' as const }
+      : hits === 0 ? { text: 'No hits', tone: 'neutral' as const } : null;
+    return { shots, hits, wounds, unsaved: saves ? saves.unsaved : null, result };
   }
 
   // --- Treffer ------------------------------------------------------------------
