@@ -203,9 +203,7 @@ export class ChargeFlow {
   private rulesHtml(side: Side, unit: UnitState, s: ChargeState): string {
     const rules = this.available(side, unit);
     if (!rules.length) return '';
-    const rows = rules.map((r) => `<label class="atk-mod"><input type="checkbox" data-crule="${esc(ruleKey(r))}" ${s.on.includes(ruleKey(r)) ? 'checked' : ''}>
-        <span class="atk-label">${esc(r.name)} <span class="atk-hint">${esc(r.hint)}</span></span></label>`).join('');
-    return `<div class="atk-mods atk-rules-box"><div class="atk-base">Special rules – ${esc(unit.info.name)} <span class="meta">(ticked: the unit has it)</span></div>${rows}</div>`;
+    return `<div class="rule-chips">${rules.map((r) => `<label class="rule-chip" title="${esc(r.hint)}"><input type="checkbox" data-crule="${esc(ruleKey(r))}" ${s.on.includes(ruleKey(r)) ? 'checked' : ''}>${esc(r.name)}</label>`).join('')}</div>`;
   }
 
   private wireRules(p: Prompt, body: HTMLElement, s: ChargeState): void {
@@ -295,12 +293,8 @@ export class ChargeFlow {
     const d = this.distances(a, t);
     const m = movementOf(a);
     const cap = chargeSetup(this.ticked('charger', s)).cap ?? 6;
-    body.innerHTML = `<p class="prompt-info">Contact from <b>${inch(d.min)}</b>${d.max !== null ? ` · maximised at <b>${inch(d.max)}</b>` : ''}
-        · charges the <b>${esc(d.side)}</b> · Movement ${m}″, so a charge roll of at least ${Math.max(0, Math.ceil(d.min - m))} is needed
-        · maximum charge range ${m + cap}″</p>
-      ${d.min > m + cap ? `<p class="warn">The target is beyond the maximum charge range (${m + cap}″).</p>` : ''}
+    body.innerHTML = `<p class="prompt-info" title="Check line of sight; units already in combat or fleeing cannot declare a charge">Charges the <b>${esc(d.side)}</b> · needs a roll of <b>${Math.max(0, Math.ceil(d.min - m))}</b>${d.min > m + cap ? ' · <span class="warn">out of reach</span>' : ''}</p>
       ${this.rulesHtml('charger', a, s)}
-      <p class="meta">Check line of sight; units already in combat or fleeing cannot declare a charge.</p>
       <div class="prompt-actions"><button class="primary" data-declare>Declare charge – ${esc(playerName(t.owner))} chooses a reaction ›</button>
       </div>`;
     this.wireRules(p, body, s);
@@ -371,8 +365,6 @@ export class ChargeFlow {
     const rules = this.ticked('charger', s);
     const setup = () => chargeSetup(this.ticked('charger', s));
     const res = s.roll ? rollTotal(s.roll, setup()) : null;
-    const fleeRes = s.flee ? rollTotal(s.flee, fleeSetup(this.ticked('target', s), s.reaction === 'fireFlee')) : null;
-    const summary = `${t.info.name}: ${s.reaction ? REACTIONS[s.reaction] : '–'}${fleeRes ? ` (fled ${fleeRes.total}″)` : ''}`;
     const range = res ? m + res.total : null;
     const outcome = res && range !== null ? this.outcome(a, t, s, d, fled, res.total, range) : [];
     const base = (s.roll?.base ?? []).slice(0, setup().dice);
@@ -380,16 +372,15 @@ export class ChargeFlow {
       ...(rules.some((r) => r.name === 'Temperamental') && base.includes(1) ? ['Temperamental: a natural 1 was rolled – check the Steam Tank rule.'] : []),
       ...(rules.some((r) => r.name === 'Ogre Kingdoms Charge') && base.includes(6) ? ['Ogre Kingdoms Charge: a natural 6 – Impact Hits (1) if the charge move is 6″ or more.'] : []),
     ];
-    body.innerHTML = `<p class="prompt-info">${esc(summary)}</p>
-      <p class="prompt-info">Distance now: contact from <b>${inch(d.min)}</b>${d.max !== null ? ` · maximised at ${inch(d.max)}` : ''}
-        · charge range = Movement ${m}″ + charge roll (maximum ${m + (setup().cap ?? 6)}″)</p>
-      ${d.min > m + (setup().cap ?? 6) ? `<p class="warn">${esc(t.info.name)} is now beyond the maximum charge range (${m + (setup().cap ?? 6)}″) – the charge cannot reach it.</p>` : ''}
-      ${this.rulesHtml('charger', a, s)}
-      <h4>Charge roll <span class="meta">(2D6, discard the ${setup().keep === 'lowest' ? 'highest' : 'lowest'}${setup().dice === 3 ? ', one extra D6' : ''})</span></h4>
+    // Nur was vom Normalfall abweicht, steht klein hinter der Überschrift
+    const special = [setup().keep === 'lowest' ? 'discard highest' : '', setup().dice === 3 ? 'extra D6' : ''].filter(Boolean).join(', ');
+    const short = res && range !== null ? this.shortOutcome(t, s, d, fled, range) : '';
+    body.innerHTML = `${this.rulesHtml('charger', a, s)}
+      ${special ? `<p class="meta">${esc(special)}</p>` : ''}
       ${this.diceHtml('roll', s.roll, setup(), rules)}
-      ${res && range !== null ? `<p class="prompt-info">Charge roll ${res.total} (${esc(res.text)}) + M ${m} = <b>${range}″</b> · needed ${inch(d.min)}</p>
-        ${outcome.map((x) => `<p class="prompt-info">${x}</p>`).join('')}
-        ${notes.map((x) => `<p class="prompt-info">${esc(x)}</p>`).join('')}
+      ${res && range !== null ? `<p class="prompt-info" title="${esc(res.text)}">Roll ${res.total} + M ${m} = <b>${range}″</b></p>
+        ${short ? `<p class="prompt-info">${esc(short)}</p>` : ''}
+        ${notes.map((x) => `<p class="meta">${esc(x)}</p>`).join('')}
         ${this.moveButtons(s, t, fled, range >= d.min, res.total)}` : ''}
       ${s.note ? `<p class="warn">${esc(s.note)}</p>` : ''}
       <div class="prompt-actions"><button class="primary" data-done ${res ? '' : 'disabled'}>Done</button></div>`;
@@ -418,6 +409,18 @@ export class ChargeFlow {
     if (success && fled) return `<div class="row-btns"><button data-move="removed">Remove ${esc(t.info.name)} (caught – destroyed)</button></div>`;
     if (success) return '<div class="row-btns"><button data-move="contact">Move into base contact</button></div>';
     return `<div class="row-btns"><button data-move="failed">Move ${roll}″ towards ${esc(t.info.name)}</button></div>`;
+  }
+
+  /** Ausgang in Kurzform fürs Fenster (der volle Text steht im Log) */
+  private shortOutcome(t: UnitState, s: ChargeState, d: { min: number; side: string }, fled: boolean, range: number): string {
+    const out: string[] = [];
+    if (range >= d.min) {
+      out.push(fled ? `${t.info.name} caught – destroyed` : `Initiative +${chargeInitiative(d.min, d.side)}`);
+      if (s.on.includes('Impact Hits (charger)')) out.push('Impact Hits first');
+      if (s.on.includes('Furious Charge (charger)')) out.push('Furious Charge +1 A');
+    }
+    if (s.reaction === 'counter') out.push('resolve the Counter Charge');
+    return out.join(' · ');
   }
 
   /** Was passiert – als Text; bewegt wird von Hand oder mit den Knöpfen */
