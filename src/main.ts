@@ -28,6 +28,7 @@ import { Shortcuts } from './ui/shortcuts';
 import { SyncWarning } from './ui/syncWarning';
 import { Toolbox } from './ui/toolbox';
 import { ViewToggles } from './ui/viewToggles';
+import { setupColumnResizers } from './ui/resizers';
 import { Board } from './view/board';
 
 async function start(): Promise<void> {
@@ -184,6 +185,8 @@ async function start(): Promise<void> {
     document.documentElement.style.setProperty('--side', `${Math.ceil(sidebar.getBoundingClientRect().width)}px`);
     showTable();
   }).observe(sidebar);
+  // Linke und rechte Spalte mit der Maus breiter oder schmaler ziehen
+  setupColumnResizers(showTable);
   // Schriftfaktor für die Oberfläche: 1280 px ≈ 0,93, 1920 px ≈ 1,13
   const scaleUi = () => document.documentElement.style.setProperty('--ui',
     String(Math.min(1.2, Math.max(0.85, 0.55 + window.innerWidth * 0.0003)).toFixed(3)));

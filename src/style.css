@@ -795,3 +795,10 @@ details { background: rgba(0, 0, 0, .15); border-color: rgba(214, 168, 74, .2); 
 #p-command { display: flex; flex-wrap: wrap; gap: 4px; }
 #p-command-row #p-command button { width: auto; height: auto; padding: 3px 8px; font-size: calc(12px * var(--ui)); white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
 #p-command button.revive { border-style: dashed; color: var(--muted); }
+
+/* Griffe zum Breiter-/Schmalerziehen der Spalten */
+.col-resizer { position: fixed; top: 0; bottom: 0; width: 8px; z-index: 4; cursor: col-resize; touch-action: none; }
+.col-resizer.left { left: calc(var(--side) - 4px); }
+.col-resizer.right { right: calc(var(--right) - 4px); }
+.col-resizer:hover, .col-resizer.active { background: linear-gradient(90deg, transparent 3px, var(--accent) 3px, var(--accent) 5px, transparent 5px); }
+body.hide-left .col-resizer.left { display: none; }
