@@ -1,6 +1,6 @@
 import { polyDistance } from './contact';
 import { contactPoses } from './flow';
-import { isJoined, isSkirmish, unitFootprint } from './store';
+import { isJoined, isSkirmish, unitFootprint, unitLayout } from './store';
 import type { Point, UnitState } from './types';
 
 /** Bis zu diesem Abstand (oder bei Überlappung) rasten Einheiten an den Gegner (Zoll) */
@@ -16,6 +16,18 @@ function outline(u: UnitState, w: number, h: number): Point[] {
     .map(([x, y]) => ({ x: u.x + x * c - y * s, y: u.y + x * s + y * c }));
 }
 
+/** Plänkler: Rechteck um alle Modelle, wie sie gerade stehen (muss nicht mittig um die Einheitsmitte liegen) */
+function looseOutline(u: UnitState, units: Record<string, UnitState>): Point[] {
+  const { slots } = unitLayout(u, units);
+  const x0 = Math.min(...slots.map((s) => s.x));
+  const y0 = Math.min(...slots.map((s) => s.y));
+  const x1 = Math.max(...slots.map((s) => s.x + s.w));
+  const y1 = Math.max(...slots.map((s) => s.y + s.d));
+  const c = Math.cos(u.rotation);
+  const s = Math.sin(u.rotation);
+  return [[x0, y0], [x1, y0], [x1, y1], [x0, y1]].map(([x, y]) => ({ x: u.x + x * c - y * s, y: u.y + x * s + y * c }));
+}
+
 /**
  * Einheit an eine gegnerische Einheit anlegen: Kommt sie ihr bis auf SNAP_DISTANCE nahe (oder überlappt sie), wird sie
  * – egal wie schräg sie steht – mit ihrer Front zu der Kante gedreht, vor der sie steht (Front, Flanke oder Rücken
@@ -24,13 +36,17 @@ function outline(u: UnitState, w: number, h: number): Point[] {
  * bei gleicher Zahl mit möglichst wenig seitlicher Verschiebung.
  * Lag sie schon vor dem Ziehen an dieser Einheit an (keep, siehe touchingEnemies), wird nicht erneut maximiert:
  * so lässt sich die Stellung entlang der Kante von Hand korrigieren, ohne dass sie zurückspringt.
- * Ergebnis: neue Lage und die Einheit, an der sie anliegt – oder null.
+ * Plänkler, die als ganze Einheit gezogen werden, rasten ebenso ein und gehen dabei in offene Ordnung über
+ * (in Gliedern aufgestellt, Basekontakt); ob sie nahe genug sind, zählt nach ihrer lockeren Aufstellung.
+ * Ergebnis: neue Lage (bei Plänklern mit der neuen Formation) und die Einheit, an der sie anliegt – oder null.
  */
 export function snapTogether(u: UnitState, units: Record<string, UnitState>, keep: ReadonlySet<string> = new Set()):
-  { pose: Pick<UnitState, 'x' | 'y' | 'rotation'>; to: UnitState } | null {
-  if (isSkirmish(u) || isJoined(u, units)) return null;
+  { pose: Pick<UnitState, 'x' | 'y' | 'rotation'> & Partial<Pick<UnitState, 'formation' | 'positions'>>; to: UnitState } | null {
+  if (isJoined(u, units)) return null;
+  const open = isSkirmish(u);
+  const mine = open ? looseOutline(u, units) : outline(u, unitFootprint(u, units).w, unitFootprint(u, units).h);
+  if (open) u = { ...u, formation: 'open', positions: null };
   const me = unitFootprint(u, units);
-  const mine = outline(u, me.w, me.h);
   let best: { pose: Pick<UnitState, 'x' | 'y' | 'rotation'>; to: UnitState; dist: number } | null = null;
   for (const t of Object.values(units)) {
     if (t.id === u.id || t.owner === u.owner || t.joinedTo === u.id || isJoined(t, units) || isSkirmish(t) || t.ambush
@@ -68,7 +84,8 @@ export function snapTogether(u: UnitState, units: Record<string, UnitState>, kee
     if (maxed && Math.abs(norm(maxed.rotation - rotation)) < 0.01) pose = { x: maxed.x, y: maxed.y, rotation: maxed.rotation };
     best = { pose, to: t, dist };
   }
-  return best ? { pose: best.pose, to: best.to } : null;
+  if (!best) return null;
+  return { pose: open ? { ...best.pose, formation: 'open', positions: null } : best.pose, to: best.to };
 }
 
 type Side = 'front' | 'rear' | 'left flank' | 'right flank';

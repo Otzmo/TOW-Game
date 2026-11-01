@@ -99,6 +99,19 @@ describe('snap units together', () => {
     expect(Math.sin(r.pose.rotation)).toBeCloseTo(-1, 6);
   });
 
+  it('skirmishers dragged as a unit snap too and change to open order, ranked in base contact', () => {
+    const a = testUnit('a', { models: 5, rotation: Math.PI });
+    // 4 Plänkler 1″ auseinander, vorderste Reihe 0,6″ vor der Front des Gegners
+    const sk = { ...testUnit('s', { owner: 'p2', models: 4, width: 2, y: 3 }), formation: 'skirmish' as const,
+      positions: { m0: { x: -1, y: -1 }, m1: { x: 1, y: -1 }, m2: { x: -1, y: 1 }, m3: { x: 1, y: 1 } } };
+    const r = snapTogether({ ...sk, y: B / 2 + 1 + B / 2 + 0.6 }, byId(a, sk))!;
+    expect(r.pose.formation).toBe('open');
+    expect(r.pose.positions).toBeNull();
+    // Front zum Gegner, bündig angelegt als 2 × 2 in Basekontakt (Mitte eine Base hinter der Kante)
+    expect(Math.cos(r.pose.rotation)).toBeCloseTo(1, 6);
+    expect(r.pose.y).toBeCloseTo(1.5 * B, 6);
+  });
+
   it('facing each other (180°) snaps front to front', () => {
     const a = testUnit('a', { models: 5, rotation: Math.PI });
     const b = testUnit('b', { owner: 'p2', models: 5, y: B + 0.3 });

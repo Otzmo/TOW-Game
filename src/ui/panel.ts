@@ -10,7 +10,7 @@ import { wizardLevel } from '../model/flow';
 import { loadSpells, spellInfo, type SpellInfo } from '../model/spellData';
 import { modifiedValue, rollTables, statMods, tableMods, type StatMod } from '../model/modifiers';
 import { hasStandard, mountBonus, unitVictoryPoints, wounds } from '../model/score';
-import type { RuleRef, UnitState, UnitStatus } from '../model/types';
+import type { Formation, RuleRef, UnitState, UnitStatus } from '../model/types';
 import { PLAYER_COLORS } from '../view/theme';
 import { currentPhase } from '../model/phases';
 
@@ -121,7 +121,7 @@ export class UnitPanel {
       btn.onclick = () => this.onFormation(btn.dataset.act!);
     });
     document.querySelectorAll<HTMLButtonElement>('[data-form]').forEach((btn) => {
-      btn.onclick = () => this.setFormation(btn.dataset.form as 'close' | 'skirmish');
+      btn.onclick = () => this.setFormation(btn.dataset.form as Formation);
     });
     $('p-charge').onclick = (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-charge]');
@@ -241,7 +241,7 @@ export class UnitPanel {
   /** Zwischen geschlossener Formation und Plänklern wechseln, falls erlaubt */
   toggleFormation(): void {
     const u = this.unit();
-    if (u && (canSkirmish(u) || isSkirmish(u))) this.setFormation(isSkirmish(u) ? 'close' : 'skirmish');
+    if (u && (canSkirmish(u) || u.formation === 'open' || isSkirmish(u))) this.setFormation(isSkirmish(u) ? 'close' : 'skirmish');
   }
 
   /** Reichweiten-Anzeige umschalten (wie das Häkchen) */
@@ -251,7 +251,7 @@ export class UnitPanel {
     box.dispatchEvent(new Event('change'));
   }
 
-  setFormation(form: 'close' | 'skirmish'): void {
+  setFormation(form: Formation): void {
     const units = this.store.state.units;
     const u = this.unit();
     if (!u || (u.formation ?? 'close') === form || !this.canMove(u.id)) return;
@@ -260,9 +260,9 @@ export class UnitPanel {
       // Geschlossene Aufstellung locker auseinanderziehen
       this.store.updateUnit(u.id, { formation: 'skirmish', positions: spreadPositions(u, units) });
     } else {
-      this.store.updateUnit(u.id, { formation: 'close', positions: null });
+      this.store.updateUnit(u.id, { formation: form, positions: null });
     }
-    this.setLastAction(u.id, form === 'skirmish' ? 'changed to skirmish formation' : 'changed to close order formation');
+    this.setLastAction(u.id, `changed to ${{ close: 'close order', open: 'open order', skirmish: 'skirmish' }[form]} formation`);
   }
 
   /** Würfeltabellen wie Gaze of the Gods: Würfeln oder Ergebnis anklicken; gewählte Ergebnisse gelten im Profil */
@@ -329,7 +329,7 @@ export class UnitPanel {
       ? `${count} · ${base}${mount}`
       : skirmish
         ? `${count} · ${base} · Skirmish · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″${warn}`
-        : `${count} · ${base}${mount} · formation ${cols} × ${ranks} · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″`;
+        : `${count} · ${base}${mount} · ${u.formation === 'open' ? 'Open Order' : 'formation'} ${cols} × ${ranks} · footprint ${w.toFixed(1)}″ × ${h.toFixed(1)}″`;
     $('p-tables').innerHTML = this.tablesHtml(u);
     const note = $('p-note') as HTMLTextAreaElement;
     if (document.activeElement !== note) note.value = u.note ?? '';
@@ -369,7 +369,7 @@ export class UnitPanel {
       : '';
     // Ein angeschlossener Charakter hat keine eigene Formation
     $('p-formation').hidden = joined;
-    $('p-form-row').hidden = !canSkirmish(u) && !skirmish;
+    $('p-form-row').hidden = !canSkirmish(u) && !skirmish && u.formation !== 'open';
     $('p-rank').hidden = !skirmish;
     $('p-width-row').querySelector('.label')!.textContent = skirmish ? 'Width when arranging' : 'Width (models in front rank)';
 

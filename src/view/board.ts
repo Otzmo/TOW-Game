@@ -483,7 +483,8 @@ export class Board {
     const d = this.drag;
     if (!d) return;
     if (!d.moved && Math.hypot(e.global.x - d.gx, e.global.y - d.gy) < DRAG_THRESHOLD) return;
-    if (d.type !== 'pan' && d.type !== 'model') d.free = e.shiftKey;
+    // Shift = nicht einrasten; Plänkler werden schon mit Shift als ganze Einheit gezogen und rasten immer ein
+    if (d.type !== 'pan' && d.type !== 'model') d.free = e.shiftKey && !isSkirmish(this.store.state.units[d.unitId]);
     const starting = !d.moved;
     d.moved = true;
     if (starting && (d.type === 'move' || d.type === 'model') && !this.canMove(d.unitId)) {
@@ -582,7 +583,8 @@ export class Board {
     // Aneinander anlegen: liegt eine Kante knapp neben einer anderen Einheit, bündig und parallel einrasten (Umschalt: nicht)
     const snap = d.free ? null : snapTogether(this.store.state.units[d.unitId], this.store.state.units, d.touching);
     if (snap) this.store.updateUnit(d.unitId, snap.pose);
-    const text = [this.describe(d), snap ? `snapped to ${snap.to.info.name}` : ''].filter(Boolean).join(' · ');
+    const text = [this.describe(d), snap ? `snapped to ${snap.to.info.name}${snap.pose.formation === 'open' ? ', now in open order' : ''}` : '']
+      .filter(Boolean).join(' · ');
     // Zoll dieser Einheit weiter zusammenzählen (bis eine andere Einheit bewegt wird oder die Runde endet)
     this.addRun(d.unitId, this.dragInches(d));
     if (this.dragInches(d) > 0.05) this.moved.set(d.unitId, this.turnKey());

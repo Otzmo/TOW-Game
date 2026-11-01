@@ -54,6 +54,8 @@ export interface UnitInfo {
 export type UnitStatus = 'destroyed' | 'fledOff' | 'fleeing';
 
 /** Veränderlicher Zustand einer Einheit auf dem Tisch. */
+export type Formation = 'close' | 'open' | 'skirmish';
+
 export interface UnitState {
   id: string;
   owner: PlayerId;
@@ -66,8 +68,8 @@ export interface UnitState {
   rotation: number;
   /** Bei Charakteren: Einheit, der sie sich angeschlossen haben (null = keine) */
   joinedTo?: string | null;
-  /** Fehlt = geschlossene Formation */
-  formation?: 'close' | 'skirmish';
+  /** Fehlt = geschlossene Formation; offene Ordnung steht aufgestellt wie geschlossen (Plänkler im Kontakt mit dem Gegner) */
+  formation?: Formation;
   /**
    * Plänkler: Mittelpunkt jedes Modells relativ zur Einheitsmitte, in Einheitsrichtung (Front = −y).
    * Schlüssel "m0", "m1", … für Truppen, bei angeschlossenen Charakteren deren id.
