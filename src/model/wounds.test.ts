@@ -27,4 +27,17 @@ describe('losing wounds', () => {
     // Front = Mitte − halbe Tiefe (Blick nach −y)
     expect(after.y - unitFootprint(after).h / 2).toBeCloseTo(u.y - before / 2, 6);
   });
+
+  it('a single rank stays where it is: casualties come off the chosen end', () => {
+    const u = testUnit('u', { models: 5, width: 5, x: 10, y: 10 });
+    const w = unitFootprint(u).w;
+    for (const side of ['right', 'left'] as const) {
+      const v = { ...u, casualtiesFrom: side };
+      const after = { ...v, ...loseWounds(v, byId(v), 2).patch };
+      const w2 = unitFootprint(after).w;
+      expect(after.y).toBeCloseTo(u.y, 6);
+      if (side === 'right') expect(after.x - w2 / 2).toBeCloseTo(u.x - w / 2, 6);
+      else expect(after.x + w2 / 2).toBeCloseTo(u.x + w / 2, 6);
+    }
+  });
 });

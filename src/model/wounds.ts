@@ -4,16 +4,30 @@ import type { UnitState } from './types';
 
 /**
  * Formation ändert ihre Tiefe (Modelle verloren, Front breiter …): die Front bleibt an derselben Stelle,
- * nur das hintere Ende rückt nach. Gibt den Patch mit verschobener Mitte zurück.
+ * nur das hintere Ende rückt nach. Wird ein einzelnes Glied durch Verluste schmaler (oder durch neue Modelle
+ * breiter), bleibt ein Ende stehen – Verluste gehen am gewählten Ende weg (casualtiesFrom).
+ * Gibt den Patch mit verschobener Mitte zurück.
  */
 export function keepFront(u: UnitState, units: Record<string, UnitState>, patch: Partial<UnitState>): Partial<UnitState> {
   if (isSkirmish(u)) return patch;
-  const before = unitFootprint(u, units).h;
-  const after = unitFootprint({ ...u, ...patch }, units).h;
-  const shift = (after - before) / 2;
-  if (Math.abs(shift) < 1e-6) return patch;
+  const before = unitFootprint(u, units);
+  const after = unitFootprint({ ...u, ...patch }, units);
   // In Einheitsrichtung nach hinten (+y lokal)
-  return { ...patch, x: u.x - Math.sin(u.rotation) * shift, y: u.y + Math.cos(u.rotation) * shift };
+  const back = (after.h - before.h) / 2;
+  // Seitlich nur, wenn sich die Modellzahl ändert (Breite verstellen formiert bewusst um die Mitte)
+  const side = patch.models !== undefined && patch.width === undefined
+    ? ((after.w - before.w) / 2) * (u.casualtiesFrom === 'left' ? -1 : 1)
+    : 0;
+  if (Math.abs(back) < 1e-6 && Math.abs(side) < 1e-6) return patch;
+  const cos = Math.cos(u.rotation);
+  const sin = Math.sin(u.rotation);
+  // lokal +x = (cos, sin), lokal +y = (−sin, cos)
+  return { ...patch, x: u.x + cos * side - sin * back, y: u.y + sin * side + cos * back };
+}
+
+/** Steht die Einheit nur noch in einem Glied (geschlossen/offen, mehr als ein Modell)? */
+export function singleRank(u: UnitState, units: Record<string, UnitState>): boolean {
+  return !isSkirmish(u) && u.models > 1 && unitFootprint(u, units).ranks <= 1;
 }
 
 /**

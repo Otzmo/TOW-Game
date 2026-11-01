@@ -90,6 +90,8 @@ export interface UnitState {
   tableResults?: string[] | null;
   /** Unvollständiges letztes Glied: um so viele Plätze von links verschoben */
   rearOffset?: number;
+  /** Nur noch ein Glied: Verluste werden an diesem Ende entfernt, das andere Ende bleibt stehen (fehlt = rechts) */
+  casualtiesFrom?: 'left' | 'right' | null;
   /** Eigene Notiz zu dieser Einheit */
   note?: string | null;
 }

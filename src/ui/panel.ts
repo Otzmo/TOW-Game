@@ -5,7 +5,7 @@ import {
 } from '../model/store';
 import type { History } from '../model/history';
 import { armourInfo, loadWeapons, optionInfo, unitSaves, unitWeapons, visibleOptions, visibleRules, weaponRule } from '../model/gear';
-import { keepFront, loseWounds } from '../model/wounds';
+import { keepFront, loseWounds, singleRank } from '../model/wounds';
 import { wizardLevel } from '../model/flow';
 import { loadSpells, spellInfo, type SpellInfo } from '../model/spellData';
 import { modifiedValue, rollTables, statMods, tableMods, type StatMod } from '../model/modifiers';
@@ -103,6 +103,10 @@ export class UnitPanel {
       // Das Modell fällt: ein Modell weniger (die Front bleibt stehen) und die Rolle ist weg
       this.change(this.keepFront(u, { models: Math.max(1, u.models - (u.models > 1 ? 1 : 0)), info: { ...u.info, command, commandKilled } }));
       this.setLastAction(u.id, `${({ M: 'musician', S: 'standard bearer', C: 'champion' } as Record<string, string>)[code] ?? code} killed`);
+    };
+    $('p-cas').onclick = (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-cas]');
+      if (btn) this.change({ casualtiesFrom: btn.dataset.cas as 'left' | 'right' });
     };
     $('p-note').onchange = (e) => this.change({ note: (e.target as HTMLTextAreaElement).value.trim() || null });
     $('p-tables').onclick = (e) => {
@@ -401,6 +405,8 @@ export class UnitPanel {
       + killed.map((c, i) => `<button data-revive="${i}" class="revive" title="Put this command model back: one model more">+ ${escapeHtml(names[c] ?? c)}</button>`).join('');
     const free = rearFree(u, units);
     $('p-rear-row').hidden = free === 0;
+    $('p-cas-row').hidden = !singleRank(u, units);
+    $('p-cas').querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.classList.toggle('on', b.dataset.cas === (u.casualtiesFrom ?? 'right')));
     $('p-rear').textContent = `${Math.min(u.rearOffset ?? 0, free)}/${free}`;
     const last = this.lastAction.get(u.id);
     $('p-move').textContent = last ? `Last action: ${last}` : '';
