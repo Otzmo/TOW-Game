@@ -331,8 +331,8 @@ export class ChargeFlow {
     const res = flees && s.flee ? rollTotal(s.flee, setup()) : null;
     body.innerHTML = `<p class="prompt-info">${esc(a.info.name)} charges <b>${esc(t.info.name)}</b> in the ${esc(d.side)} – contact from ${inch(d.min)}.</p>
       ${this.rulesHtml('target', t, s)}
-      <div class="prompt-options">${choices.map((c) => `<button data-react="${c.key}" class="${s.reaction === c.key ? 'primary' : ''}" ${c.allowed ? '' : 'disabled'}>
-        <b>${esc(c.label)}</b><span>${esc(c.hint)}</span></button>`).join('')}</div>
+      <div class="react-row">${choices.map((c) => `<button data-react="${c.key}" class="${s.reaction === c.key ? 'primary' : ''}" title="${esc(c.hint)}" ${c.allowed ? '' : 'disabled'}>${esc(c.label)}</button>`).join('')}</div>
+      ${s.reaction ? `<p class="meta">${esc(REACTIONS[s.reaction])}: ${esc(choices.find((c) => c.key === s.reaction)?.hint ?? '')}</p>` : ''}
       ${shoots ? `<div class="row-btns"><button data-standshoot>🏹 ${s.reaction === 'fireFlee' ? 'Fire' : 'Stand & Shoot'} at ${esc(a.info.name)} ›</button></div>` : ''}
       ${flees ? `<h4>Flee roll <span class="meta">(${s.reaction === 'fireFlee' ? '2D6, discard the lowest' : '2D6'})</span></h4>${this.diceHtml('flee', s.flee, setup(), fleeRules)}` : ''}
       ${res ? `<p class="prompt-info"><b>Flees ${res.total}″</b> (${esc(res.text)}) – directly away from the charger.</p>
