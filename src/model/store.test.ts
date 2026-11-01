@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { overlappingUnits } from './collision';
+import { overlappingUnits, placementProblem } from './collision';
 import { rearFree, unitLayout } from './store';
 import { byId, MM, testUnit } from './testUnits';
 
@@ -42,5 +42,18 @@ describe('overlappingUnits', () => {
     const overlapping = testUnit('c', { owner: 'p2', models: 5, y: B / 2 });
     expect(overlappingUnits(a, byId(a, touching))).toHaveLength(0);
     expect(overlappingUnits(a, byId(a, overlapping)).map((u) => u.id)).toEqual(['c']);
+  });
+});
+
+describe('placementProblem', () => {
+  it('blocks overlaps and enemies closer than 1″ unless in base contact', () => {
+    const a = testUnit('a', { models: 5 });
+    const at = (y: number, owner: 'p1' | 'p2' = 'p2') => testUnit('b', { owner, models: 5, y });
+    expect(placementProblem(a, byId(a, at(B)))).toBeNull();
+    expect(placementProblem(a, byId(a, at(B / 2)))).toMatch(/overlap/);
+    expect(placementProblem(a, byId(a, at(B + 0.5)))).toMatch(/1″/);
+    expect(placementProblem(a, byId(a, at(B + 0.5)), false)).toBeNull();
+    expect(placementProblem(a, byId(a, at(B + 0.5, 'p1')))).toBeNull();
+    expect(placementProblem(a, byId(a, at(B + 1.2)))).toBeNull();
   });
 });

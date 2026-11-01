@@ -92,6 +92,8 @@ export interface UnitState {
   rearOffset?: number;
   /** Nur noch ein Glied: Verluste werden an diesem Ende entfernt, das andere Ende bleibt stehen (fehlt = rechts) */
   casualtiesFrom?: 'left' | 'right' | null;
+  /** Beim Loslassen nicht an Gegner einrasten (kein Maximieren), z. B. bei Overrun oder mehreren Angreifern */
+  noSnap?: boolean | null;
   /** Eigene Notiz zu dieser Einheit */
   note?: string | null;
 }

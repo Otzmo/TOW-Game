@@ -1,3 +1,4 @@
+import { polyDistance } from './contact';
 import { contactPose } from './flow';
 import { isJoined, isSkirmish, unitFootprint, unitLayout } from './store';
 import type { Point, UnitState } from './types';
@@ -56,6 +57,28 @@ export function overlappingUnits(u: UnitState, units: Record<string, UnitState>)
   return Object.values(units).filter((t) => t.id !== u.id && t.joinedTo !== u.id && !isJoined(t, units)
     && t.status !== 'destroyed' && t.status !== 'fledOff' && !t.ambush
     && areas(t, units).some((b) => mine.some((a) => overlap(a, b))));
+}
+
+/** Mindestabstand zu gegnerischen Einheiten, wenn man nicht mit ihnen im Nahkampf steht (Zoll) */
+export const ENEMY_GAP = 1;
+
+/**
+ * Darf die Einheit so stehen? Nie auf einer anderen Einheit; und nie näher als ENEMY_GAP an einer gegnerischen
+ * Einheit, außer sie steht im Nahkampf (in Basekontakt mit einem Gegner). Ergebnis: Grund oder null.
+ * gap = false: nur Überlappen prüfen (im Aufbau stehen die Armeen im Niemandsland dicht an der Mittellinie).
+ */
+export function placementProblem(u: UnitState, units: Record<string, UnitState>, gap = true): string | null {
+  if (isJoined(u, units) || u.ambush || u.status === 'destroyed' || u.status === 'fledOff') return null;
+  const hit = overlappingUnits(u, units);
+  if (hit.length) return `units may not overlap (${hit[0].info.name})`;
+  if (!gap) return null;
+  const mine = areas(u, units);
+  const enemies = Object.values(units).filter((t) => t.owner !== u.owner && !isJoined(t, units) && !t.ambush
+    && t.status !== 'destroyed' && t.status !== 'fledOff');
+  const gaps = enemies.map((t) => ({ t, d: Math.min(...areas(t, units).flatMap((b) => mine.map((a) => polyDistance(a, b)))) }));
+  if (gaps.some((g) => g.d <= TOUCH * 2)) return null;
+  const near = gaps.filter((g) => g.d < ENEMY_GAP - 1e-6).sort((a, b) => a.d - b.d)[0];
+  return near ? `must stay ${ENEMY_GAP}″ away from ${near.t.info.name} unless in base contact (${near.d.toFixed(2)}″)` : null;
 }
 
 /**

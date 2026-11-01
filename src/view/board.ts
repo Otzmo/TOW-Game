@@ -4,6 +4,7 @@ import { Camera } from './camera';
 import { drawCharges as paintCharges, drawFrontLines as paintFrontLines, drawRanges as paintRanges } from './overlays';
 import { toLocal, toTable } from '../model/flow';
 import { snapTogether, touchingEnemies } from '../model/snap';
+import { placementProblem } from '../model/collision';
 import {
   isJoined, isNonUnitChange, isSkirmish, nearestGap, recenter, SKIRMISH_GAP, unitFootprint, unitLayout, type Store,
 } from '../model/store';
@@ -38,7 +39,9 @@ type UnitDrag = { type: UnitDragType; unitId: string; ox: number; oy: number; sx
   /** Umschalt beim Ziehen gehalten: beim Loslassen nicht an andere Einheiten anlegen */
   free?: boolean;
   /** Gegner, an denen die Einheit schon vor dem Ziehen anlag: dort nicht erneut maximieren (Korrektur von Hand) */
-  touching?: Set<string> };
+  touching?: Set<string>;
+  /** Formation zu Beginn (einrastende Plänkler wechseln in offene Ordnung): fürs Zurücksetzen */
+  start: Pick<UnitState, 'formation' | 'positions'> };
 
 /** Ein einzelnes Modell einer Plänklereinheit ziehen (Positionen in Einheitskoordinaten). */
 type ModelDrag = { type: 'model'; unitId: string; key: string; start: Point; startPointer: Point;
@@ -435,7 +438,8 @@ export class Board {
     }
     this.history.record();
     this.drag = { type, unitId, ox: u.x - p.x, oy: u.y - p.y, sx: u.x, sy: u.y, srot: u.rotation,
-      gx: e.global.x, gy: e.global.y, moved: type !== 'move', swing, touching: touchingEnemies(u, this.store.state.units) };
+      gx: e.global.x, gy: e.global.y, moved: type !== 'move', swing, touching: touchingEnemies(u, this.store.state.units),
+      start: { formation: u.formation, positions: u.positions } };
     const view = this.views.get(unitId);
     if (view && type === 'move') view.cursor = 'grabbing';
     this.select(selectId);
@@ -484,7 +488,10 @@ export class Board {
     if (!d) return;
     if (!d.moved && Math.hypot(e.global.x - d.gx, e.global.y - d.gy) < DRAG_THRESHOLD) return;
     // Shift = nicht einrasten; Plänkler werden schon mit Shift als ganze Einheit gezogen und rasten immer ein
-    if (d.type !== 'pan' && d.type !== 'model') d.free = e.shiftKey && !isSkirmish(this.store.state.units[d.unitId]);
+    if (d.type !== 'pan' && d.type !== 'model') {
+      const u = this.store.state.units[d.unitId];
+      d.free = !!u.noSnap || (e.shiftKey && !isSkirmish(u));
+    }
     const starting = !d.moved;
     d.moved = true;
     if (starting && (d.type === 'move' || d.type === 'model') && !this.canMove(d.unitId)) {
@@ -583,6 +590,15 @@ export class Board {
     // Aneinander anlegen: liegt eine Kante knapp neben einer anderen Einheit, bündig und parallel einrasten (Umschalt: nicht)
     const snap = d.free ? null : snapTogether(this.store.state.units[d.unitId], this.store.state.units, d.touching);
     if (snap) this.store.updateUnit(d.unitId, snap.pose);
+    // Stellung prüfen: nie auf einer anderen Einheit, nie unter 1″ an einem Gegner ohne Nahkampf – sonst zurück
+    const problem = placementProblem(this.store.state.units[d.unitId], this.store.state.units,
+      currentPhase(this.store.state.meta) !== 'setup');
+    if (problem) {
+      this.store.updateUnit(d.unitId, { x: d.sx, y: d.sy, rotation: d.srot, ...d.start });
+      this.history.dropIfUnchanged();
+      this.events.onAction(d.unitId, `moved back – ${problem}`);
+      return;
+    }
     const text = [this.describe(d), snap ? `snapped to ${snap.to.info.name}${snap.pose.formation === 'open' ? ', now in open order' : ''}` : '']
       .filter(Boolean).join(' · ');
     // Zoll dieser Einheit weiter zusammenzählen (bis eine andere Einheit bewegt wird oder die Runde endet)

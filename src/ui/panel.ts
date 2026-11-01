@@ -113,6 +113,9 @@ export class UnitPanel {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-table]');
       if (btn) this.onTable(btn.dataset.table!, btn.dataset.row);
     };
+    ($('p-nosnap') as HTMLInputElement).onchange = (e) => {
+      this.change({ noSnap: (e.target as HTMLInputElement).checked || null });
+    };
     ($('p-captured') as HTMLInputElement).onchange = (e) => {
       this.change({ standardCaptured: (e.target as HTMLInputElement).checked });
     };
@@ -385,6 +388,7 @@ export class UnitPanel {
     $('p-wounds').textContent = `${wd.left}/${wd.total}`;
     $('p-captured-row').hidden = !hasStandard(u);
     ($('p-captured') as HTMLInputElement).checked = !!u.standardCaptured;
+    ($('p-nosnap') as HTMLInputElement).checked = !!u.noSnap;
     const pointsInput = $('p-points') as HTMLInputElement;
     if (document.activeElement !== pointsInput) pointsInput.value = String(info.points ?? 0);
     const vp = unitVictoryPoints(u);
