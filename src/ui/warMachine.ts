@@ -1,11 +1,14 @@
+import { attackWeapon, type AttackWeapon } from '../model/attack';
 import { slotPolygons } from '../model/contact';
 import type { History } from '../model/history';
 import { newObject, pointInPolygon } from '../model/objects';
 import { playerName } from '../model/players';
 import { isJoined, type Store } from '../model/store';
+import { templateHitsByUnit } from '../model/templates';
 import type { LogEntry, PlayerId, Point, UnitState, WarMachineShot } from '../model/types';
 import { beyond, cannonShot, distanceToUnit, misfireResult, warMachineWeapons, type WarMachineWeapon } from '../model/warMachines';
 import { artilleryDie, artilleryText, scatterDie, scatterHtml } from './dice';
+import type { WoundLine } from './attackFlow';
 import { openSheet } from './sheets';
 
 const $ = (id: string) => document.getElementById(id)!;
@@ -28,6 +31,8 @@ export interface WarMachineActions {
   pickPoint(hint: string, onPick: (p: Point) => void): void;
   pickUnit(hint: string, accept: (u: UnitState) => boolean, onPick: (unitId: string) => void): void;
   select(unitId: string): void;
+  /** Feste Treffer an das Beschussfenster geben: weiter mit dem Verwundungswurf */
+  startWounds(from: PlayerId, attackerId: string, targetId: string, lines: WoundLine[], note: string): void;
 }
 
 /**
@@ -174,7 +179,16 @@ export class WarMachinePanel {
       this.actions.select(btn.dataset.unit!);
       return;
     }
-    if (!shot || !w || !this.mayAct(w.unit.owner)) return;
+    if (!shot || !w) return;
+    if (act === 'partial' || act === 're-partial') {
+      // Teilweise bedeckte Modelle: der Gegner würfelt
+      const target = this.store.state.units[btn.dataset.unit!];
+      if (!target || !this.mayAct(target.owner)) return;
+      this.history.record();
+      this.rollPartial(shot, target, act === 're-partial');
+      return;
+    }
+    if (!this.mayAct(w.unit.owner)) return;
     this.history.record();
     if (act === 'close' || act === 'retarget') {
       this.clearLines();
@@ -191,6 +205,78 @@ export class WarMachinePanel {
     else if (act === 'bounce') this.rollBounce(shot, w.unit, w.weapon);
     else if (act === 'scatter') this.rollScatter(shot, w.unit, w.weapon);
     else if (act === 'misfire') this.rollMisfire(shot, w.unit, w.weapon);
+    else if (act === 'move-template') this.moveTemplate(shot);
+    else if (act === 'wound') this.sendWounds(shot, w.unit, w.weapon, btn.dataset.unit!);
+  }
+
+  /** Abweichung auf die Schablone anwenden (nur auf Knopfdruck; von Hand verschieben geht weiterhin) */
+  private moveTemplate(shot: WarMachineShot): void {
+    const o = shot.template ? this.store.state.objects[shot.template] : undefined;
+    const art = shot.dice?.first;
+    const s = shot.dice?.scatter;
+    if (!o || !art || !s || s.hit || shot.moved) return;
+    const a = (s.angle * Math.PI) / 180;
+    this.store.updateObject(o.id, { x: o.x + Math.sin(a) * art, y: o.y - Math.cos(a) * art });
+    // Die Treffer zählen neu: bisherige 4+-Würfe gelten nicht mehr
+    this.patch({ moved: true, partial: null });
+  }
+
+  /** W6 je teilweise bedecktem Modell, getroffen bei 4+ */
+  private rollPartial(shot: WarMachineShot, target: UnitState, again: boolean): void {
+    const o = shot.template ? this.store.state.objects[shot.template] : undefined;
+    const e = o && templateHitsByUnit(o, this.store.state.units).find((x) => x.unit.id === target.id);
+    if (!e?.partial || (!again && shot.partial?.[target.id]?.length === e.partial)) return;
+    const dice = Array.from({ length: e.partial }, d6);
+    const hit = dice.filter((d) => d >= 4).length;
+    this.log({ kind: 'roll', dice: [dice], text: `${again ? 'Reroll – ' : ''}${target.info.name}: ${e.partial} partially covered model${e.partial === 1 ? '' : 's'} – ${hit} hit on 4+` });
+    this.patch({ partial: { ...shot.partial, [target.id]: dice } });
+  }
+
+  /** Treffer je Einheit: Kanone/Grapeshot fest, Bombardment nach der Schablone (wo sie jetzt liegt) */
+  private targetsOf(shot: WarMachineShot, w: WarMachineWeapon):
+    { unit: UnitState; hits: number; centre: boolean; partial: number; rolled: number[] | null }[] {
+    const units = this.store.state.units;
+    if (w.mode !== 'bombard') {
+      return (shot.targets ?? []).filter((x) => units[x.unitId])
+        .map((x) => ({ unit: units[x.unitId], hits: x.hits, centre: false, partial: 0, rolled: null }));
+    }
+    const o = shot.template ? this.store.state.objects[shot.template] : undefined;
+    if (!o) return [];
+    return templateHitsByUnit(o, units).map((e) => {
+      const rolled = shot.partial?.[e.unit.id];
+      return { unit: e.unit, hits: e.full, centre: e.centre, partial: e.partial, rolled: rolled && rolled.length === e.partial ? rolled : null };
+    });
+  }
+
+  /** Weiter im Beschussfenster: Verwundungswurf mit den festen Treffern, danach Rettungswürfe des Gegners */
+  private sendWounds(shot: WarMachineShot, unit: UnitState, w: WarMachineWeapon, targetId: string): void {
+    const t = this.targetsOf(shot, w).find((x) => x.unit.id === targetId);
+    if (!t || shot.sent?.includes(targetId)) return;
+    const base = attackWeapon(w.profile, unit);
+    const line = (label: string, weapon: AttackWeapon, hits: number): WoundLine =>
+      ({ label, weapon, hits, poisoned: 0, strength: weapon.strength });
+    const lines: WoundLine[] = [];
+    let note: string;
+    if (w.mode === 'bombard') {
+      const [s, sHole] = split(w.profile.strength);
+      const [ap, apHole] = split(w.profile.ap);
+      const others = t.hits + (t.rolled ?? []).filter((d) => d >= 4).length;
+      // Multiple Wounds gilt nur für das Modell unter dem Mittelloch
+      const plain = w.profile.rules.filter((r) => !/multiple wounds/i.test(r));
+      if (t.centre) {
+        lines.push(line('Under the central hole', { ...base, name: `${w.name} (central hole)`, strength: num(sHole, base.strength),
+          ap: num(apHole, 0), raw: `S ${sHole} · AP ${apHole}` }, 1));
+      }
+      lines.push(line('Under the template', { ...base, strength: num(s, base.strength), ap: num(ap, 0), rules: plain, raw: `S ${s} · AP ${ap}` }, others));
+      note = `${w.name}: ${t.centre ? '1 model under the central hole' : 'no model under the central hole'}, ${others} other model${others === 1 ? '' : 's'} under the template`
+        + (t.partial ? ` (${t.hits} fully covered, ${others - t.hits} of ${t.partial} partially covered hit on 4+)` : '');
+    } else {
+      lines.push(line(w.mode === 'cannon' ? 'Hit by the cannonball' : 'Grapeshot', base, t.hits));
+      note = `${w.name}: ${t.hits} automatic hit${t.hits === 1 ? '' : 's'}${w.mode === 'cannon' ? ' (Cannon Fire)' : ''}`;
+    }
+    const seat = this.seat();
+    this.actions.startWounds(seat && seat !== 'spectator' ? seat : unit.owner, unit.id, targetId, lines, note);
+    this.patch({ sent: [...(shot.sent ?? []), targetId] });
   }
 
   /** Erster Artilleriewürfel: Aufschlagpunkt (Kanone), Treffer (Grapeshot) oder Abweichung (Bombardment) */
@@ -206,7 +292,7 @@ export class WarMachinePanel {
     } else if (w.mode === 'grapeshot') {
       const t = this.store.state.units[shot.targetUnit ?? ''];
       this.log({ kind: 'roll', dice: [[v]], text: `${this.prefix}${name} fires grapeshot: ${v ? `${v} hits on ${t?.info.name ?? 'the target'}` : 'Misfire!'}` });
-      this.patch({ dice, ...(v ? { step: 'done' as const, result: [`${v} automatic hits on ${t?.info.name ?? 'the target'} – S ${w.profile.strength}, AP ${w.profile.ap}${hitRules(w).length ? ` · ${hitRules(w).join(', ')}` : ''}`] } : {}) });
+      this.patch({ dice, ...(v ? { step: 'done' as const, targets: t ? [{ unitId: t.id, hits: v }] : [], result: [`${v} automatic hits on ${t?.info.name ?? 'the target'} – S ${w.profile.strength}, AP ${w.profile.ap}${hitRules(w).length ? ` · ${hitRules(w).join(', ')}` : ''}`] } : {}) });
     } else {
       this.log({ kind: 'roll', dice: [[v]], text: `${this.prefix}${name} – Artillery dice: ${artilleryText(v)}` });
       this.patch({ dice });
@@ -233,7 +319,7 @@ export class WarMachinePanel {
     const lines: string[] = [];
     if (s.hit) lines.push('Hit! The template stays where it is.');
     else {
-      lines.push(`The template scatters ${art}″ in the direction of the arrow – move it by hand.`);
+      lines.push(`The template scatters ${art}″ in the direction of the arrow – move it with the button or by hand.`);
       if (o) {
         const a = (s.angle * Math.PI) / 180;
         this.store.setMeta({ scatterFx: { from: { x: o.x, y: o.y }, to: { x: o.x + Math.sin(a) * art, y: o.y - Math.cos(a) * art }, r: o.w / 2, hit: false, ts: Date.now() } });
@@ -268,7 +354,13 @@ export class WarMachinePanel {
     if (r.hits.length) lines.push(`Each hit: S ${w.profile.strength}, AP ${w.profile.ap}${rules.length ? ` · ${rules.join(', ')}` : ''}`);
     if (r.stop) lines.push(`The cannonball is stopped by ${r.stop}.`);
     this.log({ kind: 'roll', dice: [[v]], text: `${this.prefix}${unit.info.name} – Artillery dice for the bounce: ${artilleryText(v)}${r.hits.length ? ` – hits ${r.hits.map((h) => `${h.unit.info.name} ×${h.models.length}`).join(', ')}` : ' – no models hit'}` });
-    this.patch({ dice: { ...shot.dice, bounce: v }, step: 'done', result: lines, hitPolys: r.hits.flatMap((h) => h.models.map((m) => m.poly)) });
+    const targets: { unitId: string; hits: number }[] = [];
+    for (const h of r.hits) {
+      const troops = h.models.filter((m) => !m.characterId).length;
+      if (troops) targets.push({ unitId: h.unit.id, hits: troops });
+      for (const m of h.models.filter((x) => x.characterId)) targets.push({ unitId: m.characterId!, hits: 1 });
+    }
+    this.patch({ dice: { ...shot.dice, bounce: v }, step: 'done', result: lines, targets, hitPolys: r.hits.flatMap((h) => h.models.map((m) => m.poly)) });
   }
 
   /**
@@ -288,7 +380,7 @@ export class WarMachinePanel {
     if (which === 'first') delete measures['wm-shot'];
     if (which === 'first' || which === 'bounce') delete measures['wm-bounce'];
     this.store.setMeta({ measures, scatterFx: null });
-    this.patch({ dice, step: 'fire', result: null, hitPolys: null });
+    this.patch({ dice, step: 'fire', result: null, hitPolys: null, targets: null, partial: null, sent: null, moved: false });
     this.prefix = 'Reroll – ';
     try {
       const fresh = this.shot!;
@@ -326,7 +418,7 @@ export class WarMachinePanel {
     const range = weapon.min ? `${weapon.min}–${weapon.max}″` : `${weapon.max}″`;
     /** Zeile mit Würfel: Ergebnis oder Knopf zum Würfeln */
     const row = (label: string, value: string | null, act: string, button: string) =>
-      `<div class="row"><span class="label">${label}</span>${value !== null
+      `<div class="dice-step"><span class="label">${label}</span>${value !== null
         ? `${value} <button data-wm="re-${act}" title="Roll this die again" ${dis}>↻ Reroll</button>`
         : `<button data-wm="${act}" class="primary" ${dis}>🎲 ${button}</button>`}</div>`;
     const rows: string[] = [];
@@ -345,21 +437,53 @@ export class WarMachinePanel {
       rows.push(row('Hits (Artillery dice)', dice.first != null ? artHtml(dice.first) : null, 'first', 'Roll'));
     } else {
       rows.push(row('Artillery dice', dice.first != null ? artHtml(dice.first) : null, 'first', 'Roll'));
-      rows.push(dice.first === 0 && !dice.scatter ? '<div class="row"><span class="label">Scatter dice</span><span class="meta">–</span></div>'
+      rows.push(dice.first === 0 && !dice.scatter ? '<div class="dice-step"><span class="label">Scatter dice</span><span class="meta">–</span></div>'
         : row('Scatter dice', dice.scatter ? scatterHtml(dice.scatter) : null, 'scatter', 'Roll'));
     }
     if (dice.first === 0) {
       rows.push(`<p class="warn"><b>Misfire!</b> Roll on the ${weapon.misfire === 'stone-thrower' ? 'Stone Thrower' : 'Black Powder'} Misfire table.</p>`);
       rows.push(row('Misfire table (D6)', dice.misfire != null ? `<span class="die">${dice.misfire}</span>` : null, 'misfire', 'Roll'));
     }
+    // Abweichung anwenden (nur auf Knopfdruck)
+    if (weapon.mode === 'bombard' && shot.step === 'done' && dice.first && dice.scatter && !dice.scatter.hit && !shot.moved) {
+      rows.push(`<div class="row-btns"><button data-wm="move-template" ${dis}>Move the template ${dice.first}″ <span class="scatter-arrow" style="transform: rotate(${dice.scatter.angle}deg)">↑</span></button></div>`);
+    }
+    const wounds = shot.step === 'done' && dice.first !== 0 ? this.woundsHtml(shot, weapon, dis) : '';
     $('wm-panel').innerHTML = `<p><span class="dot ${unit.owner}"></span><b>${esc(unit.info.name)}</b> · ${esc(MODE_NAMES[weapon.mode])} (${esc(weapon.name)}, ${range})</p>
       ${(shot.lines ?? []).map((l) => `<p class="${/misfire/i.test(l) ? 'warn' : 'prompt-info'}">${esc(l)}</p>`).join('')}
       ${rows.join('')}
       ${(shot.result ?? []).map((l) => `<p class="${/misfire/i.test(l) ? 'warn' : 'prompt-info'}">${esc(l)}</p>`).join('')}
+      ${wounds}
       <div class="row-btns">${shot.step !== 'done' ? `<button data-wm="retarget" ${dis}>⌖ New target</button>` : ''}
         <button data-wm="close" ${dis}>${shot.step === 'done' ? 'Done – remove lines and marks' : 'Cancel'}</button></div>
-      <p class="meta">Remove casualties by hand${weapon.mode === 'bombard' ? ' · the template is removed with Done' : ''}.</p>`;
+      <p class="meta">Lost models are removed automatically after the saves${weapon.mode === 'bombard' ? ' · the template is removed with Done' : ''}.</p>`;
   }
+
+  /** Treffer je Einheit mit den 4+-Würfen des Gegners und dem Knopf zum Verwundungswurf */
+  private woundsHtml(shot: WarMachineShot, w: WarMachineWeapon, dis: string): string {
+    const list = this.targetsOf(shot, w).filter((x) => x.hits || x.centre || x.partial);
+    if (!list.length) return w.mode === 'bombard' ? '<p class="prompt-info">No models under the template.</p>' : '';
+    return `<h4>Hits</h4>${list.map((x) => {
+      const sent = shot.sent?.includes(x.unit.id);
+      const parts = [x.centre ? '1 under the central hole' : '',
+        x.hits ? `${x.hits} ${w.mode === 'bombard' ? 'fully covered' : `hit${x.hits === 1 ? '' : 's'}`}` : '',
+        x.partial ? `${x.partial} partially covered` : ''].filter(Boolean).join(' · ');
+      const mayRoll = this.mayAct(x.unit.owner) ? '' : 'disabled';
+      const partial = !x.partial ? '' : `<div class="dice-step"><span class="label">${esc(playerName(x.unit.owner))}: ${x.partial} D6, hit on 4+</span>${x.rolled
+        ? `<span class="dice-inline">${x.rolled.map((d) => `<span class="die ${d >= 4 ? 'ok' : ''}">${d}</span>`).join('')}</span> <button data-wm="re-partial" data-unit="${x.unit.id}" title="Roll these dice again" ${mayRoll}>↻ Reroll</button>`
+        : `<button data-wm="partial" data-unit="${x.unit.id}" class="primary" ${mayRoll}>🎲 Roll</button>`}</div>`;
+      const ready = !x.partial || !!x.rolled;
+      return `<p class="prompt-info"><span class="dot ${x.unit.owner}"></span><b>${esc(x.unit.info.name)}</b>: ${parts}</p>${partial}
+        <div class="row-btns">${sent ? '<span class="ok">✓ Roll To Wound started</span>'
+          : `<button data-wm="wound" data-unit="${x.unit.id}" class="primary" ${ready ? dis : 'disabled'}>Roll To Wound ›</button>`}</div>`;
+    }).join('')}`;
+  }
+}
+
+/** Zahl aus einem Profilwert ("−3", "6"); sonst fallback */
+function num(v: string, fallback: number): number {
+  const n = Number.parseInt(v.replace('−', '-'), 10);
+  return Number.isFinite(n) ? n : fallback;
 }
 
 /** "2(6)" → ["2", "6"]; ohne Klammer gilt der Wert für beide */

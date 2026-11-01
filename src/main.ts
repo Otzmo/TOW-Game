@@ -161,6 +161,7 @@ async function start(): Promise<void> {
     pickPoint: (hint, onPick) => board.startPointPick(hint, onPick),
     pickUnit: (hint, accept, onPick) => board.startPick(hint, accept, onPick),
     select: (id) => board.select(id),
+    startWounds: (from, attackerId, targetId, lines, note) => prompts.attacks.startWounds(from, attackerId, targetId, lines, note),
   });
   new NotesPanel(store);
   new AmbushPanel(store, () => seat, {

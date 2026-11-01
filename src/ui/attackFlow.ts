@@ -63,7 +63,7 @@ interface HitForm {
 }
 
 /** Zeile im Verwundungswurf (aus den Treffern einer Zeile) */
-interface WoundLine {
+export interface WoundLine {
   label: string;
   weapon: AttackWeapon;
   hits: number;
@@ -198,6 +198,18 @@ export class AttackFlow {
       { attackerId, targetId, mode, step: 'hit' });
   }
 
+  /**
+   * Treffer stehen schon fest (Kriegsmaschine, Schablone): gleich mit dem Verwundungswurf beginnen.
+   * note erklärt im ersten Schritt, woher die Treffer kommen.
+   */
+  startWounds(from: PlayerId, attackerId: string, targetId: string, lines: WoundLine[], note: string): void {
+    const a = this.units[attackerId];
+    const t = this.units[targetId];
+    if (!a || !t || !lines.some((l) => l.hits)) return;
+    this.host.create('attack', a.owner, from, 'Roll To Wound', `Shooting: ${a.info.name} → ${t.info.name}`,
+      { attackerId, targetId, mode: 'shooting', step: 'wound', lines: JSON.stringify(lines.filter((l) => l.hits)), on: '[]', fixedHits: note });
+  }
+
   /** Waffen eines Profils: Reittiere kämpfen mit ihren Hufen/Klauen als Handwaffe, alle anderen mit der Ausrüstung */
   private lineWeapons(line: AttackLine, mode: AttackMode): AttackWeapon[] {
     const unit = this.units[line.unitId];
@@ -215,8 +227,11 @@ export class AttackFlow {
     const mode = (p.data.mode === 'shooting' ? 'shooting' : 'combat') as AttackMode;
     // Alle Schritte bleiben sichtbar, bis der Ablauf fertig ist; nur der aktuelle ist bedienbar
     const now = ['hit', 'wound', 'saves'].indexOf(String(p.data.step));
-    const els = stepSections(body, ['Roll To Hit', 'Roll To Wound', 'Saves: Armour, Ward, Regeneration'], Math.max(0, now), p.status === 'open');
-    this.renderHit(p, els[0], a, t, mode);
+    const fixed = typeof p.data.fixedHits === 'string' ? p.data.fixedHits : '';
+    const els = stepSections(body, [fixed ? 'Hits' : 'Roll To Hit', 'Roll To Wound', 'Saves: Armour, Ward, Regeneration'], Math.max(0, now), p.status === 'open');
+    // Feste Treffer (Kriegsmaschine, Schablone): kein Trefferwurf
+    if (fixed) els[0].innerHTML = `<p class="prompt-info">${esc(fixed)}</p>`;
+    else this.renderHit(p, els[0], a, t, mode);
     if (now >= 1) this.renderWound(p, els[1], a, t);
     if (now >= 2) this.renderSaves(p, els[2]);
     freezeSteps(body);

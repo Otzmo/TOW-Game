@@ -76,8 +76,9 @@ export function beyond(from: Point, to: Point, dist: number): Point {
 /** Ein von der Kanonenkugel getroffenes Modell */
 export interface CannonHitModel {
   key: string;
-  /** Name, wenn es ein angeschlossener Charakter ist */
+  /** Name und id, wenn es ein angeschlossener Charakter ist */
   character?: string;
+  characterId?: string;
   poly: Point[];
 }
 
@@ -181,7 +182,7 @@ export function cannonShot(cannon: Point, strike: Point, end: Point, units: Reco
       }
       chosen = [...groups.values()];
     }
-    hits.push({ unit: u, models: chosen.map((c) => ({ key: c.key, character: c.character?.info.name, poly: c.poly })) });
+    hits.push({ unit: u, models: chosen.map((c) => ({ key: c.key, character: c.character?.info.name, characterId: c.character?.id, poly: c.poly })) });
   }
   return { hits, end: { x: strike.x + dir.x * stopAt, y: strike.y + dir.y * stopAt }, stop };
 }

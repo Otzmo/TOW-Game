@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { basesOnTable, templateHits } from './templates';
+import { basesOnTable, templateHits, templateHitsByUnit } from './templates';
 import { byId, MM, testTemplate, testUnit } from './testUnits';
 
 const B = 25 * MM;
@@ -43,5 +43,15 @@ describe('templateHits', () => {
     const bases = basesOnTable(byId(unit));
     expect(templateHits(flame, bases)).toMatchObject({ full: 1, partial: 0 });
     expect(templateHits({ ...flame, rotation: Math.PI }, bases)).toMatchObject({ full: 0, partial: 1 });
+  });
+});
+
+describe('templateHitsByUnit', () => {
+  it('splits full, partial and the model under the central hole', () => {
+    const u = testUnit('u', { models: 25, width: 5 });
+    const r = templateHitsByUnit(testTemplate('smallBlast', 0, 0, 3), byId(u));
+    expect(r).toHaveLength(1);
+    expect(r[0].centre).toBe(true);
+    expect(r[0].full + r[0].partial + 1).toBe(templateHits(testTemplate('smallBlast', 0, 0, 3), basesOnTable(byId(u))).hits.length);
   });
 });

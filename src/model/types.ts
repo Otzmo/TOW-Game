@@ -74,6 +74,14 @@ export interface WarMachineShot {
   lines?: string[];
   /** Ergebnis der Würfel (Text); wird bei einem Reroll neu bestimmt */
   result?: string[] | null;
+  /** Kanone, Grapeshot: Treffer je Einheit bzw. angeschlossenem Charakter */
+  targets?: { unitId: string; hits: number }[] | null;
+  /** Bombardment: Schablone schon um die Abweichung verschoben */
+  moved?: boolean;
+  /** Bombardment: W6 des Gegners für teilweise bedeckte Modelle (getroffen bei 4+), je Einheit */
+  partial?: Record<string, number[]> | null;
+  /** Einheiten, deren Verwundungswurf schon begonnen hat */
+  sent?: string[] | null;
 }
 
 /** Veränderlicher Zustand einer Einheit auf dem Tisch. */

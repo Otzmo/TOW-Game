@@ -38,3 +38,47 @@ export function templateHits(o: BoardObject, bases: Point[][]): { full: number; 
   const full = hits.filter((h) => h.whole).length;
   return { full, partial: hits.length - full, hits };
 }
+
+/** Modelle einer Einheit (oder eines angeschlossenen Charakters) unter einer Schablone */
+export interface UnitUnderTemplate {
+  /** Einheit, die die Wunden nimmt: die Truppe oder der angeschlossene Charakter */
+  unit: UnitState;
+  /** ganz darunter (ohne das Modell unter dem Mittelloch) */
+  full: number;
+  /** nur teilweise darunter: getroffen bei 4+ */
+  partial: number;
+  /** das Modell unter dem Mittelloch gehört zu dieser Einheit */
+  centre: boolean;
+}
+
+/**
+ * Schablone je Einheit auswerten: ganz und teilweise bedeckte Modelle, und wer unter dem Mittelloch steht
+ * (Bombardment: dieses eine Modell bekommt den stärkeren Treffer). Angeschlossene Charaktere zählen für sich.
+ */
+export function templateHitsByUnit(o: BoardObject, units: Record<string, UnitState>): UnitUnderTemplate[] {
+  const poly = objectPolygon(o);
+  const centre = { x: o.x, y: o.y };
+  const out = new Map<string, UnitUnderTemplate>();
+  let centreTaken = false;
+  for (const u of Object.values(units)) {
+    if (isJoined(u, units) || u.ambush || u.status === 'destroyed' || u.status === 'fledOff') continue;
+    const c = Math.cos(u.rotation);
+    const s = Math.sin(u.rotation);
+    for (const sl of unitLayout(u, units).slots) {
+      const b = [[sl.x, sl.y], [sl.x + sl.w, sl.y], [sl.x + sl.w, sl.y + sl.d], [sl.x, sl.y + sl.d]]
+        .map(([lx, ly]) => ({ x: u.x + lx * c - ly * s, y: u.y + lx * s + ly * c }));
+      const inside = b.filter((p) => pointInPolygon(p, poly)).length;
+      const touched = inside > 0 || pointInPolygon(poly[0], b) || b.some((p, i) => segmentHitsPolygon(p, b[(i + 1) % 4], poly));
+      if (!touched) continue;
+      const who = (sl.charId && units[sl.charId]) || u;
+      const e = out.get(who.id) ?? { unit: who, full: 0, partial: 0, centre: false };
+      out.set(who.id, e);
+      if (!centreTaken && pointInPolygon(centre, b)) {
+        centreTaken = true;
+        e.centre = true;
+      } else if (inside === 4) e.full++;
+      else e.partial++;
+    }
+  }
+  return [...out.values()];
+}

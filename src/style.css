@@ -802,3 +802,9 @@ details { background: rgba(0, 0, 0, .15); border-color: rgba(214, 168, 74, .2); 
 .col-resizer.right { right: calc(var(--right) - 4px); }
 .col-resizer:hover, .col-resizer.active { background: linear-gradient(90deg, transparent 3px, var(--accent) 3px, var(--accent) 5px, transparent 5px); }
 body.hide-left .col-resizer.left { display: none; }
+
+/* Würfel einzeln: Bezeichnung links, Würfel bzw. Knopf rechts (Kriegsmaschinen, Schablonen) */
+.dice-step { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 6px; margin: 4px 0; }
+.dice-step .label { flex: 1 1 120px; color: var(--muted); }
+.dice-step button { width: auto; white-space: nowrap; }
+.dice-inline { display: inline-flex; flex-wrap: wrap; gap: 3px; }
