@@ -91,8 +91,9 @@ export class SetupPanel {
   }
 
   /**
-   * Rest der Aufstellung auswürfeln: Schlachtfeld, beide Roll-offs samt Wahl, Zonenwahl, Aufstellung beider
-   * Armeen zufällig in ihren Zonen und der erste Zug – danach beginnt die Schlacht.
+   * Rest der Aufstellung auswürfeln: Schlachtfeld, Zonen, Aufstellung beider Armeen zufällig in ihren Zonen.
+   * Bei den Roll-offs wird nur gewürfelt – wählen (Attacker/Defender, erster Zug) muss der Sieger selbst;
+   * danach klickt man den Knopf erneut und es geht weiter.
    */
   private autoSetup(): void {
     const { meta } = this.store.state;
@@ -103,23 +104,36 @@ export class SetupPanel {
       return;
     }
     const coin = <T,>(a: T, b: T): T => (Math.random() < 0.5 ? a : b);
+    const setup = () => this.store.state.meta.setup ?? {};
     this.history.record();
     // Schlachtfeld mit den angehakten Optionen
-    if (!meta.setup?.deployment) this.randomise();
-    // Roll-off Angreifer/Verteidiger: beide würfeln, Sieger wählt zufällig
-    const r1 = this.rollPair();
-    const defender = coin(r1.winner, other(r1.winner));
-    this.setSetup({ rollOff: r1.rolls, rollWinner: r1.winner, defender, swapZones: coin(false, true), zoneChosen: true });
-    this.log({ kind: 'roll', dice: [[r1.rolls.p1, r1.rolls.p2]], text: `Roll-off for Attacker / Defender: ${r1.rolls.p1} : ${r1.rolls.p2} – Player ${defender === 'p1' ? 1 : 2} is the Defender` });
+    if (!setup().deployment) this.randomise();
+    // Roll-off Angreifer/Verteidiger: beide würfeln, der Sieger wählt selbst
+    if (!setup().defender) {
+      if (!setup().rollWinner) {
+        const r1 = this.rollPair();
+        this.setSetup({ rollOff: r1.rolls, rollWinner: r1.winner, defender: null });
+        this.log({ kind: 'roll', dice: [[r1.rolls.p1, r1.rolls.p2]], text: `Roll-off for Attacker / Defender: ${r1.rolls.p1} : ${r1.rolls.p2} – ${playerName(r1.winner)} chooses Attacker or Defender` });
+      }
+      this.store.setMeta({ sub: SETUP_STEPS.attacker });
+      return;
+    }
+    if (!setup().zoneChosen) this.setSetup({ swapZones: coin(false, true), zoneChosen: true });
     // Aufstellung: jede Armee zufällig in ihrer Zone
-    deployRandomly(this.store);
-    const finishedFirst = coin<PlayerId>('p1', 'p2');
-    this.setSetup({ finished: { p1: true, p2: true }, finishedFirst });
-    // Roll-off für den ersten Zug (+1 für den, der zuerst fertig war)
-    const r2 = this.rollPair(finishedFirst);
-    const firstPlayer = coin(r2.winner, other(r2.winner));
-    this.setSetup({ firstRoll: r2.rolls, firstWinner: r2.winner, firstPlayer });
-    this.log({ kind: 'roll', dice: [[r2.rolls.p1, r2.rolls.p2]], text: `Roll-off for the first turn: ${r2.rolls.p1} : ${r2.rolls.p2} – ${playerName(firstPlayer)} has the first turn` });
+    if (!(setup().finished?.p1 && setup().finished?.p2)) {
+      deployRandomly(this.store);
+      this.setSetup({ finished: { p1: true, p2: true }, finishedFirst: coin<PlayerId>('p1', 'p2') });
+    }
+    // Roll-off für den ersten Zug (+1 für den, der zuerst fertig war); der Sieger wählt selbst
+    if (!setup().firstPlayer) {
+      if (!setup().firstWinner) {
+        const r2 = this.rollPair(setup().finishedFirst);
+        this.setSetup({ firstRoll: r2.rolls, firstWinner: r2.winner, firstPlayer: null });
+        this.log({ kind: 'roll', dice: [[r2.rolls.p1, r2.rolls.p2]], text: `Roll-off for the first turn: ${r2.rolls.p1} : ${r2.rolls.p2} – ${playerName(r2.winner)} chooses who has the first turn` });
+      }
+      this.store.setMeta({ sub: SETUP_STEPS.firstTurn });
+      return;
+    }
     // Zum letzten Schritt springen und bestätigen: die Schlacht beginnt
     this.store.setMeta({ sub: SETUP_STEPS.firstTurn });
     openSheet(null);
@@ -305,6 +319,7 @@ export class SetupPanel {
     confirm.disabled = !!blocked || this.seat() === 'spectator';
     ($('setup-back') as HTMLButtonElement).disabled = !inSetup || step <= 0 || this.seat() === 'spectator';
     ($('setup-auto') as HTMLButtonElement).disabled = this.seat() === 'spectator';
+    $('setup-auto').hidden = !inSetup;
     $('setup-blocker').textContent = blocked ?? '';
     $('setup-result').innerHTML = s.deployment
       ? `<p><b>Deployment:</b> ${esc(DEPLOYMENTS[s.deployment])}</p>` +
