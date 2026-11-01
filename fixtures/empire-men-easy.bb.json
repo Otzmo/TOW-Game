@@ -1,7 +1,7 @@
 {
   "id": "1e56e1a9-e309-4214-bc9f-419ca2ef5cd7",
   "name": "Men Easy",
-  "builderEditedAt": "2026-10-27T09:42:28.171Z",
+  "builderEditedAt": "2026-11-01T09:40:51.165Z",
   "factionId": "tow/empire-of-man",
   "forceTemplateId": "tow/empire-of-man/grand-army",
   "ruleset": {
@@ -18,7 +18,7 @@
     {
       "id": "02a2cade-d3a9-4516-b45e-65c34781eb9f",
       "unitEntryId": "tow/empire-of-man/state-troops",
-      "quantity": 25,
+      "quantity": 20,
       "selectedOptions": [
         {
           "groupId": "state-troops-default-armour",
@@ -50,7 +50,7 @@
     {
       "id": "eab02b03-e3b7-4719-bcfe-e318d1932561",
       "unitEntryId": "tow/empire-of-man/empire-archers",
-      "quantity": 25,
+      "quantity": 20,
       "selectedOptions": [
         {
           "groupId": "empire-archers-default-equipment",
@@ -159,6 +159,30 @@
         {
           "groupId": "empire-knights-weapons",
           "optionId": "lances"
+        }
+      ],
+      "traitIds": []
+    },
+    {
+      "id": "55addf36-4e45-4400-b3da-1cf3990dd910",
+      "unitEntryId": "tow/empire-of-man/empire-archers",
+      "quantity": 10,
+      "selectedOptions": [
+        {
+          "groupId": "empire-archers-default-equipment",
+          "optionId": "hand-weapons-warbows"
+        },
+        {
+          "groupId": "empire-archers-command",
+          "optionId": "marksman"
+        },
+        {
+          "groupId": "empire-archers-unit-options",
+          "optionId": "scouts"
+        },
+        {
+          "groupId": "empire-archers-unit-options",
+          "optionId": "fire-and-flee"
         }
       ],
       "traitIds": []
