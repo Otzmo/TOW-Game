@@ -93,12 +93,13 @@ export function unitWeapons(info: UnitInfo): UnitWeapon[] {
   const found: UnitWeapon[] = [];
   for (const w of list) {
     const n = norm(w.name).trim();
-    if (!n) continue;
+    // Ohne Profil (z. B. Schild) keine Zeile; der Schild zählt beim Rüstungswurf. Solche Einträge verbrauchen das
+    // Wort auch nicht – sonst fände "Crossbows" (ohne Profil) das Wort und "Crossbow" mit Profil ginge leer aus
+    if (!n || !w.profiles.length) continue;
     for (const variant of [n, `${n}s`, `${n}es`]) {
       const key = ` ${variant} `;
       if (!text.includes(key)) continue;
-      // Ohne Profil (z. B. Schild) keine Zeile; der Schild zählt beim Rüstungswurf
-      if (w.profiles.length) found.push({ slug: w.slug, name: w.name, profiles: w.profiles, url: w.url, text: w.text });
+      found.push({ slug: w.slug, name: w.name, profiles: w.profiles, url: w.url, text: w.text });
       // Gefundenes ausblenden, damit kürzere Namen nicht noch einmal darin treffen
       text = text.split(key).join(' | ');
       break;
