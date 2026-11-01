@@ -70,8 +70,10 @@ export interface WarMachineShot {
   dice?: { first?: number | null; bounce?: number | null; scatter?: { hit: boolean; angle: number } | null; misfire?: number | null };
   /** Kanone: getroffene Bases, auf dem Tisch markiert */
   hitPolys?: Point[][] | null;
-  /** Ergebniszeilen (Text) */
+  /** Ziel und Schablone (Text) */
   lines?: string[];
+  /** Ergebnis der Würfel (Text); wird bei einem Reroll neu bestimmt */
+  result?: string[] | null;
 }
 
 /** Veränderlicher Zustand einer Einheit auf dem Tisch. */

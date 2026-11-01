@@ -38,6 +38,8 @@ export interface WarMachineActions {
  */
 export class WarMachinePanel {
   private shownShot = false;
+  /** „Reroll – “ vor den Protokolleinträgen, während neu gewürfelt wird */
+  private prefix = '';
 
   constructor(
     private store: Store,
@@ -174,14 +176,13 @@ export class WarMachinePanel {
     }
     if (!shot || !w || !this.mayAct(w.unit.owner)) return;
     this.history.record();
-    if (act === 'close') {
+    if (act === 'close' || act === 'retarget') {
       this.clearLines();
+      // Die Bombardment-Schablone verschwindet mit dem Schuss
+      if (shot.template && this.store.state.objects[shot.template]) this.store.removeObject(shot.template);
       this.store.setMeta({ warMachine: null });
-    } else if (act === 'retarget') {
-      this.clearLines();
-      this.store.setMeta({ warMachine: null });
-      this.aim(w.unit.id);
-    } else if (act === 'choose-cannon') this.patch({ step: 'fire', targetUnit: null });
+      if (act === 'retarget') this.aim(w.unit.id);
+    } else if (act.startsWith('re-')) this.reroll(act.slice(3), w.unit, w.weapon); else if (act === 'choose-cannon') this.patch({ step: 'fire', targetUnit: null });
     else if (act === 'choose-grape') {
       const i = warMachineWeapons(w.unit).findIndex((x) => x.mode === 'grapeshot');
       const t = this.store.state.units[shot.targetUnit ?? ''];
@@ -199,15 +200,15 @@ export class WarMachinePanel {
     const dice = { ...shot.dice, first: v };
     const name = unit.info.name;
     if (w.mode === 'cannon') {
-      this.log({ kind: 'roll', dice: [[v]], text: `${name} – Artillery dice for the strike point: ${artilleryText(v)}` });
+      this.log({ kind: 'roll', dice: [[v]], text: `${this.prefix}${name} – Artillery dice for the strike point: ${artilleryText(v)}` });
       if (v && shot.target) this.setLine('wm-shot', shot.target, beyond({ x: unit.x, y: unit.y }, shot.target, v));
       this.patch({ dice });
     } else if (w.mode === 'grapeshot') {
       const t = this.store.state.units[shot.targetUnit ?? ''];
-      this.log({ kind: 'roll', dice: [[v]], text: `${name} fires grapeshot: ${v ? `${v} hits on ${t?.info.name ?? 'the target'}` : 'Misfire!'}` });
-      this.patch({ dice, ...(v ? { step: 'done' as const, lines: [...(shot.lines ?? []), `${v} automatic hits on ${t?.info.name ?? 'the target'} – S ${w.profile.strength}, AP ${w.profile.ap}${hitRules(w).length ? ` · ${hitRules(w).join(', ')}` : ''}`] } : {}) });
+      this.log({ kind: 'roll', dice: [[v]], text: `${this.prefix}${name} fires grapeshot: ${v ? `${v} hits on ${t?.info.name ?? 'the target'}` : 'Misfire!'}` });
+      this.patch({ dice, ...(v ? { step: 'done' as const, result: [`${v} automatic hits on ${t?.info.name ?? 'the target'} – S ${w.profile.strength}, AP ${w.profile.ap}${hitRules(w).length ? ` · ${hitRules(w).join(', ')}` : ''}`] } : {}) });
     } else {
-      this.log({ kind: 'roll', dice: [[v]], text: `${name} – Artillery dice: ${artilleryText(v)}` });
+      this.log({ kind: 'roll', dice: [[v]], text: `${this.prefix}${name} – Artillery dice: ${artilleryText(v)}` });
       this.patch({ dice });
       this.bombardResult();
     }
@@ -216,7 +217,7 @@ export class WarMachinePanel {
   private rollScatter(shot: WarMachineShot, unit: UnitState, w: WarMachineWeapon): void {
     if (shot.dice?.scatter || w.mode !== 'bombard') return;
     const s = scatterDie();
-    this.log({ kind: 'roll', text: `${unit.info.name} – Scatter dice: ${s.hit ? 'HIT' : `arrow ${s.angle}°`}` });
+    this.log({ kind: 'roll', text: `${this.prefix}${unit.info.name} – Scatter dice: ${s.hit ? 'HIT' : `arrow ${s.angle}°`}` });
     this.patch({ dice: { ...shot.dice, scatter: s } });
     this.bombardResult();
   }
@@ -229,7 +230,7 @@ export class WarMachinePanel {
     const s = shot?.dice?.scatter;
     if (!shot || !w || art == null || art === 0 || !s) return;
     const o = shot.template ? this.store.state.objects[shot.template] : undefined;
-    const lines = [...(shot.lines ?? [])];
+    const lines: string[] = [];
     if (s.hit) lines.push('Hit! The template stays where it is.');
     else {
       lines.push(`The template scatters ${art}″ in the direction of the arrow – move it by hand.`);
@@ -242,7 +243,7 @@ export class WarMachinePanel {
     const [ap, apHole] = split(w.weapon.profile.ap);
     const rules = hitRules(w.weapon);
     lines.push(`The model under the central hole: S ${strHole}, AP ${apHole}${rules.length ? ` (${rules.join(', ')})` : ''} · every other model under the template: S ${str}, AP ${ap}`);
-    this.patch({ step: 'done', lines });
+    this.patch({ step: 'done', result: lines });
   }
 
   private rollBounce(shot: WarMachineShot, unit: UnitState, w: WarMachineWeapon): void {
@@ -255,7 +256,7 @@ export class WarMachinePanel {
     const end = v ? beyond(from, strike, v) : strike;
     const r = cannonShot(from, strike, end, units, this.store.state.objects, unit.id);
     if (v) this.setLine('wm-bounce', strike, r.end);
-    const lines = [...(shot.lines ?? [])];
+    const lines: string[] = [];
     const rules = hitRules(w);
     if (!r.hits.length) lines.push('No models hit.');
     for (const h of r.hits) {
@@ -266,8 +267,38 @@ export class WarMachinePanel {
     }
     if (r.hits.length) lines.push(`Each hit: S ${w.profile.strength}, AP ${w.profile.ap}${rules.length ? ` · ${rules.join(', ')}` : ''}`);
     if (r.stop) lines.push(`The cannonball is stopped by ${r.stop}.`);
-    this.log({ kind: 'roll', dice: [[v]], text: `${unit.info.name} – Artillery dice for the bounce: ${artilleryText(v)}${r.hits.length ? ` – hits ${r.hits.map((h) => `${h.unit.info.name} ×${h.models.length}`).join(', ')}` : ' – no models hit'}` });
-    this.patch({ dice: { ...shot.dice, bounce: v }, step: 'done', lines, hitPolys: r.hits.flatMap((h) => h.models.map((m) => m.poly)) });
+    this.log({ kind: 'roll', dice: [[v]], text: `${this.prefix}${unit.info.name} – Artillery dice for the bounce: ${artilleryText(v)}${r.hits.length ? ` – hits ${r.hits.map((h) => `${h.unit.info.name} ×${h.models.length}`).join(', ')}` : ' – no models hit'}` });
+    this.patch({ dice: { ...shot.dice, bounce: v }, step: 'done', result: lines, hitPolys: r.hits.flatMap((h) => h.models.map((m) => m.poly)) });
+  }
+
+  /**
+   * Einen Würfel neu werfen: das alte Ergebnis wird ersetzt, alles, was davon abhängt, neu bestimmt
+   * (neuer Aufschlagpunkt → Abprall noch einmal würfeln).
+   */
+  private reroll(which: string, unit: UnitState, w: WarMachineWeapon): void {
+    const shot = this.shot;
+    if (!shot) return;
+    const dice = { ...shot.dice };
+    if (which === 'first') Object.assign(dice, { first: null, bounce: null, misfire: null });
+    else if (which === 'bounce') dice.bounce = null;
+    else if (which === 'scatter') dice.scatter = null;
+    else if (which === 'misfire') dice.misfire = null;
+    else return;
+    const measures = { ...this.store.state.meta.measures };
+    if (which === 'first') delete measures['wm-shot'];
+    if (which === 'first' || which === 'bounce') delete measures['wm-bounce'];
+    this.store.setMeta({ measures, scatterFx: null });
+    this.patch({ dice, step: 'fire', result: null, hitPolys: null });
+    this.prefix = 'Reroll – ';
+    try {
+      const fresh = this.shot!;
+      if (which === 'first') this.rollFirst(fresh, unit, w);
+      else if (which === 'bounce') this.rollBounce(fresh, unit, w);
+      else if (which === 'scatter') this.rollScatter(fresh, unit, w);
+      else this.rollMisfire(fresh, unit, w);
+    } finally {
+      this.prefix = '';
+    }
   }
 
   private rollMisfire(shot: WarMachineShot, unit: UnitState, w: WarMachineWeapon): void {
@@ -275,8 +306,8 @@ export class WarMachinePanel {
     const v = d6();
     const text = misfireResult(w.misfire, v);
     const table = w.misfire === 'stone-thrower' ? 'Stone Thrower' : 'Black Powder';
-    this.log({ kind: 'roll', dice: [[v]], text: `${unit.info.name} misfires – ${table} Misfire table ${v}: ${text}` });
-    this.patch({ dice: { ...shot.dice, misfire: v }, step: 'done', lines: [...(shot.lines ?? []), `${table} Misfire table: ${text}`] });
+    this.log({ kind: 'roll', dice: [[v]], text: `${this.prefix}${unit.info.name} misfires – ${table} Misfire table ${v}: ${text}` });
+    this.patch({ dice: { ...shot.dice, misfire: v }, step: 'done', result: [`${table} Misfire table: ${text}`] });
   }
 
   // --- Anzeige ----------------------------------------------------------------
@@ -295,7 +326,9 @@ export class WarMachinePanel {
     const range = weapon.min ? `${weapon.min}–${weapon.max}″` : `${weapon.max}″`;
     /** Zeile mit Würfel: Ergebnis oder Knopf zum Würfeln */
     const row = (label: string, value: string | null, act: string, button: string) =>
-      `<div class="row"><span class="label">${label}</span>${value ?? `<button data-wm="${act}" class="primary" ${dis}>🎲 ${button}</button>`}</div>`;
+      `<div class="row"><span class="label">${label}</span>${value !== null
+        ? `${value} <button data-wm="re-${act}" title="Roll this die again" ${dis}>↻ Reroll</button>`
+        : `<button data-wm="${act}" class="primary" ${dis}>🎲 ${button}</button>`}</div>`;
     const rows: string[] = [];
     if (shot.step === 'choose') {
       rows.push(`<p>The target is within 12″: fire a cannonball or grapeshot?</p>
@@ -312,7 +345,8 @@ export class WarMachinePanel {
       rows.push(row('Hits (Artillery dice)', dice.first != null ? artHtml(dice.first) : null, 'first', 'Roll'));
     } else {
       rows.push(row('Artillery dice', dice.first != null ? artHtml(dice.first) : null, 'first', 'Roll'));
-      rows.push(row('Scatter dice', dice.scatter ? scatterHtml(dice.scatter) : dice.first === 0 ? '<span class="meta">–</span>' : null, 'scatter', 'Roll'));
+      rows.push(dice.first === 0 && !dice.scatter ? '<div class="row"><span class="label">Scatter dice</span><span class="meta">–</span></div>'
+        : row('Scatter dice', dice.scatter ? scatterHtml(dice.scatter) : null, 'scatter', 'Roll'));
     }
     if (dice.first === 0) {
       rows.push(`<p class="warn"><b>Misfire!</b> Roll on the ${weapon.misfire === 'stone-thrower' ? 'Stone Thrower' : 'Black Powder'} Misfire table.</p>`);
@@ -321,9 +355,10 @@ export class WarMachinePanel {
     $('wm-panel').innerHTML = `<p><span class="dot ${unit.owner}"></span><b>${esc(unit.info.name)}</b> · ${esc(MODE_NAMES[weapon.mode])} (${esc(weapon.name)}, ${range})</p>
       ${(shot.lines ?? []).map((l) => `<p class="${/misfire/i.test(l) ? 'warn' : 'prompt-info'}">${esc(l)}</p>`).join('')}
       ${rows.join('')}
+      ${(shot.result ?? []).map((l) => `<p class="${/misfire/i.test(l) ? 'warn' : 'prompt-info'}">${esc(l)}</p>`).join('')}
       <div class="row-btns">${shot.step !== 'done' ? `<button data-wm="retarget" ${dis}>⌖ New target</button>` : ''}
         <button data-wm="close" ${dis}>${shot.step === 'done' ? 'Done – remove lines and marks' : 'Cancel'}</button></div>
-      <p class="meta">Remove casualties by hand${weapon.mode === 'bombard' ? ' · the template stays on the table until you delete it' : ''}.</p>`;
+      <p class="meta">Remove casualties by hand${weapon.mode === 'bombard' ? ' · the template is removed with Done' : ''}.</p>`;
   }
 }
 
