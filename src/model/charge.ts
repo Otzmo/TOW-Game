@@ -7,7 +7,7 @@ export interface ChargeRule {
   hint: string;
 }
 
-/** Alle Regeln, die beim Angriff eine Rolle spielen – im Fenster je eine Checkbox, zu Beginn keine angehakt */
+/** Alle Regeln, die beim Angriff eine Rolle spielen – im Fenster je eine Checkbox, angehakt, wenn die Einheit die Regel hat */
 export const CHARGE_RULES: ChargeRule[] = [
   { name: 'Swiftstride', side: 'charger', hint: 'charge roll +D6' },
   { name: 'Battle Hunger', side: 'charger', hint: 'charge roll +D3' },
@@ -24,7 +24,7 @@ export const CHARGE_RULES: ChargeRule[] = [
   { name: 'Swiftstride', side: 'target', hint: 'flee roll +D6' },
 ];
 
-/** Hat die Einheit (oder ein Gegenstand) eine Regel dieses Namens? (Hinweis im Fenster, angehakt wird nichts) */
+/** Hat die Einheit (oder ein Gegenstand) eine Regel dieses Namens? (dann ist die Checkbox vorab angehakt) */
 export const unitHasRule = (u: UnitState, name: string) =>
   [...u.info.rules, ...u.info.items].some((r) => r.name.toLowerCase().replace(/\s*\(.*\)/, '').replace('and', '&') === name.toLowerCase()
     || r.name.toLowerCase().startsWith(name.toLowerCase()));

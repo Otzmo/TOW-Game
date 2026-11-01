@@ -9,7 +9,7 @@ import { isDestroyed, wounds as woundsOf, woundsPerModel } from '../model/score'
 import { loseWounds } from '../model/wounds';
 import type { History } from '../model/history';
 import { playerName } from '../model/players';
-import { objectPolygon, pointInPolygon } from '../model/objects';
+import { OBJECT_TYPES, objectPolygon, pointInPolygon, segmentHitsPolygon } from '../model/objects';
 import { isSkirmish, type Store } from '../model/store';
 import type { BoardObject, LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
 import { diceHtml } from './dice';
@@ -56,7 +56,7 @@ interface HitForm {
   hill: boolean;
   /** Multiple Shots abgeben statt eines Schusses je Modell */
   multi: boolean;
-  /** angehakte Regeln und Hilfen (Namen) – zu Beginn keine */
+  /** angehakte Regeln und Hilfen (Namen) – zu Beginn das Erkannte */
   on: string[];
   /** Nahkampf: Erklärung der Attacken aus dem Basekontakt je Zeile */
   notes: Record<string, string>;
@@ -137,10 +137,10 @@ function rulesWith(weapon: AttackWeapon, unit: UnitState, on: string[]): Shootin
   return RULES.reduce((acc, x) => (on.includes(x.name) ? acc : { ...acc, ...x.off(acc) }), r);
 }
 
-/** Checkboxen für Regeln und Hilfen: angehakt = das Spiel wendet sie an (zu Beginn keine) */
+/** Checkboxen für Regeln und Hilfen: angehakt = das Spiel wendet sie an (Erkanntes ist vorab angehakt) */
 function ruleBoxes(items: { name: string; hint: string }[], on: string[]): string {
   if (!items.length) return '';
-  return `<div class="atk-mods atk-rules-box"><div class="atk-base">Special rules <span class="meta">(tick what applies)</span></div>
+  return `<div class="atk-mods atk-rules-box"><div class="atk-base">Special rules <span class="meta">(ticked: weapon or unit has it)</span></div>
     ${items.map((x) => `<label class="atk-mod"><input type="checkbox" data-rule="${esc(x.name)}" ${on.includes(x.name) ? 'checked' : ''}><span class="atk-label">${esc(x.name)} <span class="atk-hint">${esc(x.hint)}</span></span></label>`).join('')}
   </div>`;
 }
@@ -153,6 +153,20 @@ function wireRules(body: HTMLElement, on: string[], after: () => void): void {
       if (!box.checked && i >= 0) on.splice(i, 1);
       after();
     };
+  });
+}
+
+/**
+ * Deckung des Ziels: es steht (mit seiner Mitte) in Gelände, das Deckung gibt, oder die Linie zwischen den
+ * Einheitsmitten geht durch ein Hindernis, das Deckung gibt (Mauer, Hecke).
+ */
+function inCover(a: UnitState, t: UnitState, objects: Record<string, BoardObject>): boolean {
+  return Object.values(objects).some((o) => {
+    if (o.kind !== 'terrain') return false;
+    const type = OBJECT_TYPES[o.type];
+    const poly = objectPolygon(o);
+    if ((type?.rules ?? []).some((r) => /^cover/i.test(r)) && pointInPolygon(t, poly)) return true;
+    return type?.sight === 'cover' && segmentHitsPolygon(a, t, poly);
   });
 }
 
@@ -386,9 +400,31 @@ export class AttackFlow {
       lines: attackLines(a, this.units, mode).map((line) => ({ line, weapon: 0, count: line.count, multiRolled: null })),
       checked: [], manual: [], hill: false, multi: false, on: [], notes: {},
     };
+    // Regeln, die Waffe oder Einheit haben, gelten von Anfang an (abhaken geht)
+    form.on = RULES.filter((x) => form.lines.some((l) => {
+      const w = this.lineWeapons(l.line, mode)[0];
+      return w && x.has(shootingRules(w.rules, unitRuleNames(this.units[l.line.unitId] ?? a)));
+    })).map((x) => x.name);
     if (mode === 'shooting') {
+      const objects = this.host.store.state.objects;
+      const w = form.lines.map((l) => this.lineWeapons(l.line, mode)[0]).find(Boolean);
+      const distance = minChargeDistance(a, t, this.units);
+      form.checked = [
+        ...(this.host.movedThisTurn(a.id) ? ['Moving & Shooting'] : []),
+        ...(w?.range != null && distance > w.range / 2 ? ['Long range'] : []),
+        ...(inCover(a, t, objects) ? ['Partial cover'] : []),
+        ...(isSkirmish(t) ? ['Target is skirmishers'] : []),
+      ];
+      form.hill = onHill(a, objects);
       this.recountShots(a, form);
-    } else this.countCombat(a, t, form);
+    } else {
+      this.countCombat(a, t, form);
+      // Basekontakt erkannt: Attacken danach zählen
+      if (Object.keys(form.notes).length) {
+        form.on.push(CONTACT);
+        this.countCombat(a, t, form);
+      }
+    }
     return form;
   }
 
@@ -588,7 +624,11 @@ export class AttackFlow {
     type SaveForm = { armour: number | null; ward: number | null; regen: number | null; manual: RollMod[]; on: string[] };
     const num = (v: unknown) => (Number(v) >= 1 && Number(v) <= 6 ? Number(v) : null);
     const form = (stage.saveForm as SaveForm | undefined) ?? (stage.saveForm = {
-      armour: num(p.data.save), ward: num(p.data.ward), regen: num(p.data.regen), manual: [], on: parse<string[]>(p.data.on, []),
+      armour: num(p.data.save), ward: num(p.data.ward), regen: num(p.data.regen), manual: [],
+      on: [...parse<string[]>(p.data.on, []),
+        ...(groups.some((g) => g.ap) ? ['AP'] : []),
+        ...(groups.some((g) => g.bane && g.baneAp) ? ['Armour Bane'] : []),
+        ...(groups.some((g) => g.mw) ? ['Multiple Wounds'] : [])],
     }) as SaveForm;
     const done = stage.saves as SavesRolled | undefined;
     if (done) return this.showSaves(p, body, target, done);

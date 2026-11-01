@@ -6,7 +6,7 @@ export const TEST_NAMES: Record<TestKind, string> = {
   break: 'Break test', ld: 'Leadership test', panic: 'Panic test', fear: 'Fear test', terror: 'Terror test', rally: 'Rally test',
 };
 
-/** Regeln zum Anhaken (zu Beginn keine): Name, Wirkung, für welche Tests */
+/** Regeln zum Anhaken (Erkanntes vorab angehakt): Name, Wirkung, für welche Tests */
 export const TEST_RULES: { name: string; hint: string; tests: TestKind[] }[] = [
   { name: 'Inspiring Presence', hint: "use the General's Leadership (within range)", tests: ['break', 'ld', 'panic', 'fear', 'terror', 'rally'] },
   { name: 'Hold Your Ground', hint: 'Battle Standard Bearer in range: re-roll a failed test', tests: ['break', 'ld', 'panic', 'fear', 'terror', 'rally'] },

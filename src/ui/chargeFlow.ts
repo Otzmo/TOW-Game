@@ -13,6 +13,11 @@ const REACTIONS: Record<ChargeReaction, string> = {
   hold: 'Hold', standShoot: 'Stand & Shoot', flee: 'Flee', fireFlee: 'Fire & Flee', counter: 'Counter Charge',
 };
 
+/** Regeln, die Angreifer bzw. Ziel haben: von Anfang an angehakt */
+function chargeRulesOf(a: UnitState, t: UnitState): string[] {
+  return CHARGE_RULES.filter((r) => unitHasRule(r.side === 'charger' ? a : t, r.name)).map(ruleKey);
+}
+
 /** Was PromptCenter für den Angriff bereitstellt */
 export interface ChargeHost {
   store: Store;
@@ -23,7 +28,7 @@ export interface ChargeHost {
 
 /** Stand im Fenster (liegt im Spielstand, damit beide Spieler ihn sehen) */
 interface ChargeState {
-  /** angehakte Regeln, Schlüssel wie ruleKey – zu Beginn keine */
+  /** angehakte Regeln, Schlüssel wie ruleKey – zu Beginn das Erkannte */
   on: string[];
   reaction?: ChargeReaction;
   flee?: RollResult;
@@ -31,7 +36,7 @@ interface ChargeState {
 }
 
 /**
- * Angriff als Fenster für beide Spieler: Ansage mit den Charge-Regeln (Checkboxen, nichts vorab angehakt),
+ * Angriff als Fenster für beide Spieler: Ansage mit den Charge-Regeln (Checkboxen, Regeln der Einheiten vorab angehakt),
  * Reaktion des Gegners (mit Fluchtwurf), Angriffswurf und Ergebnis. Bewegt und entfernt wird nichts – das Fenster
  * sagt nur, was passiert; die Einheiten zieht der Spieler selbst.
  */
@@ -48,7 +53,7 @@ export class ChargeFlow {
     const t = this.units[targetId];
     if (!a || !t || a.owner === t.owner) return;
     this.host.create('charge', a.owner, from, 'Declare charge', `${a.info.name} → ${t.info.name}`,
-      { chargerId, targetId, step: 'declare', state: JSON.stringify({ on: [] } satisfies ChargeState) });
+      { chargerId, targetId, step: 'declare', state: JSON.stringify({ on: chargeRulesOf(a, t) } satisfies ChargeState) });
   }
 
   private state(p: Prompt): ChargeState {
@@ -102,7 +107,7 @@ export class ChargeFlow {
       return `<label class="atk-mod"><input type="checkbox" data-crule="${esc(ruleKey(r))}" ${s.on.includes(ruleKey(r)) ? 'checked' : ''}>
         <span class="atk-label">${esc(r.name)} <span class="atk-hint">${esc(r.hint)}${has ? ` · ${esc(unit.info.name)} has this rule` : ''}</span></span></label>`;
     }).join('');
-    return `<div class="atk-mods atk-rules-box"><div class="atk-base">Special rules – ${esc(unit.info.name)} <span class="meta">(tick what applies)</span></div>${rows}</div>`;
+    return `<div class="atk-mods atk-rules-box"><div class="atk-base">Special rules – ${esc(unit.info.name)} <span class="meta">(ticked: the unit has it)</span></div>${rows}</div>`;
   }
 
   private wireRules(p: Prompt, body: HTMLElement, s: ChargeState): void {

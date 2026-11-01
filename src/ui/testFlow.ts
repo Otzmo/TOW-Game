@@ -3,7 +3,11 @@ import { leadershipOf, roll } from '../model/flow';
 import type { Store } from '../model/store';
 import { BREAK_TEXT, breakResult, keptDice, TEST_NAMES, TEST_RULES, testPassed, type TestKind } from '../model/tests';
 import type { LogEntry, PlayerId, Prompt, PromptKind, UnitState } from '../model/types';
+import { distanceToUnit } from '../model/warMachines';
 import { diceHtml } from './dice';
+
+/** Inspiring Presence und Hold Your Ground: bis zu diesem Abstand (Zoll) */
+const SUPPORT_RANGE = 12;
 
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
@@ -19,7 +23,7 @@ export interface TestHost {
 /** Stand im Fenster (im Spielstand, für beide sichtbar) */
 interface TestState {
   kind: TestKind;
-  /** angehakte Regeln – zu Beginn keine */
+  /** angehakte Regeln – zu Beginn das, was das Spiel erkennt */
   on: string[];
   ld: number;
   /** Ld des Generals für Inspiring Presence */
@@ -35,7 +39,7 @@ interface TestState {
 
 /**
  * Aufriebstest und Leadership-Tests als Fenster für beide Spieler: Ld, Unterschied im Kampfergebnis bzw.
- * Modifikator, Regeln als Checkboxen (nichts vorab angehakt), Wurf und Ergebnis. Bewegt wird von Hand.
+ * Modifikator, Regeln als Checkboxen (Erkanntes vorab angehakt), Wurf und Ergebnis. Bewegt wird von Hand.
  */
 export class TestFlow {
   constructor(private host: TestHost) {}
@@ -45,8 +49,27 @@ export class TestFlow {
     const u = this.host.store.state.units[unitId];
     if (!u) return;
     const general = Object.values(this.host.store.state.units).find((x) => x.owner === u.owner && x.info.isGeneral);
-    const state: TestState = { kind, on: [], ld: leadershipOf(u), generalLd: general ? leadershipOf(general) : leadershipOf(u), diff: 0, mod: 0 };
+    const state: TestState = { kind, on: this.detected(u, kind), ld: leadershipOf(u), generalLd: general ? leadershipOf(general) : leadershipOf(u), diff: 0, mod: 0 };
     this.host.create('ldtest', u.owner, from, TEST_NAMES[kind], u.info.name, { unitId, state: JSON.stringify(state) });
+  }
+
+  /**
+   * Was das Spiel erkennt: Regeln der Einheit (Cold-blooded, Immune to Psychology, Stubborn, Unbreakable),
+   * General bzw. Armeestandarte (mit höherem bzw. beliebigem Ld) bis 12″ entfernt.
+   */
+  private detected(u: UnitState, kind: TestKind): string[] {
+    const units = this.host.store.state.units;
+    const onTable = (x: UnitState) => !x.ambush && x.status !== 'destroyed' && x.status !== 'fledOff';
+    // Angeschlossene Charaktere stehen bei ihrer Einheit
+    const placed = (x: UnitState) => (x.joinedTo && units[x.joinedTo]) || x;
+    const near = (x: UnitState) => placed(x).id === placed(u).id || distanceToUnit(placed(x), placed(u), units) <= SUPPORT_RANGE;
+    const friends = Object.values(units).filter((x) => x.owner === u.owner && x.id !== u.id && onTable(x));
+    const general = friends.find((x) => x.info.isGeneral);
+    const bsb = friends.find((x) => x.info.isBsb);
+    const on = TEST_RULES.filter((r) => r.tests.includes(kind) && unitHasRule(u, r.name)).map((r) => r.name);
+    if (general && near(general) && leadershipOf(general) > leadershipOf(u)) on.push('Inspiring Presence');
+    if (bsb && near(bsb)) on.push('Hold Your Ground');
+    return [...new Set(on)];
   }
 
   private state(p: Prompt): TestState | null {
@@ -80,7 +103,7 @@ export class TestFlow {
         ${isBreak ? `<label>Lost the combat by <input type="number" min="0" max="30" data-field="diff" value="${s.diff}"></label>`
           : `<label>Modifier to the roll <input type="number" min="-6" max="6" data-field="mod" value="${s.mod}"></label>`}
       </div>
-      <div class="atk-mods atk-rules-box"><div class="atk-base">Special rules <span class="meta">(tick what applies)</span></div>
+      <div class="atk-mods atk-rules-box"><div class="atk-base">Special rules <span class="meta">(ticked: detected by the game)</span></div>
         ${rules.map((r) => `<label class="atk-mod"><input type="checkbox" data-trule="${esc(r.name)}" ${s.on.includes(r.name) ? 'checked' : ''}>
           <span class="atk-label">${esc(r.name)} <span class="atk-hint">${esc(r.hint)}${unitHasRule(u, r.name) ? ` · ${esc(u.info.name)} has this rule` : ''}</span></span></label>`).join('')}
       </div>
@@ -89,7 +112,7 @@ export class TestFlow {
 
     body.querySelector<HTMLSelectElement>('[data-kind]')?.addEventListener('change', (e) => {
       s.kind = (e.target as HTMLSelectElement).value as TestKind;
-      s.on = s.on.filter((r) => TEST_RULES.find((x) => x.name === r)?.tests.includes(s.kind));
+      s.on = [...new Set([...s.on.filter((r) => TEST_RULES.find((x) => x.name === r)?.tests.includes(s.kind)), ...this.detected(u, s.kind)])];
       this.commit(p, s);
     });
     body.querySelectorAll<HTMLInputElement>('[data-field]').forEach((inp) => {
