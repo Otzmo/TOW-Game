@@ -235,8 +235,10 @@ export class PromptCenter {
     this.renderKind(p, body);
     // Zusehen: dasselbe Fenster, aber nichts anklickbar
     if (mode === 'watch') {
+      // data-always (z. B. Angriff abbrechen) bleibt für die Spieler bedienbar, nur nicht für Zuschauer
+      const spectator = this.host.seat() === 'spectator';
       body.querySelectorAll<HTMLInputElement | HTMLButtonElement | HTMLSelectElement>('input, select, button, textarea')
-        .forEach((el) => { el.disabled = true; });
+        .forEach((el) => { if (spectator || !el.hasAttribute('data-always')) el.disabled = true; });
       body.insertAdjacentHTML('afterbegin', `<p class="prompt-watch">${esc(playerName(p.to))} is deciding – you see this live.</p>`);
     }
   }

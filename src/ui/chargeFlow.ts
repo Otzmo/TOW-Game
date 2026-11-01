@@ -136,6 +136,27 @@ export class ChargeFlow {
     if (now >= 1) this.renderReact(p, els[1], a, t, s);
     if (now >= 2) this.renderRoll(p, els[2], a, t, s);
     freezeSteps(body);
+    // Abbrechen geht in jedem Schritt und für beide Spieler (data-always: auch beim Zusehen bedienbar);
+    // zweiter Klick bestätigt, damit niemand aus Versehen abbricht
+    body.insertAdjacentHTML('beforeend', '<div class="prompt-actions"><button data-cancel-charge data-always>✕ Cancel charge</button></div>');
+    const cancel = body.querySelector<HTMLButtonElement>('[data-cancel-charge]')!;
+    cancel.onclick = () => {
+      if (!cancel.dataset.armed) {
+        cancel.dataset.armed = '1';
+        cancel.textContent = '✕ Click again to cancel the charge';
+        cancel.classList.add('danger');
+        window.setTimeout(() => {
+          delete cancel.dataset.armed;
+          cancel.textContent = '✕ Cancel charge';
+          cancel.classList.remove('danger');
+        }, 3000);
+        return;
+      }
+      const c = this.host.store.state.charges[`charge-${a.id}`];
+      if (c) this.host.store.setCharge(c.id, null);
+      this.host.log({ kind: 'action', text: `${a.info.name} → ${t.info.name}: charge cancelled` });
+      this.host.store.setPrompt(p.id, null);
+    };
   }
 
   /** Entfernungen: Mindestdistanz für Kontakt, Distanz bis zur maximierten Stellung, angegriffene Seite */
@@ -250,9 +271,8 @@ export class ChargeFlow {
       ${this.rulesHtml('charger', a, s)}
       <p class="meta">Check line of sight; units already in combat or fleeing cannot declare a charge.</p>
       <div class="prompt-actions"><button class="primary" data-declare>Declare charge – ${esc(playerName(t.owner))} chooses a reaction ›</button>
-        <button data-cancel>Cancel</button></div>`;
+      </div>`;
     this.wireRules(p, body, s);
-    (body.querySelector('[data-cancel]') as HTMLButtonElement).onclick = () => this.host.store.setPrompt(p.id, null);
     (body.querySelector('[data-declare]') as HTMLButtonElement).onclick = () => {
       // Pfeil für beide Spieler, bis der Angriff gewürfelt ist
       const id = `charge-${a.id}`;
