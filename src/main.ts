@@ -19,6 +19,9 @@ import { PromptCenter } from './ui/prompts';
 import { SetupPanel } from './ui/setupPanel';
 import { WarMachinePanel } from './ui/warMachine';
 import { warMachineWeapons } from './model/warMachines';
+import { weaponsFor } from './ui/attackFlow';
+import { minChargeDistance } from './model/flow';
+import { joinedCharacters } from './model/store';
 import { GameBar } from './ui/gameBar';
 import { ImportDialog } from './ui/importDialog';
 import { Lobby } from './ui/lobby';
@@ -128,6 +131,24 @@ async function start(): Promise<void> {
       });
     };
   });
+  /**
+   * Beschuss: Ist das Ziel für jede Fernkampfwaffe der Einheit (und ihrer angeschlossenen Charaktere) zu weit weg,
+   * kommt kein Fenster, sondern eine Fehlermeldung. Ohne Fernkampfwaffe entscheidet das Fenster (Hinweis dort).
+   */
+  const outOfRange = (shooterId: string, targetId: string): string | null => {
+    const units = store.state.units;
+    const a = units[shooterId];
+    const t = units[targetId];
+    if (!a || !t) return null;
+    const weapons = [a, ...joinedCharacters(a, units)].flatMap((u) => weaponsFor(u, 'shooting'))
+      .filter((w) => w.range !== null);
+    if (!weapons.length) return null;
+    const best = weapons.reduce((m, w) => ((w.range ?? 0) > (m.range ?? 0) ? w : m));
+    const dist = minChargeDistance(a, t, units);
+    return dist > (best.range ?? 0)
+      ? `Out of range: ${a.info.name} → ${t.info.name} is ${dist.toFixed(1)}″ away, ${best.name} reaches ${best.range}″`
+      : null;
+  };
   // Angriff, Beschuss, Nahkampf: Knopf links, dann die eigene Einheit, dann das Ziel anklicken
   document.querySelectorAll<HTMLButtonElement>('[data-attack]').forEach((btn) => {
     btn.onclick = () => {
@@ -142,10 +163,18 @@ async function start(): Promise<void> {
           warMachines.aim(id);
           return;
         }
-        board.startPick(`${name} by ${a.info.name}: click the enemy unit`, (t) => t.owner !== a.owner, (target) => {
+        const pickTarget = (error?: string) => board.startPick(`${name} by ${a.info.name}: click the enemy unit`, (t) => t.owner !== a.owner, (target) => {
+          if (kind === 'shooting') {
+            const problem = outOfRange(id, target);
+            if (problem) {
+              pickTarget(problem);
+              return;
+            }
+          }
           if (kind === 'charge') prompts.charges.start(a.owner, id, target);
           else prompts.attacks.start(a.owner, id, target, kind);
-        });
+        }, error);
+        pickTarget();
       });
     };
   });
@@ -158,8 +187,8 @@ async function start(): Promise<void> {
   new SpellsPanel(store, history, () => seat, (entry) => addLog(entry));
   new DestroyedPanel(store, (id) => board.select(id));
   const warMachines = new WarMachinePanel(store, history, () => seat, (entry) => addLog(entry), {
-    pickPoint: (hint, onPick) => board.startPointPick(hint, onPick),
-    pickUnit: (hint, accept, onPick) => board.startPick(hint, accept, onPick),
+    pickPoint: (hint, onPick, error) => board.startPointPick(hint, onPick, error),
+    pickUnit: (hint, accept, onPick, error) => board.startPick(hint, accept, onPick, error),
     select: (id) => board.select(id),
     startWounds: (from, attackerId, targetId, lines, note) => prompts.attacks.startWounds(from, attackerId, targetId, lines, note),
   });

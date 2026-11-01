@@ -808,3 +808,6 @@ body.hide-left .col-resizer.left { display: none; }
 .dice-step .label { flex: 1 1 120px; color: var(--muted); }
 .dice-step button { width: auto; white-space: nowrap; }
 .dice-inline { display: inline-flex; flex-wrap: wrap; gap: 3px; }
+
+/* Fehlermeldung bei der Zielwahl (z. B. außer Reichweite) */
+#tool-hint.error { background: #b3261e; color: #fff; border-color: #f0603e; }

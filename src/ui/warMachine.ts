@@ -28,8 +28,8 @@ const hitRules = (w: WarMachineWeapon) =>
   w.profile.rules.filter((r) => !/cannon fire|bombardment|cumbersome|move or shoot|misfire table|needs more nails/i.test(r));
 
 export interface WarMachineActions {
-  pickPoint(hint: string, onPick: (p: Point) => void): void;
-  pickUnit(hint: string, accept: (u: UnitState) => boolean, onPick: (unitId: string) => void): void;
+  pickPoint(hint: string, onPick: (p: Point) => void, error?: string): void;
+  pickUnit(hint: string, accept: (u: UnitState) => boolean, onPick: (unitId: string) => void, error?: string): void;
   select(unitId: string): void;
   /** Feste Treffer an das Beschussfenster geben: weiter mit dem Verwundungswurf */
   startWounds(from: PlayerId, attackerId: string, targetId: string, lines: WoundLine[], note: string): void;
@@ -94,17 +94,10 @@ export class WarMachinePanel {
     this.store.setMeta({ measures });
   }
 
-  private hint(text: string): void {
-    const el = $('tool-hint');
-    el.textContent = text;
-    el.hidden = false;
-    window.setTimeout(() => { if (el.textContent === text) el.hidden = true; }, 4000);
-  }
-
   // --- Ziel wählen ------------------------------------------------------------
 
   /** Shoot mit einer Kriegsmaschine: Ziel wählen lassen, je nach Waffe Punkt (Kanone) oder Einheit */
-  aim(unitId: string): void {
+  aim(unitId: string, error?: string): void {
     const unit = this.store.state.units[unitId];
     if (!unit || !this.mayAct(unit.owner)) return;
     const weapons = warMachineWeapons(unit);
@@ -115,8 +108,7 @@ export class WarMachinePanel {
       this.actions.pickPoint(`${unit.info.name}: click the target point (within ${w.max}″)`, (p) => {
         const dist = Math.hypot(p.x - unit.x, p.y - unit.y);
         if (dist > w.max) {
-          this.hint(`Out of range: ${inch(dist)} > ${w.max}″ – click again`);
-          window.setTimeout(() => this.aim(unitId), 0);
+          this.aim(unitId, `Out of range: the target point is ${inch(dist)} away, ${w.name} reaches ${w.max}″`);
           return;
         }
         const units = this.store.state.units;
@@ -127,7 +119,7 @@ export class WarMachinePanel {
         this.begin({ unitId, weapon: cannon, step: grapeOk ? 'choose' : 'fire', target: p, targetUnit: grapeOk ? enemy!.id : null,
           lines: [`Target point ${inch(dist)} away${enemy ? ` (on ${enemy.info.name})` : ''}`] });
         this.setLine('wm-aim', { x: unit.x, y: unit.y }, p);
-      });
+      }, error);
       return;
     }
     const index = weapons.findIndex((w) => w.mode === 'bombard');
@@ -139,14 +131,13 @@ export class WarMachinePanel {
       const t = units[id];
       const dist = distanceToUnit(unit, t, units);
       if (dist > w.max || dist < w.min) {
-        this.hint(`${t.info.name} is ${inch(dist)} away – not within ${range}, click again`);
-        window.setTimeout(() => this.aim(unitId), 0);
+        this.aim(unitId, `${dist > w.max ? 'Out of range' : 'Too close'}: ${t.info.name} is ${inch(dist)} away, ${w.name} shoots ${range}`);
         return;
       }
       this.begin({ unitId, weapon: i, step: 'fire', targetUnit: id, lines: [`Target: ${t.info.name} (${inch(dist)})`] });
       this.setLine('wm-aim', { x: unit.x, y: unit.y }, { x: t.x, y: t.y });
       if (w.mode === 'bombard') this.placeTemplate();
-    });
+    }, error);
   }
 
   private begin(shot: WarMachineShot): void {

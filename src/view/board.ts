@@ -260,7 +260,7 @@ export class Board {
   }
 
   /** Einheit wählen lassen (Angreifer, Ziel …): Hinweis zeigen und den nächsten Klick auf eine passende Einheit abwarten. */
-  startPick(hint: string, accept: (u: UnitState) => boolean, onPick: (unitId: string) => void): void {
+  startPick(hint: string, accept: (u: UnitState) => boolean, onPick: (unitId: string) => void, error?: string): void {
     this.tools.setTool('select');
     this.placeUnit = null;
     this.pickPoint = null;
@@ -268,20 +268,24 @@ export class Board {
       const u = this.store.state.units[id];
       if (u && accept(u)) onPick(id);
     };
+    this.showPickHint(hint, error);
+  }
+
+  /** Hinweis oben: was als Nächstes anzuklicken ist; mit error rot und die Fehlermeldung zuerst */
+  private showPickHint(hint: string, error?: string): void {
     const el = document.getElementById('tool-hint')!;
-    el.textContent = `${hint} · Esc to cancel`;
+    el.textContent = error ? `${error} – ${hint} · Esc to cancel` : `${hint} · Esc to cancel`;
+    el.classList.toggle('error', !!error);
     el.hidden = false;
   }
 
   /** Punkt auf dem Tisch wählen lassen: Hinweis zeigen und den nächsten Klick abwarten (auch auf eine Einheit) */
-  startPointPick(hint: string, onPick: (p: Point) => void): void {
+  startPointPick(hint: string, onPick: (p: Point) => void, error?: string): void {
     this.tools.setTool('select');
     this.pickTarget = null;
     this.placeUnit = null;
     this.pickPoint = onPick;
-    const el = document.getElementById('tool-hint')!;
-    el.textContent = `${hint} · Esc to cancel`;
-    el.hidden = false;
+    this.showPickHint(hint, error);
   }
 
   cancelPick(): boolean {
@@ -289,7 +293,9 @@ export class Board {
     this.pickTarget = null;
     this.placeUnit = null;
     this.pickPoint = null;
-    document.getElementById('tool-hint')!.hidden = true;
+    const el = document.getElementById('tool-hint')!;
+    el.hidden = true;
+    el.classList.remove('error');
     return true;
   }
 
