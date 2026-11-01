@@ -1,7 +1,9 @@
 import type { History } from '../model/history';
 import { OBJECT_TYPES } from '../model/objects';
+import { playerName } from '../model/players';
 import type { Store } from '../model/store';
-import type { BoardObject, LogEntry } from '../model/types';
+import { templateHitsByUnit } from '../model/templates';
+import type { BoardObject, LogEntry, PlayerId } from '../model/types';
 import { artilleryDie, artilleryText, scatterDie, scatterHtml } from './dice';
 
 const $ = (id: string) => document.getElementById(id)!;
@@ -47,7 +49,8 @@ export class ObjectPanel {
   private rolls = new Map<string, ScatterRolls>();
 
   constructor(private store: Store, private history: History, actions: { close(): void; remove(): void },
-    private log: (entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>) => void) {
+    private log: (entry: Pick<LogEntry, 'kind' | 'text' | 'dice'>) => void,
+    private seat: () => PlayerId | 'spectator' | null = () => null) {
     $('o-close').onclick = () => actions.close();
     $('o-delete').onclick = () => actions.remove();
     input('o-label').onchange = () => this.change({ label: input('o-label').value.trim() || null });
@@ -60,12 +63,18 @@ export class ObjectPanel {
       if (btn) this.onScatter(btn.dataset.sc!);
     };
     $('o-sc-dice').onclick = onDice;
+    $('o-hits-row').onclick = (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-partial]');
+      if (btn) this.rollPartial(btn.dataset.partial!);
+    };
     $('o-scatter-result').onclick = onDice;
     for (const id of ['o-sc-dir', 'o-sc-art', 'o-sc-d3', 'o-sc-d6', 'o-sc-2d6']) input(id).onchange = () => this.render();
     fetch(`${import.meta.env.BASE_URL}data/terrain.json`).then((r) => (r.ok ? r.json() : {})).catch(() => ({}))
       .then((t) => { this.terrain = t; this.render(); });
     store.subscribe((_, c) => {
-      if (c.objectId === this.id || c.loaded) this.render();
+      // Schablonen zählen neu, wenn sich Einheiten bewegen oder die 4+-Würfe ändern
+      const o = this.id ? this.store.state.objects[this.id] : undefined;
+      if (c.objectId === this.id || c.loaded || (o?.kind === 'template' && (c.unitId || c.meta || c.replacedOwner))) this.render();
     });
   }
 
@@ -78,6 +87,63 @@ export class ObjectPanel {
     if (!this.id) return;
     this.history.record();
     this.store.updateObject(this.id, patch);
+  }
+
+  private mayAct(p: PlayerId): boolean {
+    const s = this.seat();
+    return s !== 'spectator' && (!s || s === p);
+  }
+
+  /** Lage einer Schablone als Schlüssel: hat sie sich bewegt, gelten alte 4+-Würfe nicht mehr */
+  private static at(o: BoardObject): string {
+    return [o.x, o.y, o.rotation].map((v) => v.toFixed(3)).join(',');
+  }
+
+  /** Gültige 4+-Würfe dieser Schablone (je Einheit) */
+  private partialDice(o: BoardObject): Record<string, number[]> {
+    const r = this.store.state.meta.templateRolls?.[o.id];
+    return r && r.at === ObjectPanel.at(o) ? r.dice : {};
+  }
+
+  /** Der Gegner würfelt für die teilweise bedeckten Modelle einer Einheit (getroffen bei 4+); erneut = Reroll */
+  private rollPartial(unitId: string): void {
+    const o = this.id ? this.store.state.objects[this.id] : undefined;
+    const e = o && templateHitsByUnit(o, this.store.state.units).find((x) => x.unit.id === unitId);
+    if (!o || !e?.partial || !this.mayAct(e.unit.owner)) return;
+    const before = this.partialDice(o);
+    const again = before[unitId]?.length === e.partial;
+    const dice = Array.from({ length: e.partial }, () => rnd(6));
+    const hit = dice.filter((d) => d >= 4).length;
+    this.history.record();
+    this.store.setMeta({ templateRolls: { ...this.store.state.meta.templateRolls,
+      [o.id]: { at: ObjectPanel.at(o), dice: { ...before, [unitId]: dice } } } });
+    this.log({ kind: 'roll', dice: [dice], text: `${again ? 'Reroll – ' : ''}${OBJECT_TYPES[o.type]?.name ?? 'Template'} on ${e.unit.info.name}: ${e.partial} partially covered – ${hit} hit on 4+` });
+  }
+
+  /** Getroffene Modelle je Einheit; teilweise bedeckte würfelt der Gegner (4+), am Ende steht die Zahl der Treffer */
+  private renderHits(o: BoardObject): void {
+    const list = templateHitsByUnit(o, this.store.state.units);
+    const rolls = this.partialDice(o);
+    if (!list.length) {
+      $('o-hits-row').innerHTML = '<h3>Hits</h3><p class="meta">No models under the template.</p>';
+      return;
+    }
+    $('o-hits-row').innerHTML = '<h3>Hits</h3>' + list.map((e) => {
+      // Das Mittelloch zählt hier wie jedes andere Modell: ganz bedeckt
+      const full = e.full + (e.centre ? 1 : 0);
+      const dice = rolls[e.unit.id]?.length === e.partial ? rolls[e.unit.id] : null;
+      const lucky = dice ? dice.filter((d) => d >= 4).length : 0;
+      const may = this.mayAct(e.unit.owner) ? '' : 'disabled';
+      const partial = !e.partial ? '' : `<div class="dice-step"><span class="label">${esc(playerName(e.unit.owner))}: ${e.partial} D6, hit on 4+</span>${dice
+        ? `<span class="dice-inline">${dice.map((d) => `<span class="die ${d >= 4 ? 'ok' : ''}">${d}</span>`).join('')}</span> <button data-partial="${e.unit.id}" title="Roll these dice again" ${may}>↻ Reroll</button>`
+        : `<button data-partial="${e.unit.id}" class="primary" ${may}>🎲 Roll</button>`}</div>`;
+      const total = !e.partial
+        ? `<b>${full} hit${full === 1 ? '' : 's'}</b>`
+        : dice
+          ? `<b>${full + lucky} hit${full + lucky === 1 ? '' : 's'}</b> (${full} fully covered + ${lucky} of ${e.partial} partially covered on 4+)`
+          : `${full} fully covered · ${e.partial} partially covered`;
+      return `<p class="prompt-info"><span class="dot ${e.unit.owner}"></span>${esc(e.unit.info.name)}: ${total}</p>${partial}`;
+    }).join('');
   }
 
   private onScatter(act: string): void {
@@ -201,6 +267,8 @@ export class ObjectPanel {
     // Schablonen: Abweichung auswürfeln
     $('o-scatter-row').hidden = o.kind !== 'template' || o.type === 'flame';
     if (o.kind === 'template' && o.type !== 'flame') this.renderScatter(o);
+    $('o-hits-row').hidden = o.kind !== 'template';
+    if (o.kind === 'template') this.renderHits(o);
     // Gelände: Regeln mit Volltext zum Aufklappen
     $('o-rules-row').hidden = o.kind !== 'terrain';
     if (o.kind === 'terrain') {

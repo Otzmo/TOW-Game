@@ -7,7 +7,7 @@ import { currentPhase } from '../model/phases';
 import type { Store } from '../model/store';
 import type { BoardObject, Point } from '../model/types';
 import { ObjectView } from './objectView';
-import { GUIDE_COLOR, OK_COLOR, PLAYER_COLORS, PPI, STRAY_COLOR, UPRIGHT } from './theme';
+import { GUIDE_COLOR, OK_COLOR, PLAYER_COLORS, PPI, STRAY_COLOR } from './theme';
 
 /** Auswählen und Ziehen, Messen, Sichtlinie prüfen, einen Punkt markieren (Ping) oder ein neues Objekt setzen. */
 export type Tool = 'select' | 'measure' | 'sight' | 'ping' | { place: string };
@@ -282,25 +282,11 @@ export class BoardTools {
     if (!templates.length) return;
     const bases = basesOnTable(units);
     for (const o of templates) {
-      const { full, partial, hits } = templateHits(o, bases);
+      const { hits } = templateHits(o, bases);
       for (const { corners, whole } of hits) {
         g.poly(corners.flatMap((p) => [p.x * PPI, p.y * PPI])).fill({ color: 0xffd040, alpha: whole ? 0.55 : 0.22 })
           .stroke({ width: whole ? 1.5 : 1, color: 0xfff1a8, alpha: whole ? 0.9 : 0.5 });
       }
-      if (!full && !partial) continue;
-      const label = new Text({
-        text: `${full + partial} model${full + partial === 1 ? '' : 's'}${partial ? ` (${partial} partial)` : ''}`,
-        style: { fontFamily: 'system-ui', fontSize: 12, fontWeight: '800', fill: 0xfff1a8, stroke: { color: 0x3a1000, width: 4 } },
-        resolution: 4,
-      });
-      // Schild sitzt in einem Halter in der Schablonenmitte: in der gedrehten Ansicht dreht sich der Halter
-      // als Ganzes, so steht die Zahl weiter über der Schablone statt auf ihr
-      const holder = new Container({ label: UPRIGHT });
-      holder.position.set(o.x * PPI, o.y * PPI);
-      label.anchor.set(0.5, 1);
-      label.position.set(0, -(Math.max(o.w, o.h) / 2) * PPI - 6);
-      holder.addChild(label);
-      this.hitLabels.addChild(holder);
     }
   }
 

@@ -159,6 +159,11 @@ export interface GameMeta {
   ping?: { x: number; y: number; by: string; ts: number } | null;
   /** Letzte Abweichung einer Schablone (Pfeil vom alten zum neuen Punkt) bzw. Volltreffer (Aufblitzen), für beide sichtbar */
   scatterFx?: { from: Point; to: Point; r: number; hit: boolean; ts: number } | null;
+  /**
+   * Schablonen: W6 des Gegners für teilweise bedeckte Modelle (getroffen bei 4+), je Schablone und Einheit.
+   * at = Lage der Schablone beim Würfeln; liegt sie inzwischen anders, gelten die Würfe nicht mehr.
+   */
+  templateRolls?: Record<string, { at: string; dice: Record<string, number[]> }> | null;
   /** Laufender Schuss einer Kriegsmaschine (für beide sichtbar) */
   warMachine?: WarMachineShot | null;
   /** Geladene Armee je Spieler (Fraktion und Listenname) */

@@ -83,7 +83,7 @@ async function start(): Promise<void> {
   const objectPanel = new ObjectPanel(store, history, {
     close: () => board.tools.select(null),
     remove: () => board.tools.removeSelected(),
-  }, (entry) => addLog(entry));
+  }, (entry) => addLog(entry), () => seat);
   const board: Board = new Board(app, store, history, {
     // Einheit angeklickt: ihr Fenster erscheint immer (ein anderes offenes Fenster tritt zurück)
     onSelect: (id) => {
