@@ -2,7 +2,7 @@ import {
   CHARGE_RULES, chargeInitiative, chargeSetup, fleeSetup, hasChargeRule, reactionChoices, rollTotal, ruleKey,
   type ChargeRule, type RollDice, type RollSetup,
 } from '../model/charge';
-import { placementProblem } from '../model/collision';
+import { overlappingUnits, placementProblem } from '../model/collision';
 import { slotPolygons } from '../model/contact';
 import { chargeTravel, contactPose, contactPoses, d6, minChargeDistance, movementOf } from '../model/flow';
 import type { History } from '../model/history';
@@ -332,20 +332,21 @@ export class ChargeFlow {
     body.innerHTML = `<p class="prompt-info">${esc(summary)}</p>
       <p class="prompt-info">Distance now: contact from <b>${inch(d.min)}</b>${d.max !== null ? ` · maximised at ${inch(d.max)}` : ''}
         · charge range = Movement ${m}″ + charge roll (maximum ${m + (setup().cap ?? 6)}″)</p>
+      ${d.min > m + (setup().cap ?? 6) ? `<p class="warn">${esc(t.info.name)} is now beyond the maximum charge range (${m + (setup().cap ?? 6)}″) – the charge cannot reach it.</p>` : ''}
       ${this.rulesHtml('charger', a, s)}
       <h4>Charge roll <span class="meta">(2D6, discard the ${setup().keep === 'lowest' ? 'highest' : 'lowest'}${setup().dice === 3 ? ', one extra D6' : ''})</span></h4>
       ${this.diceHtml('roll', s.roll, setup(), rules)}
       ${res && range !== null ? `<p class="prompt-info">Charge roll ${res.total} (${esc(res.text)}) + M ${m} = <b>${range}″</b> · needed ${inch(d.min)}</p>
         ${outcome.map((x) => `<p class="prompt-info">${x}</p>`).join('')}
         ${notes.map((x) => `<p class="prompt-info">${esc(x)}</p>`).join('')}
-        ${this.moveButtons(s, t, fled, range >= d.min, res.total, range)}` : ''}
+        ${this.moveButtons(s, t, fled, range >= d.min, res.total)}` : ''}
       ${s.note ? `<p class="warn">${esc(s.note)}</p>` : ''}
       <div class="prompt-actions"><button class="primary" data-done ${res ? '' : 'disabled'}>Done</button></div>`;
     this.wireRules(p, body, s);
     this.wireDice(p, body, s, { roll: setup, flee: () => fleeSetup(this.ticked('target', s), s.reaction === 'fireFlee') }, () => `${a.info.name} charge roll`);
     body.querySelector<HTMLButtonElement>('[data-move]')?.addEventListener('click', (e) => {
       const kind = (e.currentTarget as HTMLButtonElement).dataset.move as 'contact' | 'failed' | 'removed';
-      if (res && range !== null) this.chargeMove(p, s, a, t, kind, kind === 'failed' && !fled ? res.total : range);
+      if (res && range !== null) this.chargeMove(p, s, a, t, kind, kind === 'failed' ? res.total : range);
     });
     (body.querySelector('[data-done]') as HTMLButtonElement).onclick = () => {
       if (!res || range === null) return;
@@ -358,14 +359,14 @@ export class ChargeFlow {
   }
 
   /** Knöpfe für die Bewegung nach dem Angriffswurf (nur auf Klick) */
-  private moveButtons(s: ChargeState, t: UnitState, fled: boolean, success: boolean, roll: number, range: number): string {
+  private moveButtons(s: ChargeState, t: UnitState, fled: boolean, success: boolean, roll: number): string {
     if (s.moved) {
       const done = { contact: 'moved into base contact', failed: 'moved', removed: `${t.info.name} removed (destroyed)` }[s.moved];
       return `<div class="row-btns"><span class="ok">✓ ${esc(done)}</span></div>`;
     }
     if (success && fled) return `<div class="row-btns"><button data-move="removed">Remove ${esc(t.info.name)} (caught – destroyed)</button></div>`;
     if (success) return '<div class="row-btns"><button data-move="contact">Move into base contact</button></div>';
-    return `<div class="row-btns"><button data-move="failed">Move ${fled ? range : roll}″ towards ${esc(t.info.name)}</button></div>`;
+    return `<div class="row-btns"><button data-move="failed">Move ${roll}″ towards ${esc(t.info.name)}</button></div>`;
   }
 
   /** Was passiert – als Text; bewegt wird von Hand oder mit den Knöpfen */
@@ -379,9 +380,9 @@ export class ChargeFlow {
       if (s.on.includes('Impact Hits (charger)')) out.push('Impact Hits are resolved before anything else.');
       if (s.on.includes('Furious Charge (charger)')) out.push('Furious Charge: +1 Attack this turn.');
     } else if (fled) {
-      out.push(`<b>Charge does not reach</b> the fleeing unit – ${esc(a.info.name)} moves its full charge range (${range}″) towards it.`);
+      out.push(`<b>Charge does not reach</b> the fleeing unit – ${esc(a.info.name)} moves only its charge roll (${roll}″, without its Movement) towards it.`);
     } else {
-      out.push(`<b>Failed charge</b> – ${esc(a.info.name)} moves ${roll}″ (the charge roll) directly towards ${esc(t.info.name)}.`);
+      out.push(`<b>Failed charge</b> – ${esc(a.info.name)} moves only its charge roll (${roll}″, without its Movement) directly towards ${esc(t.info.name)}.`);
     }
     if (s.reaction === 'counter') out.push('Counter Charge: resolve the counter charge by hand (see the rule).');
     return out;
@@ -389,26 +390,45 @@ export class ChargeFlow {
 
   // --- Bewegungen per Knopf ---------------------------------------------------------
 
-  /** Fliehen: direkt vom Angreifer weg drehen und die gewürfelte Weite ziehen */
+  /**
+   * Fliehen: umdrehen (Front vom Angreifer weg) und die gewürfelte Weite ziehen, auf der Linie von der Mitte des
+   * Angreifers durch die eigene Mitte. Einheiten auf dem Weg werden durchlaufen; endet die Flucht auf einer Einheit,
+   * geht es auf derselben Linie weiter, bis sie frei dahinter steht. Verlässt sie den Tisch, ist sie geflohen.
+   */
   private fleeMove(p: Prompt, s: ChargeState, t: UnitState, a: UnitState, dist: number): void {
+    const units = this.units;
     const dx = t.x - a.x;
     const dy = t.y - a.y;
     const len = Math.hypot(dx, dy) || 1;
-    const pose = { x: t.x + (dx / len) * dist, y: t.y + (dy / len) * dist, rotation: Math.atan2(dx / len, -dy / len), status: 'fleeing' as const };
-    const problem = placementProblem({ ...t, ...pose }, this.units, false);
-    if (problem) {
-      s.note = `Cannot move ${t.info.name} there: ${problem} – move it by hand.`;
-      this.commit(p, s);
-      return;
+    const ux = dx / len;
+    const uy = dy / len;
+    const at = (go: number) => ({ x: t.x + ux * go, y: t.y + uy * go, rotation: Math.atan2(ux, -uy), status: 'fleeing' as const });
+    let go = dist;
+    const blockers: string[] = [];
+    // In kleinen Schritten weiter, solange sie auf einer anderen Einheit stünde (höchstens einmal über den Tisch)
+    for (let i = 0; i < 1000; i++) {
+      const hit = overlappingUnits({ ...t, ...at(go) }, units);
+      if (!hit.length) break;
+      for (const h of hit) if (!blockers.includes(h.info.name)) blockers.push(h.info.name);
+      go += 0.1;
     }
+    const pose = at(go);
     this.host.history.record();
     // Verlässt die Einheit dabei den Tisch, ist sie vom Schlachtfeld geflohen
     const { width, height } = this.host.store.state.table;
-    const off = slotPolygons({ ...t, ...pose }, this.units).some(({ poly }) => poly.some((q) => q.x < 0 || q.y < 0 || q.x > width || q.y > height));
+    const off = slotPolygons({ ...t, ...pose }, units).some(({ poly }) => poly.some((q) => q.x < 0 || q.y < 0 || q.x > width || q.y > height));
     this.host.store.updateUnit(t.id, off ? { ...pose, status: 'fledOff' } : pose);
+    // Angriffspfeil und gespeicherte Entfernung nach der neuen Lage
+    const c = this.host.store.state.charges[`charge-${a.id}`];
+    if (c && !off) {
+      const d = this.distances(a, this.units[t.id]);
+      const round1 = (v: number) => Math.round(v * 10) / 10;
+      this.host.store.setCharge(c.id, { ...c, distance: round1(d.min), maxDistance: d.max !== null ? round1(d.max) : null });
+    }
     s.fled = true;
-    s.note = null;
-    this.host.log({ kind: 'action', text: `${t.info.name} flees ${dist}″ directly away from ${a.info.name}${off ? ' – and off the battlefield' : ''}` });
+    s.note = blockers.length ? `Would have ended on ${blockers.join(', ')} – pushed ${(go - dist).toFixed(1)}″ further behind it.` : null;
+    this.host.log({ kind: 'action', text: `${t.info.name} flees ${dist}″ directly away from ${a.info.name}`
+      + `${blockers.length ? ` (pushed ${(go - dist).toFixed(1)}″ further, behind ${blockers.join(', ')})` : ''}${off ? ' – and off the battlefield' : ''}` });
     this.commit(p, s);
   }
 
